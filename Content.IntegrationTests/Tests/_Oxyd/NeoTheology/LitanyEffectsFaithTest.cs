@@ -245,8 +245,8 @@ public sealed class LitanyEffectsFaithTest : SocialNoticeGameTest
             var skills = SComp<MobSkillComponent>(caster);
             Assert.That(skills.skills["Mec"][1], Is.EqualTo(expectedPenalty),
                 $"The caster must pay {expectedPenalty} Mec for a +{gain} blessing.");
-            Assert.That(skills.buffSources["Mec"][DivineBlessing.Id], Has.Count.EqualTo(1));
-            Assert.That(skills.buffSources["Mec"][DivineBlessing.Id][0].amount, Is.EqualTo(expectedPenalty));
+            Assert.That(SEntMan.HasComponent<CruciformBlessedComponent>(oddity), Is.True,
+                "The oddity must be marked so it cannot be blessed again.");
 
             Assert.That(_cruciform.GetHoliness(caster),
                 Is.EqualTo(holinessBefore - _prototypes.Index(DivineBlessing).Cost).Within(1.0),

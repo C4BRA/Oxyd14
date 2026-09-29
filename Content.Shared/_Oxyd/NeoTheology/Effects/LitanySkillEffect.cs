@@ -21,7 +21,7 @@ public sealed partial class LitanySkillEffect : LitanyEffect
     {
         foreach (var target in context.Targets)
         {
-            if (system.CanReceiveSkillBuff(target))
+            if (system.CanReceiveSkillBuff(target) && !system.RejectsHolyInfluence(target))
             {
                 failure = null;
                 return true;
@@ -37,6 +37,9 @@ public sealed partial class LitanySkillEffect : LitanyEffect
         var applied = false;
         foreach (var target in context.Targets)
         {
+            if (system.RejectsHolyInfluence(target))
+                continue;
+
             applied |= system.TryApplySkillBuff(target, context.Litany.ID, Amounts, context.Litany.EffectDuration);
         }
 

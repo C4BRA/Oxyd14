@@ -327,6 +327,15 @@ public sealed partial class LitanyEffectSystem : EntitySystem, ILitanyEffectRais
         return true;
     }
 
+    /// <summary>Adds a permanent skill change that stacks with earlier casts of the same rite.</summary>
+    public void TryAddPermanentSkill(EntityUid target, ProtoId<SkillPrototype> skill, int amount)
+    {
+        if (!CanReceiveSkillBuff(target) || !TryComp<MobSkillComponent>(target, out var skills))
+            return;
+
+        _skill.AddBuff((target, skills), $"{skill}:{Guid.NewGuid()}", amount, skill, expires: null);
+    }
+
     /// <summary>
     /// Applies or refreshes one litany-keyed unique skill penalty (negative amount) with no
     /// expiry — Eris <c>changeStat</c> is permanent, unlike the timed buffs above.
@@ -549,14 +558,20 @@ public sealed partial class LitanyEffectSystem : EntitySystem, ILitanyEffectRais
     }
 
     /// <summary>Oddity held in the active hand — DivineBlessing blesses the caster's own oddity.</summary>
-    public bool TryGetHeldOddity(EntityUid user, out OddityComponent oddity)
+    public bool IsOddityBlessed(EntityUid item) => HasComp<CruciformBlessedComponent>(item);
+
+    public void MarkOddityBlessed(EntityUid item) => EnsureComp<CruciformBlessedComponent>(item);
+
+    public bool TryGetHeldOddity(EntityUid user, out EntityUid item, out OddityComponent oddity)
     {
+        item = EntityUid.Invalid;
         oddity = null!;
-        if (!_hands.TryGetActiveItem(user, out var item) || item is not { } held)
+        if (!_hands.TryGetActiveItem(user, out var held) || held is not { } uid)
             return false;
-        if (!TryComp(held, out OddityComponent? comp))
+        if (!TryComp(uid, out OddityComponent? comp))
             return false;
 
+        item = uid;
         oddity = comp;
         return true;
     }

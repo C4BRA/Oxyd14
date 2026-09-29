@@ -20,9 +20,15 @@ public sealed partial class LitanyDivineBlessingEffect : LitanyEffect
         LitanyEffectContext context,
         out LocId? failure)
     {
-        if (!system.TryGetHeldOddity(context.User, out var oddity))
+        if (!system.TryGetHeldOddity(context.User, out var item, out var oddity))
         {
             failure = "oxyd-litany-no-oddity";
+            return false;
+        }
+
+        if (system.IsOddityBlessed(item))
+        {
+            failure = "oxyd-litany-oddity-blessed";
             return false;
         }
 
@@ -38,11 +44,9 @@ public sealed partial class LitanyDivineBlessingEffect : LitanyEffect
 
     public override bool Apply(LitanyEffectSystem system, LitanyEffectContext context)
     {
-        if (!system.TryGetHeldOddity(context.User, out var oddity))
+        if (!system.TryGetHeldOddity(context.User, out var item, out var oddity) || system.IsOddityBlessed(item))
             return false;
 
-        // ponytail: Eris keeps a round-scoped `odditys` no-re-bless list; the caster's own
-        // skill pays for every roll, which already caps re-blessing, so the bookkeeping is skipped.
         var blessed = false;
         foreach (var (skill, value) in oddity.giving.ToArray())
         {
@@ -52,10 +56,13 @@ public sealed partial class LitanyDivineBlessingEffect : LitanyEffect
             var gain = system.RollInclusive(MinGain, MaxGain);
             oddity.giving[skill] = value + gain;
 
-            // Eris changeStat(stat, -max(round(stat_gain/2), 1)); DM round() is half-up.
-            system.TryApplySkillPenalty(context.User, context.Litany.ID, skill, -Math.Max((gain + 1) / 2, 1));
+            // Eris changeStat stacks. Each blessing adds its own permanent penalty.
+            system.TryAddPermanentSkill(context.User, skill, -Math.Max((gain + 1) / 2, 1));
             blessed = true;
         }
+
+        if (blessed)
+            system.MarkOddityBlessed(item);
 
         return blessed;
     }

@@ -5,6 +5,7 @@ using Content.Shared._Oxyd.NeoTheology.Effects;
 using Content.Shared._Oxyd.NeoTheology.Events;
 using Content.Shared._Oxyd.NeoTheology.Prototypes;
 using Content.Shared._Oxyd.Skills;
+using Content.Shared._Oxyd.Medical;
 using Content.Shared.Chat;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Stunnable;
@@ -384,6 +385,12 @@ public sealed partial class LitanySystem
 
             if (!_mobState.IsAlive(victim) || _cruciform.IsActiveBearer(victim))
                 continue;
+
+            if (HasComp<AtheistMutationComponent>(victim))
+            {
+                _effects.DeliverSocialNotice(victim, Loc.GetString("oxyd-litany-searing-atheist"));
+                continue;
+            }
 
             if (ProbPercent(100 - GetSkillValue(victim, NeoTheologySkills.Vigilance)))
                 _stun.TryKnockdown(victim, args.VictimKnockdown, force: true);

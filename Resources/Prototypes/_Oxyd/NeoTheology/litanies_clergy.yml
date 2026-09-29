@@ -117,7 +117,7 @@
   cooldownKey: OxydNtShortBoost
   cooldownScope: Global
   cooldownDuration: 120
-  effectDuration: 900
+  effectDuration: 600
   effects:
   - !type:LitanySkillEffect
     amounts:
@@ -140,7 +140,7 @@
   cooldownKey: OxydNtShortBoost
   cooldownScope: Global
   cooldownDuration: 120
-  effectDuration: 900
+  effectDuration: 600
   effects:
   - !type:LitanySkillEffect
     amounts:

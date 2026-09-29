@@ -58,8 +58,10 @@ public sealed partial class LitanyGroupStatEffect : LitanyCeremonyEffect
             if (channeling)
                 amount += context.CeremonyParticipants;
 
-            var amounts = new Dictionary<ProtoId<SkillPrototype>, int> { [Skill] = amount };
-            system.TryApplySkillBuff(target, context.Litany.ID, amounts, context.Litany.EffectDuration);
+            if (system.RejectsHolyInfluence(target))
+                continue;
+
+            system.TryAddPermanentSkill(target, Skill, amount);
             system.DeliverSocialNotice(target, Loc.GetString(Message));
         }
 

@@ -99,7 +99,7 @@ public sealed class LitanyEffectsSkillTest : GameTest
                 Assert.That(skills.buffSources[skill][litany.Id], Has.Count.EqualTo(1),
                     $"{litany.Id} must register exactly one unique buff source per skill.");
                 var remaining = skills.buffSources[skill][litany.Id][0].expires - _timing.CurTime;
-                Assert.That(remaining.TotalSeconds, Is.EqualTo(900).Within(5),
+                Assert.That(remaining.TotalSeconds, Is.EqualTo(600).Within(5),
                     $"{litany.Id} must apply the litany's effectDuration as the buff expiry.");
             }
 
