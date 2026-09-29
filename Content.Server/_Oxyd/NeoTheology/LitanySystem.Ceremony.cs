@@ -47,6 +47,12 @@ public sealed partial class LitanySystem
             return false;
         }
 
+        if (HasComp<ActiveCeremonyComponent>(cast.Actor))
+        {
+            failure = "oxyd-litany-ceremony-busy";
+            return false;
+        }
+
         if (!_cruciform.TryGetCruciform(cast.Actor, out _, out var cruciform) ||
             (CeremonyRequiresClergy(litany) && !LitanyEffectSystem.IsClergyProfile(cruciform.Profile)))
         {
@@ -62,7 +68,6 @@ public sealed partial class LitanySystem
         ceremony.Participants.Clear();
         ceremony.CorrectParticipants.Clear();
         ceremony.Range = _effects.GetSenseRange(litany);
-        ceremony.ExpiresAt = _timing.CurTime + ceremony.Timeout;
 
         ApplyCooldown(bearer, litany);
         cast.Committed = true;
@@ -287,8 +292,7 @@ public sealed partial class LitanySystem
         var query = EntityQueryEnumerator<ActiveCeremonyComponent>();
         while (query.MoveNext(out var starter, out var ceremony))
         {
-            if (_timing.CurTime >= ceremony.ExpiresAt ||
-                !_mobState.IsAlive(starter) ||
+            if (!_mobState.IsAlive(starter) ||
                 !_cruciform.TryGetCruciform(starter, out _, out _))
             {
                 expired.Add(starter);

@@ -31,16 +31,6 @@ public sealed partial class ActiveCeremonyComponent : Component
     /// <summary>Followers that spoke the current phrase correctly (Eris <c>correct_participants</c>).</summary>
     public HashSet<EntityUid> CorrectParticipants = new();
 
-    /// <summary>The litany range the follower must stay inside. Named divergence: Eris hears every phrase.</summary>
+    /// <summary>The litany range the follower must stay inside.</summary>
     public float Range;
-
-    /// <summary>
-    /// Named divergence: Eris keeps the module until a wrong phrase, so a stalled rite lives
-    /// forever. The fork ends it after <see cref="Timeout"/>.
-    /// </summary>
-    public TimeSpan ExpiresAt;
-
-    /// <summary>How long a stalled rite lives.</summary>
-    [DataField]
-    public TimeSpan Timeout = TimeSpan.FromMinutes(5);
 }
