@@ -129,8 +129,9 @@ public sealed class LitanyEffectsSoulTest : GameTest
 
             if (casterProfile != "OxydNtDisciple")
                 Assert.That(_cruciform.TrySetProfile(caster, casterProfile), Is.True);
-            var reader = SSpawnAtPosition(ReaderProto, origin.Offset(new Vector2(1f, 0f)));
-            cloner = SSpawnAtPosition(ClonerProto, origin.Offset(new Vector2(0f, 1f)));
+            var reader = SSpawnAtPosition(ReaderProto, origin.Offset(new Vector2(0f, 1f)));
+            cloner = SSpawnAtPosition(ClonerProto, origin.Offset(new Vector2(1f, 0f)));
+            SComp<CruciformClonerComponent>(cloner).Reader = reader;
             foreach (var machine in new[] { reader, cloner })
             {
                 SComp<ApcPowerReceiverComponent>(machine).NeedsPower = false;

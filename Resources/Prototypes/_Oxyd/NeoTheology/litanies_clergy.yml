@@ -158,6 +158,7 @@
   grantedBy: [OxydLitanyPriest]
   effect: Atonement
   targetMode: VisibleFollower
+  selectTarget: true
   range: 7
   cost: 45
   effects:
@@ -187,7 +188,7 @@
   category: Priest
   grantedBy: [OxydLitanyPriest]
   effect: DivineIntervention
-  targetMode: NearbyMachine
+  targetMode: FrontMachine
   range: 1.5
   cost: 15
   effects:
@@ -203,7 +204,7 @@
   category: Priest
   grantedBy: [OxydLitanyPriest]
   effect: HolyGuidance
-  targetMode: NearbyMachine
+  targetMode: FrontMachine
   range: 1.5
   cost: 15
   effects:
@@ -301,6 +302,7 @@
   grantedBy: [OxydLitanyPriest]
   effect: Excommunication
   targetMode: StationFollower
+  selectTarget: true
   range: 0
   cost: 60
   cooldownKey: OxydLitanyExcommunication
@@ -318,7 +320,7 @@
   category: Priest
   grantedBy: [OxydLitanyPriest]
   effect: OrderArmaments
-  targetMode: NearbyMachine
+  targetMode: FrontMachine
   range: 1.5
   cost: 20
   effects:

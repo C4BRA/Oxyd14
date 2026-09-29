@@ -13,6 +13,12 @@ public sealed partial class LitanyActivateDoorEffect : LitanyEffect
         LitanyEffectContext context,
         out LocId? failure)
     {
+        if (context.Targets.Any(system.IsHolyDoorBroken))
+        {
+            failure = "oxyd-litany-door-off";
+            return false;
+        }
+
         if (!context.Targets.Any(system.CanToggleLitanyDoor))
         {
             failure = "oxyd-litany-no-target";

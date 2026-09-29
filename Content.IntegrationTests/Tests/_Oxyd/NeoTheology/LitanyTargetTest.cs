@@ -34,7 +34,7 @@ public sealed class LitanyTargetTest : GameTest
     private static readonly ProtoId<LitanyPrototype> CruciformSense = "OxydLitanyCruciformSense";     // VisibleFollower, range 7
     private static readonly ProtoId<LitanyPrototype> Entreaty = "OxydLitanyEntreaty";                 // StationFollower
     private static readonly ProtoId<LitanyPrototype> ActivateDoor = "OxydLitanyActivateDoor";         // FrontMachine, range 1.5
-    private static readonly ProtoId<LitanyPrototype> RepairDoor = "OxydLitanyRepairDoor";             // NearbyMachine, range 1.5
+    private static readonly ProtoId<LitanyPrototype> RepairDoor = "OxydLitanyRepairDoor";             // FrontMachine, range 1.5
     private static readonly ProtoId<LitanyPrototype> GraceOfPerseverance = "OxydLitanyGraceOfPerseverance"; // VisibleArea, range 7
     private static readonly ProtoId<LitanyPrototype> DivineGuidance = "OxydLitanyDivineGuidance";     // FrontTile (deferred to P4.13)
     private static readonly ProtoId<LitanyPrototype> Sanctify = "OxydLitanySanctify";                 // Ceremony (P5.2)
@@ -233,7 +233,7 @@ public sealed class LitanyTargetTest : GameTest
     }
 
     [Test]
-    public async Task NearbyMachine_ResolvesMachinesWithinRangeOnly()
+    public async Task FrontMachine_IgnoresSideAndFarMachines()
     {
         var map = await Pair.CreateTestMap();
 
@@ -241,13 +241,14 @@ public sealed class LitanyTargetTest : GameTest
         {
             var origin = TileCentre(map.GridCoords);
             var caster = SpawnBearer(origin);
-            var near = SSpawnAtPosition(MachineProto, origin.Offset(new Vector2(1f, 0f)));
+            var ahead = SSpawnAtPosition(MachineProto, origin.Offset(new Vector2(1f, 0f)));
+            SSpawnAtPosition(MachineProto, origin.Offset(new Vector2(0f, 1f)));
             SSpawnAtPosition(MachineProto, origin.Offset(new Vector2(2f, 0f)));
 
             Assert.That(_litany.TryResolveTargets(caster, _prototypes.Index(RepairDoor), out var targets, out var reason),
-                Is.True, reason?.Id ?? "NearbyMachine must resolve");
-            Assert.That(targets, Is.EqualTo(new[] { near }),
-                "Range 1.5: a machine two tiles away must not resolve.");
+                Is.True, reason?.Id ?? "FrontMachine must resolve");
+            Assert.That(targets, Is.EqualTo(new[] { ahead }),
+                "Only the machine on the faced tile resolves.");
         });
     }
 

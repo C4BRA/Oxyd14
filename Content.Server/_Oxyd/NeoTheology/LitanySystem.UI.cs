@@ -189,7 +189,7 @@ public sealed partial class LitanySystem
 
         var options = new List<LitanyChoiceOption>();
         for (var i = 0; i < cast.ChoiceTargets.Count; i++)
-            options.Add(new LitanyChoiceOption($"t:{i}", MetaData(cast.ChoiceTargets[i]).EntityName));
+            options.Add(new LitanyChoiceOption($"t:{i}", VisibleName(cast.Actor, cast.ChoiceTargets[i])));
 
         foreach (var profile in cast.ChoiceDesignations)
         {

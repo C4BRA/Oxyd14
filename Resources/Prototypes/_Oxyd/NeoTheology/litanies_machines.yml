@@ -6,7 +6,7 @@
   category: Machinery
   grantedBy: [OxydLitanyMachinery]
   effect: Resurrection
-  targetMode: NearbyMachine
+  targetMode: FrontMachine
   range: 1.5
   cost: 0
   effects:
@@ -21,7 +21,7 @@
   category: Machinery
   grantedBy: [OxydLitanyMachinery]
   effect: MakeCruciform
-  targetMode: NearbyMachine
+  targetMode: FrontMachine
   range: 1.5
   cost: 0
   effects:
@@ -51,7 +51,7 @@
   category: Machinery
   grantedBy: [OxydLitanyMachinery]
   effect: RepairDoor
-  targetMode: NearbyMachine
+  targetMode: FrontMachine
   range: 1.5
   cost: 0
   extraDelay: 5
@@ -67,7 +67,7 @@
   category: Machinery
   grantedBy: [OxydLitanyMachinery]
   effect: PowerBiogenerator
-  targetMode: NearbyMachine
+  targetMode: FrontMachine
   range: 4
   cost: 0
   effects:
@@ -82,7 +82,7 @@
   category: Machinery
   grantedBy: [OxydLitanyMachinery]
   effect: BioreactorSolution
-  targetMode: NearbyMachine
+  targetMode: FrontMachine
   range: 4
   cost: 0
   effects:
@@ -97,7 +97,7 @@
   category: Machinery
   grantedBy: [OxydLitanyMachinery]
   effect: BioreactorChamber
-  targetMode: NearbyMachine
+  targetMode: FrontMachine
   range: 4
   cost: 0
   effects:

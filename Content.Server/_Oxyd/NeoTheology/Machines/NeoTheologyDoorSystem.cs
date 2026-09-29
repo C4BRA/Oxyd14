@@ -1,7 +1,11 @@
 using Content.Shared._Oxyd.NeoTheology.Components;
 using Content.Shared._Oxyd.NeoTheology.Events;
+using Content.Shared.Damage;
 using Content.Shared.Damage.Components;
 using Content.Shared.Damage.Systems;
+using Content.Shared.Doors;
+using Content.Shared.Doors.Components;
+using Content.Shared.Doors.Systems;
 using Content.Shared.FixedPoint;
 using Content.Shared.Stacks;
 using Robust.Shared.Prototypes;
@@ -15,6 +19,7 @@ namespace Content.Server._Oxyd.NeoTheology.Machines;
 public sealed partial class NeoTheologyDoorSystem : EntitySystem
 {
     [Dependency] private readonly DamageableSystem _damageable = default!;
+    [Dependency] private readonly SharedDoorSystem _doors = default!;
     [Dependency] private readonly EntityLookupSystem _lookup = default!;
     [Dependency] private readonly SharedStackSystem _stack = default!;
 
@@ -25,6 +30,20 @@ public sealed partial class NeoTheologyDoorSystem : EntitySystem
     private const float ScanRadius = 0.6f;
 
     private static readonly ProtoId<StackPrototype> BiomatterStack = "Biomatter";
+
+    public override void Initialize()
+    {
+        base.Initialize();
+        SubscribeLocalEvent<NeoTheologyDoorComponent, DamageChangedEvent>(OnDamaged);
+    }
+
+    private void OnDamaged(EntityUid uid, NeoTheologyDoorComponent component, DamageChangedEvent args)
+    {
+        if (!_damageable.IsAtLeastTotalDamage(uid, NeoTheologyDoorComponent.BrokenAt))
+            return;
+
+        component.Broken = true;
+    }
 
     /// <summary>
     /// RepairDoor bridge (Eris <c>rituals/machinery.dm:100-145</c>): the litany names the door and
@@ -41,9 +60,8 @@ public sealed partial class NeoTheologyDoorSystem : EntitySystem
     /// damaged holy door.
     /// </summary>
     /// <remarks>
-    /// ponytail: the Eris 5-second construction do-after is dropped; the caller
-    /// (litany or interaction) owns the do-after. Add a NeoTheology overlay only if
-    /// players miss the feedback.
+    /// The litany's extraDelay is the Eris 5-second repair wait. This method heals,
+    /// clears the broken flag, unbolts, and closes.
     /// </remarks>
     public bool TryRepair(EntityUid door, EntityUid user, int amount, bool validateOnly = false)
     {
@@ -58,7 +76,21 @@ public sealed partial class NeoTheologyDoorSystem : EntitySystem
             return false;
 
         if (!validateOnly)
+        {
             _damageable.ClearAllDamage(door);
+            if (TryComp<NeoTheologyDoorComponent>(door, out var litanyDoor))
+            {
+                litanyDoor.Broken = false;
+                litanyDoor.LitanyLocked = false;
+            }
+
+            if (TryComp<DoorBoltComponent>(door, out var bolt) && _doors.IsBolted(door, bolt))
+                _doors.TrySetBoltDown((door, bolt), false, user);
+
+            if (TryComp<DoorComponent>(door, out var doorComp) && doorComp.State != DoorState.Closed)
+                _doors.TryClose(door, doorComp);
+        }
+
         return true;
     }
 

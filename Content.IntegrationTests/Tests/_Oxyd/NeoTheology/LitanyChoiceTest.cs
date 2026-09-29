@@ -8,7 +8,11 @@ using Content.Shared._Oxyd.NeoTheology;
 using Content.Shared._Oxyd.NeoTheology.Components;
 using Content.Shared._Oxyd.NeoTheology.Effects;
 using Content.Shared._Oxyd.NeoTheology.UI;
+using Content.Shared.Chat;
+using Content.Shared.Damage;
 using Content.Shared.Hands.EntitySystems;
+using Content.Shared.IdentityManagement;
+using Content.Shared._Oxyd.Medical;
 using Content.Shared.Implants;
 using Content.Shared.Nutrition.Components;
 using Content.Shared.Nutrition.EntitySystems;
@@ -38,6 +42,7 @@ public sealed class LitanyChoiceTest : SocialNoticeGameTest
     private static readonly ProtoId<LitanyPrototype> Scrying = "OxydLitanyScrying";
     private static readonly ProtoId<LitanyPrototype> Sending = "OxydLitanySending";
     private static readonly ProtoId<LitanyPrototype> Confirmation = "OxydLitanyConfirmation";
+    private static readonly ProtoId<LitanyPrototype> Atonement = "OxydLitanyAtonement";
 
     private const string SendingText = "The eye watches the halls.";
 
@@ -177,6 +182,81 @@ public sealed class LitanyChoiceTest : SocialNoticeGameTest
             Assert.That(_cruciform.TryGetCruciform(target, out _, out var component), Is.True);
             Assert.That(component.Profile, Is.EqualTo(Custodian),
                 "Confirmation must apply the designation the caster selected, not the Acolyte default.");
+        });
+    }
+
+    [Test]
+    public async Task Atonement_SpeechPainsOnlyTheNamedFollower()
+    {
+        var map = await Pair.CreateTestMap();
+        EntityUid alice = default;
+        EntityUid bob = default;
+        EntityUid caster = default;
+
+        await Server.WaitAssertion(() =>
+        {
+            var origin = TileCentre(map.GridCoords);
+            caster = PrepareCaster(origin, Preacher);
+            alice = SpawnBearer(origin.Offset(new Vector2(1f, 0f)), Disciple);
+            bob = SpawnBearer(origin.Offset(new Vector2(0f, 1f)), Disciple);
+            var names = SEntMan.System<MetaDataSystem>();
+            names.SetEntityName(alice, "Alice");
+            names.SetEntityName(bob, "Bob");
+
+            var missing = _litany.TryBeginLitany(caster, Atonement, LitanyCastOrigin.ManualSpeech, spokenName: "Nobody");
+            Assert.That(missing.Success, Is.False);
+            Assert.That(missing.Reason?.Id, Is.EqualTo("oxyd-litany-no-target"));
+            Assert.That(_litany.TestingPendingCount, Is.Zero);
+        });
+
+        await Pair.RunTicksSync(35);
+
+        await Server.WaitAssertion(() =>
+        {
+            _litany.TestingHandleSpeech(new EntitySpokeEvent(caster, "Piaculo sit Alice!", null, null));
+            Assert.That(_litany.TestingPendingCount, Is.EqualTo(1));
+            var request = SComp<CruciformBearerComponent>(caster).PendingRequestId;
+            Assert.That(_litany.TestingTryGetPending(request!, out var cast), Is.True);
+            Assert.That(cast!.Targets, Is.EqualTo(new[] { alice }),
+                "Atonement must pain only the named follower.");
+        });
+
+        await AdvancePastCast();
+
+        await Server.WaitAssertion(() =>
+        {
+            Assert.That(SComp<PainComponent>(alice).CurrentPain, Is.GreaterThan(0f));
+            Assert.That(
+                !SEntMan.TryGetComponent<PainComponent>(bob, out var pain) || pain.CurrentPain <= 0,
+                "The unnamed follower must not take the pain.");
+        });
+    }
+
+    [Test]
+    public async Task Atonement_BookChoiceSpeaksTheChosenName()
+    {
+        var map = await Pair.CreateTestMap();
+
+        await Server.WaitAssertion(() =>
+        {
+            var origin = TileCentre(map.GridCoords);
+            var caster = PrepareCaster(origin, Preacher);
+            var first = SpawnBearer(origin.Offset(new Vector2(2f, 0f)), Disciple);
+            SpawnBearer(origin.Offset(new Vector2(-2f, 0f)), Disciple);
+            var book = HoldBook(caster, origin);
+
+            var begin = BeginFromBook(caster, book, Atonement);
+            Assert.That(begin.Success, Is.True, begin.Reason?.Id ?? "Atonement begin failed");
+            Assert.That(_litany.TestingTryGetPending(begin.RequestId!, out var cast), Is.True);
+            Assert.That(cast!.Stage, Is.EqualTo(LitanyCastStage.Choosing));
+
+            var chosen = cast.ChoiceTargets.First(target => target != first);
+            var index = cast.ChoiceTargets.IndexOf(chosen);
+            var selection = Submit(caster, begin.RequestId!, [$"t:{index}"]);
+            Assert.That(selection.Success, Is.True, selection.Reason?.Id ?? "Atonement choice failed");
+            Assert.That(cast.Targets, Is.EqualTo(new List<EntityUid> { chosen }));
+            Assert.That(cast.Phrase, Does.Contain(Identity.Name(chosen, SEntMan, caster)));
+            Assert.That(cast.Phrase, Does.Not.Contain("[Target human]"));
         });
     }
 

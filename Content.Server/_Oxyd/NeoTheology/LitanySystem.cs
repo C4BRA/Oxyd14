@@ -140,9 +140,10 @@ public sealed partial class LitanySystem : EntitySystem
         LitanyCastOrigin origin,
         EntityUid? book = null,
         uint? expectedRevision = null,
-        string? choiceToken = null)
+        string? choiceToken = null,
+        string? spokenName = null)
     {
-        var result = BeginLitanyCore(actor, litanyId, origin, book, expectedRevision, choiceToken);
+        var result = BeginLitanyCore(actor, litanyId, origin, book, expectedRevision, choiceToken, spokenName);
         SendResultToActor(actor, result, isFinal: !result.Success);
         return result;
     }
@@ -153,7 +154,8 @@ public sealed partial class LitanySystem : EntitySystem
         LitanyCastOrigin origin,
         EntityUid? book = null,
         uint? expectedRevision = null,
-        string? choiceToken = null)
+        string? choiceToken = null,
+        string? spokenName = null)
     {
         if (!TryRateLimit(actor, isBegin: true, out var rateFail))
             return rateFail;
@@ -203,6 +205,16 @@ public sealed partial class LitanySystem : EntitySystem
         if (!TryResolveTargets(actor, litany, out var resolvedTargets, out var targetFail))
             return LitanyActionResult.Fail(targetFail ?? "oxyd-litany-no-target");
 
+        // Named rites (Atonement, Penance, Excommunication) keep the spoken identity.
+        // A missing or ambiguous name fails before any debit.
+        if (origin == LitanyCastOrigin.ManualSpeech &&
+            LitanyPhraseParser.HasTargetPlaceholder(litany.Phrase) &&
+            (string.IsNullOrWhiteSpace(spokenName) ||
+             !TryKeepNamedTarget(actor, spokenName.Trim(), resolvedTargets)))
+        {
+            return LitanyActionResult.Fail("oxyd-litany-no-target");
+        }
+
         // The blueprint catalog has no deterministic fallback: the caster must pick one
         // (Eris "Select construction"). Manual speech has no choice surface, so it fails closed.
         if (litany.SelectBlueprint && origin != LitanyCastOrigin.Book)
@@ -224,7 +236,7 @@ public sealed partial class LitanySystem : EntitySystem
 
         var requestId = NextRequestId();
         var now = _timing.CurTime;
-        var phrase = LitanyPhraseParser.Normalize(litany.Phrase);
+        var phrase = PhraseForTargets(actor, litany.Phrase, resolvedTargets);
         var chantDuration = LitanyPhraseParser.BookChantDuration(phrase);
 
         // A book cast of a choice-requiring litany pauses in the Choosing stage. Manual

@@ -21,4 +21,10 @@ public sealed partial class DamageableSystem
 
         return result;
     }
+
+    /// <summary>True when the entity's total damage has reached <paramref name="threshold"/>.</summary>
+    public bool IsAtLeastTotalDamage(EntityUid uid, FixedPoint2 threshold)
+    {
+        return TryComp<DamageableComponent>(uid, out var damageable) && damageable.TotalDamage >= threshold;
+    }
 }

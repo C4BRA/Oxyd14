@@ -31,9 +31,10 @@ public sealed partial class LitanyArmamentsEffect : LitanyEffect
 
     private bool Execute(LitanyEffectSystem system, LitanyEffectContext context, bool validateOnly)
     {
+        // Eris opens the Eye's armory. A forge or printer on the faced tile is not enough.
         foreach (var target in context.Targets)
         {
-            if (!system.IsLitanyArmamentsPrinter(target))
+            if (!system.IsLitanyEye(target))
                 continue;
 
             var open = new LitanyOpenArmamentsEvent(context.User, false, validateOnly);

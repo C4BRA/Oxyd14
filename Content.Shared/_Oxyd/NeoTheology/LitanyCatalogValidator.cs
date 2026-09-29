@@ -284,6 +284,9 @@ public static class LitanyCatalogValidator
                 errors.Add($"{litany.ID} phrase contains multiple target placeholders.");
             }
 
+            if (targetPlaceholder >= 0 && !litany.SelectTarget)
+                errors.Add($"{litany.ID} names a target in its phrase but does not offer a book choice.");
+
             if (phrases.TryGetValue(normalized, out var other))
                 errors.Add($"Duplicate phrase between {other} and {litany.ID}.");
             else

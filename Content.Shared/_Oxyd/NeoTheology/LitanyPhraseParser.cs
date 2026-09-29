@@ -35,6 +35,17 @@ public static class LitanyPhraseParser
         return Normalize(spoken) == Normalize(prototypePhrase);
     }
 
+    public static bool HasTargetPlaceholder(string phrase)
+    {
+        return Normalize(phrase).Contains(TargetPlaceholder, StringComparison.Ordinal);
+    }
+
+    /// <summary>Replaces the single <see cref="TargetPlaceholder"/> with <paramref name="name"/>.</summary>
+    public static string WithTargetName(string phrase, string name)
+    {
+        return Normalize(phrase).Replace(TargetPlaceholder, name, StringComparison.Ordinal);
+    }
+
     /// <summary>
     /// Parses an addressed chant as literal prefix + one captured name + literal suffix,
     /// anchored to the complete normalized string. No wildcards or user regex.

@@ -30,22 +30,12 @@ public sealed partial class LitanyResurrectionEffect : LitanyEffect
 
     private bool Execute(LitanyEffectSystem system, LitanyEffectContext context, bool validateOnly)
     {
-        var reader = EntityUid.Invalid;
+        // Eris utters the prayer over the cloner in front. The reader is the one linked
+        // to that cloner, or the nearest reader beside it.
         foreach (var target in context.Targets)
         {
-            if (!system.IsLitanyReader(target))
-                continue;
-
-            reader = target;
-            break;
-        }
-
-        if (reader == EntityUid.Invalid)
-            return false;
-
-        foreach (var target in context.Targets)
-        {
-            if (!system.IsLitanyCloner(target))
+            if (!system.IsLitanyCloner(target) ||
+                !system.TryResolveResurrectionReader(target, context.Targets, out var reader))
                 continue;
 
             var start = new LitanyResurrectionEvent(target, reader, false, validateOnly, context.User);

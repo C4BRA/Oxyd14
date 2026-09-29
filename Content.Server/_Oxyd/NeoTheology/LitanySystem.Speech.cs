@@ -1,6 +1,8 @@
 using Content.Shared._Oxyd.NeoTheology;
 using Content.Shared._Oxyd.NeoTheology.Components;
 using Content.Shared.Chat;
+using Content.Shared.IdentityManagement;
+using Content.Shared.IdentityManagement.Components;
 
 namespace Content.Server._Oxyd.NeoTheology;
 
@@ -45,15 +47,16 @@ public sealed partial class LitanySystem
         if (!_cruciform.IsActiveBearer(args.Source))
             return;
 
-        if (!TryMatchSpeechToLitany(args, out var matched))
+        if (!TryMatchSpeechToLitany(args, out var matched, out var spokenName))
             return;
 
-        TryBeginLitany(args.Source, matched.ID, LitanyCastOrigin.ManualSpeech);
+        TryBeginLitany(args.Source, matched.ID, LitanyCastOrigin.ManualSpeech, spokenName: spokenName);
     }
 
-    private bool TryMatchSpeechToLitany(EntitySpokeEvent args, out LitanyPrototype matched)
+    private bool TryMatchSpeechToLitany(EntitySpokeEvent args, out LitanyPrototype matched, out string? spokenName)
     {
         matched = null!;
+        spokenName = null;
 
         // Fast path: normalized spoken / original against the phrase index.
         var spoken = LitanyPhraseParser.Normalize(args.Message);
@@ -80,14 +83,73 @@ public sealed partial class LitanySystem
         foreach (var litany in _catalog.EnumerateCatalog())
         {
             var compare = litany.IgnoreStuttering ? original : spoken;
-            if (LitanyPhraseParser.TryParseTargetName(compare, litany.Phrase, out _))
+            if (LitanyPhraseParser.TryParseTargetName(compare, litany.Phrase, out var name))
             {
+                spokenName = name;
                 matched = litany;
                 return true;
             }
         }
 
         return false;
+    }
+
+    /// <summary>The name a speaker would use for <paramref name="target"/>.</summary>
+    private string VisibleName(EntityUid actor, EntityUid target)
+    {
+        return Identity.Name(target, EntityManager, actor);
+    }
+
+    /// <summary>
+    /// Speaks the named rite with the chosen follower's name in place of
+    /// <c>[Target human]</c> once the cast has exactly one target.
+    /// </summary>
+    private string PhraseForTargets(EntityUid actor, string phrase, IReadOnlyList<EntityUid> targets)
+    {
+        var normalized = LitanyPhraseParser.Normalize(phrase);
+        if (targets.Count != 1 || !LitanyPhraseParser.HasTargetPlaceholder(normalized))
+            return normalized;
+
+        return LitanyPhraseParser.WithTargetName(normalized, VisibleName(actor, targets[0]));
+    }
+
+    /// <summary>
+    /// Keeps the one follower whose identity or true name equals <paramref name="spokenName"/>.
+    /// Zero or two matches fail closed so a named rite cannot splash the whole list.
+    /// </summary>
+    private bool TryKeepNamedTarget(EntityUid actor, string spokenName, List<EntityUid> targets)
+    {
+        EntityUid? match = null;
+        foreach (var target in targets)
+        {
+            if (!NameMatches(actor, target, spokenName))
+                continue;
+
+            if (match != null)
+                return false;
+
+            match = target;
+        }
+
+        if (match is not { } chosen)
+            return false;
+
+        targets.Clear();
+        targets.Add(chosen);
+        return true;
+    }
+
+    private bool NameMatches(EntityUid actor, EntityUid target, string spokenName)
+    {
+        if (string.Equals(VisibleName(actor, target), spokenName, StringComparison.Ordinal))
+            return true;
+
+        if (string.Equals(MetaData(target).EntityName, spokenName, StringComparison.Ordinal))
+            return true;
+
+        return TryComp<IdentityComponent>(target, out var identity) &&
+               identity.IdentityEntitySlot?.ContainedEntity is { } ident &&
+               string.Equals(MetaData(ident).EntityName, spokenName, StringComparison.Ordinal);
     }
 
     private string ResolveCompareText(string litanyId, EntitySpokeEvent args)

@@ -172,7 +172,16 @@ public sealed partial class LitanyEffectSystem : EntitySystem, ILitanyEffectRais
     /// </summary>
     public bool CanToggleLitanyDoor(EntityUid door)
     {
-        return IsLitanyDoor(door) && _power.IsPowered(door);
+        return IsLitanyDoor(door) && _power.IsPowered(door) && !IsHolyDoorBroken(door);
+    }
+
+    /// <summary>Eris broken holy door: damage at the breakage threshold refuses Activate Door.</summary>
+    public bool IsHolyDoorBroken(EntityUid door)
+    {
+        if (TryComp<NeoTheologyDoorComponent>(door, out var litanyDoor) && litanyDoor.Broken)
+            return true;
+
+        return _damageable.IsAtLeastTotalDamage(door, NeoTheologyDoorComponent.BrokenAt);
     }
 
     public bool TryToggleLitanyDoor(EntityUid door, EntityUid user)
@@ -205,6 +214,52 @@ public sealed partial class LitanyEffectSystem : EntitySystem, ILitanyEffectRais
     public bool IsLitanyReader(EntityUid uid)
     {
         return HasComp<CruciformReaderComponent>(uid);
+    }
+
+    /// <summary>
+    /// The reader a faced cloner grows from: its linked reader, a reader in the cast's
+    /// targets, or the nearest reader within 1.5 m.
+    /// </summary>
+    public bool TryResolveResurrectionReader(
+        EntityUid cloner,
+        IReadOnlyList<EntityUid> targets,
+        out EntityUid reader)
+    {
+        reader = EntityUid.Invalid;
+        if (TryComp<CruciformClonerComponent>(cloner, out var linked) &&
+            linked.Reader is { } recorded &&
+            IsLitanyReader(recorded) &&
+            !TerminatingOrDeleted(recorded))
+        {
+            reader = recorded;
+            return true;
+        }
+
+        foreach (var target in targets)
+        {
+            if (!IsLitanyReader(target))
+                continue;
+
+            reader = target;
+            return true;
+        }
+
+        var best = float.MaxValue;
+        var origin = Transform(cloner).WorldPosition;
+        foreach (var (uid, _) in _lookup.GetEntitiesInRange<CruciformReaderComponent>(Transform(cloner).Coordinates, 1.5f))
+        {
+            if (!IsLitanyReader(uid))
+                continue;
+
+            var distance = (Transform(uid).WorldPosition - origin).LengthSquared();
+            if (distance >= best)
+                continue;
+
+            best = distance;
+            reader = uid;
+        }
+
+        return reader.IsValid();
     }
 
     /// <summary>True when <paramref name="uid"/> is a NeoTheology forge the MakeCruciform litany drives.</summary>

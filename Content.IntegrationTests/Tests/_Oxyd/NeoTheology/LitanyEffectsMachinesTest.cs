@@ -11,6 +11,7 @@ using Content.Shared.Damage.Components;
 using Content.Shared.Damage.Prototypes;
 using Content.Shared.Damage.Systems;
 using Content.Shared.Doors.Components;
+using Content.Shared.Doors.Systems;
 using Content.Shared.FixedPoint;
 using Content.Shared.Implants;
 using Content.Shared.Stacks;
@@ -65,6 +66,7 @@ public sealed class LitanyEffectsMachinesTest : GameTest
     [SidedDependency(Side.Server)] private readonly MaterialStorageSystem _materialStorage = default!;
     [SidedDependency(Side.Server)] private readonly SharedStackSystem _stack = default!;
     [SidedDependency(Side.Server)] private readonly DamageableSystem _damageable = default!;
+    [SidedDependency(Side.Server)] private readonly SharedDoorSystem _doors = default!;
 
     [Test]
     public async Task ActivateDoor_TogglesBoltOnFacingHolyDoor()
@@ -119,6 +121,54 @@ public sealed class LitanyEffectsMachinesTest : GameTest
             Assert.That(SComp<DoorBoltComponent>(door).BoltsDown, Is.False,
                 "The second cast must unbolt the faced door.");
             Assert.That(SComp<NeoTheologyDoorComponent>(door).LitanyLocked, Is.False);
+        });
+    }
+
+    [Test]
+    public async Task ActivateDoor_RefusesABrokenHolyDoor_AndRepairClearsIt()
+    {
+        var map = await Pair.CreateTestMap();
+        EntityUid door = default;
+        EntityUid caster = default;
+        EntityCoordinates origin = default;
+
+        await Server.WaitAssertion(() =>
+        {
+            _litany.TestingClearAvailabilityOverrides();
+            _litany.TestingClearActors();
+
+            origin = TileCentre(map.GridCoords);
+            caster = SpawnBearer(origin);
+            _litany.TestingTreatAsActor(caster);
+            door = SpawnPoweredDoor(HolyDoorProto, origin.Offset(new Vector2(1f, 0f)));
+            _damageable.TryChangeDamage(door,
+                new DamageSpecifier(SProtoMan.Index<DamageTypePrototype>("Blunt"), 5), true);
+            SComp<NeoTheologyDoorComponent>(door).Broken = true;
+            Assert.That(_doors.TrySetBoltDown((door, SComp<DoorBoltComponent>(door)), true), Is.True,
+                "Setup: the broken door must start bolted.");
+
+            var begin = _litany.TryBeginLitany(caster, ActivateDoor, LitanyCastOrigin.ManualSpeech);
+            Assert.That(begin.Success, Is.False);
+            Assert.That(begin.Reason?.Id, Is.EqualTo("oxyd-litany-door-off"));
+        });
+
+        await Pair.RunTicksSync(35);
+
+        await Server.WaitAssertion(() =>
+        {
+            var pile = SSpawnAtPosition(BiomatterProto, origin);
+            _stack.SetCount((Entity<StackComponent?>) pile, PileSize);
+            var repair = _litany.TryBeginLitany(caster, RepairDoor, LitanyCastOrigin.ManualSpeech);
+            Assert.That(repair.Success, Is.True, repair.Reason?.Id ?? "RepairDoor begin failed");
+        });
+
+        await AdvancePastCast();
+
+        await Server.WaitAssertion(() =>
+        {
+            Assert.That(DamageOf(door), Is.EqualTo(FixedPoint2.Zero));
+            Assert.That(SComp<NeoTheologyDoorComponent>(door).Broken, Is.False);
+            Assert.That(SComp<DoorBoltComponent>(door).BoltsDown, Is.False);
         });
     }
 

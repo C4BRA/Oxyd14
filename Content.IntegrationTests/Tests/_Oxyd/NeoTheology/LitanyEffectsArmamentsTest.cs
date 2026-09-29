@@ -55,8 +55,8 @@ public sealed class LitanyEffectsArmamentsTest : GameTest
         {
             var origin = TileCentre(map.GridCoords);
             caster = PrepareCaster(origin);
-            printer = SSpawnAtPosition(PrinterProto, origin.Offset(new Vector2(1f, 0f)));
-            var eye = SSpawnAtPosition(EyeProto, origin.Offset(new Vector2(0f, 1f)));
+            var eye = SSpawnAtPosition(EyeProto, origin.Offset(new Vector2(1f, 0f)));
+            printer = SSpawnAtPosition(PrinterProto, origin.Offset(new Vector2(0f, 1f)));
             foreach (var machine in new[] { printer, eye })
             {
                 SComp<ApcPowerReceiverComponent>(machine).NeedsPower = false;

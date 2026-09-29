@@ -414,6 +414,7 @@ public sealed partial class LitanySystem
         if (wantsTarget)
             cast.Targets = new List<EntityUid> { cast.ChoiceTargets[targetIndex] };
 
+        cast.Phrase = PhraseForTargets(cast.Actor, cast.Phrase, cast.Targets);
         cast.SelectedTokens = tokens;
         cast.SelectedText = text;
         cast.Designation = designation;

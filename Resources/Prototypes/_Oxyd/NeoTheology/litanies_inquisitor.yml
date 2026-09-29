@@ -7,6 +7,7 @@
   grantedBy: [OxydLitanyInquisitor]
   effect: Penance
   targetMode: VisibleFollower
+  selectTarget: true
   range: 7
   cost: 35
   effects:

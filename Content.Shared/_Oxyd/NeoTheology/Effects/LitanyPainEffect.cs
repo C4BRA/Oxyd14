@@ -16,20 +16,22 @@ public sealed partial class LitanyPainEffect : LitanyEffect
         LitanyEffectContext context,
         out LocId? failure)
     {
+        if (context.Targets.Count == 0)
+        {
+            failure = "oxyd-litany-no-target";
+            return false;
+        }
+
         failure = null;
-        return context.Targets.Count > 0;
+        return true;
     }
 
     public override bool Apply(LitanyEffectSystem system, LitanyEffectContext context)
     {
-        var handled = false;
-        foreach (var target in context.Targets)
-        {
-            var pain = new LitanyPainEvent(target, Amount, false);
-            system.RaiseOn(target, ref pain);
-            handled |= pain.Handled;
-        }
-
-        return handled;
+        // The cast layer has already narrowed a named rite to one follower.
+        var target = context.Targets[0];
+        var pain = new LitanyPainEvent(target, Amount, false);
+        system.RaiseOn(target, ref pain);
+        return pain.Handled;
     }
 }

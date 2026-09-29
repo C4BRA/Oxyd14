@@ -28,6 +28,41 @@ public sealed partial class ArmamentsPrinterSystem : EntitySystem
     /// (P2.16), so the handler opens the printer's existing BUI for the caster.
     /// </summary>
     [SubscribeLocalEvent]
+    private void OnEyeOpenArmaments(Entity<EyeOfTheProtectorComponent> eye, ref LitanyOpenArmamentsEvent args)
+    {
+        if (FindOperationalPrinter(eye.Owner) is not { } printer)
+            return;
+
+        var forwarded = args;
+        OnLitanyOpenArmaments(printer, Comp<ArmamentsPrinterComponent>(printer), ref forwarded);
+        args.Handled = forwarded.Handled;
+    }
+
+    /// <summary>The nearest operational printer on the eye's map. The shop UI lives on the printer.</summary>
+    private EntityUid? FindOperationalPrinter(EntityUid eye)
+    {
+        var map = Transform(eye).MapID;
+        var origin = Transform(eye).WorldPosition;
+        EntityUid? best = null;
+        var bestDistance = float.MaxValue;
+        var query = EntityQueryEnumerator<ArmamentsPrinterComponent, TransformComponent>();
+        while (query.MoveNext(out var uid, out _, out var xform))
+        {
+            if (xform.MapID != map || !_machines.IsOperational(uid))
+                continue;
+
+            var distance = (xform.WorldPosition - origin).LengthSquared();
+            if (distance >= bestDistance)
+                continue;
+
+            bestDistance = distance;
+            best = uid;
+        }
+
+        return best;
+    }
+
+    [SubscribeLocalEvent]
     private void OnLitanyOpenArmaments(EntityUid uid, ArmamentsPrinterComponent component, ref LitanyOpenArmamentsEvent args)
     {
         if (!_machines.IsOperational(uid) ||
