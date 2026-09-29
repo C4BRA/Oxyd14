@@ -80,7 +80,6 @@
   - OxydLitanyCommon
   - OxydLitanyMachinery
   - OxydLitanyGroup
-  - OxydLitanyAcolyte
   - OxydLitanyPriest
   canChannel: true
   countsAsChannelingFollower: false
@@ -98,7 +97,6 @@
   - OxydLitanyCommon
   - OxydLitanyMachinery
   - OxydLitanyGroup
-  - OxydLitanyAcolyte
   - OxydLitanyPriest
   - OxydLitanyInquisitor
   canChannel: true

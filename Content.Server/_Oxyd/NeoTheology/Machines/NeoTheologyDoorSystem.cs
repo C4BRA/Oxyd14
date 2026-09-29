@@ -6,6 +6,8 @@ using Content.Shared.Damage.Systems;
 using Content.Shared.Doors;
 using Content.Shared.Doors.Components;
 using Content.Shared.Doors.Systems;
+using Content.Shared.Hands.Components;
+using Content.Shared.Hands.EntitySystems;
 using Content.Shared.FixedPoint;
 using Content.Shared.Stacks;
 using Robust.Shared.Prototypes;
@@ -18,8 +20,10 @@ namespace Content.Server._Oxyd.NeoTheology.Machines;
 /// </summary>
 public sealed partial class NeoTheologyDoorSystem : EntitySystem
 {
+    [Dependency] private readonly CruciformSystem _cruciform = default!;
     [Dependency] private readonly DamageableSystem _damageable = default!;
     [Dependency] private readonly SharedDoorSystem _doors = default!;
+    [Dependency] private readonly SharedHandsSystem _hands = default!;
     [Dependency] private readonly EntityLookupSystem _lookup = default!;
     [Dependency] private readonly SharedStackSystem _stack = default!;
 
@@ -35,6 +39,37 @@ public sealed partial class NeoTheologyDoorSystem : EntitySystem
     {
         base.Initialize();
         SubscribeLocalEvent<NeoTheologyDoorComponent, DamageChangedEvent>(OnDamaged);
+        SubscribeLocalEvent<NeoTheologyDoorComponent, BeforeDoorOpenedEvent>(OnBeforeOpened);
+    }
+
+    private void OnBeforeOpened(EntityUid uid, NeoTheologyDoorComponent door, BeforeDoorOpenedEvent args)
+    {
+        if (args.User is not { } user)
+            return;
+
+        if (HoldsTauCross(user))
+            return;
+
+        if (_cruciform.TryGetCruciform(user, out _, out var cruciform) &&
+            cruciform.Active &&
+            cruciform.Clearance >= door.MinimumClearance)
+            return;
+
+        args.Cancel();
+    }
+
+    private bool HoldsTauCross(EntityUid user)
+    {
+        if (!TryComp<HandsComponent>(user, out var hands))
+            return false;
+
+        foreach (var held in _hands.EnumerateHeld((user, hands)))
+        {
+            if (HasComp<TauCrossComponent>(held))
+                return true;
+        }
+
+        return false;
     }
 
     private void OnDamaged(EntityUid uid, NeoTheologyDoorComponent component, DamageChangedEvent args)

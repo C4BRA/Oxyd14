@@ -148,6 +148,16 @@
             Poison: 0.4
 
 - type: trait
+  id: OxydGodbloodMutation
+  name: oxyd-trait-godblood-mutation
+  description: oxyd-trait-godblood-mutation-desc
+  category: Disabilities
+  whitelist:
+    components: [Pain]
+  components:
+  - type: GodbloodMutation
+
+- type: trait
   id: OxydAtheistMutation
   name: oxyd-trait-atheist-mutation
   description: oxyd-trait-atheist-mutation-desc

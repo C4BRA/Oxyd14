@@ -1,6 +1,7 @@
 using System.Linq;
 using Content.Server.GameTicking;
 using Content.Server._Oxyd.Framework.ViewCalc;
+using Content.Shared._Oxyd.Medical;
 using Content.Shared._Oxyd.NeoTheology;
 using Content.Shared._Oxyd.NeoTheology.Components;
 using Content.Shared._Oxyd.NeoTheology.Events;
@@ -81,6 +82,33 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
             return;
 
         MakeRank(cruciform, component, args.Profile);
+        Dirty(cruciform, component);
+        BumpRevision(ent.Owner, ent.Comp);
+        args.Handled = true;
+    }
+
+    [SubscribeLocalEvent]
+    private void OnLitanySetClearance(Entity<CruciformBearerComponent> ent, ref LitanySetClearanceEvent args)
+    {
+        if (!TryGetCruciformEntity(ent.Owner, out var cruciform, out var component) || !component.Active)
+            return;
+
+        component.Clearance = args.Clearance;
+        Dirty(cruciform, component);
+        BumpRevision(ent.Owner, ent.Comp);
+        args.Handled = true;
+    }
+
+    [SubscribeLocalEvent]
+    private void OnLitanyRemoveSpecialization(Entity<CruciformBearerComponent> ent, ref LitanyRemoveSpecializationEvent args)
+    {
+        if (!TryGetCruciformEntity(ent.Owner, out var cruciform, out var component))
+            return;
+
+        foreach (var module in SpecializationModules)
+            _modules.TryRemove(cruciform, component, module);
+
+        RecomputeProfile(cruciform, component);
         Dirty(cruciform, component);
         BumpRevision(ent.Owner, ent.Comp);
         args.Handled = true;
@@ -320,6 +348,8 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
             return false;
         if (component.Active)
             return false;
+        if (HasComp<GodbloodMutationComponent>(body))
+            return false;
 
         component.EverActivated = true;
         component.Active = true;
@@ -506,10 +536,16 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
         => MakeRank(c, comp, DiscipleProfile);
 
     public void MakePriest(EntityUid c, CruciformComponent comp)
-        => MakeRank(c, comp, PreacherProfile);
+    {
+        MakeRank(c, comp, PreacherProfile);
+        comp.Clearance = NeoTheologyClearance.Clergy;
+    }
 
     public void MakeInquisitor(EntityUid c, CruciformComponent comp)
-        => MakeRank(c, comp, InquisitorProfile);
+    {
+        MakeRank(c, comp, InquisitorProfile);
+        comp.Clearance = NeoTheologyClearance.Clergy;
+    }
 
     public void MakeAcolyte(EntityUid c, CruciformComponent comp)
         => MakeRank(c, comp, AcolyteProfile);
@@ -521,6 +557,13 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
         => MakeRank(c, comp, AgrolyteProfile);
 
     /// <summary>Modules implied by a profile id. One table, no switch statements elsewhere.</summary>
+    private static readonly ProtoId<CoreModulePrototype>[] SpecializationModules =
+    [
+        "OxydNtModuleAcolyte",
+        "OxydNtModuleAgrolyte",
+        "OxydNtModuleCustodian",
+    ];
+
     private static readonly Dictionary<ProtoId<NeoTheologyProfilePrototype>, ProtoId<CoreModulePrototype>[]> RankModules =
         new()
         {

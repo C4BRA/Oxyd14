@@ -163,6 +163,7 @@
   cost: 45
   effects:
   - !type:LitanyPainEffect
+    refuseGodblood: true
   enabled: true
 
 - type: oxydLitany

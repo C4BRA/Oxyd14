@@ -17,6 +17,8 @@ public sealed partial class LitanyEffectSystem
 
     public bool RejectsHolyInfluence(EntityUid uid) => HasComp<AtheistMutationComponent>(uid);
 
+    public bool HasGodblood(EntityUid uid) => HasComp<GodbloodMutationComponent>(uid);
+
     public EntityUid MedicalTarget(LitanyEffectContext context) => context.Litany.TargetMode == LitanyTargetMode.Self
         ? context.User
         : context.Targets.Count > 0 ? context.Targets[0] : EntityUid.Invalid;

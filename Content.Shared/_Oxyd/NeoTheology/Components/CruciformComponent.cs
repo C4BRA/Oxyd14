@@ -1,5 +1,6 @@
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
+using Content.Shared._Oxyd.NeoTheology;
 
 namespace Content.Shared._Oxyd.NeoTheology.Components;
 
@@ -46,6 +47,10 @@ public sealed partial class CruciformComponent : Component
 
     [DataField, AutoNetworkedField]
     public ProtoId<NeoTheologyProfilePrototype> Profile = "OxydNtDisciple";
+
+    /// <summary>Eris <c>security_clearance</c>. Rank modules do not change this.</summary>
+    [DataField, AutoNetworkedField]
+    public NeoTheologyClearance Clearance = NeoTheologyClearance.None;
 
     /// <summary>
     /// Source-derived profile inputs. They remain separate from the configured

@@ -34,6 +34,7 @@ public sealed partial class LitanyWindow : FancyWindow
     private uint _resultRevision;
     private bool _hasRolePresentation;
     private bool _hasCruciform;
+    private NeoTheologyClearance _clearance;
 
     public event Action<ProtoId<LitanyPrototype>, uint, string?>? BeginLitany;
     public event Action<string, List<string>, string?, string?>? SubmitChoices;
@@ -116,6 +117,7 @@ public sealed partial class LitanyWindow : FancyWindow
         // marker, so apply the actor-targeted role presentation after it runs.
         _hasRolePresentation = true;
         _hasCruciform = role.HasCruciform;
+        _clearance = role.Clearance;
         UpdateProfilePresentation();
 
         if (_busyState is null)
@@ -354,10 +356,6 @@ public sealed partial class LitanyWindow : FancyWindow
         var profileName = profile is null ? "—" : Loc.GetString(profile.Name);
         var maximumHoliness = snapshot.Cap > 0 ? snapshot.Cap : GetMaximumHoliness(profile);
 
-        var accessNames = profile?.AccessPrivileges
-            .Select(GetAccessName)
-            .ToList();
-
         HolinessLabel.Text = Loc.GetString("oxyd-cruciform-holiness",
             ("current", snapshot.Holiness.ToString("0.##")),
             ("maximum", maximumHoliness.ToString("0.##")));
@@ -368,10 +366,14 @@ public sealed partial class LitanyWindow : FancyWindow
             : snapshot.Active || profile is not null;
         RankLabel.Text = Loc.GetString("oxyd-cruciform-rank",
             ("rank", hasCruciform ? profileName : "—"));
+        var clearanceName = _clearance switch
+        {
+            NeoTheologyClearance.Clergy => Loc.GetString("oxyd-cruciform-clearance-clergy"),
+            NeoTheologyClearance.Common => Loc.GetString("oxyd-cruciform-clearance-common"),
+            _ => Loc.GetString("oxyd-cruciform-clearance-none"),
+        };
         ClearanceLabel.Text = Loc.GetString("oxyd-cruciform-clearance",
-            ("clearance", hasCruciform && accessNames is { Count: > 0 }
-                ? string.Join(", ", accessNames)
-                : "—"));
+            ("clearance", hasCruciform ? clearanceName : "—"));
 
         HolinessBar.MaxValue = maximumHoliness > 0
             ? (float) Math.Min(maximumHoliness, float.MaxValue)

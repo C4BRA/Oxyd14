@@ -89,9 +89,31 @@
   description: A door secured by NeoTheology clearance.
   components:
   - type: NeoTheologyDoor
-  - type: AccessReader
-    access:
-    - [ OxydNtFollower ]
+    minimumClearance: Common
+
+- type: entity
+  parent: OxydNtHolyDoor
+  id: OxydNtHolyDoorClergy
+  name: NeoTheology clergy door
+  components:
+  - type: NeoTheologyDoor
+    minimumClearance: Clergy
+
+- type: entity
+  parent: OxydNtHolyDoor
+  id: OxydNtHolyDoorPublic
+  name: NeoTheology public door
+  components:
+  - type: NeoTheologyDoor
+    minimumClearance: None
+
+- type: entity
+  parent: ClothingNeckGoldmedal
+  id: OxydNtTauCross
+  name: tau cross
+  description: A heavy necklace in the shape of a tau cross. It opens NeoTheology doors.
+  components:
+  - type: TauCross
 
 # P3.0: Eris's NT OBG ("Holy Grail") is a focused blast (explosion_power = 500). The fork's
 # HolyHandGrenade is a macrobomb (totalIntensity 3500) and is also sold in the uplink, so it is

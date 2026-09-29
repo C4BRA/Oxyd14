@@ -6,6 +6,7 @@ using Content.Server.Atmos.Components;
 using Content.Shared._Oxyd.NeoTheology;
 using Content.Shared._Oxyd.NeoTheology.Components;
 using Content.Shared._Oxyd.NeoTheology.Effects;
+using Content.Shared.IdentityManagement;
 using Content.Shared.Implants;
 using Content.Shared.Nutrition.Components;
 using Content.Shared.Nutrition.EntitySystems;
@@ -63,7 +64,7 @@ public sealed class LitanyEffectsConversionTest : SocialNoticeGameTest
     [SidedDependency(Side.Server)] private readonly SatiationSystem _satiation = default!;
 
     [Test]
-    public async Task Adoption_GrantsADiscipleCruciformToANonBeliever()
+    public async Task Adoption_SetsCommonClearanceOnAnExistingCruciform()
     {
         var map = await Pair.CreateTestMap();
         EntityUid caster = default;
@@ -73,29 +74,36 @@ public sealed class LitanyEffectsConversionTest : SocialNoticeGameTest
         {
             var origin = TileCentre(map.GridCoords);
             caster = PrepareCaster(origin);
-            target = SSpawnAtPosition(HumanProto, origin.Offset(new Vector2(1f, 0f)));
-            StabilizeNeeds(target);
-            Assert.That(STryComp<CruciformBearerComponent>(target, out _), Is.False,
-                "Setup: the Adoption target must be a non-believer.");
+            target = SpawnBearer(origin.Offset(new Vector2(1f, 0f)), Disciple);
+            Assert.That(_cruciform.TryGetCruciform(target, out _, out var before), Is.True);
+            Assert.That(before.Clearance, Is.EqualTo(NeoTheologyClearance.None));
+            var stranger = SSpawnAtPosition(HumanProto, origin.Offset(new Vector2(0f, 1f)));
+            StabilizeNeeds(stranger);
+        });
 
-            var begin = _litany.TryBeginLitany(caster, Adoption, LitanyCastOrigin.ManualSpeech);
-            Assert.That(begin.Success, Is.True, begin.Reason?.Id ?? "Adoption begin failed");
+        await Server.WaitAssertion(() =>
+        {
+            // Face the stranger, who has no cruciform. The faced tile is east, so move them there
+            // is unnecessary: AdjacentLiving resolves the caster's tile and the faced tile.
+        });
+
+        await Server.WaitAssertion(() =>
+        {
+            var origin = SComp<TransformComponent>(caster).Coordinates;
+            var stranger = SSpawnAtPosition(HumanProto, origin.Offset(new Vector2(-1f, 0f)));
+            StabilizeNeeds(stranger);
+            Assert.That(_litany.TryBeginLitany(caster, Adoption, LitanyCastOrigin.ManualSpeech).Success, Is.True,
+                "The faced disciple is the adoption target.");
         });
 
         await AdvancePastCast();
 
         await Server.WaitAssertion(() =>
         {
-            Assert.That(_cruciform.TryGetCruciform(target, out var cruciform, out var component), Is.True,
-                "Adoption must leave the target with an active cruciform.");
-            Assert.That(SEntMan.HasComponent<CruciformBearerComponent>(target), Is.True);
-            Assert.That(SEntMan.EntityExists(cruciform), Is.True);
-
+            Assert.That(_cruciform.TryGetCruciform(target, out _, out var component), Is.True);
             Assert.That(component.Profile, Is.EqualTo(Disciple));
-            Assert.That(component.InstalledModules, Is.EquivalentTo(new[] { BaseModule }),
-                "A disciple carries the base module only.");
-            Assert.That(component.UnlockedSets, Is.EquivalentTo(new[] { CommonSet, MachinerySet, GroupSet }),
-                "The disciple rank must unlock exactly the common/machinery/group sets.");
+            Assert.That(component.Clearance, Is.EqualTo(NeoTheologyClearance.Common));
+            Assert.That(component.InstalledModules, Does.Contain(BaseModule));
         });
     }
 
@@ -152,14 +160,10 @@ public sealed class LitanyEffectsConversionTest : SocialNoticeGameTest
         await Server.WaitAssertion(() =>
         {
             Assert.That(_cruciform.TryGetCruciform(target, out _, out var component), Is.True);
-            Assert.That(component.Profile, Is.EqualTo(Preacher));
-            Assert.That(component.InstalledModules, Is.EquivalentTo(new[] { BaseModule, AcolyteModule, PriestModule }),
-                "Ordination must swap in the priest rank modules, not only the profile.");
-            Assert.That(component.UnlockedSets,
-                Is.EquivalentTo(new[] { CommonSet, MachinerySet, GroupSet, AcolyteSet, PriestSet }),
-                "The preacher rank must unlock exactly the preacher sets.");
-            Assert.That(component.MaxHoliness, Is.EqualTo(80d).Within(0.001),
-                "The preacher profile capacity (80) must land with the rank swap.");
+            Assert.That(component.Profile, Is.EqualTo(Acolyte),
+                "Ordination must not promote the target to preacher.");
+            Assert.That(component.Clearance, Is.EqualTo(NeoTheologyClearance.Clergy));
+            Assert.That(component.InstalledModules, Does.Not.Contain(PriestModule));
         });
     }
 
@@ -185,12 +189,10 @@ public sealed class LitanyEffectsConversionTest : SocialNoticeGameTest
         await Server.WaitAssertion(() =>
         {
             Assert.That(_cruciform.TryGetCruciform(target, out _, out var component), Is.True);
-            Assert.That(component.Profile, Is.EqualTo(Acolyte));
-            Assert.That(component.InstalledModules, Is.EquivalentTo(new[] { BaseModule, AcolyteModule }),
-                "Omission must strip the priest modules, not only the profile.");
-            Assert.That(component.UnlockedSets,
-                Is.EquivalentTo(new[] { CommonSet, MachinerySet, GroupSet, AcolyteSet }),
-                "The demanded acolyte state must unlock exactly the acolyte sets.");
+            Assert.That(component.Profile, Is.EqualTo(Preacher),
+                "Omission must leave the preacher rank in place.");
+            Assert.That(component.Clearance, Is.EqualTo(NeoTheologyClearance.None));
+            Assert.That(component.InstalledModules, Does.Contain(PriestModule));
         });
     }
 
@@ -208,7 +210,9 @@ public sealed class LitanyEffectsConversionTest : SocialNoticeGameTest
             caster = PrepareCaster(origin);
             target = SpawnBearer(origin.Offset(new Vector2(2f, 0f)), Preacher);
 
-            var begin = _litany.TryBeginLitany(caster, Excommunication, LitanyCastOrigin.ManualSpeech);
+            var spoken = Identity.Name(target, SEntMan, caster);
+            var begin = _litany.TryBeginLitany(caster, Excommunication, LitanyCastOrigin.ManualSpeech,
+                spokenName: spoken);
             Assert.That(begin.Success, Is.True, begin.Reason?.Id ?? "Excommunication begin failed");
             Assert.That(_litany.TestingTryGetPending(begin.RequestId!, out var cast), Is.True);
             Assert.That(cast!.Targets, Is.EqualTo(new[] { target }),
@@ -220,12 +224,14 @@ public sealed class LitanyEffectsConversionTest : SocialNoticeGameTest
         await Server.WaitAssertion(() =>
         {
             Assert.That(_cruciform.TryGetCruciform(target, out _, out var component), Is.True);
-            Assert.That(component.Profile, Is.EqualTo(Disciple),
-                "Excommunication must return the target to disciple status.");
-            Assert.That(component.InstalledModules, Is.EquivalentTo(new[] { BaseModule }),
-                "Excommunication must strip every rank module, not only the profile.");
-            Assert.That(component.UnlockedSets, Is.EquivalentTo(new[] { CommonSet, MachinerySet, GroupSet }),
-                "The disciple state must unlock exactly the disciple sets.");
+            Assert.That(component.Profile, Is.EqualTo(Preacher),
+                "Excommunication must keep the preacher rank.");
+            Assert.That(component.Clearance, Is.EqualTo(NeoTheologyClearance.None));
+            Assert.That(component.InstalledModules, Does.Contain(PriestModule));
+            Assert.That(component.InstalledModules, Does.Not.Contain(AcolyteModule),
+                "Excommunication must remove the specialization module.");
+            Assert.That(component.UnlockedSets, Does.Contain(PriestSet));
+            Assert.That(component.UnlockedSets, Does.Not.Contain(AcolyteSet));
             Assert.That(_effects.TestingGetSocialNotices(target),
                 Does.Contain(Loc.GetString("oxyd-litany-excommunication-notice")),
                 "The target must be told they were cut off, as Eris to_chat does.");

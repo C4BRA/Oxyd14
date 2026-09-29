@@ -1,5 +1,6 @@
 using Robust.Shared.Serialization;
 using Robust.Shared.Prototypes;
+using Content.Shared._Oxyd.NeoTheology;
 
 namespace Content.Shared._Oxyd.NeoTheology.UI;
 
@@ -80,15 +81,18 @@ public sealed class LitanyRolePresentation
     public ProtoId<NeoTheologyProfilePrototype>? Profile { get; }
     public bool HasCruciform { get; }
     public bool Active { get; }
+    public NeoTheologyClearance Clearance { get; }
 
     public LitanyRolePresentation(
         ProtoId<NeoTheologyProfilePrototype>? profile,
         bool hasCruciform,
-        bool active)
+        bool active,
+        NeoTheologyClearance clearance = NeoTheologyClearance.None)
     {
         Profile = profile;
         HasCruciform = hasCruciform;
         Active = active;
+        Clearance = clearance;
     }
 }
 

@@ -6,6 +6,14 @@ using Robust.Shared.Utility;
 
 namespace Content.Shared._Oxyd.NeoTheology;
 
+/// <summary>Eris <c>CLEARANCE_NONE</c> / <c>COMMON</c> / <c>CLERGY</c>. Holy doors compare this number.</summary>
+public enum NeoTheologyClearance : byte
+{
+    None = 0,
+    Common = 1,
+    Clergy = 2,
+}
+
 public enum LitanyCategory : byte
 {
     Common,

@@ -11,6 +11,10 @@ public sealed partial class LitanyPainEffect : LitanyEffect
     [DataField]
     public float Amount = 50f;
 
+    /// <summary>Atonement refuses Godblood. Penance does not.</summary>
+    [DataField]
+    public bool RefuseGodblood;
+
     public override bool CanApply(
         LitanyEffectSystem system,
         LitanyEffectContext context,
@@ -19,6 +23,12 @@ public sealed partial class LitanyPainEffect : LitanyEffect
         if (context.Targets.Count == 0)
         {
             failure = "oxyd-litany-no-target";
+            return false;
+        }
+
+        if (RefuseGodblood && system.HasGodblood(context.Targets[0]))
+        {
+            failure = "oxyd-litany-godblood";
             return false;
         }
 

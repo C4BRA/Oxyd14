@@ -1,5 +1,6 @@
 using Content.Shared.Chemistry.Reagent;
 using Content.Shared._Oxyd.NeoTheology.Prototypes;
+using Content.Shared._Oxyd.NeoTheology;
 using Content.Shared.Stacks;
 using Robust.Shared.Prototypes;
 
@@ -45,6 +46,17 @@ public record struct LitanySetRankEvent(
     EntityUid Target,
     ProtoId<NeoTheologyProfilePrototype> Profile,
     bool Handled);
+
+/// <summary>Eris writes <c>security_clearance</c> without swapping rank modules.</summary>
+[ByRefEvent]
+public record struct LitanySetClearanceEvent(
+    EntityUid Target,
+    NeoTheologyClearance Clearance,
+    bool Handled);
+
+/// <summary>Eris <c>remove_specialization</c>: drop acolyte, agrolyte, and custodian modules only.</summary>
+[ByRefEvent]
+public record struct LitanyRemoveSpecializationEvent(EntityUid Target, bool Handled);
 
 /// <summary>
 /// Bridge for InstallUpgrade: raised on the target follower; the server

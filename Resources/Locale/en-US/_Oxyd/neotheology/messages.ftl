@@ -49,6 +49,7 @@ oxyd-litany-entreaty-notice = { $name }, faithful cruciform follower, cries for 
 oxyd-litany-cruciform-sense-notice = { $name } has a cruciform installed.
 oxyd-litany-revelation-vision = A vision of the divine floods your mind.
 oxyd-litany-no-authority = You don't have the authority for this rite.
+oxyd-litany-godblood = The target's mutated flesh rejects your will.
 oxyd-litany-excommunication-notice = You have been spiritually separated from the Church and the community of the faithful.
 oxyd-litany-upgrade-present = The target's cruciform already carries an attachment.
 oxyd-litany-upgrade-missing = No cruciform upgrade rests on the altar.

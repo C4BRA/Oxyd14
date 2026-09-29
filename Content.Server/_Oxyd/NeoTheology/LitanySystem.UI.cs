@@ -323,7 +323,11 @@ public sealed partial class LitanySystem
             }
         }
 
-        var role = new LitanyRolePresentation(profile, hasCruciform, active);
+        var role = new LitanyRolePresentation(
+            profile,
+            hasCruciform,
+            active,
+            cruciformComp?.Clearance ?? NeoTheologyClearance.None);
         var entries = BuildViewerEntries(cruciformComp, active);
 
         return new LitanyViewerSnapshotMessage(

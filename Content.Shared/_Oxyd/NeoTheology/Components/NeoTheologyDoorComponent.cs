@@ -1,4 +1,6 @@
 using Content.Shared.FixedPoint;
+using Content.Shared._Oxyd.NeoTheology;
+
 namespace Content.Shared._Oxyd.NeoTheology.Components;
 
 /// <summary>
@@ -18,4 +20,13 @@ public sealed partial class NeoTheologyDoorComponent : Component
     [DataField]
     public bool Broken;
 
+    /// <summary>Eris <c>minimal_holiness</c>. The bearer must meet or exceed this clearance.</summary>
+    [DataField]
+    public NeoTheologyClearance MinimumClearance = NeoTheologyClearance.Common;
+}
+
+/// <summary>Eris tau cross: a worn or held cross opens a holy door without clearance.</summary>
+[RegisterComponent]
+public sealed partial class TauCrossComponent : Component
+{
 }

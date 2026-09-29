@@ -21,7 +21,6 @@
 - type: oxydCoreModule
   id: OxydNtModuleAcolyte
   litanySets: [ OxydLitanyAcolyte ]
-  access: [ OxydNtClergy ]
 
 - type: oxydCoreModule
   id: OxydNtModuleInquisitor
