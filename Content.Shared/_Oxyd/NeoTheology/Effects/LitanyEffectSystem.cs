@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Numerics;
 using Content.Server._Oxyd.SanityInsightAndResting;
 using Content.Shared._Oxyd.NeoTheology.Components;
 using Content.Shared._Oxyd.NeoTheology.Prototypes;
@@ -467,7 +468,7 @@ public sealed partial class LitanyEffectSystem : EntitySystem, ILitanyEffectRais
 
     /// <summary>
     /// Eris ejection(): remove the installed cruciform from the implant container WITHOUT
-    /// deleting it, dropping the same entity at <paramref name="body"/>'s coordinates. Container
+    /// deleting it, dropping the same entity beside <paramref name="body"/> so the corpse cannot hide it. Container
     /// removal raises ImplantRemovedEvent, which is what lets CruciformSystem detach the bearer.
     /// <c>ForceRemove</c> is never used — it deletes the implant, and the cruciform must survive
     /// for re-installation and Resurrection.
@@ -478,7 +479,8 @@ public sealed partial class LitanyEffectSystem : EntitySystem, ILitanyEffectRais
             !installed.ImplantContainer.Contains(cruciform))
             return false;
 
-        if (!_containers.Remove(cruciform, installed.ImplantContainer, destination: Transform(body).Coordinates))
+        var dropCoordinates = Transform(body).Coordinates.Offset(Vector2.UnitX);
+        if (!_containers.Remove(cruciform, installed.ImplantContainer, destination: dropCoordinates))
             return false;
 
         // A corpse must not keep a pending cast after losing its cruciform.

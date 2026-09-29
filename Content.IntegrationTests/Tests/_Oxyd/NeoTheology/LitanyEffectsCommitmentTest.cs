@@ -11,6 +11,7 @@ using Content.Shared.Damage;
 using Content.Shared.Damage.Components;
 using Content.Shared.Damage.Systems;
 using Content.Shared.FixedPoint;
+using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Implants;
 using Content.Shared.Implants.Components;
 using Content.Shared.Mobs;
@@ -27,7 +28,7 @@ namespace Content.IntegrationTests.Tests._Oxyd.NeoTheology;
 /// <summary>
 /// P4.2 foundation: Commitment attaches the loose altar cruciform to a living human (25 Blunt,
 /// left inert) and Deprivation rips the same implant out of a dead bearer (15 Blunt first; the
-/// cruciform survives and lands on the corpse's tile). Asserts authoritative component state.
+/// cruciform survives and lands beside the corpse). Asserts authoritative component state.
 /// </summary>
 [TestOf(typeof(LitanySystem))]
 public sealed class LitanyEffectsCommitmentTest : GameTest
@@ -48,6 +49,7 @@ public sealed class LitanyEffectsCommitmentTest : GameTest
     [SidedDependency(Side.Server)] private readonly CruciformSystem _cruciform = default!;
     [SidedDependency(Side.Server)] private readonly SharedSubdermalImplantSystem _implants = default!;
     [SidedDependency(Side.Server)] private readonly SharedContainerSystem _containers = default!;
+    [SidedDependency(Side.Server)] private readonly SharedHandsSystem _hands = default!;
     [SidedDependency(Side.Server)] private readonly SharedTransformSystem _xform = default!;
     [SidedDependency(Side.Server)] private readonly MobStateSystem _mobState = default!;
     [SidedDependency(Side.Server)] private readonly DamageableSystem _damageable = default!;
@@ -162,8 +164,8 @@ public sealed class LitanyEffectsCommitmentTest : GameTest
             Assert.That(component.ImplantedEntity, Is.Null);
             Assert.That(component.Active, Is.False);
 
-            // Loose on the corpse's tile (the fixture's single-tile grid deparents off-tile
-            // entities to the map, so compare world positions rather than grid parentage).
+            // Loose beside the corpse. Compare world positions because this fixture grid
+            // deparents off-tile entities to the map.
             var cruciformXform = SEntMan.GetComponent<TransformComponent>(cruciform);
             Assert.That(cruciformXform.ParentUid, Is.Not.EqualTo(corpse),
                 "The cruciform must not stay parented to the corpse.");
@@ -173,8 +175,13 @@ public sealed class LitanyEffectsCommitmentTest : GameTest
             var itemCoords = _xform.GetMapCoordinates(cruciform);
             Assert.That(itemCoords.MapId, Is.EqualTo(corpseCoords.MapId),
                 "The item must land on the corpse's map.");
-            Assert.That((itemCoords.Position - corpseCoords.Position).Length(), Is.LessThan(0.1f),
-                "The item must land on the corpse's tile.");
+            var dropOffset = itemCoords.Position - corpseCoords.Position;
+            Assert.That(dropOffset.X, Is.EqualTo(1f).Within(0.01f),
+                "The item must land one tile beside the corpse.");
+            Assert.That(dropOffset.Y, Is.EqualTo(0f).Within(0.01f),
+                "The item must stay on the corpse's row.");
+            Assert.That(_hands.TryForcePickupAnyHand(caster, cruciform, checkActionBlocker: false), Is.True,
+                "The detached cruciform must enter a free hand.");
 
             var dealt = DamageOf(corpse, "Blunt").Float() - bluntBefore.Float();
             Assert.That(dealt, Is.EqualTo(15f).Within(0.75f),

@@ -24,7 +24,9 @@ public sealed class CruciformForgeTest : GameTest
     private static readonly EntProtoId PlasteelProto = "SheetPlasteel";
     private static readonly EntProtoId GoldProto = "IngotGold";
     private static readonly EntProtoId BiomatterProto = "OxydNtBiomatter";
+    private static readonly EntProtoId CruciformProto = "OxydNtCruciform";
     private static readonly EntProtoId ForgeProto = "OxydNtCruciformForge";
+    private static readonly EntProtoId HumanProto = "MobHuman";
 
     /// <summary>Where the forge sits relative to the test tile.</summary>
     private static readonly Vector2 ForgeOffset = new(3f, 0f);
@@ -34,6 +36,7 @@ public sealed class CruciformForgeTest : GameTest
     [SidedDependency(Side.Server)] private readonly CruciformForgeSystem _forge = default!;
     [SidedDependency(Side.Server)] private readonly MaterialStorageSystem _material = default!;
     [SidedDependency(Side.Server)] private readonly SharedStackSystem _stack = default!;
+    [SidedDependency(Side.Server)] private readonly IPrototypeManager _prototypes = default!;
 
     [Test]
     public async Task StockedForgeStartsWorkAndSpendsTheRecipe()
@@ -71,9 +74,11 @@ public sealed class CruciformForgeTest : GameTest
         var map = await Pair.CreateMachineTestMap();
 
         EntityUid forge = default;
+        EntityUid user = default;
 
         await Server.WaitAssertion(() =>
         {
+            user = SSpawnAtPosition(HumanProto, map.GridCoords);
             (forge, _) = SpawnForge(map.GridCoords);
             InsertRecipe(forge, map.GridCoords);
 
@@ -94,6 +99,10 @@ public sealed class CruciformForgeTest : GameTest
                 Assert.That(SEntMan.System<EntityLookupSystem>().GetEntitiesInRange<CruciformComponent>(coords, 1f),
                     Is.Not.Empty, "The forged cruciform must be lying on the forge's turf.");
             });
+
+            Assert.That(_forge.TryTakeProduct(forge, user), Is.True,
+                "The forged cruciform must enter the user's hand.");
+            Assert.That(comp.Ready, Is.False, "Taking the product must clear the ready state.");
         });
     }
 
@@ -140,6 +149,23 @@ public sealed class CruciformForgeTest : GameTest
                     "The forge machine must take material storage.");
                 Assert.That(SEntMan.HasComponent<ApcPowerReceiverComponent>(forge), Is.True,
                     "The forge machine must draw power.");
+            });
+        });
+    }
+
+    [Test]
+    public async Task CruciformIsVisibleInTheSpawnMenuAndIsAnItem()
+    {
+        await Server.WaitAssertion(() =>
+        {
+            var prototype = _prototypes.Index<EntityPrototype>(CruciformProto);
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(prototype.HideSpawnMenu, Is.False,
+                    "The cruciform must appear in the spawn menu.");
+                Assert.That(prototype.Components.ContainsKey("Item"), Is.True,
+                    "The cruciform must be a holdable item.");
             });
         });
     }

@@ -1,10 +1,15 @@
 - type: entity
-  parent: BaseSubdermalImplant
+  parent: [BaseSubdermalImplant, BaseItem]
   id: OxydNtCruciform
   name: cruciform
   description: A dormant NeoTheology implant.
-  categories: [ HideSpawnMenu ]
   components:
+  - type: Sprite
+    sprite: Oxyd/erisported/cruciform.rsi
+    state: cruciform_green
+  - type: Item
+    size: Small
+    sprite: Oxyd/erisported/cruciform.rsi
   - type: SubdermalImplant
     whitelist:
       components:
@@ -56,6 +61,12 @@
   name: NeoTheology altar
   description: A place for cruciform rites.
   components:
+  - type: Sprite
+    sprite: Structures/Furniture/Tables/generic.rsi
+    state: full
+  - type: Icon
+    sprite: Structures/Furniture/Tables/generic.rsi
+    state: full
   - type: NeoTheologyAltar
   - type: Fixtures
     fixtures:

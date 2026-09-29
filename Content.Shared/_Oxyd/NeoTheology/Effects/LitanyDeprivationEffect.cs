@@ -5,7 +5,7 @@ namespace Content.Shared._Oxyd.NeoTheology.Effects;
 
 /// <summary>
 /// Eris <c>rituals/base.dm:400-430</c> (ejection): a dead bearer's cruciform is ripped out —
-/// 15 Blunt into the corpse first, then the same implant entity is dropped on its tile. The
+/// 15 Blunt into the corpse first, then the same implant entity is dropped beside it. The
 /// cruciform is never deleted, so it can be re-installed and scanned for Resurrection.
 /// </summary>
 public sealed partial class LitanyDeprivationEffect : LitanyEffect
