@@ -17,7 +17,7 @@ public sealed partial class CruciformComponent : Component
 
     /// <summary>
     /// Records prior activation. Death and extraction clear Active, but do not make an implant unused.
-    /// Reimplantation and revival restore activation only when this flag is true.
+    /// Revival can restore activation; reimplantation waits for the saved-soul rite.
     /// </summary>
     [DataField, AutoNetworkedField]
     public bool EverActivated;
@@ -65,7 +65,7 @@ public sealed partial class CruciformComponent : Component
 
     /// <summary>
     /// Installed core modules. Litany sets, access and the two stat multipliers are
-    /// derived from profile ∪ modules — never written directly by feature code.
+    /// derived from installed modules — profile starting modules are a grant recipe, not a second entitlement.
     /// </summary>
     [DataField]
     public HashSet<ProtoId<CoreModulePrototype>> InstalledModules = new();
@@ -76,7 +76,7 @@ public sealed partial class CruciformComponent : Component
     /// <summary>
     /// Sets a litany granted at runtime (the Crusade rite; Eris <c>known_rituals |=</c>).
     /// <see cref="Content.Server._Oxyd.NeoTheology.CruciformSystem.RecomputeProfile"/> re-derives
-    /// <see cref="UnlockedSets"/> from profile, modules and upgrade, so a grant that only wrote
+    /// <see cref="UnlockedSets"/> from installed modules and upgrade, so a grant that only wrote
     /// there would vanish on the next recompute. Grants live here instead.
     /// </summary>
     [DataField]
@@ -88,6 +88,10 @@ public sealed partial class CruciformComponent : Component
     /// </summary>
     [DataField]
     public EntityUid? Upgrade;
+
+    /// <summary>Installed core upgrade items keyed by the module they supply. Asacris removes these only.</summary>
+    [DataField]
+    public Dictionary<ProtoId<CoreModulePrototype>, EntityUid> CoreUpgrades = new();
 
     /// <summary>
     /// Simulation timestamp used to settle regeneration. It is re-anchored whenever

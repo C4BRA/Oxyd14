@@ -87,8 +87,8 @@
   category: Common
   grantedBy: [OxydLitanyCommon]
   effect: RevealAdversaries
-  targetMode: VisibleArea
-  range: 14
+  targetMode: Self
+  range: 0
   cost: 35
   cooldownKey: OxydLitanyRevealAdversaries
   cooldownScope: Personal

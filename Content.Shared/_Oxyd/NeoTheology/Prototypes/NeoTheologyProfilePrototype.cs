@@ -27,7 +27,7 @@ public sealed partial class NeoTheologyProfilePrototype : IPrototype
     public double RegenerationMultiplier { get; private set; } = 1d;
 
     [DataField]
-    public List<ProtoId<LitanySetPrototype>> LitanySets { get; private set; } = new();
+    public List<ProtoId<CoreModulePrototype>> StartingModules { get; private set; } = new();
 
     /// <summary>
     /// Whether a bearer with this profile may use the channeling regeneration
@@ -40,4 +40,3 @@ public sealed partial class NeoTheologyProfilePrototype : IPrototype
     [DataField]
     public bool CountsAsChannelingFollower { get; private set; }
 }
-

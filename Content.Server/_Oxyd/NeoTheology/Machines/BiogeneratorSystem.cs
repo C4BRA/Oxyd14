@@ -62,8 +62,17 @@ public sealed partial class BiogeneratorSystem : EntitySystem
             // Burn whole biomatter units only; carry the fraction to the next tick.
             gen.BiomatterAccumulator += gen.BiomatterPerSecond * frameTime;
             var owed = (int) gen.BiomatterAccumulator;
-            if (owed > 0 && _materialStorage.TryChangeMaterialAmount(uid, "Biomatter", -owed, storage))
+            if (owed > 0)
+            {
+                if (!_materialStorage.TryChangeMaterialAmount(uid, "Biomatter", -owed, storage))
+                {
+                    supplier.Enabled = false;
+                    supplier.MaxSupply = 0f;
+                    continue;
+                }
+
                 gen.BiomatterAccumulator -= owed;
+            }
 
             supplier.Enabled = true;
             supplier.MaxSupply = gen.OutputWatts * (1f - Math.Clamp(gen.Dirtiness, 0f, 1f));

@@ -619,6 +619,9 @@ public sealed class LitanyEffectsSocialTest : SocialNoticeGameTest
         var implant = _implants.AddImplant(body, CruciformProto);
         Assert.That(implant, Is.Not.Null);
         Assert.That(_cruciform.Activate(body), Is.True);
+        // Transaction assertions must not include five polling ticks of regeneration.
+        SComp<CruciformComponent>(implant!.Value).RegenerationMultiplier = 0;
+        _cruciform.RecomputeProfile(implant.Value, SComp<CruciformComponent>(implant.Value));
         Assert.That(_cruciform.GetHoliness(body), Is.GreaterThanOrEqualTo(_prototypes.Index(litany).Cost));
         return body;
     }

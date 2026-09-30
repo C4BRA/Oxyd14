@@ -1,7 +1,7 @@
 - type: oxydNeoTheologyRules
   id: OxydNtDefaultRules
   selected: true
-  baseHolinessPerMinute: 1
+  baseHolinessPerMinute: 20
   profiles:
   - OxydNtDisciple
   - OxydNtAcolyte

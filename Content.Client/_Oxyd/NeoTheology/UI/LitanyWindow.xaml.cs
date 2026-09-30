@@ -219,6 +219,8 @@ public sealed partial class LitanyWindow : FancyWindow
     {
         base.FrameUpdate(args);
         UpdateProgressPresentation();
+        if (_selectedEntry is { } entry && TryGetLitany(entry, out var litany))
+            UpdateCooldownLabel(entry, litany);
     }
 
     /// <summary>
@@ -420,7 +422,7 @@ public sealed partial class LitanyWindow : FancyWindow
         // Prototype-set values are read from the prototype, not duplicated over the wire.
         PhraseLabel.Text = $"Phrase: {litany.Phrase}";
         CostLabel.Text = Loc.GetString("oxyd-litany-ui-cost", ("cost", litany.Cost.ToString("0.##")));
-        CooldownLabel.Text = Loc.GetString("oxyd-litany-ui-cooldown", ("duration", FormatDuration(litany.CooldownDuration)));
+        UpdateCooldownLabel(entry, litany);
         CastDurationLabel.Text = $"Cast duration: {FormatDuration(litany.ExtraDelay)}";
         TargetLabel.Text = $"Target mode: {litany.TargetMode}";
 
@@ -437,6 +439,14 @@ public sealed partial class LitanyWindow : FancyWindow
         }
 
         UpdateChoiceControls();
+    }
+
+    private void UpdateCooldownLabel(LitanyViewerEntry entry, LitanyPrototype litany)
+    {
+        CooldownLabel.Text = Loc.GetString("oxyd-litany-ui-cooldown", ("duration", FormatDuration(litany.CooldownDuration)));
+        var remaining = entry.CooldownEndsAt - _gameTiming.CurTime;
+        if (remaining > TimeSpan.Zero)
+            CooldownLabel.Text += $" ({FormatDuration(remaining)} remaining)";
     }
 
     private void UpdateChoiceControls()
@@ -629,7 +639,8 @@ public sealed partial class LitanyWindow : FancyWindow
     {
         return left.Litany.Equals(right.Litany)
                && left.Available == right.Available
-               && left.UnavailableReason.Equals(right.UnavailableReason);
+               && left.UnavailableReason.Equals(right.UnavailableReason)
+               && left.CooldownEndsAt == right.CooldownEndsAt;
     }
 
     private bool TryGetLitany(LitanyViewerEntry entry, out LitanyPrototype litany)

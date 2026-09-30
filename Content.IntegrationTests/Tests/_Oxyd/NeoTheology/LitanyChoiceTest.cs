@@ -103,10 +103,10 @@ public sealed class LitanyChoiceTest : SocialNoticeGameTest
             Assert.That(STryComp<ScryingSessionComponent>(caster, out var session), Is.True,
                 "A completed Scrying cast must start a session.");
             var markerCoords = SComp<TransformComponent>(session!.Marker!.Value).Coordinates;
-            Assert.That(markerCoords, Is.EqualTo(SComp<TransformComponent>(chosen).Coordinates),
-                "The session marker must follow the follower the caster selected.");
-            Assert.That(markerCoords, Is.Not.EqualTo(SComp<TransformComponent>(first).Coordinates),
-                "The marker must not sit on the deterministic first candidate.");
+            Assert.That(markerCoords, Is.EqualTo(new EntityCoordinates(chosen, Vector2.Zero)),
+                "The session marker must be parented to the follower the caster selected.");
+            Assert.That(markerCoords.EntityId, Is.Not.EqualTo(first),
+                "The marker must not follow the deterministic first candidate.");
         });
     }
 

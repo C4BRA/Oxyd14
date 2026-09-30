@@ -7,15 +7,26 @@ through `97c050d91a`. The upstream merge brings the newer game UI and the
 upstream `RobustToolbox` revision. It keeps the PR's visibility fix in
 `ViewCalcSystem` where the two branches conflicted.
 
+The [2026-09-29 manual client playtest handoff](neotheology-litany-playtest-2026-09-29.md)
+records the partial live results and the remaining gameplay matrix.
+
 [neotheology-litany-dependencies.md](neotheology-litany-dependencies.md) lists
 the implemented dependency packets and their limits. The tests check catalog
 coverage, selected effects, and security rules. They do not prove Eris gameplay
 parity. The current merged build still needs a live-round check.
 
+## Review-fix worktree
+
+The original review and merged-build counts below are historical. Current fixes
+and fresh validation are tracked in [the resolution checklist](neotheology-litany-review-fixes.md).
+`RobustToolbox` remains identical to `upstream/master`; content-level adapters
+must not require engine edits. No complete-port or multiplayer certification is implied.
+
 ## What works in code and focused tests
 
-- All 60 entries have enabled definitions and handlers. Nine sets assign
-  litanies by bearer profile. No dependency-gated entries remain.
+- All 60 entries have enabled definitions and handlers. Nine sets authorize
+  litanies through installed modules; profiles declare starting-module recipes.
+  No dependency-gated entries remain.
 - Speech and the private Bible UI start server-validated casts. The server
   checks rank, target, holiness, and cooldown. It refunds an unsuccessful cast.
   The book supplies target and blueprint choices. Speech uses a fixed fallback
@@ -67,21 +78,28 @@ NeoTheology files from the PR with older upstream versions.
   addiction recovery without removing blood reagents. `Rejection` removes
   foreign implants and robotic organs but keeps natural organs and the
   cruciform. Exact recovery timing needs a live check.
-- **Cloning and ranks:** The local cloner grows the stored soul profile; it
-  does not apply Eris rank-specific clone damage. Rank changes replace Eris
-  clearance fields. `Initiation` uses one promotion rite.
-- **Machines and construction:** Eris multipart machines use local single
-  entities. `ActivateDoor` has no facing requirement or broken-door state.
-  `DivineGuidance` uses a local blueprint catalog, including the biomatter
-  reclaimer. Construction delays follow local litany data.
+- **Cloning and ranks:** Resurrection grows an unoccupied stored-profile vessel;
+  Commitment and Reincarnation reunite the saved soul, with matching DNA and
+  inactive-implant checks. The local rank-based clone-damage exemption exists.
+  Clearance and specialization are separate from rank. Initiation requires
+  an installed, removable ascension kit.
+- **Machines and construction:** Eris multipart/liquid machines use native
+  single entities and material storage. Front-machine rites require the faced
+  machine; holy doors have a broken state. Divine Guidance includes canisters,
+  bioprinter, solidifier, armaments printer and door variants. Manifestation
+  honors the selected blueprint's build time. New fabrication costs are
+  explicitly local balance data, not an assertion of source economy parity.
 - **Economy:** The Eye uses local observation rewards. Oddity rewards and
   faithless penalties lack the necessary entities. `Knowledge` and `Bounty`
   use a local hidden store and banked balance, not Eris equipment or its
   hidden uplink item.
-- **Ceremonies:** A ceremony times out after five minutes and requires nearby
-  participants. Skill effects have a fixed time rather than Eris stacking.
-  Area sanctification, the Crusade world flag, and atheist mutation are absent.
-  The disciple HUD uses no power and stops with the implant.
+- **Ceremonies:** Eight multi-phrase ceremonies persist until their leader dies
+  or loses the recorded implant; final recipients must still be nearby and linked.
+  Three Crusader rites are ordinary casts, not additional multi-phrase ceremonies.
+  Short skill blessings stack and last ten minutes. Sanctify has local obelisk
+  activation, and an atheist marker/knockdown exists; full Church objectives and
+  source Crusade world signaling remain gaps. The disciple HUD uses no power
+  and stops with the implant.
 
 ## Open gaps and live-round checks
 

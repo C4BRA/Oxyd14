@@ -1,3 +1,18 @@
+# Eris /obj/item/coreimplant_upgrade/neo/kit/ascension — a distinct removable core upgrade.
+- type: entity
+  parent: BaseItem
+  id: OxydNtPreacherAscensionKit
+  name: preacher ascension kit
+  description: Use on a cruciform or its bearer to install a conversion module. Initiation activates it; Asacris removes it.
+  components:
+  - type: CruciformCoreUpgrade
+    module: OxydNtModulePriestConvert
+  - type: Sprite
+    sprite: Objects/Specific/Chapel/bible.rsi
+    state: icon
+  - type: Item
+    size: Small
+
 # Eris /obj/item/cruciform_upgrade/* ported as installable attachments.
 # Deltas come straight from upgrades.dm OnInstall/OnUninstall pairs:
 #   faiths_shield  brute_mod -0.2, burn_mod -0.2   -> damagedModifierDelta -0.2
@@ -41,6 +56,8 @@
   components:
   - type: CruciformUpgrade
   - type: CruciformUpgradeAura
+    bruteHealPerSecond: 0
+    burnHealPerSecond: 0
     plantHealPerSecond: 0
     cleanPuddles: true
   - type: Sprite

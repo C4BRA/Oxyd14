@@ -75,8 +75,9 @@ public sealed class LitanyEffectsConstructionTest : GameTest
             Assert.That(_litany.TestingTryGetPending(begin.RequestId!, out var cast), Is.True);
             Assert.That(cast!.Stage, Is.EqualTo(LitanyCastStage.Choosing));
             Assert.That(cast.ChoiceBlueprints, Does.Contain(ObeliskBlueprint));
-            Assert.That(cast.ChoiceBlueprints, Has.Count.EqualTo(11),
-                "The catalog lists every NeoTheology blueprint.");
+            Assert.That(cast.ChoiceBlueprints.Select(id => id.Id),
+                Is.EquivalentTo(SProtoMan.EnumeratePrototypes<NeoTheologyBlueprintPrototype>().Select(proto => proto.ID)),
+                "The catalog lists every NeoTheology blueprint, including new acquisition paths.");
 
             var selection = Submit(caster, begin.RequestId!, [$"b:{ObeliskBlueprint.Id}"]);
             Assert.That(selection.Success, Is.True, selection.Reason?.Id ?? "Divine Guidance choice failed");

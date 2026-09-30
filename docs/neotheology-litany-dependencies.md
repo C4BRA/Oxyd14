@@ -16,33 +16,36 @@ correct rank; an enabled catalog entry alone does not grant a player access.
 
 The six profiles are in `Resources/Prototypes/_Oxyd/NeoTheology/profiles.yml`.
 `rules.yml` maps only the existing Chaplain job to `OxydNtPreacher`.
-There are no NeoTheology ghost-role spawners or dedicated test mobs in the PR.
-The Chaplain does not automatically receive `OxydNtBible`. A developer must
-provide the Bible and suitable bearers to test all ranks. Adding six profiles
-does not add station jobs or job slots.
+Six administrator-spawned development ghost-role markers in `test_roles.yml`
+provide the matching cruciform and Bible when their mind takes the role.
+The Chaplain does not automatically receive `OxydNtBible`. These markers and
+six profiles do not add round-start Church jobs, maps, or job slots.
+Profiles declare starting modules; installed modules, not profile labels,
+authorize rites. See [the review-fix checklist](neotheology-litany-review-fixes.md)
+for current validation rather than treating historical counts as a fresh result.
 
 ## Dependency packets
 
 | Dependency category | Litany or capability | Current implementation and limit |
 | --- | --- | --- |
 | `Purity` | `Rejection` | Local implant and robotic-organ scan; natural organs and the cruciform remain. |
-| `ThreatClassification` | `RevealAdversaries` | Local faction and landmine scan; no Eris hidden miss chance. |
+| `ThreatClassification` | `RevealAdversaries` | Caster-centered live hostile-fauna scan at 14 m; visible landmines at 7 m. Source hidden 20% failure and separate 80% trap roll retained. |
 | `Attachments` | `InstallUpgrade`, `UninstallUpgrade` | Installed cruciform upgrades have live effects; the procedures check the altar and target. |
-| `SoulCloning` | `Reincarnation`, `Resurrection` | Stored soul profile grows in the local cloner; Eris rank-specific damage is absent. |
+| `SoulCloning` | `Reincarnation`, `Resurrection` | Normal grants install cloning and capture identity. Resurrection grows an unoccupied matching-DNA vessel; Commitment and Reincarnation restore the saved mind. Local rank-based clone damage exemption exists. |
 | `PlantGrowth` | `AcceleratedGrowth` | Local plant growth multiplier. |
 | `Addiction` | `WordsOfPurging` | Local dependence and recovery; Eris reagent removal does not occur. |
-| `CoreModules` | `Asacris`, `Initiation` | Local cruciform modules and upgrades; `Asacris` must not remove rank modules. |
+| `CoreModules` | `Asacris`, `Initiation` | A separate removable ascension-kit item supplies conversion; Initiation cannot conjure it. Asacris removes core-upgrade items while preserving the physical attachment. |
 | `Pain` | `Atonement`, `Penance` | Local pain/stamina behavior replaces Eris hallucination loss. |
 | `EyeEconomy` | `DivineIntervention`, `HolyGuidance` | Local Eye power and observation; oddity and faithless behavior remain incomplete. |
 | `Armaments` | `OrderArmaments` | Local armaments printer and design-disk flow. |
 | `ConstructionCatalog` | `DivineGuidance` | Local blueprint catalog and material choices. |
-| `Construction` | `Manifestation`, `Uproot` | Local front-tile build and refund; Eris multipart machines map to single entities. |
+| `Construction` | `Manifestation`, `Uproot` | Parent-independent front-tile material scan; blueprint build times; single-consumption/refund guards. Native canisters, printers, solidifier, and holy-door variants are constructible; Eris multipart/liquid machinery is explicitly adapted. |
 | `ForgeMaterials` | `MakeCruciform` | Local cruciform forge and material accounting. |
 | `BiomatterMaterials` | `RepairDoor` | Local biomatter and door repair. |
 | `Biogenerator` | `PowerBiogenerator` | Local powered NeoTheology machine. |
 | `Bioreactor` | `BioreactorSolution`, `BioreactorChamber` | Local bioreactor solution and chamber checks. |
-| `Ceremonies` | Eleven group rites | Spoken participation and effect delivery work in focused tests; church-objective signaling and world effects remain incomplete. |
-| `RemoteView` | `Scrying` | Bounded viewing session with a book target choice and speech fallback. |
+| `Ceremonies` | Eight multi-phrase ceremonies, three ordinary Crusader rites | Successful ceremonies feed righteous life. Leaders persist until death/implant loss; church-objective signaling and full source world effects remain incomplete. |
+| `RemoteView` | `Scrying` | Bounded session whose marker follows the target; target deletion ends the session. Book target choice and speech fallback remain. |
 | `NtUplink` | `Knowledge`, `Bounty` | Cruciform store with local banked balance; Eris equipment is not present. |
 
 Every litany with no listed packet still needs its effect handler, profile access,

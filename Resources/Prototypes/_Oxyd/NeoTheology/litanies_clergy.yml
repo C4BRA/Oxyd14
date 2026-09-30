@@ -6,8 +6,8 @@
   category: Agrolyte
   grantedBy: [OxydLitanyAgrolyte]
   effect: AcceleratedGrowth
-  targetMode: VisibleArea
-  range: 7
+  targetMode: Self
+  range: 0
   cost: 10
   cooldownKey: OxydLitanyAcceleratedGrowth
   cooldownScope: Global

@@ -227,7 +227,7 @@ public sealed class CruciformLifecycleTest : GameTest
             var body = SSpawnAtPosition(HumanProto, map.GridCoords);
             var implant = Implant(body);
             Assert.That(_cruciform.Activate(body), Is.True);
-            Assert.That(_cruciform.TrySpend(body, 5d), Is.True);
+            Assert.That(_cruciform.TrySpend(body, 30d), Is.True);
 
             var before = _cruciform.GetHoliness(body);
             var component = SComp<CruciformComponent>(implant);
@@ -236,13 +236,13 @@ public sealed class CruciformLifecycleTest : GameTest
             var after = _cruciform.GetHoliness(body);
             Assert.That(after, Is.GreaterThan(before));
             Assert.That(after, Is.LessThanOrEqualTo(_cruciform.GetMaximumHoliness(body)));
-            // Base disciple regen is 1 holiness/minute with default Cog/righteous/channeling.
-            Assert.That(after - before, Is.EqualTo(1d).Within(0.05d));
+            // Eris base regeneration is twenty holiness per minute.
+            Assert.That(after - before, Is.EqualTo(20d).Within(0.05d));
         });
     }
 
     [Test]
-    public async Task DeathDeactivatesAndReimplantationCanResume()
+    public async Task DeathDeactivatesAndReimplantationWaitsForTheStoredSoul()
     {
         var map = await Pair.CreateTestMap();
 
@@ -263,13 +263,14 @@ public sealed class CruciformLifecycleTest : GameTest
             ExtractRecoverable(body, implant);
             Assert.That(SComp<CruciformComponent>(implant).EverActivated, Is.True);
 
-            // Fresh living body receives the previously activated implant and resumes.
+            // A fresh body's identity must not replace the saved soul by automatic activation.
             var body2 = SSpawnAtPosition(HumanProto, map.GridCoords);
             _implants.ForceImplant(body2, implant);
             Assert.That(SComp<CruciformBearerComponent>(body2).Cruciform, Is.EqualTo(implant));
-            Assert.That(SComp<CruciformComponent>(implant).Active, Is.True,
-                "Ever-activated implant on a living body resumes without a second Activate fill.");
-            Assert.That(_cruciform.IsActiveBearer(body2), Is.True);
+            Assert.That(SComp<CruciformComponent>(implant).Active, Is.False);
+            Assert.That(_cruciform.IsActiveBearer(body2), Is.False);
+            Assert.That(_cruciform.Activate(body2), Is.False,
+                "Epiphany must not overwrite another body's saved soul.");
         });
     }
 

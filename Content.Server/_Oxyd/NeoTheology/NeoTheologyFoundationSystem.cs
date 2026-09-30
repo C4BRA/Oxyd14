@@ -4,6 +4,7 @@ using Content.Server._Oxyd.Medical;
 using Content.Shared._Oxyd.Medical;
 using Content.Shared._Oxyd.NeoTheology.Components;
 using Content.Shared._Oxyd.NeoTheology.Events;
+using Content.Shared._Oxyd.NeoTheology.Effects;
 using Content.Shared.Body.Components;
 using Content.Shared.Botany.Systems;
 using Content.Shared.Chemistry.EntitySystems;
@@ -14,6 +15,8 @@ using Content.Shared.Implants;
 using Content.Shared.Implants.Components;
 using Content.Shared.LandMines;
 using Content.Shared.Mobs.Components;
+using Content.Shared.Mobs.Systems;
+using Content.Shared.Examine;
 using Content.Shared.NPC.Components;
 using Content.Shared.NPC.Prototypes;
 using Content.Shared.NPC.Systems;
@@ -33,7 +36,10 @@ namespace Content.Server._Oxyd.NeoTheology;
 public sealed partial class NeoTheologyFoundationSystem : EntitySystem
 {
     [Dependency] private readonly CruciformSystem _cruciform = default!;
+    [Dependency] private readonly LitanyEffectSystem _effects = default!;
     [Dependency] private readonly CruciformUpgradeSystem _upgrades = default!;
+    [Dependency] private readonly MobStateSystem _mobState = default!;
+    [Dependency] private readonly ExamineSystemShared _examine = default!;
     [Dependency] private readonly DamageableSystem _damageable = default!;
     [Dependency] private readonly EntityLookupSystem _lookup = default!;
     [Dependency] private readonly NpcFactionSystem _factions = default!;
@@ -83,8 +89,8 @@ public sealed partial class NeoTheologyFoundationSystem : EntitySystem
 
     /// <summary>
     /// Eris <c>rituals/base.dm:92-120</c>: scan hostile fauna within 14 m and traps within 7 m.
-    /// The fork's trap marker is <see cref="LandMineComponent"/>. Eris also hides a 20 percent
-    /// false-negative chance; kept for fidelity.
+    /// The fork's trap marker is <see cref="LandMineComponent"/>. Eris has a hidden 20 percent
+    /// failure and a separate 80 percent trap roll.
     /// </summary>
     [SubscribeLocalEvent]
     private void OnRevealAdversaries(Entity<MobStateComponent> ent, ref LitanyRevealAdversariesEvent args)
@@ -93,10 +99,9 @@ public sealed partial class NeoTheologyFoundationSystem : EntitySystem
             return;
 
         args.Handled = true;
-
         if (_random.Prob(0.2f))
         {
-            _popup.PopupEntity(Loc.GetString("oxyd-litany-reveal-none"), ent.Owner, ent.Owner);
+            _effects.DeliverSocialNotice(ent.Owner, Loc.GetString("oxyd-litany-reveal-none"));
             return;
         }
 
@@ -104,7 +109,7 @@ public sealed partial class NeoTheologyFoundationSystem : EntitySystem
         var found = false;
         foreach (var (mob, faction) in _lookup.GetEntitiesInRange<NpcFactionMemberComponent>(xform.Coordinates, 14f))
         {
-            if (HasComp<HumanoidProfileComponent>(mob) || HasComp<CruciformBearerComponent>(mob))
+            if (_mobState.IsDead(mob) || HasComp<HumanoidProfileComponent>(mob) || HasComp<CruciformBearerComponent>(mob))
                 continue;
             if (!_factions.IsMemberOfAny((mob, faction), HostileFauna))
                 continue;
@@ -113,13 +118,16 @@ public sealed partial class NeoTheologyFoundationSystem : EntitySystem
             break;
         }
 
-        if (!found)
-            found = _lookup.GetEntitiesInRange<LandMineComponent>(xform.Coordinates, 7f).Count > 0;
+        if (found)
+            _effects.DeliverSocialNotice(ent.Owner, Loc.GetString("oxyd-litany-reveal-hostiles"));
 
-        _popup.PopupEntity(
-            Loc.GetString(found ? "oxyd-litany-reveal-hostiles" : "oxyd-litany-reveal-none"),
-            ent.Owner,
-            ent.Owner);
+        var trap = _random.Prob(0.8f) &&
+            _lookup.GetEntitiesInRange<LandMineComponent>(xform.Coordinates, 7f)
+                .Any(mine => _examine.InRangeUnOccluded(ent.Owner, mine.Owner, 7f, predicate: null));
+        if (trap)
+            _effects.DeliverSocialNotice(ent.Owner, Loc.GetString("oxyd-litany-reveal-traps"));
+        else if (!found)
+            _effects.DeliverSocialNotice(ent.Owner, Loc.GetString("oxyd-litany-reveal-none"));
     }
 
     /// <summary>
@@ -161,14 +169,12 @@ public sealed partial class NeoTheologyFoundationSystem : EntitySystem
         if (args.Handled)
             return;
 
-        args.Handled = true;
-
         if (!_cruciform.TryGetCruciform(ent.Owner, out var cruciform, out var comp))
             return;
 
-        var removed = 0;
-        while (removed < 16 && _upgrades.TryUninstallUpgrade(cruciform, comp))
-            removed++;
+        args.Handled = _upgrades.TryRemoveCoreUpgrades(cruciform, comp);
+        if (!args.Handled)
+            return;
 
         _popup.PopupEntity(Loc.GetString("oxyd-litany-asacris"), ent.Owner, ent.Owner);
     }
@@ -187,7 +193,10 @@ public sealed partial class NeoTheologyFoundationSystem : EntitySystem
         var boosted = 0;
         foreach (var (plant, growth) in _lookup.GetEntitiesInRange<Content.Shared.Botany.Components.PlantGrowthComponent>(xform.Coordinates, 7f))
         {
-            _plantGrowth.AdjustGrowthBoost((plant, growth), args.Multiplier, args.Duration);
+            if (!_examine.InRangeUnOccluded(ent.Owner, plant, 7f, predicate: null))
+                continue;
+            if (!args.ValidateOnly)
+                _plantGrowth.AdjustGrowthBoost((plant, growth), args.Multiplier, args.Duration);
             boosted++;
         }
 
@@ -195,6 +204,7 @@ public sealed partial class NeoTheologyFoundationSystem : EntitySystem
             return;
 
         args.Handled = true;
-        _popup.PopupEntity(Loc.GetString("oxyd-litany-growth"), ent.Owner, ent.Owner);
+        if (!args.ValidateOnly)
+            _popup.PopupEntity(Loc.GetString("oxyd-litany-growth"), ent.Owner, ent.Owner);
     }
 }

@@ -1,8 +1,8 @@
 # Eris access story:
 #   Disciple/Acolyte/Agrolyte/Custodian: OxydNtFollower + OxydNtCommon (from modules)
 #   Preacher/Inquisitor:                 OxydNtFollower + OxydNtCommon + OxydNtClergy
-# litanySets mirror the union of the RankModules table in CruciformSystem so a profile
-# swap and a module swap unlock exactly the same sets.
+# Starting modules are the sole source for granted sets and rank modifiers.
+# Profile capacity/regen are the unmodified baseline; installed modules add the rank.
 
 - type: oxydNeoTheologyProfile
   id: OxydNtDisciple
@@ -12,10 +12,7 @@
   - OxydNtCommon
   cruciformCapacity: 50
   regenerationMultiplier: 1
-  litanySets:
-  - OxydLitanyCommon
-  - OxydLitanyMachinery
-  - OxydLitanyGroup
+  startingModules: [OxydNtModuleBase]
   canChannel: false
   countsAsChannelingFollower: true
 
@@ -27,11 +24,7 @@
   - OxydNtCommon
   cruciformCapacity: 50
   regenerationMultiplier: 1
-  litanySets:
-  - OxydLitanyCommon
-  - OxydLitanyMachinery
-  - OxydLitanyGroup
-  - OxydLitanyAcolyte
+  startingModules: [OxydNtModuleBase, OxydNtModuleAcolyte]
   canChannel: false
   countsAsChannelingFollower: true
 
@@ -43,11 +36,7 @@
   - OxydNtCommon
   cruciformCapacity: 50
   regenerationMultiplier: 1
-  litanySets:
-  - OxydLitanyCommon
-  - OxydLitanyMachinery
-  - OxydLitanyGroup
-  - OxydLitanyAgrolyte
+  startingModules: [OxydNtModuleBase, OxydNtModuleAgrolyte]
   canChannel: false
   countsAsChannelingFollower: true
 
@@ -59,11 +48,7 @@
   - OxydNtCommon
   cruciformCapacity: 50
   regenerationMultiplier: 1
-  litanySets:
-  - OxydLitanyCommon
-  - OxydLitanyMachinery
-  - OxydLitanyGroup
-  - OxydLitanyCustodian
+  startingModules: [OxydNtModuleBase, OxydNtModuleCustodian]
   canChannel: false
   countsAsChannelingFollower: true
 
@@ -74,13 +59,10 @@
   - OxydNtFollower
   - OxydNtCommon
   - OxydNtClergy
-  cruciformCapacity: 80
-  regenerationMultiplier: 1.15
-  litanySets:
-  - OxydLitanyCommon
-  - OxydLitanyMachinery
-  - OxydLitanyGroup
-  - OxydLitanyPriest
+  # Rank modifiers live on the Red Light module, not twice on the profile.
+  cruciformCapacity: 50
+  regenerationMultiplier: 1
+  startingModules: [OxydNtModuleBase, OxydNtModuleAcolyte, OxydNtModulePriest, OxydNtModuleRedLight]
   canChannel: true
   countsAsChannelingFollower: false
 
@@ -91,13 +73,9 @@
   - OxydNtFollower
   - OxydNtCommon
   - OxydNtClergy
-  cruciformCapacity: 100
-  regenerationMultiplier: 1.25
-  litanySets:
-  - OxydLitanyCommon
-  - OxydLitanyMachinery
-  - OxydLitanyGroup
-  - OxydLitanyPriest
-  - OxydLitanyInquisitor
+  # The inquisitor module adds its rank capacity/regeneration.
+  cruciformCapacity: 50
+  regenerationMultiplier: 1
+  startingModules: [OxydNtModuleBase, OxydNtModuleAcolyte, OxydNtModulePriest, OxydNtModuleInquisitor, OxydNtModuleUplink]
   canChannel: true
   countsAsChannelingFollower: false

@@ -80,7 +80,7 @@ public sealed class CoreModuleTest : GameTest
             Assert.That(comp.UnlockedSets, Does.Contain(CustodianSet),
                 "Installing the custodian module must unlock its litany set, even while inactive.");
             Assert.That(comp.UnlockedSets, Does.Contain(CommonSet),
-                "Profile sets must survive the module union.");
+                "Installed base-module sets must survive adding another module.");
         });
     }
 
@@ -130,12 +130,11 @@ public sealed class CoreModuleTest : GameTest
 
             Assert.That(comp.Profile.Id, Is.EqualTo("OxydNtInquisitor"));
             Assert.That(comp.InstalledModules, Does.Contain(InquisitorModule));
-            Assert.That(comp.InstalledModules, Does.Contain(RedLightModule));
+            Assert.That(comp.InstalledModules, Does.Not.Contain(RedLightModule));
             Assert.That(comp.InstalledModules, Does.Contain(UplinkModule));
-            Assert.That(comp.InstalledModules.Count, Is.EqualTo(priestCount + 3),
-                "Ordination swaps the rank modules in, it does not stack profiles.");
-            // Inquisitor profile capacity (100) x inquisitor module (2.0) x red light (1.6).
-            Assert.That(comp.MaxHoliness, Is.EqualTo(100d * 2.0 * 1.6).Within(0.001));
+            Assert.That(comp.InstalledModules.Count, Is.EqualTo(priestCount + 1),
+                "Inquisitor adds two modules and removes Red Light, without stacking capacities.");
+            Assert.That(comp.MaxHoliness, Is.EqualTo(100d).Within(0.001));
         });
     }
 
@@ -169,6 +168,8 @@ public sealed class CoreModuleTest : GameTest
         var body = SSpawnAtPosition(HumanProto, coords);
         var implant = _implants.AddImplant(body, CruciformProto);
         Assert.That(implant, Is.Not.Null);
+        Assert.That(_cruciform.Activate(body), Is.True);
+        Assert.That(_cruciform.Deactivate(body), Is.True);
         return implant!.Value;
     }
 }

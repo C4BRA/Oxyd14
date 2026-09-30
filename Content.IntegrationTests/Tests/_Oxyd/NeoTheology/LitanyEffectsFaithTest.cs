@@ -266,11 +266,8 @@ public sealed class LitanyEffectsFaithTest : SocialNoticeGameTest
         _litany.TestingSetAvailabilityOverride(litany.Id, true);
         var body = SSpawnAtPosition(FaithHumanProto, coords);
         _litany.TestingTreatAsActor(body);
-        var implant = _implants.AddImplant(body, CruciformProto);
-        Assert.That(implant, Is.Not.Null);
-        Assert.That(_cruciform.Activate(body), Is.True);
-        Assert.That(_cruciform.TrySetProfile(body, Preacher), Is.True,
-            $"{litany.Id} requires the Preacher profile's litany sets.");
+        Assert.That(_cruciform.GrantCruciform(body, Preacher), Is.True,
+            "Faith fixtures must use the same module/rank grant as a normal job.");
         return body;
     }
 

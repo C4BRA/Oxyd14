@@ -13,6 +13,10 @@ public sealed partial class ScryingSessionComponent : Component
     [DataField]
     public EntityUid? Marker;
 
+    /// <summary>The disciple followed by the marker.</summary>
+    [DataField]
+    public EntityUid Target;
+
     /// <summary>The eye target before the session starts.</summary>
     [DataField]
     public EntityUid? PreviousTarget;

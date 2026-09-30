@@ -59,15 +59,18 @@ public sealed class LitanyViewerEntry
     public ProtoId<LitanyPrototype> Litany { get; }
     public bool Available { get; }
     public LocId? UnavailableReason { get; }
+    public TimeSpan CooldownEndsAt { get; }
 
     public LitanyViewerEntry(
         ProtoId<LitanyPrototype> litany,
         bool available,
-        LocId? unavailableReason)
+        LocId? unavailableReason,
+        TimeSpan cooldownEndsAt = default)
     {
         Litany = litany;
         Available = available;
         UnavailableReason = unavailableReason;
+        CooldownEndsAt = cooldownEndsAt;
     }
 }
 

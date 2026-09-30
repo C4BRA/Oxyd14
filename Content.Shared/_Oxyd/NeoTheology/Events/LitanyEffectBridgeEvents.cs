@@ -77,13 +77,10 @@ public record struct LitanyInstallUpgradeEvent(EntityUid Target, bool Handled);
 public record struct LitanyUninstallUpgradeEvent(EntityUid Target, bool Handled);
 
 /// <summary>
-/// Bridge for Reincarnation: raised on the living target body; the server
-/// <c>CoreModuleBehaviorSystem</c> writes a fresh soul snapshot from the wearer onto their
-/// installed cruciform and sets <see cref="Handled"/>. A false <see cref="Handled"/> means
-/// the snapshot write could not run (no installed cruciform to write onto).
+/// Reunite the stored mind with a matching prepared body. Validation never writes the soul.
 /// </summary>
 [ByRefEvent]
-public record struct LitanyWriteSoulSnapshotEvent(EntityUid Target, bool Handled);
+public record struct LitanyReincarnationEvent(EntityUid Target, bool Handled, bool ValidateOnly = false);
 
 /// <summary>
 /// Bridge for Rejection: raised on the body; the server removes every non-cruciform implant
@@ -129,7 +126,8 @@ public record struct LitanyAcceleratedGrowthEvent(
     EntityUid User,
     float Multiplier,
     TimeSpan Duration,
-    bool Handled);
+    bool Handled,
+    bool ValidateOnly = false);
 
 /// <summary>
 /// Bridge for BaptismalRecord: raised on the NeoTheology altar; the server <c>AltarSystem</c>

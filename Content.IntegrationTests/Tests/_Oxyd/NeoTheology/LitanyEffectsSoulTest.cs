@@ -6,12 +6,14 @@ using Content.Server._Oxyd.NeoTheology.Machines;
 using Content.Server.Materials;
 using Content.Server.Power.Components;
 using Content.Shared.Humanoid;
+using Content.Shared.Forensics.Components;
 using Content.Shared.Preferences;
 using Content.Shared.Body;
 using Content.Shared._Oxyd.NeoTheology;
 using Content.Shared._Oxyd.NeoTheology.Components;
 using Content.Shared._Oxyd.Medical;
 using Content.Shared._Oxyd.NeoTheology.Effects;
+using Content.Shared._Oxyd.NeoTheology.Events;
 using Content.Shared._Oxyd.NeoTheology.Events;
 using Content.Shared.Cloning;
 using Content.Shared.Damage.Systems;
@@ -30,9 +32,7 @@ using Robust.Shared.Prototypes;
 namespace Content.IntegrationTests.Tests._Oxyd.NeoTheology;
 
 /// <summary>
-/// P4.9: Reincarnation refreshes the cruciform's soul snapshot from the living wearer, and
-/// Resurrection drives the reader/cloner rig into growing the dead wearer a new body that
-/// carries their mind and their name.
+/// Reincarnation restores a saved soul; Resurrection grows an unoccupied matching vessel.
 /// </summary>
 [TestOf(typeof(LitanySystem))]
 public sealed class LitanyEffectsSoulTest : GameTest
@@ -62,41 +62,84 @@ public sealed class LitanyEffectsSoulTest : GameTest
     [SidedDependency(Side.Server)] private readonly MetaDataSystem _meta = default!;
 
     [Test]
-    public async Task Reincarnation_RefreshesTheSnapshotFromTheLivingWearer()
+    public async Task Reincarnation_RestoresSavedMindAndIdentity_NotThePreparedBodySnapshot()
     {
         var map = await Pair.CreateTestMap();
         EntityUid implant = default;
+        EntityUid target = default;
+        EntityUid mindId = default;
 
         await Server.WaitAssertion(() =>
         {
             _litany.TestingClearAvailabilityOverrides();
             _litany.TestingClearActors();
-
             var origin = TileCentre(map.GridCoords);
             var caster = SpawnBearer(origin);
             _litany.TestingTreatAsActor(caster);
 
-            var target = SpawnBearer(origin.Offset(new Vector2(1f, 0f)));
-            implant = SComp<CruciformBearerComponent>(target).Cruciform!.Value;
-            Assert.That(_modules.TryInstall(implant, SComp<CruciformComponent>(implant), CloningModule), Is.True,
-                "Setup: the target's cruciform must carry the cloning module.");
-            var stale = SComp<CruciformSoulComponent>(implant).Name;
-            Assert.That(stale, Is.Not.Empty, "Setup: installing the cloning module must write a snapshot.");
+            var original = SpawnBearer(origin.Offset(new Vector2(10f, 0f)));
+            _meta.SetEntityName(original, RebornName);
+            mindId = _minds.CreateMind(null, RebornName).Owner;
+            _minds.TransferTo(mindId, original);
+            implant = SComp<CruciformBearerComponent>(original).Cruciform!.Value;
+            _mobState.ChangeMobState(original, MobState.Dead);
+            Assert.That(_effects.TryExtractInstalledCruciform(original, implant), Is.True);
 
-            _meta.SetEntityName(target, RebornName);
-            Assert.That(SComp<CruciformSoulComponent>(implant).Name, Is.EqualTo(stale),
-                "Setup: renaming the body must not touch the stored snapshot.");
-
+            target = SSpawnAtPosition(HumanProto, origin.Offset(Vector2.UnitX));
+            var dna = SComp<DnaComponent>(target);
+            dna.DNA = SComp<CruciformSoulComponent>(implant).Dna;
+            _meta.SetEntityName(target, "Unoccupied vessel, not the saved identity");
+            Assert.That(_effects.TryImplantLooseCruciform(target, implant), Is.True);
+            Assert.That(SComp<CruciformComponent>(implant).Active, Is.False);
+            Assert.That(_cruciform.Activate(target), Is.False, "Baptism must not replace a saved soul.");
             var begin = _litany.TryBeginLitany(caster, Reincarnation, LitanyCastOrigin.ManualSpeech);
-            Assert.That(begin.Success, Is.True, begin.Reason?.Id ?? "Reincarnation begin failed");
+            Assert.That(begin.Success, Is.True, begin.Reason?.Id);
         });
 
         await AdvancePastCast();
-
         await Server.WaitAssertion(() =>
         {
-            Assert.That(SComp<CruciformSoulComponent>(implant).Name, Is.EqualTo(RebornName),
-                "A completed Reincarnation must refresh the snapshot from the living wearer.");
+            Assert.That(SComp<MindContainerComponent>(target).Mind, Is.EqualTo(mindId));
+            Assert.That(SComp<MindComponent>(mindId).OwnedEntity, Is.EqualTo(target));
+            Assert.That(ServerName(target), Is.EqualTo(RebornName));
+            Assert.That(SComp<CruciformSoulComponent>(implant).MindId, Is.EqualTo(mindId));
+            Assert.That(SComp<CruciformComponent>(implant).Active, Is.True);
+        });
+    }
+
+    [TestCase("dna")]
+    [TestCase("occupied")]
+    [TestCase("original-living")]
+    [TestCase("godblood")]
+    public async Task Reincarnation_InvalidVesselCannotReplaceTheSavedSoul(string failure)
+    {
+        var map = await Pair.CreateTestMap();
+        await Server.WaitAssertion(() =>
+        {
+            var original = SpawnBearer(TileCentre(map.GridCoords));
+            var mindId = _minds.CreateMind(null, RebornName).Owner;
+            _minds.TransferTo(mindId, original);
+            var implant = SComp<CruciformBearerComponent>(original).Cruciform!.Value;
+            _mobState.ChangeMobState(original, MobState.Dead);
+            Assert.That(_effects.TryExtractInstalledCruciform(original, implant), Is.True);
+            var soul = SComp<CruciformSoulComponent>(implant);
+            var savedName = soul.Name;
+            var target = SSpawnAtPosition(HumanProto, TileCentre(map.GridCoords).Offset(Vector2.UnitX));
+            SComp<DnaComponent>(target).DNA = failure == "dna" ? "wrong-vessel" : soul.Dna;
+            Assert.That(_effects.TryImplantLooseCruciform(target, implant), Is.True);
+            if (failure == "occupied")
+                _minds.TransferTo(_minds.CreateMind(null, "Other soul").Owner, target);
+            else if (failure == "original-living")
+                _mobState.ChangeMobState(original, MobState.Alive);
+            else if (failure == "godblood")
+                SEntMan.EnsureComponent<GodbloodMutationComponent>(target);
+
+            var reincarnate = new LitanyReincarnationEvent(target, false);
+            SEntMan.EventBus.RaiseLocalEvent(target, ref reincarnate);
+            Assert.That(reincarnate.Handled, Is.False);
+            Assert.That(soul.MindId, Is.EqualTo(mindId));
+            Assert.That(soul.Name, Is.EqualTo(savedName));
+            Assert.That(SComp<CruciformComponent>(implant).Active, Is.False);
         });
     }
 
@@ -116,6 +159,7 @@ public sealed class LitanyEffectsSoulTest : GameTest
 
         EntityUid mindId = default;
         EntityUid cloner = default;
+        EntityUid clone = default;
         string victimName = string.Empty;
 
         await Server.WaitAssertion(() =>
@@ -158,8 +202,8 @@ public sealed class LitanyEffectsSoulTest : GameTest
             Assert.That(_minds.TryGetMind(victim, out var holder, out _) && holder == mindId, Is.True,
                 "Setup: the victim must carry the mind.");
 
-            Assert.That(_modules.TryInstall(implant!.Value, SComp<CruciformComponent>(implant.Value), CloningModule), Is.True,
-                "Setup: the cloning module must install.");
+            Assert.That(SComp<CruciformComponent>(implant!.Value).InstalledModules, Does.Contain(CloningModule),
+                "Normal activation supplies cloning; mind assignment refreshes its snapshot.");
             var soul = SComp<CruciformSoulComponent>(implant.Value);
             Assert.Multiple(() =>
             {
@@ -169,15 +213,15 @@ public sealed class LitanyEffectsSoulTest : GameTest
 
             victimName = ServerName(victim);
             Assert.That(soul.AtheistMutation, Is.EqualTo(biologicalRejection));
-            SEntMan.RemoveComponent<AtheistMutationComponent>(victim);
             Assert.That(soul.Profile!.Age, Is.EqualTo(55));
             Assert.That(soul.Profile.Appearance.EyeColor, Is.EqualTo(Color.Blue));
+            _mobState.ChangeMobState(victim, MobState.Dead);
+            SEntMan.RemoveComponent<AtheistMutationComponent>(victim);
             _meta.SetEntityName(victim, "Changed after snapshot");
             var changedProfile = savedProfile.WithAge(80);
             changedProfile.Appearance.EyeColor = Color.Red;
             SEntMan.System<HumanoidProfileSystem>().ApplyProfileTo(victim, changedProfile);
             SEntMan.System<SharedVisualBodySystem>().ApplyProfileTo(victim, changedProfile);
-            _mobState.ChangeMobState(victim, MobState.Dead);
             Assert.That(_effects.TryExtractInstalledCruciform(victim, implant.Value), Is.True,
                 "Setup: the soul-bearing cruciform must come out of the corpse.");
             Assert.That(_slots.TryInsert(reader, "cruciform", implant.Value, null), Is.True,
@@ -207,13 +251,14 @@ public sealed class LitanyEffectsSoulTest : GameTest
         await Server.WaitAssertion(() =>
         {
             Assert.That(SEntMan.TryGetComponent<MindComponent>(mindId, out var mind), Is.True);
-            Assert.That(mind!.OwnedEntity, Is.Not.Null, "A completed Resurrection must move the stored mind.");
-            var clone = mind.OwnedEntity!.Value;
+            Assert.That(SComp<CloningPodComponent>(cloner).BodyContainer.ContainedEntity, Is.Not.Null);
+            clone = SComp<CloningPodComponent>(cloner).BodyContainer.ContainedEntity!.Value;
+            Assert.That(mind!.OwnedEntity, Is.Not.EqualTo(clone), "Resurrection grows an unoccupied vessel.");
 
             Assert.Multiple(() =>
             {
-                Assert.That(SEntMan.TryGetComponent<MindContainerComponent>(clone, out var holder) && holder.Mind == mindId, Is.True,
-                    "The new body must carry the mind.");
+                Assert.That(SComp<MindContainerComponent>(clone).Mind, Is.Null,
+                    "Only Reincarnation, not body growth, restores the saved mind.");
                 Assert.That(ServerName(clone), Is.EqualTo(victimName),
                     "The new body must carry the saved name.");
                 Assert.That(SComp<HumanoidProfileComponent>(clone).Age, Is.EqualTo(55),
@@ -246,10 +291,9 @@ public sealed class LitanyEffectsSoulTest : GameTest
         {
             Assert.That(SComp<CloningPodComponent>(cloner).BodyContainer.ContainedEntity, Is.Null,
                 "The pod must release the body after growth.");
-            var clone = SComp<MindComponent>(mindId).OwnedEntity;
-            Assert.That(clone, Is.Not.Null);
-            Assert.That(ServerName(clone!.Value), Is.EqualTo(victimName));
-            SEntMan.System<DamageableSystem>().GetAllDamage(clone.Value).DamageDict.TryGetValue("Cellular", out var injury);
+            Assert.That(ServerName(clone), Is.EqualTo(victimName));
+            Assert.That(SComp<MindContainerComponent>(clone).Mind, Is.Null);
+            SEntMan.System<DamageableSystem>().GetAllDamage(clone).DamageDict.TryGetValue("Cellular", out var injury);
             Assert.That(injury.Float(), Is.EqualTo(cellularDamage), "Normal pod ejection must not erase the injury.");
         });
     }

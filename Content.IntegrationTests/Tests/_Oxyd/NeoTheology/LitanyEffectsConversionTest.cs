@@ -6,6 +6,7 @@ using Content.Server.Atmos.Components;
 using Content.Shared._Oxyd.NeoTheology;
 using Content.Shared._Oxyd.NeoTheology.Components;
 using Content.Shared._Oxyd.NeoTheology.Effects;
+using Content.Shared._Oxyd.NeoTheology.Events;
 using Content.Shared.IdentityManagement;
 using Content.Shared.Implants;
 using Content.Shared.Nutrition.Components;
@@ -34,6 +35,7 @@ public sealed class LitanyEffectsConversionTest : SocialNoticeGameTest
     private static readonly ProtoId<NeoTheologyProfilePrototype> Inquisitor = "OxydNtInquisitor";
 
     private static readonly ProtoId<CoreModulePrototype> BaseModule = "OxydNtModuleBase";
+    private static readonly ProtoId<CoreModulePrototype> CloningModule = "OxydNtModuleCloning";
     private static readonly ProtoId<CoreModulePrototype> AcolyteModule = "OxydNtModuleAcolyte";
     private static readonly ProtoId<CoreModulePrototype> PriestModule = "OxydNtModulePriest";
     private static readonly ProtoId<CoreModulePrototype> PriestConvertModule = "OxydNtModulePriestConvert";
@@ -59,6 +61,7 @@ public sealed class LitanyEffectsConversionTest : SocialNoticeGameTest
 
     [SidedDependency(Side.Server)] private readonly LitanySystem _litany = default!;
     [SidedDependency(Side.Server)] private readonly CruciformSystem _cruciform = default!;
+    [SidedDependency(Side.Server)] private readonly CruciformUpgradeSystem _upgrades = default!;
     [SidedDependency(Side.Server)] private readonly SharedSubdermalImplantSystem _implants = default!;
     [SidedDependency(Side.Server)] private readonly LitanyEffectSystem _effects = default!;
     [SidedDependency(Side.Server)] private readonly SatiationSystem _satiation = default!;
@@ -130,8 +133,8 @@ public sealed class LitanyEffectsConversionTest : SocialNoticeGameTest
         {
             Assert.That(_cruciform.TryGetCruciform(target, out _, out var component), Is.True);
             Assert.That(component.Profile, Is.EqualTo(Acolyte));
-            Assert.That(component.InstalledModules, Is.EquivalentTo(new[] { BaseModule, AcolyteModule }),
-                "Confirmation must swap in the acolyte rank modules, not only the profile.");
+            Assert.That(component.InstalledModules, Is.EquivalentTo(new[] { BaseModule, CloningModule, AcolyteModule }),
+                "Confirmation changes specialization without discarding the soul module.");
             Assert.That(component.UnlockedSets,
                 Is.EquivalentTo(new[] { CommonSet, MachinerySet, GroupSet, AcolyteSet }),
                 "The acolyte rank must unlock exactly the acolyte sets.");
@@ -250,6 +253,9 @@ public sealed class LitanyEffectsConversionTest : SocialNoticeGameTest
             // Initiation is inquisitor-set; only an inquisitor may chant it.
             var caster = PrepareCaster(origin, Inquisitor);
             target = SpawnBearer(origin.Offset(new Vector2(1f, 0f)), Disciple);
+            Assert.That(_cruciform.TryGetCruciform(target, out var implant, out var comp), Is.True);
+            var kit = SSpawnAtPosition("OxydNtPreacherAscensionKit", origin);
+            Assert.That(_upgrades.TryInstallCoreUpgrade(implant, comp, kit), Is.True);
 
             var begin = _litany.TryBeginLitany(caster, Initiation, LitanyCastOrigin.ManualSpeech);
             Assert.That(begin.Success, Is.True, begin.Reason?.Id ?? "Initiation begin failed");

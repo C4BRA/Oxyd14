@@ -24,9 +24,7 @@ public sealed partial class NeoTheologyBlueprintPrototype : IPrototype
     public EntProtoId Build { get; private set; } = string.Empty;
 
     /// <summary>
-    /// Eris per-blueprint <c>build_time</c>. The cast transaction uses one shared delay
-    /// (the litany's <c>extraDelay</c>), because the effects run in one synchronous apply
-    /// step; this field records the source value for audits.
+    /// Eris per-blueprint <c>build_time</c>, used as Manifestation's post-chant DoAfter.
     /// </summary>
     [DataField]
     public TimeSpan BuildTime { get; private set; } = TimeSpan.FromSeconds(3);

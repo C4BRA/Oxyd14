@@ -5,9 +5,8 @@ namespace Content.Shared._Oxyd.NeoTheology.Effects;
 
 /// <summary>
 /// Eris <c>rituals/inquisitor.dm:259-289</c> (Initiation): the ascension kit's convert module is
-/// activated and the target is promoted to Preacher. Eris has the kit item install the module and
-/// the ritual only activate it; the fork has no coreimplant_upgrade item path, so the server
-/// handler performs both stages. The rank swap itself is server-only, reached through
+/// activated and the target is promoted to Preacher. The kit item installs the module and
+/// the ritual activates it. The rank swap itself is server-only, reached through
 /// <see cref="LitanyInitiationEvent"/>.
 /// </summary>
 public sealed partial class LitanyInitiationEffect : LitanyEffect
@@ -32,6 +31,12 @@ public sealed partial class LitanyInitiationEffect : LitanyEffect
             cruciform.InstalledModules.Contains(InquisitorRankModule))
         {
             failure = "oxyd-litany-initiation-already-preacher";
+            return false;
+        }
+
+        if (!cruciform.InstalledModules.Contains("OxydNtModulePriestConvert"))
+        {
+            failure = "oxyd-litany-initiation-no-kit";
             return false;
         }
 

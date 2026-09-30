@@ -38,7 +38,8 @@ public sealed class CruciformSoulTest : GameTest
             var comp = SComp<CruciformComponent>(implant);
             var bodyName = SEntMan.GetComponent<MetaDataComponent>(body).EntityName;
 
-            Assert.That(_modules.TryInstall(implant, comp, CloningModule), Is.True);
+            Assert.That(comp.InstalledModules, Does.Contain(CloningModule),
+                "Normal activation must install cloning without a test-only install.");
 
             var soul = SComp<CruciformSoulComponent>(implant);
             Assert.Multiple(() =>
@@ -60,7 +61,7 @@ public sealed class CruciformSoulTest : GameTest
         {
             var (_, implant) = Wearer(map.GridCoords);
             var comp = SComp<CruciformComponent>(implant);
-            Assert.That(_modules.TryInstall(implant, comp, CloningModule), Is.True);
+            Assert.That(comp.InstalledModules, Does.Contain(CloningModule));
 
             var before = SComp<CruciformSoulComponent>(implant).Name;
             Assert.That(before, Is.Not.Empty, "Setup: the module must have written a snapshot.");

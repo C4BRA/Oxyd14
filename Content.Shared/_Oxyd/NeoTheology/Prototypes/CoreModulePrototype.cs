@@ -25,7 +25,7 @@ public sealed partial class CoreModulePrototype : IPrototype
 
     /// <summary>Multiplied into profile capacity. Eris red_light = 1.6, inquisitor = 2.0.</summary>
     [DataField]
-    public float MaxHolinessMultiplier { get; private set; } = 1f;
+    public double MaxHolinessMultiplier { get; private set; } = 1d;
 
     /// <summary>Added to the profile regeneration multiplier. Eris red_light = 0.15, inquisitor = 0.25.</summary>
     [DataField]

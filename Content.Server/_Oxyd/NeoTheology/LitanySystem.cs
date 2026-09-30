@@ -82,6 +82,7 @@ public sealed partial class LitanySystem : EntitySystem
         base.Update(frameTime);
         ExpireStaleCasts();
         ExpireCeremonies();
+        RefreshOpenViewers();
     }
 
     /// <summary>
@@ -285,6 +286,16 @@ public sealed partial class LitanySystem : EntitySystem
             cast.ChoiceAllowsPlainText = litany.AllowPlainText;
         }
 
+        if (litany.Effect == LitanyEffectKind.DivineBlessing &&
+            _effects.TryGetHeldOddity(actor, out var heldOddity, out _))
+            cast.HeldOddity = heldOddity;
+
+        foreach (var target in resolvedTargets)
+        {
+            if (_cruciform.TryGetCruciformEntity(target, out var targetImplant, out _))
+                cast.TargetCruciforms[target] = targetImplant;
+        }
+
         _pendingByRequest[requestId] = cast;
         bearer.PendingRequestId = requestId;
         Dirty(actor, bearer);
@@ -432,6 +443,8 @@ public sealed class PendingLitanyCast
     /// this exact list — it never re-resolves, so a mid-chant move cannot retarget.
     /// </summary>
     public List<EntityUid> Targets = new();
+    public Dictionary<EntityUid, EntityUid> TargetCruciforms = new();
+    public EntityUid? HeldOddity;
 
     public LitanyCastStage Stage;
     public string Phrase = string.Empty;

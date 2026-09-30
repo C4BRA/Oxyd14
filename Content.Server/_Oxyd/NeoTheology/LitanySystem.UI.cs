@@ -23,6 +23,24 @@ public sealed partial class LitanySystem
     private readonly Dictionary<EntityUid, LitanyViewerSnapshotMessage> _testingLastSnapshot = new();
 
     private uint _publicCatalogRevision = 1;
+    private TimeSpan _nextViewerRefresh;
+
+    private void RefreshOpenViewers()
+    {
+        if (_timing.CurTime < _nextViewerRefresh)
+            return;
+        _nextViewerRefresh = _timing.CurTime + TimeSpan.FromSeconds(1);
+        foreach (var (book, viewers) in _bookViewers.ToArray())
+        {
+            if (TerminatingOrDeleted(book))
+                continue;
+            foreach (var actor in viewers.ToArray())
+            {
+                if (!TerminatingOrDeleted(actor))
+                    SendViewerSnapshot(book, actor);
+            }
+        }
+    }
 
     public int TestingSnapshotSendCount { get; private set; }
 
@@ -328,7 +346,7 @@ public sealed partial class LitanySystem
             hasCruciform,
             active,
             cruciformComp?.Clearance ?? NeoTheologyClearance.None);
-        var entries = BuildViewerEntries(cruciformComp, active);
+        var entries = BuildViewerEntries(viewer, cruciformComp, active);
 
         return new LitanyViewerSnapshotMessage(
             revision,
@@ -340,7 +358,7 @@ public sealed partial class LitanySystem
             busy);
     }
 
-    private List<LitanyViewerEntry> BuildViewerEntries(CruciformComponent? cruciform, bool active)
+    private List<LitanyViewerEntry> BuildViewerEntries(EntityUid viewer, CruciformComponent? cruciform, bool active)
     {
         var entries = new List<LitanyViewerEntry>();
         if (!_catalog.CatalogReady)
@@ -367,15 +385,28 @@ public sealed partial class LitanySystem
             {
                 reason = "oxyd-litany-denied-entitlement";
             }
+            else if (TryComp<CruciformBearerComponent>(viewer, out var bearer) &&
+                !IsCooldownAvailable(viewer, bearer, litany, out var cooldown))
+            {
+                reason = cooldown.Reason;
+            }
             else
             {
                 available = true;
             }
 
+            var endsAt = TimeSpan.Zero;
+            if (litany.CooldownScope == LitanyCooldownScope.Global)
+                endsAt = _globalCooldowns.GetValueOrDefault(litany.CooldownKey);
+            else if (litany.CooldownScope == LitanyCooldownScope.Personal &&
+                TryComp<CruciformBearerComponent>(viewer, out var owner))
+                endsAt = owner.PersonalCooldowns.GetValueOrDefault(litany.CooldownKey);
+
             entries.Add(new LitanyViewerEntry(
                 litany.ID,
                 available,
-                reason));
+                reason,
+                endsAt));
         }
 
         return entries;

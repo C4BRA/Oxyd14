@@ -32,6 +32,7 @@ oxyd-litany-effect-failed = The litany failed to take hold. Your offering was re
 oxyd-litany-rejection-shed = Foreign matter rips free from your body.
 oxyd-litany-reveal-hostiles = Adversaries are near. You can feel something nasty and hostile.
 oxyd-litany-reveal-none = There is nothing there. You feel safe.
+oxyd-litany-reveal-traps = Something is wrong with this area. Tread carefully.
 oxyd-litany-purging = You feel weird as you progress through your addictions.
 oxyd-litany-pain = A wave of agony washes over you, the cruciform in your chest searing like a star for a few moments of eternity.
 oxyd-litany-asacris = The cruciform rejects its attachments.
@@ -58,9 +59,18 @@ oxyd-litany-upgrade-missing = No cruciform upgrade rests on the altar.
 oxyd-litany-upgrade-not-installed = The target's cruciform carries no attachment.
 oxyd-litany-soul-lost = The target carries no soul to bind.
 oxyd-litany-initiation-already-preacher = The target is already a preacher.
+oxyd-litany-initiation-no-kit = Install a preacher ascension kit before performing Initiation.
 
 # Construction packet (P4.13): blueprint choice labels, Divine Guidance output and the
 # Manifestation/Uproot failure reasons.
+oxyd-nt-release-biomatter = Release biomatter sheets
+oxyd-nt-blueprint-canister-name = biomatter canister
+oxyd-nt-blueprint-large-canister-name = large biomatter canister
+oxyd-nt-blueprint-bioprinter-name = biomatter printer
+oxyd-nt-blueprint-solidifier-name = biomatter solidifier
+oxyd-nt-blueprint-armaments-printer-name = armaments printer
+oxyd-nt-blueprint-public-door-name = public holy door
+oxyd-nt-blueprint-clergy-door-name = clergy holy door
 oxyd-nt-blueprint-altar-name = NeoTheology altar
 oxyd-nt-blueprint-biogenerator-name = biogenerator
 oxyd-nt-blueprint-biomatter-reclaimer-name = biomatter reclaimer

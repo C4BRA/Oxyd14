@@ -2,6 +2,8 @@ using Content.Shared._Oxyd.NeoTheology;
 using Content.Shared._Oxyd.NeoTheology.Components;
 using Content.Shared._Oxyd.NeoTheology.Effects;
 using Content.Shared._Oxyd.NeoTheology.Events;
+using System.Linq;
+using Content.Shared.Interaction;
 using Content.Shared.Movement.Systems;
 using Robust.Shared.Containers;
 
@@ -23,6 +25,54 @@ public sealed partial class CruciformUpgradeSystem : EntitySystem
     [Dependency] private readonly LitanyEffectSystem _effects = default!;
     [Dependency] private readonly SharedContainerSystem _containers = default!;
     [Dependency] private readonly MovementSpeedModifierSystem _movement = default!;
+    [Dependency] private readonly CoreModuleSystem _modules = default!;
+
+    [SubscribeLocalEvent]
+    private void OnInstallCoreUpgrade(Entity<CruciformCoreUpgradeComponent> ent, ref AfterInteractEvent args)
+    {
+        if (args.Handled || !args.CanReach || args.Target is not { } target)
+            return;
+
+        if (_cruciform.TryGetCruciformEntity(target, out var implant, out var installed))
+            args.Handled = TryInstallCoreUpgrade(implant, installed, ent.Owner);
+        else if (TryComp<CruciformComponent>(target, out var loose))
+            args.Handled = TryInstallCoreUpgrade(target, loose, ent.Owner);
+    }
+
+    public bool TryInstallCoreUpgrade(EntityUid cruciform, CruciformComponent comp, EntityUid item)
+    {
+        if (TerminatingOrDeleted(item) || EntityManager.IsQueuedForDeletion(item) ||
+            !TryComp<CruciformCoreUpgradeComponent>(item, out var upgrade) ||
+            comp.InstalledModules.Contains(upgrade.Module) || comp.CoreUpgrades.ContainsKey(upgrade.Module) ||
+            !ProtoMan.HasIndex(upgrade.Module))
+            return false;
+
+        var container = _containers.EnsureContainer<Container>(cruciform, "core_upgrades");
+        if (!_containers.Insert(item, container))
+            return false;
+
+        comp.CoreUpgrades[upgrade.Module] = item;
+        _modules.TryInstall(cruciform, comp, upgrade.Module);
+        return true;
+    }
+
+    public bool TryRemoveCoreUpgrades(EntityUid cruciform, CruciformComponent comp)
+    {
+        if (comp.CoreUpgrades.Count == 0)
+            return false;
+
+        foreach (var (module, item) in comp.CoreUpgrades.ToArray())
+        {
+            _modules.TryRemove(cruciform, comp, module);
+            // Removing the ascension kit reverses its conversion, not the physical attachment.
+            if (module == "OxydNtModulePriestConvert")
+                _cruciform.MakeCommon(cruciform, comp);
+            comp.CoreUpgrades.Remove(module);
+            QueueDel(item);
+        }
+
+        return true;
+    }
 
     /// <summary>
     /// InstallUpgrade bridge: the shared effect cannot see the altar lookup, so it raises

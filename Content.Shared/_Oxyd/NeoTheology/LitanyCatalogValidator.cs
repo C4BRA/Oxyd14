@@ -80,7 +80,7 @@ public static class LitanyCatalogValidator
                 errors);
         }
 
-        ValidateReachableCosts(litanies, sets, profiles, selectedRules, errors);
+        ValidateReachableCosts(prototypes, litanies, sets, profiles, selectedRules, errors);
         return errors;
     }
 
@@ -189,7 +189,16 @@ public static class LitanyCatalogValidator
                     errors.Add($"{profile.ID} references unknown access privilege {access.Id}.");
             }
 
-            ValidateSetReferences(profile.ID, profile.LitanySets, sets, errors);
+            var modules = new HashSet<ProtoId<CoreModulePrototype>>();
+            foreach (var moduleId in profile.StartingModules)
+            {
+                if (!modules.Add(moduleId))
+                    errors.Add($"{profile.ID} lists starting module {moduleId} more than once.");
+                if (!prototypes.TryIndex(moduleId, out var module))
+                    errors.Add($"{profile.ID} references unknown starting module {moduleId}.");
+                else
+                    ValidateSetReferences($"{profile.ID}/{moduleId}", module.LitanySets, sets, errors);
+            }
         }
 
         if (rules == null)
@@ -202,8 +211,8 @@ public static class LitanyCatalogValidator
 
             if (profile.AccessPrivileges.Count == 0)
                 errors.Add($"{profile.ID} has no access privileges.");
-            if (profile.LitanySets.Count == 0)
-                errors.Add($"{profile.ID} has no base litany sets.");
+            if (profile.StartingModules.Count == 0)
+                errors.Add($"{profile.ID} has no starting modules.");
         }
     }
 
@@ -463,6 +472,7 @@ public static class LitanyCatalogValidator
     }
 
     private static void ValidateReachableCosts(
+        IPrototypeManager prototypes,
         List<LitanyPrototype> litanies,
         Dictionary<string, LitanySetPrototype> sets,
         Dictionary<string, NeoTheologyProfilePrototype> profiles,
@@ -480,8 +490,16 @@ public static class LitanyCatalogValidator
                 if (!profiles.TryGetValue(profileId.Id, out var profile))
                     continue;
 
-                if (CanProfileUse(profile, litany, sets))
-                    max = Math.Max(max, profile.CruciformCapacity);
+                if (CanProfileUse(prototypes, profile, litany, sets))
+                {
+                    var capacity = profile.CruciformCapacity;
+                    foreach (var moduleId in profile.StartingModules)
+                    {
+                        if (prototypes.TryIndex(moduleId, out var module))
+                            capacity *= module.MaxHolinessMultiplier;
+                    }
+                    max = Math.Max(max, capacity);
+                }
             }
 
             var debitTolerance = double.IsFinite(rules.DebitTolerance) && rules.DebitTolerance >= 0
@@ -493,11 +511,19 @@ public static class LitanyCatalogValidator
     }
 
     private static bool CanProfileUse(
+        IPrototypeManager prototypes,
         NeoTheologyProfilePrototype profile,
         LitanyPrototype litany,
         Dictionary<string, LitanySetPrototype> sets)
     {
-        var unlocked = profile.LitanySets.Select(set => set.Id).ToHashSet(StringComparer.Ordinal);
+        var unlocked = new HashSet<string>(StringComparer.Ordinal);
+        foreach (var moduleId in profile.StartingModules)
+        {
+            if (!prototypes.TryIndex(moduleId, out var module))
+                continue;
+            foreach (var set in module.LitanySets)
+                unlocked.Add(set.Id);
+        }
 
         return litany.GrantedBy.Any(grant => unlocked.Contains(grant.Id) &&
                                              sets.TryGetValue(grant.Id, out var set) &&

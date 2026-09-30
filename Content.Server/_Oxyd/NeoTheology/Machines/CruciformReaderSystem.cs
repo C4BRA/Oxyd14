@@ -2,6 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using Content.Server.Cloning;
 using Content.Server.Cloning.Components;
 using Content.Shared.Body;
+using Content.Shared.Forensics.Components;
 using Content.Shared.Damage.Systems;
 using Content.Shared.Ghost.Components;
 using Content.Shared.Humanoid;
@@ -91,7 +92,8 @@ public sealed partial class CruciformReaderSystem : EntitySystem
     public bool CanResurrect(EntityUid cloner, EntityUid reader)
     {
         if (!_machines.IsOperational(cloner) ||
-            !TryReadSoul(reader, out var soul) || soul.Profile == null || soul.BiomassCost <= 0 ||
+            !TryReadSoul(reader, out var soul) || soul.Profile == null || soul.Dna == null || soul.BiomassCost <= 0 ||
+            (soul.PreparedBody is { } prepared && !TerminatingOrDeleted(prepared) && !_mobState.IsDead(prepared)) ||
             soul.MindId is not { } mindId || !TryComp<MindComponent>(mindId, out var mind) ||
             mind.UserId is not { } user || !_players.TryGetSessionById(user, out _) ||
             !TryComp<CloningPodComponent>(cloner, out var pod) ||
@@ -127,6 +129,12 @@ public sealed partial class CruciformReaderSystem : EntitySystem
         _visualBody.ApplyProfileTo(body, profile);
         _profile.ApplyProfileTo(body, profile);
         _metadata.SetEntityName(body, soul.Name);
+        var dna = EnsureComp<DnaComponent>(body);
+        dna.DNA = soul.Dna;
+        Dirty(body, dna);
+        var prints = EnsureComp<FingerprintComponent>(body);
+        prints.Fingerprint = soul.Fingerprint;
+        Dirty(body, prints);
         if (soul.AtheistMutation)
             EnsureComp<AtheistMutationComponent>(body);
 
@@ -137,7 +145,15 @@ public sealed partial class CruciformReaderSystem : EntitySystem
             return;
         }
 
-        TrySpendBiomass(ent.Owner, soul.BiomassCost, pod);
+        if (!TrySpendBiomass(ent.Owner, soul.BiomassCost, pod))
+        {
+            _containers.Remove(body, pod.BodyContainer);
+            QueueDel(body);
+            args.Handled = false;
+            return;
+        }
+
+        soul.PreparedBody = body;
         var beingCloned = AddComp<BeingClonedComponent>(body);
         beingCloned.Mind = mind;
         beingCloned.Parent = ent.Owner;
@@ -150,7 +166,7 @@ public sealed partial class CruciformReaderSystem : EntitySystem
             !ent.Comp.DamageExemptProfiles.Contains(cruciform.Profile))
             _damage.TryChangeDamage(body, ent.Comp.ResurrectionDamage, ignoreResistances: true);
 
-        _cloningPod.TransferMindToClone(mindId, mind);
+        // Resurrection grows an unoccupied vessel. Commitment + Reincarnation reunite the soul.
         _cloningPod.UpdateStatus(ent.Owner, CloningPodStatus.Cloning, pod);
     }
 }

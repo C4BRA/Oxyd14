@@ -229,6 +229,13 @@ public sealed partial class LitanySystem
             return;
         }
 
+        if (!ValidateRecordedTargets(cast, litany))
+        {
+            SendResultToActor(cast.Actor, LitanyActionResult.Fail("oxyd-litany-no-target", cast.RequestId));
+            ClearPending(cast, cancelled: true);
+            return;
+        }
+
         var hasHandler = LitanyHandlerCatalog.HasHandler(litany.Effect);
         if (hasHandler && !_effects.TryValidateEffects(cast.Actor, litany, out _, cast.Targets,
                 cast.SelectedTokens, cast.SelectedText, cast.Designation, cast.SelectedBlueprint))
@@ -420,6 +427,14 @@ public sealed partial class LitanySystem
         cast.Designation = designation;
         cast.SelectedBlueprint = blueprint;
         cast.AwaitingChoice = false;
+        if (blueprint is { } blueprintId && litany.Effects.OfType<LitanyManifestationEffect>().Any())
+            cast.ExtraDelay = _prototypes.Index(blueprintId).BuildTime;
+
+        if (!ValidateRecordedTargets(cast, litany))
+        {
+            ClearPending(cast, cancelled: true);
+            return LitanyActionResult.Fail("oxyd-litany-no-target", requestId);
+        }
 
         if (LitanyHandlerCatalog.HasHandler(litany.Effect) &&
             !_effects.TryValidateEffects(cast.Actor, litany, out var effectFail, cast.Targets,
@@ -520,6 +535,7 @@ public sealed partial class LitanySystem
         _availabilityOverrides.Clear();
         _testingTreatAsActor.Clear();
         _bookViewers.Clear();
+        _nextViewerRefresh = default;
         _testingLastSnapshot.Clear();
         TestingSnapshotSendCount = 0;
         _requestNonce = 0;
@@ -527,6 +543,32 @@ public sealed partial class LitanySystem
         var ceremonies = EntityQueryEnumerator<ActiveCeremonyComponent>();
         while (ceremonies.MoveNext(out var starter, out _))
             RemComp<ActiveCeremonyComponent>(starter);
+    }
+
+    /// <summary>Recheck eligibility without changing the chosen identity or adding recipients.</summary>
+    private bool ValidateRecordedTargets(PendingLitanyCast cast, LitanyPrototype litany)
+    {
+        if (TerminatingOrDeleted(cast.Actor) || EntityManager.IsQueuedForDeletion(cast.Actor) ||
+            !TryResolveTargets(cast.Actor, litany, out var eligible, out _))
+            return false;
+
+        if (cast.HeldOddity is { } oddity &&
+            (!_effects.TryGetHeldOddity(cast.Actor, out var held, out _) || held != oddity ||
+                TerminatingOrDeleted(oddity) || EntityManager.IsQueuedForDeletion(oddity)))
+            return false;
+
+        foreach (var target in cast.Targets)
+        {
+            if (TerminatingOrDeleted(target) || EntityManager.IsQueuedForDeletion(target) ||
+                !eligible.Contains(target))
+                return false;
+
+            if (cast.TargetCruciforms.TryGetValue(target, out var recorded) &&
+                (!_cruciform.TryGetCruciformEntity(target, out var current, out _) || current != recorded))
+                return false;
+        }
+
+        return true;
     }
 
     private bool TryRateLimit(EntityUid actor, bool isBegin, out LitanyActionResult failure)

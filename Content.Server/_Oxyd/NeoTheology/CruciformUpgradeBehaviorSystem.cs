@@ -1,4 +1,5 @@
 using Content.Server._Oxyd.Framework.ViewCalc;
+using Content.Server.Spreader;
 using Content.Shared._Oxyd.NeoTheology;
 using Content.Shared._Oxyd.NeoTheology.Components;
 using Content.Shared.Botany.Components;
@@ -11,6 +12,7 @@ using Content.Shared.FixedPoint;
 using Content.Shared.Fluids.Components;
 using Content.Shared.Mobs;
 using Content.Shared.Mobs.Systems;
+using Content.Shared.Mobs.Components;
 using Content.Shared.Movement.Components;
 using Content.Shared.Movement.Systems;
 using Content.Shared.Weapons.Melee;
@@ -125,6 +127,10 @@ public sealed partial class CruciformUpgradeBehaviorSystem : EntitySystem
         // Eris clean_blood() only wipes the bearer's own tile.
         if (aura.CleanPuddles)
         {
+            // Native kudzu is the fork's spreading-vine counterpart. Wither, do not delete healthy crops.
+            foreach (var (vine, _) in _lookup.GetEntitiesInRange<KudzuComponent>(position, aura.Radius))
+                _damageable.TryChangeDamage(vine, new DamageSpecifier { DamageDict = { ["Slash"] = 1 } }, ignoreResistances: true);
+
             foreach (var (puddle, _) in _lookup.GetEntitiesInRange<PuddleComponent>(position, 0.5f))
                 QueueDel(puddle);
         }
@@ -177,7 +183,8 @@ public sealed partial class CruciformUpgradeBehaviorSystem : EntitySystem
         {
             foreach (var (target, _) in _lookup.GetEntitiesInRange<DamageableComponent>(coordinates, martyr.Radius))
             {
-                if (target == body || HasComp<CruciformBearerComponent>(target))
+                if (target == body || !HasComp<MobStateComponent>(target) || _mobState.IsDead(target) ||
+                    _cruciform.TryGetCruciformEntity(target, out _, out _))
                     continue;
 
                 var distance = MathF.Max(1f, (_xform.GetWorldPosition(Transform(target)) - source).Length());

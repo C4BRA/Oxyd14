@@ -18,8 +18,11 @@ public sealed partial class LitanyAcceleratedGrowthEffect : LitanyEffect
         LitanyEffectContext context,
         out LocId? failure)
     {
-        failure = null;
-        return context.Targets.Count > 0;
+        var check = new LitanyAcceleratedGrowthEvent(context.User, Multiplier, context.Litany.EffectDuration,
+            false, ValidateOnly: true);
+        system.RaiseOn(context.User, ref check);
+        failure = check.Handled ? null : "oxyd-litany-no-target";
+        return check.Handled;
     }
 
     public override bool Apply(LitanyEffectSystem system, LitanyEffectContext context)

@@ -10,6 +10,100 @@
 #   stack in this fork, so the tank recipe uses steel and plastic only.
 
 - type: oxydNtBlueprint
+  id: OxydNtBlueprintBiomatterCanister
+  name: oxyd-nt-blueprint-canister-name
+  build: OxydNtBiomatterCanister
+  buildTime: 3
+  materials:
+  - stack: Steel
+    amount: 8
+  - stack: Plastic
+    amount: 2
+
+- type: oxydNtBlueprint
+  id: OxydNtBlueprintBiomatterCanisterLarge
+  name: oxyd-nt-blueprint-large-canister-name
+  build: OxydNtBiomatterCanisterLarge
+  buildTime: 5
+  materials:
+  - stack: Steel
+    amount: 16
+  - stack: Plastic
+    amount: 4
+  - stack: Plasteel
+    amount: 2
+
+- type: oxydNtBlueprint
+  id: OxydNtBlueprintBioprinter
+  name: oxyd-nt-blueprint-bioprinter-name
+  build: OxydNtBioprinter
+  buildTime: 5
+  materials:
+  - stack: Steel
+    amount: 10
+  - stack: Glass
+    amount: 2
+  - stack: Silver
+    amount: 6
+  - item: ToolboxMechanical
+
+- type: oxydNtBlueprint
+  id: OxydNtBlueprintSolidifier
+  name: oxyd-nt-blueprint-solidifier-name
+  build: OxydNtBiomatterSolidifier
+  buildTime: 9
+  materials:
+  - stack: Steel
+    amount: 20
+  - stack: Silver
+    amount: 5
+  - item: OxydNtBiomatterCanister
+
+- type: oxydNtBlueprint
+  id: OxydNtBlueprintArmamentsPrinter
+  name: oxyd-nt-blueprint-armaments-printer-name
+  build: OxydNtArmamentsPrinter
+  buildTime: 10
+  # Separate native printer: local recipe, because Eris embeds this shop in the Eye.
+  materials:
+  - stack: Steel
+    amount: 10
+  - stack: Glass
+    amount: 5
+  - stack: Gold
+    amount: 5
+  - stack: Cable
+    amount: 5
+
+- type: oxydNtBlueprint
+  id: OxydNtBlueprintHolyDoorPublic
+  name: oxyd-nt-blueprint-public-door-name
+  build: OxydNtHolyDoorPublic
+  buildTime: 8
+  materials:
+  - stack: Steel
+    amount: 5
+  - stack: Biomatter
+    amount: 20
+  - stack: Silver
+    amount: 2
+
+- type: oxydNtBlueprint
+  id: OxydNtBlueprintHolyDoorClergy
+  name: oxyd-nt-blueprint-clergy-door-name
+  build: OxydNtHolyDoorClergy
+  buildTime: 8
+  materials:
+  - stack: Steel
+    amount: 5
+  - stack: Biomatter
+    amount: 20
+  - stack: Silver
+    amount: 2
+  - stack: Gold
+    amount: 5
+
+- type: oxydNtBlueprint
   id: OxydNtBlueprintAltar
   name: oxyd-nt-blueprint-altar-name
   build: OxydNtAltar

@@ -15,8 +15,14 @@ public sealed partial class LitanyAsacrisEffect : LitanyEffect
         LitanyEffectContext context,
         out LocId? failure)
     {
+        failure = "oxyd-litany-no-effect";
+        if (context.Targets.Count == 0 ||
+            !system.TryGetInstalledCruciform(context.Targets[0], out var cruciform) ||
+            cruciform.CoreUpgrades.Count == 0)
+            return false;
+
         failure = null;
-        return context.Targets.Count > 0;
+        return true;
     }
 
     public override bool Apply(LitanyEffectSystem system, LitanyEffectContext context)

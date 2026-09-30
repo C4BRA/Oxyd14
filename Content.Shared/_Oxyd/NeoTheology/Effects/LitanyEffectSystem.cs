@@ -557,7 +557,7 @@ public sealed partial class LitanyEffectSystem : EntitySystem, ILitanyEffectRais
         return true;
     }
 
-    /// <summary>Oddity held in the active hand — DivineBlessing blesses the caster's own oddity.</summary>
+    /// <summary>Divine Blessing prefers the active oddity, or the sole oddity held beside the Bible.</summary>
     public bool IsOddityBlessed(EntityUid item) => HasComp<CruciformBlessedComponent>(item);
 
     public void MarkOddityBlessed(EntityUid item) => EnsureComp<CruciformBlessedComponent>(item);
@@ -566,14 +566,29 @@ public sealed partial class LitanyEffectSystem : EntitySystem, ILitanyEffectRais
     {
         item = EntityUid.Invalid;
         oddity = null!;
-        if (!_hands.TryGetActiveItem(user, out var held) || held is not { } uid)
-            return false;
-        if (!TryComp(uid, out OddityComponent? comp))
+        if (_hands.TryGetActiveItem(user, out var active) && active is { } held &&
+            TryComp<OddityComponent>(held, out var activeOddity))
+        {
+            item = held;
+            oddity = activeOddity;
+            return true;
+        }
+
+        if (active is not { } book || !HasComp<LitanyBookComponent>(book) ||
+            !TryComp<Content.Shared.Hands.Components.HandsComponent>(user, out var hands))
             return false;
 
-        item = uid;
-        oddity = comp;
-        return true;
+        foreach (var candidate in _hands.EnumerateHeld((user, hands)))
+        {
+            if (!TryComp<OddityComponent>(candidate, out var heldOddity))
+                continue;
+            if (item != EntityUid.Invalid)
+                return false; // Ambiguous: never bless a different item arbitrarily.
+            item = candidate;
+            oddity = heldOddity;
+        }
+
+        return item != EntityUid.Invalid;
     }
 
     public static bool IsClergyProfile(ProtoId<NeoTheologyProfilePrototype> profile)

@@ -181,7 +181,9 @@ public sealed partial class LitanySystem
         var targets = new List<EntityUid> { starter };
         foreach (var participant in ceremony.Participants)
         {
-            if (participant != starter && _mobState.IsAlive(participant))
+            if (participant != starter && _mobState.IsAlive(participant) &&
+                _cruciform.IsActiveBearer(participant) &&
+                _xform.InRange(starter, participant, ceremony.Range))
                 targets.Add(participant);
         }
 
@@ -192,7 +194,14 @@ public sealed partial class LitanySystem
         {
             ConsumeCeremonyMiraclePoint(litany);
             foreach (var target in targets)
+            {
+                if (_cruciform.TryGetCruciform(target, out var implant, out var state))
+                {
+                    state.RighteousLife = Math.Min(100f, state.RighteousLife + 25f);
+                    _cruciform.RecomputeProfile(implant, state);
+                }
                 _effects.DeliverSocialNotice(target, Loc.GetString("oxyd-litany-ceremony-success"));
+            }
         }
         else
         {
@@ -293,7 +302,7 @@ public sealed partial class LitanySystem
         while (query.MoveNext(out var starter, out var ceremony))
         {
             if (!_mobState.IsAlive(starter) ||
-                !_cruciform.TryGetCruciform(starter, out _, out _))
+                !_cruciform.TryGetCruciform(starter, out var implant, out _) || implant != ceremony.Cruciform)
             {
                 expired.Add(starter);
             }

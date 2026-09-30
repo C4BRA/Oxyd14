@@ -1,3 +1,4 @@
+using Content.Shared._Oxyd.NeoTheology;
 using Content.Shared._Oxyd.NeoTheology.Components;
 using Content.Shared._Oxyd.NeoTheology.Events;
 using Content.Shared.Damage;
@@ -44,8 +45,14 @@ public sealed partial class NeoTheologyDoorSystem : EntitySystem
 
     private void OnBeforeOpened(EntityUid uid, NeoTheologyDoorComponent door, BeforeDoorOpenedEvent args)
     {
-        if (args.User is not { } user)
+        if (door.MinimumClearance == NeoTheologyClearance.None)
             return;
+
+        if (args.User is not { } user)
+        {
+            args.Cancel();
+            return;
+        }
 
         if (HoldsTauCross(user))
             return;
@@ -135,7 +142,7 @@ public sealed partial class NeoTheologyDoorSystem : EntitySystem
     public bool TryConsumeBiomatter(EntityUid user, int amount, bool validateOnly = false)
     {
         var xform = Transform(user);
-        var inFront = xform.Coordinates.Offset(xform.WorldRotation.ToVec());
+        var inFront = xform.Coordinates.Offset(xform.LocalRotation.ToVec());
 
         foreach (var coords in new[] { xform.Coordinates, inFront })
         {

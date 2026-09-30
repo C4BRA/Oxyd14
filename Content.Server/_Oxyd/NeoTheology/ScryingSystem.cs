@@ -1,4 +1,6 @@
+using System.Numerics;
 using Content.Shared._Oxyd.NeoTheology.Components;
+using Robust.Shared.Map;
 using Content.Shared._Oxyd.NeoTheology.Events;
 using Robust.Shared.Timing;
 using Robust.Shared.Player;
@@ -18,6 +20,7 @@ namespace Content.Server._Oxyd.NeoTheology;
 public sealed partial class ScryingSystem : EntitySystem
 {
     [Dependency] private readonly SharedEyeSystem _eye = default!;
+    [Dependency] private readonly SharedTransformSystem _transform = default!;
     [Dependency] private readonly IPlayerManager _players = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly MobStateSystem _mobState = default!;
@@ -92,7 +95,9 @@ public sealed partial class ScryingSystem : EntitySystem
         var query = EntityQueryEnumerator<ScryingSessionComponent>();
         while (query.MoveNext(out var uid, out var session))
         {
-            if (now >= session.EndsAt)
+            if (now >= session.EndsAt || TerminatingOrDeleted(session.Target) ||
+                EntityManager.IsQueuedForDeletion(session.Target) ||
+                session.Marker is not { } marker || TerminatingOrDeleted(marker))
                 RemCompDeferred<ScryingSessionComponent>(uid);
         }
     }
@@ -107,7 +112,10 @@ public sealed partial class ScryingSystem : EntitySystem
             return false;
 
         var marker = SpawnAtPosition(null, Transform(target).Coordinates);
+        // SpawnAtPosition attaches to the grid/map; explicitly reparent the camera to follow its bearer.
+        _transform.SetCoordinates(marker, new EntityCoordinates(target, Vector2.Zero));
         var session = EnsureComp<ScryingSessionComponent>(caster);
+        session.Target = target;
         session.PreviousTarget = casterEye.Target;
         session.Marker = marker;
         _eye.SetTarget(caster, marker, casterEye);

@@ -27,6 +27,7 @@ public sealed partial class NeoTheologyConstructionSystem : EntitySystem
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly SharedStackSystem _stack = default!;
     [Dependency] private readonly IPrototypeManager _prototypes = default!;
+    [Dependency] private readonly SharedTransformSystem _xform = default!;
 
     /// <summary>Eris forbids a second Eye of the Protector in the area.</summary>
     private static readonly EntProtoId EyeOfTheProtector = "OxydNtEyeOfTheProtector";
@@ -133,8 +134,8 @@ public sealed partial class NeoTheologyConstructionSystem : EntitySystem
 
             if (!args.ValidateOnly)
             {
-                Refund(uid, blueprint);
                 QueueDel(uid);
+                Refund(uid, blueprint);
             }
 
             args.Handled = true;
@@ -175,50 +176,48 @@ public sealed partial class NeoTheologyConstructionSystem : EntitySystem
         bool consume,
         out LocId? failure)
     {
+        failure = "oxyd-litany-blueprint-missing";
         var used = new HashSet<EntityUid>();
+        var plan = new List<(EntityUid Uid, StackComponent? Stack, int Amount)>();
         foreach (var requirement in blueprint.Materials)
         {
-            var found = false;
+            if (requirement.Amount <= 0 || (requirement.Stack is null) == (requirement.Item is null))
+                return false;
+
+            var remaining = requirement.Stack is not null ? 1 : requirement.Amount;
             foreach (var uid in entities)
             {
-                if (used.Contains(uid))
+                if (used.Contains(uid) || TerminatingOrDeleted(uid) || EntityManager.IsQueuedForDeletion(uid))
                     continue;
 
+                StackComponent? stack = null;
                 if (requirement.Stack is { } stackType)
                 {
-                    if (!TryComp<StackComponent>(uid, out var stack) ||
-                        stack.StackTypeId != stackType ||
-                        stack.Count < requirement.Amount)
-                    {
+                    if (!TryComp(uid, out stack) || stack.StackTypeId != stackType || stack.Count < requirement.Amount)
                         continue;
-                    }
-
-                    if (consume && !_stack.TryUse((uid, stack), requirement.Amount))
-                        continue;
-
-                    found = true;
-                    used.Add(uid);
-                    break;
                 }
+                else if (MetaData(uid).EntityPrototype?.ID != requirement.Item!.Value.Id)
+                    continue;
 
-                if (requirement.Item is { } itemType)
-                {
-                    if (MetaData(uid).EntityPrototype?.ID != itemType.Id)
-                        continue;
-
-                    if (consume)
-                        QueueDel(uid);
-
-                    found = true;
-                    used.Add(uid);
+                used.Add(uid);
+                plan.Add((uid, stack, stack is null ? 1 : requirement.Amount));
+                if (--remaining == 0)
                     break;
-                }
             }
 
-            if (!found)
-            {
-                failure = "oxyd-litany-blueprint-missing";
+            if (remaining != 0)
                 return false;
+        }
+
+        // Preflight the entire recipe before touching any stack or item.
+        if (consume)
+        {
+            foreach (var (uid, stack, amount) in plan)
+            {
+                if (stack is null)
+                    QueueDel(uid);
+                else if (!_stack.TryUse((uid, stack), amount))
+                    return false;
             }
         }
 
@@ -240,7 +239,10 @@ public sealed partial class NeoTheologyConstructionSystem : EntitySystem
             }
 
             if (requirement.Item is { } itemType)
-                SpawnAtPosition(itemType, coords);
+            {
+                for (var i = 0; i < requirement.Amount; i++)
+                    SpawnAtPosition(itemType, coords);
+            }
         }
     }
 
@@ -264,7 +266,7 @@ public sealed partial class NeoTheologyConstructionSystem : EntitySystem
     {
         blueprint = default!;
         var prototypeId = MetaData(uid).EntityPrototype?.ID;
-        if (prototypeId is null)
+        if (prototypeId is null || TerminatingOrDeleted(uid) || EntityManager.IsQueuedForDeletion(uid))
             return false;
 
         foreach (var proto in _prototypes.EnumeratePrototypes<NeoTheologyBlueprintPrototype>())
@@ -318,10 +320,12 @@ public sealed partial class NeoTheologyConstructionSystem : EntitySystem
         var results = new List<EntityUid>();
         foreach (var uid in _lookup.GetEntitiesInRange(Transform(user).Coordinates, ScanRadius))
         {
-            if (!TryComp(uid, out TransformComponent? xform))
+            if (TerminatingOrDeleted(uid) || EntityManager.IsQueuedForDeletion(uid) ||
+                !TryComp(uid, out TransformComponent? xform))
                 continue;
 
-            if (xform.MapID == MapId.Nullspace || xform.Coordinates.Position.Floored() != tile)
+            if (xform.MapID == MapId.Nullspace ||
+                _xform.WithEntityId(xform.Coordinates, Transform(user).ParentUid).Position.Floored() != tile)
                 continue;
 
             results.Add(uid);

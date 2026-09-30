@@ -367,6 +367,9 @@ public sealed class LitanyCastTest : GameTest
         var implant = _implants.AddImplant(body, CruciformProto);
         Assert.That(implant, Is.Not.Null);
         Assert.That(_cruciform.Activate(body), Is.True);
+        // Test casting payments independently from the lifecycle regeneration tests.
+        SComp<CruciformComponent>(implant!.Value).RegenerationMultiplier = 0;
+        _cruciform.RecomputeProfile(implant.Value, SComp<CruciformComponent>(implant.Value));
         return body;
     }
 

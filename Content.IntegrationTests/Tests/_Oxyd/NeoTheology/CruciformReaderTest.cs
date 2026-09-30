@@ -97,8 +97,8 @@ public sealed class CruciformReaderTest : GameTest
         Assert.That(_cruciform.Activate(body), Is.True, "Setup: the bearer must be active.");
 
         var comp = SComp<CruciformComponent>(implant!.Value);
-        Assert.That(_modules.TryInstall(implant.Value, comp, CloningModule), Is.True,
-            "Setup: the cloning module must install.");
+        Assert.That(comp.InstalledModules, Does.Contain(CloningModule),
+            "Normal activation must supply the cloning module.");
         Assert.That(SComp<CruciformSoulComponent>(implant.Value).HasSnapshot, Is.True,
             "Setup: installing the cloning module must write a soul.");
 
