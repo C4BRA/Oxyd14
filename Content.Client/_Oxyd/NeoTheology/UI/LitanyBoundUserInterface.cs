@@ -21,6 +21,8 @@ public sealed class LitanyBoundUserInterface : BoundUserInterface
     {
         base.Open();
         _window = this.CreateWindow<LitanyWindow>();
+        if (EntMan.System<LitanyWindowMemorySystem>().LastViewState is { } viewState)
+            _window.RestoreViewState(viewState);
 
         _window.BeginLitany += OnBeginLitany;
         _window.SubmitChoices += OnSubmitChoices;
@@ -90,6 +92,7 @@ public sealed class LitanyBoundUserInterface : BoundUserInterface
     {
         if (disposing && _window is not null)
         {
+            EntMan.System<LitanyWindowMemorySystem>().LastViewState = _window.GetViewState();
             _window.BeginLitany -= OnBeginLitany;
             _window.SubmitChoices -= OnSubmitChoices;
             _window.CancelLitany -= OnCancelLitany;

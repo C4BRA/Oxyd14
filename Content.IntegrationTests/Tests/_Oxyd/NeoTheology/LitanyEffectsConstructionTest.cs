@@ -16,6 +16,7 @@ using Content.Shared.Stacks;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Localization;
 using Robust.Shared.Map;
+using Robust.Shared.Maths;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
 
@@ -267,6 +268,7 @@ public sealed class LitanyEffectsConstructionTest : GameTest
         _litany.TestingClearActors();
         var body = SSpawnAtPosition(HumanProto, coords);
         _litany.TestingTreatAsActor(body);
+        SEntMan.System<SharedTransformSystem>().SetLocalRotation(body, Direction.East.ToAngle());
         var implant = _implants.AddImplant(body, CruciformProto);
         Assert.That(implant, Is.Not.Null);
         Assert.That(_cruciform.Activate(body), Is.True);

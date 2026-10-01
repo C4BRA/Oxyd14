@@ -13,7 +13,7 @@
   - type: Item
     size: Large
   - type: Sprite
-    sprite: Objects/Consumable/Drinks/jug.rsi
+    sprite: Objects/Consumable/Drinks/generic_jug.rsi
     state: icon
 
 - type: entity

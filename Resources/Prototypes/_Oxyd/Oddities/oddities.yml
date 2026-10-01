@@ -1,0 +1,75 @@
+# Eris /obj/item/oddity: curios whose `giving` skills are learned while resting (SanitySystem)
+# and that Divine Blessing can strengthen. Holy Guidance offers one at the altar.
+
+- type: entity
+  abstract: true
+  parent: BaseItem
+  id: OxydOddityBase
+  name: oddity
+  description: A strange object. Studying it might teach you something.
+  components:
+  - type: Item
+    size: Small
+  - type: Oddity
+
+- type: entity
+  parent: OxydOddityBase
+  id: OxydOddityCloudedOrb
+  name: clouded orb
+  description: Shapes drift inside the glass when nobody is looking directly at it.
+  components:
+  - type: Sprite
+    sprite: Objects/Fun/pondering_orb.rsi
+    state: icon
+  - type: Item
+    sprite: Objects/Fun/pondering_orb.rsi
+  - type: Oddity
+    giving:
+      Cog: 3
+      Vig: 1
+
+- type: entity
+  parent: OxydOddityBase
+  id: OxydOddityPulsingTotem
+  name: pulsing totem
+  description: It is warm to the touch and seems to beat like a slow heart.
+  components:
+  - type: Sprite
+    sprite: Objects/Misc/skub.rsi
+    state: icon
+  - type: Item
+    sprite: Objects/Misc/skub.rsi
+  - type: Oddity
+    giving:
+      Tgh: 3
+      Rob: 1
+
+- type: entity
+  parent: OxydOddityBase
+  id: OxydOddityPerpetualCradle
+  name: perpetual cradle
+  description: The spheres never stop swinging, and nobody can say why.
+  components:
+  - type: Sprite
+    sprite: Objects/Fun/newton_cradle.rsi
+    state: icon
+  - type: Item
+    sprite: Objects/Fun/newton_cradle.rsi
+  - type: Oddity
+    giving:
+      Mec: 3
+      Cog: 1
+
+- type: entity
+  parent: OxydOddityBase
+  id: OxydOddityAncientCoin
+  name: ancient coin
+  description: The face stamped on it changes every time you look away.
+  components:
+  - type: Sprite
+    sprite: Objects/Misc/coins.rsi
+    state: coinGold_1
+  - type: Oddity
+    giving:
+      Bio: 2
+      Vig: 2

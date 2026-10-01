@@ -171,8 +171,7 @@ public sealed partial class AltarSystem : EntitySystem
     /// Whether <paramref name="item"/>'s prototype is <paramref name="wanted"/> or a descendant.
     /// The index-based walk (<c>EnumerateParents</c>) only sees non-abstract prototypes, so raw
     /// parent ids are walked as well — requirements may deliberately name an abstract base:
-    /// <c>FoodProduceBase</c> covers every edible fruit, and the deferred oddity line will do the
-    /// same once an oddity prototype lands.
+    /// <c>FoodProduceBase</c> covers every edible fruit and <c>OxydOddityBase</c> every oddity.
     /// ponytail: abstract intermediates are not traversed (they have no index entry), so an
     /// abstract requirement reaches direct children and non-abstract chains only.
     /// </summary>

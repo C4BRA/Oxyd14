@@ -12,6 +12,7 @@ using Content.Shared.Nutrition.EntitySystems;
 using Content.Shared.Paper;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
+using Robust.Shared.Maths;
 using Robust.Shared.Prototypes;
 
 namespace Content.IntegrationTests.Tests._Oxyd.NeoTheology;
@@ -127,6 +128,7 @@ public sealed class LitanyEffectsRecordsTest : GameTest
         _litany.TestingClearActors();
         var body = SSpawnAtPosition(HumanProto, coords);
         _litany.TestingTreatAsActor(body);
+        SEntMan.System<SharedTransformSystem>().SetLocalRotation(body, Direction.East.ToAngle());
         var implant = _implants.AddImplant(body, CruciformProto);
         Assert.That(implant, Is.Not.Null);
         Assert.That(_cruciform.Activate(body), Is.True);

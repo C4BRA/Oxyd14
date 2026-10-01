@@ -30,6 +30,7 @@ public sealed class LitanyEffectsOfferingsTest : GameTest
     private static readonly EntProtoId AltarProto = "OxydNtAltar";
     private static readonly EntProtoId BiomatterProto = "OxydNtBiomatterStack1";
     private static readonly EntProtoId FruitProto = "FoodApple";
+    private static readonly EntProtoId OddityProto = "OxydOddityAncientCoin";
     private static readonly ProtoId<NeoTheologyProfilePrototype> Preacher = "OxydNtPreacher";
     private static readonly ProtoId<LitanyPrototype> DivineIntervention = "OxydLitanyDivineIntervention";
     private static readonly ProtoId<LitanyPrototype> HolyGuidance = "OxydLitanyHolyGuidance";
@@ -88,10 +89,11 @@ public sealed class LitanyEffectsOfferingsTest : GameTest
     }
 
     [Test]
-    public async Task HolyGuidance_ConsumesFortyProduceAndBanksObservation()
+    public async Task HolyGuidance_ConsumesFortyProduceAndAnOddityAndBanksObservation()
     {
         var map = await Pair.CreateMachineTestMap();
         EntityUid eye = default;
+        EntityUid oddity = default;
         var fruit = new List<EntityUid>();
 
         await Server.WaitAssertion(() =>
@@ -104,6 +106,7 @@ public sealed class LitanyEffectsOfferingsTest : GameTest
 
             for (var i = 0; i < FruitCount; i++)
                 fruit.Add(SSpawnAtPosition(FruitProto, altarCoords));
+            oddity = SSpawnAtPosition(OddityProto, altarCoords);
 
             var begin = _litany.TryBeginLitany(caster, HolyGuidance, LitanyCastOrigin.ManualSpeech);
             Assert.That(begin.Success, Is.True, begin.Reason?.Id ?? "HolyGuidance begin failed");
@@ -118,6 +121,7 @@ public sealed class LitanyEffectsOfferingsTest : GameTest
             foreach (var apple in fruit)
                 Assert.That(Consumed(apple), Is.True,
                     "Every offered fruit must be consumed.");
+            Assert.That(Consumed(oddity), Is.True, "The offered oddity must be consumed.");
         });
     }
 

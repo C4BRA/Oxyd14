@@ -15,6 +15,7 @@ using Content.Shared.Mobs.Systems;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Localization;
 using Robust.Shared.Map;
+using Robust.Shared.Maths;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 
@@ -32,6 +33,7 @@ public sealed class LitanyEffectsFaithTest : SocialNoticeGameTest
     private static readonly EntProtoId CruciformProto = "OxydNtCruciform";
     private static readonly EntProtoId FaithHumanProto = "MobHumanOxyd";
     private static readonly EntProtoId OddityProto = "Crowbar";
+    private static readonly EntProtoId CradleOddityProto = "OxydOddityPerpetualCradle";
     private static readonly ProtoId<NeoTheologyProfilePrototype> Preacher = "OxydNtPreacher";
     private static readonly ProtoId<LitanyPrototype> Revelation = "OxydLitanyRevelation";
     private static readonly ProtoId<LitanyPrototype> Epiphany = "OxydLitanyEpiphany";
@@ -254,6 +256,39 @@ public sealed class LitanyEffectsFaithTest : SocialNoticeGameTest
         });
     }
 
+    [Test]
+    public async Task DivineBlessing_BlessesASpawnableOddityPrototype()
+    {
+        var map = await Pair.CreateTestMap();
+        EntityUid oddity = default;
+
+        await Server.WaitAssertion(() =>
+        {
+            var origin = TileCentre(map.GridCoords);
+            var caster = PrepareCaster(origin, DivineBlessing);
+            oddity = SSpawnAtPosition(CradleOddityProto, origin);
+
+            var giving = SComp<OddityComponent>(oddity).giving;
+            Assert.That(giving["Mec"], Is.EqualTo(3), "The prototype must configure its giving skills.");
+            Assert.That(giving["Cog"], Is.EqualTo(1));
+
+            Assert.That(_hands.TryPickup(caster, oddity), Is.True);
+            var begin = _litany.TryBeginLitany(caster, DivineBlessing, LitanyCastOrigin.ManualSpeech);
+            Assert.That(begin.Success, Is.True, begin.Reason?.Id ?? "DivineBlessing begin failed");
+        });
+
+        await AdvancePastCast();
+
+        await Server.WaitAssertion(() =>
+        {
+            var giving = SComp<OddityComponent>(oddity).giving;
+            Assert.That(giving["Mec"] - 3, Is.InRange(LitanyDivineBlessingEffect.MinGain, LitanyDivineBlessingEffect.MaxGain),
+                "DivineBlessing must strengthen every skill the oddity gives.");
+            Assert.That(giving["Cog"] - 1, Is.InRange(LitanyDivineBlessingEffect.MinGain, LitanyDivineBlessingEffect.MaxGain));
+            Assert.That(SEntMan.HasComponent<CruciformBlessedComponent>(oddity), Is.True);
+        });
+    }
+
     /// <summary>Centre of the tile at <paramref name="gridCoords"/> so tile math is unambiguous.</summary>
     private static EntityCoordinates TileCentre(EntityCoordinates gridCoords)
         => gridCoords.Offset(new Vector2(0.5f, 0.5f));
@@ -266,6 +301,7 @@ public sealed class LitanyEffectsFaithTest : SocialNoticeGameTest
         _litany.TestingSetAvailabilityOverride(litany.Id, true);
         var body = SSpawnAtPosition(FaithHumanProto, coords);
         _litany.TestingTreatAsActor(body);
+        SEntMan.System<SharedTransformSystem>().SetLocalRotation(body, Direction.East.ToAngle());
         Assert.That(_cruciform.GrantCruciform(body, Preacher), Is.True,
             "Faith fixtures must use the same module/rank grant as a normal job.");
         return body;

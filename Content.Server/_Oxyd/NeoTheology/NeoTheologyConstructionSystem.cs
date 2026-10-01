@@ -307,7 +307,7 @@ public sealed partial class NeoTheologyConstructionSystem : EntitySystem
 
         var position = xform.Coordinates.Position;
         ownTile = position.Floored();
-        frontTile = (position + xform.LocalRotation.ToVec()).Floored();
+        frontTile = (position + xform.LocalRotation.GetCardinalDir().ToVec()).Floored();
         return true;
     }
 

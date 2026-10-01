@@ -76,6 +76,7 @@ public sealed class LitanyEffectsSoulTest : GameTest
             var origin = TileCentre(map.GridCoords);
             var caster = SpawnBearer(origin);
             _litany.TestingTreatAsActor(caster);
+            SEntMan.System<SharedTransformSystem>().SetLocalRotation(caster, Direction.East.ToAngle());
 
             var original = SpawnBearer(origin.Offset(new Vector2(10f, 0f)));
             _meta.SetEntityName(original, RebornName);
@@ -170,6 +171,7 @@ public sealed class LitanyEffectsSoulTest : GameTest
             var origin = TileCentre(map.GridCoords);
             var caster = SpawnBearer(origin);
             _litany.TestingTreatAsActor(caster);
+            SEntMan.System<SharedTransformSystem>().SetLocalRotation(caster, Direction.East.ToAngle());
 
             if (casterProfile != "OxydNtDisciple")
                 Assert.That(_cruciform.TrySetProfile(caster, casterProfile), Is.True);

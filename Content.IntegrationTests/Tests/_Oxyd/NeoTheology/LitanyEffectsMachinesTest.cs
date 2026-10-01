@@ -17,6 +17,7 @@ using Content.Shared.Implants;
 using Content.Shared.Stacks;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
+using Robust.Shared.Maths;
 using Robust.Shared.Prototypes;
 
 namespace Content.IntegrationTests.Tests._Oxyd.NeoTheology;
@@ -83,6 +84,7 @@ public sealed class LitanyEffectsMachinesTest : GameTest
             var origin = TileCentre(map.GridCoords);
             caster = SpawnBearer(origin);
             _litany.TestingTreatAsActor(caster);
+            SEntMan.System<SharedTransformSystem>().SetLocalRotation(caster, Direction.East.ToAngle());
 
             door = SpawnPoweredDoor(HolyDoorProto, origin.Offset(new Vector2(1f, 0f)));
             Assert.That(SComp<DoorBoltComponent>(door).BoltsDown, Is.False, "The door must start unbolted.");
@@ -140,6 +142,7 @@ public sealed class LitanyEffectsMachinesTest : GameTest
             origin = TileCentre(map.GridCoords);
             caster = SpawnBearer(origin);
             _litany.TestingTreatAsActor(caster);
+            SEntMan.System<SharedTransformSystem>().SetLocalRotation(caster, Direction.East.ToAngle());
             door = SpawnPoweredDoor(HolyDoorProto, origin.Offset(new Vector2(1f, 0f)));
             _damageable.TryChangeDamage(door,
                 new DamageSpecifier(SProtoMan.Index<DamageTypePrototype>("Blunt"), 5), true);
@@ -185,6 +188,7 @@ public sealed class LitanyEffectsMachinesTest : GameTest
             var origin = TileCentre(map.GridCoords);
             var caster = SpawnBearer(origin);
             _litany.TestingTreatAsActor(caster);
+            SEntMan.System<SharedTransformSystem>().SetLocalRotation(caster, Direction.East.ToAngle());
 
             var plainDoor = SpawnPoweredDoor(PlainDoorProto, origin.Offset(new Vector2(1f, 0f)));
 
@@ -210,6 +214,7 @@ public sealed class LitanyEffectsMachinesTest : GameTest
             var origin = TileCentre(map.GridCoords);
             var caster = SpawnBearer(origin);
             _litany.TestingTreatAsActor(caster);
+            SEntMan.System<SharedTransformSystem>().SetLocalRotation(caster, Direction.East.ToAngle());
 
             forge = SpawnForge(origin.Offset(new Vector2(1f, 0f)));
             Bank(forge, origin, BiomatterProto, 10);
@@ -250,6 +255,7 @@ public sealed class LitanyEffectsMachinesTest : GameTest
             var origin = TileCentre(map.GridCoords);
             var caster = SpawnBearer(origin);
             _litany.TestingTreatAsActor(caster);
+            SEntMan.System<SharedTransformSystem>().SetLocalRotation(caster, Direction.East.ToAngle());
 
             door = SpawnPoweredDoor(HolyDoorProto, origin.Offset(new Vector2(1f, 0f)));
             _damageable.TryChangeDamage(door,
@@ -292,6 +298,7 @@ public sealed class LitanyEffectsMachinesTest : GameTest
             var origin = TileCentre(map.GridCoords);
             caster = SpawnBearer(origin);
             _litany.TestingTreatAsActor(caster);
+            SEntMan.System<SharedTransformSystem>().SetLocalRotation(caster, Direction.East.ToAngle());
 
             generator = SSpawnAtPosition(BiogeneratorProto, origin.Offset(new Vector2(1f, 0f)));
             Assert.That(SComp<BiogeneratorComponent>(generator).Working, Is.False,
@@ -342,6 +349,7 @@ public sealed class LitanyEffectsMachinesTest : GameTest
             var origin = TileCentre(map.GridCoords);
             caster = SpawnBearer(origin);
             _litany.TestingTreatAsActor(caster);
+            SEntMan.System<SharedTransformSystem>().SetLocalRotation(caster, Direction.East.ToAngle());
 
             reactor = SSpawnAtPosition(BioreactorProto, origin.Offset(new Vector2(1f, 0f)));
             PowerMachine(reactor);
@@ -392,6 +400,7 @@ public sealed class LitanyEffectsMachinesTest : GameTest
             var origin = TileCentre(map.GridCoords);
             var caster = SpawnBearer(origin);
             _litany.TestingTreatAsActor(caster);
+            SEntMan.System<SharedTransformSystem>().SetLocalRotation(caster, Direction.East.ToAngle());
 
             reactor = SSpawnAtPosition(BioreactorProto, origin.Offset(new Vector2(1f, 0f)));
             PowerMachine(reactor);
@@ -425,6 +434,7 @@ public sealed class LitanyEffectsMachinesTest : GameTest
             var origin = TileCentre(map.GridCoords);
             var caster = SpawnBearer(origin);
             _litany.TestingTreatAsActor(caster);
+            SEntMan.System<SharedTransformSystem>().SetLocalRotation(caster, Direction.East.ToAngle());
             var machine = SSpawnAtPosition(prototype, origin.Offset(new Vector2(1f, 0f)));
             PowerMachine(machine);
             if (STryComp<BioreactorComponent>(machine, out var reactor))
@@ -447,6 +457,31 @@ public sealed class LitanyEffectsMachinesTest : GameTest
         => gridCoords.Offset(new Vector2(0.5f, 0.5f));
 
     /// <summary>A human with an active cruciform.</summary>
+    [Test]
+    public async Task FrontMachine_DefaultFacingResolvesTheSouthTile()
+    {
+        var map = await Pair.CreateTestMap();
+
+        await Server.WaitAssertion(() =>
+        {
+            _litany.TestingClearAvailabilityOverrides();
+            _litany.TestingClearActors();
+
+            var origin = TileCentre(map.GridCoords).Offset(new Vector2(0f, 2f));
+            var caster = SpawnBearer(origin);
+            _litany.TestingTreatAsActor(caster);
+            SEntMan.System<SharedTransformSystem>().SetLocalRotation(caster, Angle.Zero);
+
+            var south = SpawnPoweredDoor(HolyDoorProto, origin.Offset(new Vector2(0f, -1f)));
+            SpawnPoweredDoor(HolyDoorProto, origin.Offset(new Vector2(1f, 0f)));
+
+            Assert.That(_litany.TryResolveTargets(caster, _prototypes.Index(ActivateDoor), out var targets, out var reason),
+                Is.True, reason?.Id ?? "FrontMachine must resolve the faced door.");
+            Assert.That(targets, Is.EqualTo(new[] { south }),
+                "A zero rotation faces south, so the south door is the faced one.");
+        });
+    }
+
     private EntityUid SpawnBearer(EntityCoordinates coords)
     {
         var body = SSpawnAtPosition(HumanProto, coords);

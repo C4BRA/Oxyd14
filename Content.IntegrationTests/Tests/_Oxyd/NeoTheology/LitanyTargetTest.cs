@@ -8,6 +8,7 @@ using Content.Shared._Oxyd.NeoTheology.Components;
 using Content.Shared.Implants;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
+using Robust.Shared.Maths;
 using Robust.Shared.Prototypes;
 
 namespace Content.IntegrationTests.Tests._Oxyd.NeoTheology;
@@ -73,6 +74,7 @@ public sealed class LitanyTargetTest : GameTest
         {
             var origin = TileCentre(map.GridCoords);
             var caster = SpawnBearer(origin);
+            SEntMan.System<SharedTransformSystem>().SetLocalRotation(caster, Direction.East.ToAngle());
             var sameTile = SSpawnAtPosition(HumanProto, origin);
             var ahead = SSpawnAtPosition(HumanProto, origin.Offset(new Vector2(1f, 0f)));
             var behind = SSpawnAtPosition(HumanProto, origin.Offset(new Vector2(-1f, 0f)));
@@ -222,6 +224,7 @@ public sealed class LitanyTargetTest : GameTest
         {
             var origin = TileCentre(map.GridCoords);
             var caster = SpawnBearer(origin);
+            SEntMan.System<SharedTransformSystem>().SetLocalRotation(caster, Direction.East.ToAngle());
             var ahead = SSpawnAtPosition(DoorProto, origin.Offset(new Vector2(1f, 0f)));
             SSpawnAtPosition(DoorProto, origin.Offset(new Vector2(-1f, 0f)));
 

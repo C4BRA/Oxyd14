@@ -131,6 +131,23 @@ public sealed class LitanyEffectsUplinkTest : GameTest
         });
     }
 
+    [Test]
+    public async Task UplinkStore_IsContainedInTheCruciformOnceInstalled()
+    {
+        var map = await Pair.CreateTestMap();
+
+        await Server.WaitAssertion(() =>
+        {
+            var caster = PrepareCaster(map.GridCoords);
+            var cruciform = SComp<CruciformBearerComponent>(caster).Cruciform!.Value;
+
+            Assert.That(_uplink.TryGetStore(cruciform, out var store), Is.True,
+                "Installing the uplink module must create the store so it is networked before Bounty.");
+            Assert.That(SComp<TransformComponent>(store!.Value).ParentUid, Is.EqualTo(cruciform),
+                "The store must live inside the cruciform rather than in nullspace.");
+        });
+    }
+
     /// <summary>
     /// A living inquisitor with the test actor flag and a full cruciform, so its rank modules
     /// (including the uplink module) are installed.

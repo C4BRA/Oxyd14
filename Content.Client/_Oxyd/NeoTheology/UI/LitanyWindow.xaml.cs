@@ -35,6 +35,8 @@ public sealed partial class LitanyWindow : FancyWindow
     private bool _hasRolePresentation;
     private bool _hasCruciform;
     private NeoTheologyClearance _clearance;
+    private readonly Dictionary<ProtoId<LitanyPrototype>, Button> _entryButtons = new();
+    private List<(ProtoId<LitanyPrototype> Litany, bool Available)> _builtEntries = new();
 
     public event Action<ProtoId<LitanyPrototype>, uint, string?>? BeginLitany;
     public event Action<string, List<string>, string?, string?>? SubmitChoices;
@@ -50,6 +52,7 @@ public sealed partial class LitanyWindow : FancyWindow
         SearchBar.OnTextChanged += _ => RefreshEntryList(preserveSelection: false);
         CategorySelector.OnItemSelected += args =>
         {
+            CategorySelector.SelectId(args.Id);
             _categoryFilter = args.Id == AllCategoriesId
                 ? null
                 : (LitanyCategory?) (args.Id - 1);
@@ -67,6 +70,22 @@ public sealed partial class LitanyWindow : FancyWindow
         PlainTextEdit.OnTextChanged += _ => UpdatePlainTextCount();
 
         UpdatePlainTextCount();
+    }
+
+    public LitanyWindowViewState GetViewState()
+    {
+        return new LitanyWindowViewState(SearchBar.Text, _categoryFilter, _selectedLitany);
+    }
+
+    /// <summary>
+    /// Restores the search, category and selection from a previous window so reopening the book
+    /// keeps the reader's place. Applied before the first snapshot arrives.
+    /// </summary>
+    public void RestoreViewState(LitanyWindowViewState state)
+    {
+        SearchBar.Text = state.Search;
+        _categoryFilter = state.Category;
+        _selectedLitany = state.Selected;
     }
 
     /// <summary>
@@ -285,30 +304,45 @@ public sealed partial class LitanyWindow : FancyWindow
         if (!preserveSelection && entryToSelect is null)
             _selectedLitany = null;
 
-        EntryList.DisposeAllChildren();
         EmptyCatalogLabel.Visible = filteredEntries.Count == 0;
 
-        var buttonGroup = new ButtonGroup();
-        foreach (var entry in filteredEntries)
+        // Snapshots arrive several times per cast (holiness, cooldowns); rebuilding the buttons on
+        // each one resets the scroll position, so only rebuild when the visible list changes.
+        var entryKeys = filteredEntries.Select(entry => (entry.Litany, entry.Available)).ToList();
+        if (!entryKeys.SequenceEqual(_builtEntries))
         {
-            var name = GetLitanyName(entry);
-            var category = GetLitanyCategory(entry);
-            var suffix = entry.Available ? string.Empty : " [Unavailable]";
-            var button = new Button
-            {
-                Text = $"{category}: {name}{suffix}",
-                HorizontalExpand = true,
-                MinHeight = 30,
-                ToggleMode = true,
-                Group = buttonGroup,
-                Pressed = entryToSelect is not null && entry.Litany.Equals(entryToSelect.Litany),
-                ToolTip = GetLitanyDescription(entry),
-                StyleClasses = { "ButtonSquare" },
-            };
+            _builtEntries = entryKeys;
+            _entryButtons.Clear();
+            EntryList.DisposeAllChildren();
 
-            button.OnPressed += _ => SelectEntry(entry);
-            EntryList.AddChild(button);
+            var buttonGroup = new ButtonGroup();
+            foreach (var entry in filteredEntries)
+            {
+                var litanyId = entry.Litany;
+                var name = GetLitanyName(entry);
+                var category = GetLitanyCategory(entry);
+                var suffix = entry.Available ? string.Empty : " [Unavailable]";
+                var button = new Button
+                {
+                    Text = $"{category}: {name}{suffix}",
+                    HorizontalExpand = true,
+                    MinHeight = 30,
+                    ToggleMode = true,
+                    Group = buttonGroup,
+                    ToolTip = GetLitanyDescription(entry),
+                    StyleClasses = { "ButtonSquare" },
+                };
+
+                button.OnPressed += _ => SelectLitany(litanyId);
+                EntryList.AddChild(button);
+                _entryButtons[litanyId] = button;
+            }
+
+            EntryScroll.SetScrollValue(scrollValue);
         }
+
+        foreach (var (litany, button) in _entryButtons)
+            button.Pressed = entryToSelect is not null && litany.Equals(entryToSelect.Litany);
 
         if (entryToSelect is null)
         {
@@ -319,8 +353,12 @@ public sealed partial class LitanyWindow : FancyWindow
         {
             SelectEntry(entryToSelect, refreshList: false);
         }
+    }
 
-        EntryScroll.SetScrollValue(scrollValue);
+    private void SelectLitany(ProtoId<LitanyPrototype> litany)
+    {
+        if (_snapshot?.Entries.FirstOrDefault(entry => entry.Litany.Equals(litany)) is { } entry)
+            SelectEntry(entry);
     }
 
     private IEnumerable<LitanyViewerEntry> GetFilteredEntries()
@@ -391,7 +429,7 @@ public sealed partial class LitanyWindow : FancyWindow
         {
             SelectedName.Text = "Select a litany";
             SelectedDescription.SetMessage(string.Empty);
-            PhraseLabel.Text = string.Empty;
+            PhraseLabel.SetMessage(string.Empty);
             CostLabel.Text = string.Empty;
             CooldownLabel.Text = string.Empty;
             CastDurationLabel.Text = string.Empty;
@@ -406,7 +444,7 @@ public sealed partial class LitanyWindow : FancyWindow
         {
             SelectedName.Text = entry.Litany.ToString();
             SelectedDescription.SetMessage(string.Empty);
-            PhraseLabel.Text = string.Empty;
+            PhraseLabel.SetMessage(string.Empty);
             CostLabel.Text = string.Empty;
             CooldownLabel.Text = string.Empty;
             CastDurationLabel.Text = string.Empty;
@@ -420,10 +458,12 @@ public sealed partial class LitanyWindow : FancyWindow
         SelectedName.Text = Loc.GetString(litany.Name);
         SelectedDescription.SetMessage(Loc.GetString(litany.Description));
         // Prototype-set values are read from the prototype, not duplicated over the wire.
-        PhraseLabel.Text = $"Phrase: {litany.Phrase}";
+        PhraseLabel.SetMessage($"Phrase: {litany.Phrase}");
         CostLabel.Text = Loc.GetString("oxyd-litany-ui-cost", ("cost", litany.Cost.ToString("0.##")));
         UpdateCooldownLabel(entry, litany);
-        CastDurationLabel.Text = $"Cast duration: {FormatDuration(litany.ExtraDelay)}";
+        // Mirrors the server: chanting takes BookChantDuration(phrase), then any extra delay.
+        var castDuration = LitanyPhraseParser.BookChantDuration(litany.Phrase) + litany.ExtraDelay;
+        CastDurationLabel.Text = Loc.GetString("oxyd-litany-ui-cast-duration", ("duration", FormatDuration(castDuration)));
         TargetLabel.Text = $"Target mode: {litany.TargetMode}";
 
         if (entry.Available)
@@ -551,7 +591,9 @@ public sealed partial class LitanyWindow : FancyWindow
 
         if (_busyState is not null)
         {
-            StatusLabel.Text = $"{_busyState.Stage}: {_busyState.Litany}";
+            StatusLabel.Text = Loc.GetString("oxyd-litany-ui-busy-status",
+                ("stage", GetStageName(_busyState.Stage)),
+                ("litany", GetLitanyName(_busyState.Litany)));
             return;
         }
 
@@ -588,8 +630,10 @@ public sealed partial class LitanyWindow : FancyWindow
         CastProgressBar.Value = Math.Clamp(fraction, 0f, 1f);
         var remaining = busy.EndsAt - _gameTiming.CurTime;
         CastProgressLabel.Text = remaining > TimeSpan.Zero
-            ? $"{busy.Stage}: {FormatDuration(remaining)} remaining"
-            : $"{busy.Stage}: completing";
+            ? Loc.GetString("oxyd-litany-ui-progress-remaining",
+                ("stage", GetStageName(busy.Stage)),
+                ("remaining", FormatDuration(remaining)))
+            : Loc.GetString("oxyd-litany-ui-progress-completing", ("stage", GetStageName(busy.Stage)));
     }
 
     private bool CanBeginSelectedLitany()
@@ -660,6 +704,25 @@ public sealed partial class LitanyWindow : FancyWindow
         return TryGetLitany(entry, out var litany) ? Loc.GetString(litany.Name) : entry.Litany.ToString();
     }
 
+    private string GetLitanyName(ProtoId<LitanyPrototype> litanyId)
+    {
+        return _prototypeManager.TryIndex(litanyId, out LitanyPrototype? litany)
+            ? Loc.GetString(litany.Name)
+            : litanyId.ToString();
+    }
+
+    private static string GetStageName(LitanyCastStage stage)
+    {
+        return stage switch
+        {
+            LitanyCastStage.Choosing => Loc.GetString("oxyd-litany-ui-stage-choosing"),
+            LitanyCastStage.Chanting => Loc.GetString("oxyd-litany-ui-stage-chanting"),
+            LitanyCastStage.ExtraDelay => Loc.GetString("oxyd-litany-ui-stage-extra-delay"),
+            LitanyCastStage.Committing => Loc.GetString("oxyd-litany-ui-stage-committing"),
+            _ => stage.ToString(),
+        };
+    }
+
     private string GetLitanyDescription(LitanyViewerEntry entry)
     {
         return TryGetLitany(entry, out var litany) ? Loc.GetString(litany.Description) : string.Empty;
@@ -722,3 +785,9 @@ public sealed partial class LitanyWindow : FancyWindow
         return $"{duration.TotalSeconds:0.##} s";
     }
 }
+
+/// <summary>Reader position kept between openings of the book.</summary>
+public sealed record LitanyWindowViewState(
+    string Search,
+    LitanyCategory? Category,
+    ProtoId<LitanyPrototype>? Selected);

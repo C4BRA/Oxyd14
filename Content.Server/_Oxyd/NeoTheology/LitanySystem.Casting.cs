@@ -821,7 +821,7 @@ public sealed partial class LitanySystem
 
         var pos = xform.Coordinates.Position;
         ownTile = pos.Floored();
-        frontTile = (pos + xform.LocalRotation.ToVec()).Floored();
+        frontTile = (pos + xform.LocalRotation.GetCardinalDir().ToVec()).Floored();
         return true;
     }
 

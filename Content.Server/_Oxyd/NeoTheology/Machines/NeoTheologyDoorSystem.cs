@@ -142,7 +142,7 @@ public sealed partial class NeoTheologyDoorSystem : EntitySystem
     public bool TryConsumeBiomatter(EntityUid user, int amount, bool validateOnly = false)
     {
         var xform = Transform(user);
-        var inFront = xform.Coordinates.Offset(xform.LocalRotation.ToVec());
+        var inFront = xform.Coordinates.Offset(xform.LocalRotation.GetCardinalDir().ToVec());
 
         foreach (var coords in new[] { xform.Coordinates, inFront })
         {
