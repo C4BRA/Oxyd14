@@ -216,11 +216,6 @@ public sealed partial class LitanySystem : EntitySystem
             return LitanyActionResult.Fail("oxyd-litany-no-target");
         }
 
-        // The blueprint catalog has no deterministic fallback: the caster must pick one
-        // (Eris "Select construction"). Manual speech has no choice surface, so it fails closed.
-        if (litany.SelectBlueprint && origin != LitanyCastOrigin.Book)
-            return LitanyActionResult.Fail("oxyd-litany-book-required");
-
         if (!string.IsNullOrEmpty(choiceToken))
             return LitanyActionResult.Fail("oxyd-litany-denied-invalid-choice");
 
@@ -240,13 +235,12 @@ public sealed partial class LitanySystem : EntitySystem
         var phrase = PhraseForTargets(actor, litany.Phrase, resolvedTargets);
         var chantDuration = LitanyPhraseParser.BookChantDuration(phrase);
 
-        // A book cast of a choice-requiring litany pauses in the Choosing stage. Manual
-        // speech has no choice surface, so it keeps the deterministic fallback target.
+        // Both spoken and book prayers use the private choice surface. A named target
+        // narrows recipients, but does not bypass designation/blueprint/text choices.
         var offersTargetChoice = litany.SelectTarget && resolvedTargets.Count > 1;
         var offersDesignationChoice = litany.DesignationChoices.Count > 0;
         var offersBlueprintChoice = litany.SelectBlueprint;
-        var needsChoice = origin == LitanyCastOrigin.Book &&
-                          (offersTargetChoice || offersDesignationChoice || offersBlueprintChoice || litany.AllowPlainText);
+        var needsChoice = offersTargetChoice || offersDesignationChoice || offersBlueprintChoice || litany.AllowPlainText;
 
         var cast = new PendingLitanyCast
         {
@@ -302,6 +296,8 @@ public sealed partial class LitanySystem : EntitySystem
 
         if (needsChoice)
         {
+            if (origin == LitanyCastOrigin.ManualSpeech)
+                OpenPrayerPrompt(cast);
             SendChoiceSnapshot(cast);
             SendProgressToActor(cast);
             return LitanyActionResult.Ok(requestId);
@@ -435,6 +431,7 @@ public sealed class PendingLitanyCast
     public EntityUid Actor;
     public EntityUid Cruciform;
     public EntityUid? Book;
+    public EntityUid? Prompt;
     public string LitanyId = string.Empty;
     public LitanyCastOrigin Origin;
 

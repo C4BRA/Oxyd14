@@ -167,11 +167,10 @@ public sealed partial class ArmamentsPrinterSystem : EntitySystem
 
         eyeComp.PurchaseCount[armamentId] = GetPurchaseCount(eyeComp, armamentId) + 1;
 
-        if (!eyeComp.FirstPurchaseMade)
-        {
-            eyeComp.FirstPurchaseMade = true;
+        // Eris purchase_count is per armament: each product's first purchase raises the cap.
+        if (GetPurchaseCount(eyeComp, armamentId) == 1)
             eyeComp.MaxArmamentsPoints += armament.MaxPointsIncrease;
-        }
+        eyeComp.FirstPurchaseMade = true;
 
         SpawnAtPosition(armament.Path, printerXform.Coordinates);
         return true;

@@ -49,6 +49,8 @@ public sealed partial class LitanyRevelationEffect : LitanyEffect
         if (!delta.Handled)
             return false;
 
+        var revelation = new NeoTheologyRevelationEvent(context.User, target);
+        system.RaiseOn(context.User, ref revelation);
         system.DeliverSocialNotice(target, Loc.GetString("oxyd-litany-revelation-vision"));
         return true;
     }

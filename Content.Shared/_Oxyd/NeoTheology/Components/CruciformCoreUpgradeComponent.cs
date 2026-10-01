@@ -8,4 +8,6 @@ public sealed partial class CruciformCoreUpgradeComponent : Component
 {
     [DataField(required: true)]
     public ProtoId<CoreModulePrototype> Module;
+
+    [DataField] public string Commander = string.Empty;
 }

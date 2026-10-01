@@ -22,6 +22,14 @@ and fresh validation are tracked in [the resolution checklist](neotheology-litan
 `RobustToolbox` remains identical to `upstream/master`; content-level adapters
 must not require engine edits. No complete-port or multiplayer certification is implied.
 
+## Feature-gap pass
+
+[The feature-gap status and remaining limits](neotheology-feature-gap-pass.md) track
+work on areas 3–13 and 15, with 289 integration and 21 unit checks.
+These changes are recorded in the feature-gap commit for PR #33. Jobs,
+maps/startup supply, powered HUD, complete source world systems and multiplayer
+certification remain outside this pass. The merged-build table below remains historical.
+
 ## What works in code and focused tests
 
 - All 60 entries have enabled definitions and handlers. Nine sets authorize
@@ -29,8 +37,8 @@ must not require engine edits. No complete-port or multiplayer certification is 
   No dependency-gated entries remain.
 - Speech and the private Bible UI start server-validated casts. The server
   checks rank, target, holiness, and cooldown. It refunds an unsuccessful cast.
-  The book supplies target and blueprint choices. Speech uses a fixed fallback
-  when a choice is necessary.
+  Book and spoken prayers now offer private target, blueprint, designation and
+  message choices; spoken choices reuse a temporary private UI proxy.
 - The six profiles exist in `profiles.yml`. Only Chaplain maps to
   `OxydNtPreacher` in `rules.yml`. Six development-only
   `RandomHumanoidSpawnerOxydNt*` markers in `test_roles.yml` create test ghost
@@ -65,9 +73,10 @@ NeoTheology files from the PR with older upstream versions.
 ## Known differences from Eris
 
 - **Target choice:** `Atonement` and `Penance` use `VisibleFollower`.
-  `Excommunication`, `Scrying`, and `Sending` use `StationFollower`. Adjacent
-  rites check the actor or faced tile within 1.5 m. `OrderArmaments` selects
-  the local armaments printer. Manual speech cannot show the book's choices.
+  `Excommunication` remains station-scoped; `Scrying` and `Sending` now use
+  global active followers. Adjacent rites prefer a valid pulled humanoid, and
+  Revelation uses a visible forward corridor. `OrderArmaments` selects the
+  local printer. Spoken choices now use a private UI proxy.
 - **Cooldown:** `Relief`, `SoulHunger`, `Entreaty`, `RevealAdversaries`,
   `CruciformSense`, and `Revelation` have a one-minute personal cooldown.
   Ceremonies have a one-second per-starter guard against overlap.
@@ -89,17 +98,20 @@ NeoTheology files from the PR with older upstream versions.
   bioprinter, solidifier, armaments printer and door variants. Manifestation
   honors the selected blueprint's build time. New fabrication costs are
   explicitly local balance data, not an assertion of source economy parity.
-- **Economy:** The Eye uses local observation rewards. Oddity rewards and
-  faithless penalties lack the necessary entities. `Knowledge` and `Bounty`
-  use a local hidden store and banked balance, not Eris equipment or its
-  hidden uplink item.
+- **Economy:** Offerings add five power and select source reward families;
+  Holy Guidance consumes an oddity plus produce. Eye rewards reach global
+  faithful; the Seal and regeneration Energy reward exist. Source threat
+  ports must wire their explicit marker. The hidden store now has all 13 NT
+  source-price listings on native weapon mechanics, with live bearer/account
+  authority and balance banking; full economy and equipment parity remain open.
 - **Ceremonies:** Eight multi-phrase ceremonies persist until their leader dies
   or loses the recorded implant; final recipients must still be nearby and linked.
   Three Crusader rites are ordinary casts, not additional multi-phrase ceremonies.
-  Short skill blessings stack and last ten minutes. Sanctify has local obelisk
-  activation, and an atheist marker/knockdown exists; full Church objectives and
-  source Crusade world signaling remain gaps. The disciple HUD uses no power
-  and stops with the implant.
+  Short skill blessings stack and last ten minutes. Sanctify activates local
+  obelisks and records a bounded grid patch for native objectives; Crusade
+  activates marked faction items. Four native objective consumers now exist,
+  but source department/area/product/score parity remains open. The disciple
+  HUD uses no power and stops with the implant.
 
 ## Open gaps and live-round checks
 

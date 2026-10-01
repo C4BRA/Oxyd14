@@ -32,6 +32,8 @@ public sealed partial class LitanyCrusadeEffect : LitanyCeremonyEffect
         if (context.CeremonyParticipants < MinimumParticipants)
             return true;
 
+        var crusade = new NeoTheologyCrusadeEvent();
+        system.RaiseOn(context.User, ref crusade);
         var handled = false;
         foreach (var target in context.Targets)
         {

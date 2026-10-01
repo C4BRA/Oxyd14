@@ -302,7 +302,7 @@
   category: Priest
   grantedBy: [OxydLitanyPriest]
   effect: Excommunication
-  targetMode: StationFollower
+  targetMode: GlobalFollower
   selectTarget: true
   range: 0
   cost: 60

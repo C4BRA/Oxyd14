@@ -108,3 +108,43 @@ oxyd-litany-group-stat-smarter = You feel like you're getting smarter.
 oxyd-litany-group-stat-stronger = You feel like you're getting stronger.
 oxyd-litany-group-stat-vigilant = You feel like you're getting more vigilant.
 oxyd-litany-group-stat-sturdier = You feel like you're getting sturdier.
+
+oxyd-nt-hard-eject = Rip out cruciform (severe injury)
+oxyd-nt-unknown-soul = an unknown soul
+oxyd-nt-objective-issuer = NeoTheology
+oxyd-nt-objective-convert = Convert { $target } by installing a cruciform.
+oxyd-nt-objective-reveal = Perform Revelation on { $target }.
+oxyd-nt-objective-sanctify = Sanctify { $target }.
+oxyd-nt-objective-destroy = Destroy { $target } with the Sword of Truth.
+oxyd-nt-obey-laws =
+    You are bound to the Inquisition.
+    Only { $commander } and their designated agents are Inquisition agents.
+    Do not injure an agent, or through inaction allow one to be harmed.
+    Obey agents' orders unless they conflict with the preceding law.
+    Protect your existence unless doing so conflicts with the preceding laws.
+    Keep Inquisition activities secret unless doing so conflicts with the preceding laws.
+
+uplink-nt-ascension-name = Preacher Ascension Kit
+uplink-nt-ascension-desc = A removable conversion kit. Initiation completes promotion.
+uplink-nt-blade-name = Ritual Blade
+uplink-nt-blade-desc = A sanctified ritual knife.
+uplink-nt-lightfall-name = NT LG Lightfall
+uplink-nt-lightfall-desc = NeoTheology's laser carbine.
+uplink-nt-halicon-name = NT IR Halicon
+uplink-nt-halicon-desc = A rifle that disrupts mechanical threats with ion bolts.
+uplink-nt-dominion-name = NT PR Dominion
+uplink-nt-dominion-desc = A NeoTheology plasma rifle using native pulse mechanics.
+uplink-nt-purger-name = NT PR Purger
+uplink-nt-purger-desc = A NeoTheology plasma cannon using native pulse mechanics.
+uplink-nt-nemesis-name = S EC Nemesis
+uplink-nt-nemesis-desc = A miniature energy crossbow.
+uplink-nt-themis-name = NT EC Themis
+uplink-nt-themis-desc = A NeoTheology infiltration-team energy crossbow.
+uplink-nt-valkyrie-name = NT MER Valkyrie
+uplink-nt-valkyrie-desc = A NeoTheology marksman rifle using native heavy laser mechanics.
+oxyd-armament-lightfall = Lightfall design disk
+oxyd-armament-dominion = Dominion design disk
+oxyd-armament-themis = Themis energy crossbow
+oxyd-armament-purger = Purger plasma cannon
+oxyd-eotp-threat = You feel an evil presence lurking in { $location }.
+oxyd-eotp-calm = You feel a wave of calm pass over you. The Angels are watching with their benevolent Eye.

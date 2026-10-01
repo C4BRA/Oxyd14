@@ -7,6 +7,7 @@ using Content.Shared._Oxyd.NeoTheology.Events;
 using Content.Shared._Oxyd.NeoTheology.Effects;
 using Content.Shared.Body.Components;
 using Content.Shared.Botany.Systems;
+using Content.Shared.Verbs;
 using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Systems;
@@ -21,6 +22,7 @@ using Content.Shared.NPC.Components;
 using Content.Shared.NPC.Prototypes;
 using Content.Shared.NPC.Systems;
 using Content.Shared.Popups;
+using Content.Shared.Projectiles;
 using Robust.Shared.Containers;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
@@ -49,6 +51,7 @@ public sealed partial class NeoTheologyFoundationSystem : EntitySystem
     [Dependency] private readonly PainSystem _pain = default!;
     [Dependency] private readonly RoboticOrganSystem _roboticOrgans = default!;
     [Dependency] private readonly SharedContainerSystem _containers = default!;
+    [Dependency] private readonly SharedProjectileSystem _projectiles = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
 
@@ -67,24 +70,98 @@ public sealed partial class NeoTheologyFoundationSystem : EntitySystem
 
         args.Handled = true;
 
-        var shed = _roboticOrgans.Reject(ent.Owner);
-        if (TryComp<ImplantedComponent>(ent.Owner, out var implanted))
+        Purify(ent.Owner);
+    }
+
+    [SubscribeLocalEvent]
+    private void OnRejectedInsert(Entity<RejectedImplantComponent> ent, ref ContainerGettingInsertedAttemptEvent args)
+    {
+        if (args.Container.ID != ImplanterComponent.ImplantSlotId)
+            return;
+        args.Cancel();
+        if (TryComp<SubdermalImplantComponent>(ent.Owner, out var implant))
+        {
+            implant.ImplantedEntity = null;
+            Dirty(ent.Owner, implant);
+        }
+    }
+
+    /// <summary>The same purity path for explicit Rejection and the active implant's periodic cleanse.</summary>
+    public int Purify(EntityUid body, bool cleanseMutation = false)
+    {
+        if (HasComp<GodbloodMutationComponent>(body))
+            return 0;
+        var shed = _roboticOrgans.Reject(body);
+        if (TryComp<ImplantedComponent>(body, out var implanted))
         {
             foreach (var implant in implanted.ImplantContainer.ContainedEntities.ToArray())
             {
-                if (!HasComp<CruciformComponent>(implant) &&
-                    _containers.Remove(implant, implanted.ImplantContainer, force: true,
-                        destination: Transform(ent.Owner).Coordinates))
+                if (HasComp<CruciformComponent>(implant) || HasComp<CruciformResistantComponent>(implant))
+                    continue;
+                if (_containers.Remove(implant, implanted.ImplantContainer, force: true,
+                        destination: Transform(body).Coordinates))
+                {
+                    EnsureComp<RejectedImplantComponent>(implant);
                     shed++;
+                }
             }
         }
 
+        if (TryComp<EmbeddedContainerComponent>(body, out var embedded))
+        {
+            foreach (var item in embedded.EmbeddedObjects.ToArray())
+                if (TryComp<EmbeddableProjectileComponent>(item, out var projectile) && projectile.EmbeddedIntoUid == body)
+                {
+                    _projectiles.EmbedDetach(item, projectile);
+                    shed++;
+                }
+        }
         if (shed > 0)
         {
-            _damageable.TryChangeDamage(ent.Owner,
-                new DamageSpecifier { DamageDict = { ["Blunt"] = 20f * shed } }, origin: ent.Owner);
-            _popup.PopupEntity(Loc.GetString("oxyd-litany-rejection-shed"), ent.Owner, ent.Owner, PopupType.LargeCaution);
+            _damageable.TryChangeDamage(body,
+                new DamageSpecifier { DamageDict = { ["Blunt"] = 20f * shed } }, origin: body);
+            _popup.PopupEntity(Loc.GetString("oxyd-litany-rejection-shed"), body, body, PopupType.LargeCaution);
         }
+        if (cleanseMutation && HasComp<AtheistMutationComponent>(body))
+        {
+            RemComp<AtheistMutationComponent>(body);
+            _damageable.TryChangeDamage(body,
+                new DamageSpecifier { DamageDict = { ["Heat"] = _random.Next(5, 26) } });
+        }
+        return shed;
+    }
+
+    [SubscribeLocalEvent]
+    private void OnHardEjectVerb(Entity<CruciformBearerComponent> ent, ref GetVerbsEvent<AlternativeVerb> args)
+    {
+        if (!args.CanAccess || !args.CanInteract || args.User != ent.Owner ||
+            !_cruciform.TryGetCruciformEntity(ent.Owner, out _, out _))
+            return;
+        var body = ent.Owner;
+        args.Verbs.Add(new AlternativeVerb
+        {
+            Text = Loc.GetString("oxyd-nt-hard-eject"),
+            Act = () => TryHardEject(body),
+        });
+    }
+
+    public bool TryHardEject(EntityUid body)
+    {
+        if (!_cruciform.TryGetCruciformEntity(body, out var implant, out _) ||
+            !TryComp<ImplantedComponent>(body, out var installed) ||
+            !_containers.Remove(implant, installed.ImplantContainer, force: true,
+                destination: Transform(body).Coordinates))
+            return false;
+        if (!_mobState.IsDead(body))
+            _damageable.TryChangeDamage(body, new DamageSpecifier
+            {
+                DamageDict =
+                {
+                    ["Cellular"] = _random.Next(55, 61), ["Asphyxiation"] = _random.Next(100, 151),
+                    ["Heat"] = _random.Next(100, 176), ["Radiation"] = _random.Next(40, 61),
+                },
+            }, ignoreResistances: true);
+        return true;
     }
 
     /// <summary>

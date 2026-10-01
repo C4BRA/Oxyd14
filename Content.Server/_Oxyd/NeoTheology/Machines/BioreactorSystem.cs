@@ -2,6 +2,15 @@ using Content.Shared._Oxyd.NeoTheology.Components;
 using Content.Shared._Oxyd.NeoTheology.Events;
 using Content.Shared.Botany.Items.Components;
 using Content.Shared.Stacks;
+using System.Linq;
+using Content.Shared.Body.Components;
+using Content.Shared.Implants.Components;
+using Content.Shared.Inventory;
+using Content.Shared.Hands.EntitySystems;
+using Content.Shared.Mobs.Components;
+using Content.Shared.Mobs.Systems;
+using Robust.Shared.Containers;
+using Robust.Shared.Physics.Components;
 using Robust.Shared.Prototypes;
 
 namespace Content.Server._Oxyd.NeoTheology.Machines;
@@ -22,6 +31,9 @@ public sealed partial class BioreactorSystem : EntitySystem
     [Dependency] private readonly EntityLookupSystem _lookup = default!;
     [Dependency] private readonly NeoTheologyMachineSystem _machines = default!;
     [Dependency] private readonly SharedStackSystem _stack = default!;
+    [Dependency] private readonly MobStateSystem _mobState = default!;
+    [Dependency] private readonly SharedContainerSystem _containers = default!;
+    [Dependency] private readonly SharedHandsSystem _hands = default!;
 
     /// <summary>
     /// BioreactorSolution bridge (Eris <c>rituals/machinery.dm:200-213</c>): the litany pumps the
@@ -55,6 +67,9 @@ public sealed partial class BioreactorSystem : EntitySystem
                 continue;
 
             var coords = Transform(uid).Coordinates;
+            // Native single-machine adaptation: bodies must be on the chamber's own tile.
+            foreach (var (body, _) in _lookup.GetEntitiesInRange<BloodstreamComponent>(coords, 0.5f))
+                TryProcessBody(uid, body, reactor);
 
             foreach (var crop in _lookup.GetEntitiesInRange<ProduceComponent>(coords, reactor.ProcessingRadius))
             {
@@ -66,6 +81,31 @@ public sealed partial class BioreactorSystem : EntitySystem
                 QueueDel(crop);
             }
         }
+    }
+
+    public bool TryProcessBody(EntityUid uid, EntityUid body, BioreactorComponent? reactor = null)
+    {
+        if (!Resolve(uid, ref reactor) || !_machines.IsOperational(uid) || !reactor.ChamberClosed ||
+            reactor.ChamberBreached || !reactor.ChamberSolution || TerminatingOrDeleted(body) ||
+            EntityManager.IsQueuedForDeletion(body) || !HasComp<BloodstreamComponent>(body) ||
+            !_mobState.IsDead(body) || Transform(body).MapID != Transform(uid).MapID ||
+            (Transform(body).WorldPosition - Transform(uid).WorldPosition).Length() > 0.5f)
+            return false;
+        // Queue before output: a second call cannot sell the same corpse twice.
+        _hands.DropAll(body, checkActionBlocker: false);
+        if (TryComp<InventoryComponent>(body, out var inventory))
+            foreach (var slot in inventory.Containers)
+                _containers.EmptyContainer(slot);
+        if (TryComp<ImplantedComponent>(body, out var implanted))
+            foreach (var implant in implanted.ImplantContainer.ContainedEntities.ToArray())
+                _containers.Remove(implant, implanted.ImplantContainer, force: true,
+                    destination: Transform(uid).Coordinates);
+        var amount = TryComp<PhysicsComponent>(body, out var physics)
+            ? Math.Max(1, (int) Math.Round(physics.FixturesMass)) : reactor.BiomatterPerEntity;
+        QueueDel(body);
+        var pile = Spawn(BiomatterProto, Transform(uid).Coordinates);
+        _stack.SetCount(pile, amount);
+        return true;
     }
 
     /// <summary>

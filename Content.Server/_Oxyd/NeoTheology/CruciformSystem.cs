@@ -40,6 +40,8 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
     [Dependency] private readonly SharedSubdermalImplantSystem _implants = default!;
     [Dependency] private readonly MovementSpeedModifierSystem _movement = default!;
     [Dependency] private readonly CoreModuleBehaviorSystem _souls = default!;
+    [Dependency] private readonly NeoTheologyWorldSystem _world = default!;
+    [Dependency] private readonly NeoTheologyFoundationSystem _foundation = default!;
 
     private static readonly ProtoId<CoreModulePrototype> PriestRankModule = "OxydNtModulePriest";
     private static readonly ProtoId<CoreModulePrototype> InquisitorRankModule = "OxydNtModuleInquisitor";
@@ -151,7 +153,21 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
             }
 
             AdvanceHoliness((cruciform, component), body);
+            if (_timing.CurTime >= component.NextPurity && !HasComp<GodbloodMutationComponent>(body))
+            {
+                component.NextPurity = _timing.CurTime + component.PurityInterval;
+                _foundation.Purify(body, cleanseMutation: true);
+            }
         }
+    }
+
+    private void SetActive(EntityUid implant, CruciformComponent comp, bool active)
+    {
+        if (comp.Active == active)
+            return;
+        comp.Active = active;
+        var changed = new CruciformActivityChangedEvent(comp.ImplantedEntity, active);
+        RaiseLocalEvent(implant, ref changed, broadcast: true);
     }
 
     [SubscribeLocalEvent]
@@ -218,10 +234,11 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
         BumpRevision(body, bearer);
 
         // Implantation is inert, including saved implants. Reincarnation restores the saved soul.
-        ent.Comp.Active = false; // An implanted saved soul waits for Reincarnation.
+        SetActive(ent.Owner, ent.Comp, false); // An implanted saved soul waits for Reincarnation.
         RecomputeProfile(ent.Owner, ent.Comp);
         Dirty(ent);
         Dirty(body, bearer);
+        _world.RecordConversion(body);
 
         // A stored speed upgrade resumes with the reimplanted cruciform.
         _movement.RefreshMovementSpeedModifiers(body);
@@ -239,7 +256,7 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
         var body = args.Implanted;
         AdvanceHoliness(ent, body);
         _souls.WriteSnapshot(ent.Owner, ent.Comp);
-        ent.Comp.Active = false;
+        SetActive(ent.Owner, ent.Comp, false);
         ent.Comp.ImplantedEntity = null;
         ent.Comp.LastHolinessUpdate = _timing.CurTime;
         Dirty(ent);
@@ -265,6 +282,7 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
         if (ent.Comp.ImplantedEntity is not { } body || !TryComp<CruciformBearerComponent>(body, out var bearer))
             return;
 
+        SetActive(ent.Owner, ent.Comp, false);
         if (bearer.Cruciform == ent.Owner)
         {
             bearer.Cruciform = null;
@@ -283,7 +301,7 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
             return;
 
         AdvanceHoliness((cruciform, component), ent.Owner);
-        component.Active = false;
+        SetActive(cruciform, component, false);
         component.ImplantedEntity = null;
         component.LastHolinessUpdate = _timing.CurTime;
         Dirty(cruciform, component);
@@ -302,14 +320,14 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
         if (args.NewMobState == MobState.Dead)
         {
             _souls.WriteSnapshot(cruciform, component, atDeath: true);
-            component.Active = false;
+            SetActive(cruciform, component, false);
             // Plan §5.2: death deactivates and cancels in-flight casts.
             ent.Comp.PendingRequestId = null;
         }
         else if (args.NewMobState == MobState.Alive && component.EverActivated &&
             (!TryComp<CruciformSoulComponent>(cruciform, out var soul) || !soul.HasSnapshot ||
                 soul.SourceBody == ent.Owner))
-            component.Active = true;
+            SetActive(cruciform, component, true);
 
         component.LastHolinessUpdate = _timing.CurTime;
         RecomputeProfile(cruciform, component);
@@ -394,13 +412,14 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
             return false;
 
         component.EverActivated = true;
-        component.Active = true;
 
         _modules.TryInstall(cruciform, component, BaseModule);
         _modules.TryInstall(cruciform, component, CloningModule);
         _souls.WriteSnapshot(cruciform, component);
         // Eris cruciform.dm:94-122 — installed activatable upgrades convert on activation.
         ApplyActivationModules(cruciform, component);
+        SetActive(cruciform, component, true);
+        _souls.ActivateObey(cruciform, component);
 
         if (component.Holiness <= GetDebitTolerance())
             component.Holiness = component.MaxHoliness;
@@ -474,12 +493,12 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
             return false;
 
         comp.EverActivated = true;
-        comp.Active = true;
         comp.LastHolinessUpdate = _timing.CurTime;
         comp.Channeling = profile == PreacherProfile;
         MakeRank(implant, comp, profile);
         _modules.TryInstall(implant, comp, CloningModule);
         _souls.WriteSnapshot(implant, comp);
+        SetActive(implant, comp, true);
 
         // Same semantics as Activate(): a freshly granted cruciform starts full.
         if (comp.Holiness <= GetDebitTolerance())
@@ -494,7 +513,7 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
             return false;
 
         AdvanceHoliness((cruciform, component), body);
-        component.Active = false;
+        SetActive(cruciform, component, false);
         component.LastHolinessUpdate = _timing.CurTime;
         RecomputeProfile(cruciform, component);
         Dirty(cruciform, component);
@@ -605,6 +624,8 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
         RecomputeProfile(cruciform, comp);
         // Intermediate module removals must not clamp a promotion to the temporary base capacity.
         comp.Holiness = NeoTheologyHoliness.ClampResource(holiness, comp.MaxHoliness);
+        if (comp.ImplantedEntity is { } body)
+            _world.AssignObjectives(body);
     }
 
     private void MakeSpecialization(EntityUid cruciform, CruciformComponent comp, ProtoId<NeoTheologyProfilePrototype> profile)
@@ -620,6 +641,8 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
         if (!comp.InstalledModules.Contains(PriestRankModule) && !comp.InstalledModules.Contains(InquisitorRankModule))
             comp.Profile = profile;
         RecomputeProfile(cruciform, comp);
+        if (comp.ImplantedEntity is { } body)
+            _world.AssignObjectives(body);
     }
 
     public void MakeCommon(EntityUid c, CruciformComponent comp)
@@ -716,6 +739,8 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
             capacity += upgrade.MaxHolinessDelta;
             regenMultiplier += upgrade.RegenMultiplierDelta;
         }
+
+        regenMultiplier += component.EnergyMiracles;
 
         // Auras (the obelisk) ride the same derivation, so an aura pulse can neither compound on
         // itself nor be lost when a module changes.

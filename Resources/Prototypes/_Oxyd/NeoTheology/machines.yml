@@ -1,4 +1,4 @@
-# NeoTheology machines (P2). No NT RSI exists in this fork, so sprites are borrowed from real machines.
+# Native NT machines. Eye, reader, forge and obelisk now use static Eris source sprites.
 - type: entity
   parent: BiomassReclaimer
   id: OxydNtBiomatterReclaimer
@@ -19,8 +19,8 @@
     powerLoad: 250
   - type: Appearance
   - type: Sprite
-    sprite: Structures/Machines/seed_extractor.rsi
-    state: seedextractor
+    sprite: Oxyd/NeoTheology/machinery.rsi
+    state: cruciforge
   # P2.10a: MaterialStorage is the forge's single store. storageLimit is a *total* cap (there is no
   # per-material field); 10050 = 50 sheets of each recipe material in volume units (biomatter 1/sheet,
   # plasteel/gold 100/sheet).
@@ -52,7 +52,7 @@
   parent: [ BaseMachinePowered ]
   id: OxydNtBioreactor
   name: bioreactor
-  description: Processes crops left in its sealed chamber into biomatter.
+  description: Processes crops and dead organic bodies on its chamber tile into biomatter, preserving equipment and implants.
   components:
   - type: Bioreactor
   - type: ApcPowerReceiver
@@ -83,8 +83,8 @@
     powerLoad: 250
   - type: Appearance
   - type: Sprite
-    sprite: Structures/Machines/artifact_analyzer.rsi
-    state: icon
+    sprite: Oxyd/NeoTheology/machinery.rsi
+    state: reader_off
 
 # Upstream cloning pod (body growth is its job) with the module's own biomass and the reader link.
 - type: entity
@@ -128,8 +128,8 @@
     powerLoad: 30
   - type: Appearance
   - type: Sprite
-    sprite: Structures/Machines/tech_disk_printer.rsi
-    state: icon
+    sprite: Oxyd/NeoTheology/machinery.rsi
+    state: nt_obelisk
 
 # P2.16: the armory. Points are local until P3.5 rebases them onto the Eye.
 - type: entity
@@ -166,8 +166,8 @@
     powerLoad: 30
   - type: Appearance
   - type: Sprite
-    sprite: Structures/Machines/tech_disk_printer.rsi
-    state: icon
+    sprite: Oxyd/NeoTheology/eye.rsi
+    state: Eye_of_the_Protector
   - type: ActivatableUI
     key: enum.EyeOfTheProtectorUiKey.Key
   - type: UserInterface

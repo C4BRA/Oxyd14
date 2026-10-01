@@ -41,8 +41,9 @@ public sealed class AltarOfferingTest : GameTest
             Assert.That(_altar.TryMakeOffering(altar, eye, OfferingId, out var accepted), Is.True,
                 "A fully-stocked offering must be accepted.");
             Assert.That(accepted, Is.EqualTo(200), "The offering must consume every required biomatter.");
-            Assert.That(eyeComp.Observation, Is.EqualTo(1000f).Within(1e-6),
-                "The offering must bank its observation on the Eye.");
+            Assert.That(eyeComp.Power, Is.EqualTo(5f).Within(1e-6));
+            Assert.That(eyeComp.Observation, Is.Zero, "Offerings select rewards and add power, not observation.");
+            Assert.That(eyeComp.NextRewards, Is.EquivalentTo(new[] { NeoTheologyMiracle.Material }));
 
             Assert.That(SEntMan.IsQueuedForDeletion(stackA), Is.True,
                 "A fully-consumed biomatter stack must be deleted.");

@@ -49,7 +49,7 @@
   category: Common
   grantedBy: [OxydLitanyCommon]
   effect: Entreaty
-  targetMode: StationFollower
+  targetMode: GlobalFollower
   range: 0
   cost: 0
   cooldownKey: OxydLitanyEntreaty

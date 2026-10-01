@@ -335,9 +335,12 @@ public sealed partial class LitanySystem
         return TryComp(starter, out ceremony);
     }
 
+    [Dependency] private readonly NeoTheologyWorldSystem _world = default!;
+
     [SubscribeLocalEvent]
     private void OnSanctifyArea(Entity<CruciformBearerComponent> ent, ref LitanySanctifyAreaEvent args)
     {
+        _world.Sanctify(ent.Owner);
         // Eris loops every obelisk and pushes force_active to at least the effect's window.
         var until = _timing.CurTime + args.ForceActiveTime;
         var query = EntityQueryEnumerator<ObeliskComponent>();

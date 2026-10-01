@@ -658,6 +658,16 @@ public sealed partial class LitanyEffectSystem : EntitySystem, ILitanyEffectRais
         return results;
     }
 
+    public IEnumerable<EntityUid> EnumerateGlobalActiveFollowers(EntityUid actor)
+    {
+        var query = EntityQueryEnumerator<CruciformBearerComponent, TransformComponent>();
+        while (query.MoveNext(out var body, out _, out var xform))
+            if (body != actor && xform.MapID != MapId.Nullspace &&
+                !TerminatingOrDeleted(body) && !EntityManager.IsQueuedForDeletion(body) &&
+                _cruciform.TryGetCruciform(body, out _, out _))
+                yield return body;
+    }
+
     public IEnumerable<EntityUid> EnumerateSameStationActiveFollowers(EntityUid actor)
     {
         var actorStation = _stations.GetOwningStation(actor);

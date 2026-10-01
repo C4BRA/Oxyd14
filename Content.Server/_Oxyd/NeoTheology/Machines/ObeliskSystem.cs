@@ -86,6 +86,9 @@ public sealed partial class ObeliskSystem : EntitySystem
             return;
 
         var affected = new HashSet<EntityUid>();
+        var cooldownPulse = _timing.CurTime >= obelisk.NextCooldownPulse;
+        if (cooldownPulse)
+            obelisk.NextCooldownPulse = _timing.CurTime + obelisk.CooldownPulseInterval;
         var operational = _machines.IsOperational(uid);
         var origin = _transform.GetMapCoordinates(uid);
         if (operational)
@@ -105,6 +108,15 @@ public sealed partial class ObeliskSystem : EntitySystem
                     continue;
 
                 affected.Add(implant);
+                if (cooldownPulse && TryComp<CruciformBearerComponent>(target, out var bearer))
+                {
+                    foreach (var key in bearer.PersonalCooldowns.Keys.ToArray())
+                    {
+                        var reduced = bearer.PersonalCooldowns[key] - obelisk.CooldownReduction;
+                        bearer.PersonalCooldowns[key] = reduced < _timing.CurTime ? _timing.CurTime : reduced;
+                    }
+                    Dirty(target, bearer);
+                }
                 SetRegeneration(implant, uid, obelisk.RegenMultiplier);
                 if (TryComp<SanityComponent>(target, out var sanity))
                     _sanity.ApplySanityDelta((target, sanity), SanitySource.Belief, obelisk.SanityPerSecond);
@@ -139,7 +151,11 @@ public sealed partial class ObeliskSystem : EntitySystem
                 !HasComp<CruciformBearerComponent>(target) && !HasComp<HumanoidProfileComponent>(target) &&
                 _factions.IsMemberOfAny((target, faction), obelisk.HostileFactions) &&
                 _damageable.TryChangeDamage(target, obelisk.HostileDamage, origin: uid))
+            {
                 hit++;
+                if (_mobState.IsDead(target) && _eye.FindEye(uid) is { } eye)
+                    _eye.AddObservation(eye, Comp<EyeOfTheProtectorComponent>(eye).ObservationPerObeliskKill);
+            }
 
             if (TryComp<PlantTrayComponent>(target, out var tray) && tray.WeedLevel > 0)
                 _tray.AdjustWeed((target, tray), -obelisk.WeedRemovalPerSecond);

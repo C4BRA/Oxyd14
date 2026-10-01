@@ -97,8 +97,8 @@ public record struct LitanyRejectForeignBodyEvent(EntityUid Target, bool Handled
 public record struct LitanyRevealAdversariesEvent(EntityUid User, bool Handled);
 
 /// <summary>
-/// Bridge for Words of Purging: raised on the target; the server purges the listed reagents
-/// from the target's bloodstream.
+/// Bridge for Words of Purging: raised on the target; the server advances addiction treatment
+/// and suppresses pain. Eris does not remove bloodstream reagents in this rite.
 /// </summary>
 [ByRefEvent]
 public record struct LitanyPurgeAddictionEvent(EntityUid Target, bool Handled);

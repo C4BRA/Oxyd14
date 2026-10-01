@@ -1,4 +1,7 @@
 using Content.Shared.Preferences;
+using Content.Shared._Oxyd.Skills;
+using Content.Shared.Chemistry.Components;
+using Robust.Shared.Prototypes;
 using Robust.Shared.GameStates;
 
 namespace Content.Shared._Oxyd.NeoTheology.Components;
@@ -12,8 +15,8 @@ namespace Content.Shared._Oxyd.NeoTheology.Components;
 /// <remarks>
 /// This fork has no <c>HumanoidAppearanceComponent</c>, so the appearance half of the Eris
 /// snapshot rides <see cref="Profile"/> (a <see cref="HumanoidCharacterProfile"/> carries
-/// appearance, species, gender and age). Blood type and languages have no home here and are
-/// deliberately not invented.
+/// appearance, species, gender and age). Native languages, skills, blood chemistry and
+/// flavor text are saved separately; temporary stat buffs retain their original deadlines.
 /// </remarks>
 [RegisterComponent, NetworkedComponent]
 public sealed partial class CruciformSoulComponent : Component
@@ -29,6 +32,24 @@ public sealed partial class CruciformSoulComponent : Component
     [DataField] public EntityUid? SourceBody;
     [DataField] public EntityUid? PreparedBody;
 
+    [DataField] public Dictionary<ProtoId<SkillPrototype>, int> BaseSkills = new();
+    [DataField] public List<SoulSkillBuff> SkillBuffs = new();
+    [DataField] public HashSet<ProtoId<LanguagePrototype>> Speaking = new();
+    [DataField] public HashSet<ProtoId<LanguagePrototype>> Understanding = new();
+    [DataField] public ProtoId<LanguagePrototype>? ChosenLanguage;
+    [DataField] public Solution? BloodReference;
+    [DataField] public string? FlavorText;
+    [DataField] public bool HolyLight;
+
     /// <summary>The saved body's biological rejection, not the player's beliefs.</summary>
     [DataField] public bool AtheistMutation;
+}
+
+[DataDefinition]
+public sealed partial class SoulSkillBuff
+{
+    [DataField] public ProtoId<SkillPrototype> Skill;
+    [DataField] public string Source = string.Empty;
+    [DataField] public int Amount;
+    [DataField] public TimeSpan Expires;
 }

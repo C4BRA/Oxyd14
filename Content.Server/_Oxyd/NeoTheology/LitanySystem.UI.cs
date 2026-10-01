@@ -7,6 +7,7 @@ using Content.Shared._Oxyd.NeoTheology.UI;
 using Content.Shared.Hands;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Map;
 
 namespace Content.Server._Oxyd.NeoTheology;
 
@@ -200,6 +201,15 @@ public sealed partial class LitanySystem
     /// (<c>t:index</c>) so no entity/identity value leaves the server; designation tokens
     /// name the profile prototype the effect will apply.
     /// </summary>
+    private void OpenPrayerPrompt(PendingLitanyCast cast)
+    {
+        // Reuse the existing private choice UI. The nullspace proxy is never a held book.
+        var prompt = Spawn("OxydNtBible", MapCoordinates.Nullspace);
+        cast.Prompt = prompt;
+        _ui.SetUi(prompt, LitanyUiKey.Book, new InterfaceData("LitanyBoundUserInterface", 0f, false));
+        _ui.OpenUi(prompt, LitanyUiKey.Book, cast.Actor);
+    }
+
     private void SendChoiceSnapshot(PendingLitanyCast cast)
     {
         if (FindActorBook(cast.Actor) is not { } book)
@@ -264,6 +274,10 @@ public sealed partial class LitanySystem
 
     private EntityUid? FindActorBook(EntityUid actor)
     {
+        if (TryComp<CruciformBearerComponent>(actor, out var bearer) &&
+            bearer.PendingRequestId is { } request && _pendingByRequest.TryGetValue(request, out var cast) &&
+            cast.Prompt is { } prompt)
+            return prompt;
         foreach (var (book, viewers) in _bookViewers)
         {
             if (viewers.Contains(actor))
@@ -439,8 +453,7 @@ public sealed partial class LitanySystem
             !string.IsNullOrEmpty(bearer.PendingRequestId) &&
             _pendingByRequest.TryGetValue(bearer.PendingRequestId, out var cast) &&
             cast.Actor == actor &&
-            cast.Origin == LitanyCastOrigin.Book &&
-            cast.Book == book &&
+            (cast.Book == book || cast.Prompt == book) &&
             !cast.Committed)
         {
             if (cast.DoAfterId is { } doAfterId)

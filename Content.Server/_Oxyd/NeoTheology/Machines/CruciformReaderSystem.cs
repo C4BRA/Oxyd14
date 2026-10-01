@@ -37,6 +37,7 @@ public sealed partial class CruciformReaderSystem : EntitySystem
     [Dependency] private readonly IPlayerManager _players = default!;
     [Dependency] private DamageableSystem _damage = default!;
     [Dependency] private CruciformSystem _cruciform = default!;
+    [Dependency] private readonly CoreModuleBehaviorSystem _souls = default!;
 
     [SubscribeLocalEvent]
     private void OnInserted(EntityUid uid, CruciformReaderComponent reader, EntInsertedIntoContainerMessage args)
@@ -135,8 +136,7 @@ public sealed partial class CruciformReaderSystem : EntitySystem
         var prints = EnsureComp<FingerprintComponent>(body);
         prints.Fingerprint = soul.Fingerprint;
         Dirty(body, prints);
-        if (soul.AtheistMutation)
-            EnsureComp<AtheistMutationComponent>(body);
+        _souls.RestoreBodyState(body, soul);
 
         if (!_containers.Insert(body, pod.BodyContainer))
         {

@@ -4,6 +4,7 @@ using Content.IntegrationTests.Fixtures;
 using Content.IntegrationTests.Fixtures.Attributes;
 using Content.Server._Oxyd.NeoTheology;
 using Content.Server.Atmos.Components;
+using Content.Server._Oxyd.SanityInsightAndResting;
 using Content.Shared._Oxyd.NeoTheology;
 using Content.Shared._Oxyd.NeoTheology.Components;
 using Content.Shared.Implants;
@@ -49,7 +50,7 @@ public sealed class LitanyEffectsOfferingsTest : GameTest
     [SidedDependency(Side.Server)] private readonly SatiationSystem _satiation = default!;
 
     [Test]
-    public async Task DivineIntervention_ConsumesBiomatterAndBanksObservationOnTheEye()
+    public async Task DivineIntervention_ConsumesBiomatterAndSelectsMaterialReward()
     {
         var map = await Pair.CreateMachineTestMap();
         EntityUid eye = default;
@@ -77,8 +78,10 @@ public sealed class LitanyEffectsOfferingsTest : GameTest
         {
             Assert.Multiple(() =>
             {
-                Assert.That(SComp<EyeOfTheProtectorComponent>(eye).Observation, Is.EqualTo(1000f).Within(1e-6),
-                    "The accepted offering must bank its observation on the Eye.");
+                var state = SComp<EyeOfTheProtectorComponent>(eye);
+                Assert.That(state.Observation, Is.Zero);
+                Assert.That(state.Power, Is.EqualTo(5f).Within(1e-6));
+                Assert.That(state.NextRewards, Is.EquivalentTo(new[] { NeoTheologyMiracle.Material }));
                 Assert.That(Consumed(stackA), Is.True,
                     "A fully-consumed biomatter stack must be deleted.");
                 Assert.That(Consumed(stackB), Is.True,
@@ -88,7 +91,7 @@ public sealed class LitanyEffectsOfferingsTest : GameTest
     }
 
     [Test]
-    public async Task HolyGuidance_ConsumesFortyProduceAndBanksObservation()
+    public async Task HolyGuidance_ConsumesAnyOddityAndFortyProduceAndSelectsFaithReward()
     {
         var map = await Pair.CreateMachineTestMap();
         EntityUid eye = default;
@@ -104,6 +107,9 @@ public sealed class LitanyEffectsOfferingsTest : GameTest
 
             for (var i = 0; i < FruitCount; i++)
                 fruit.Add(SSpawnAtPosition(FruitProto, altarCoords));
+            var oddity = SSpawnAtPosition("CombatKnife", altarCoords);
+            SEntMan.EnsureComponent<OddityComponent>(oddity);
+            fruit.Add(oddity);
 
             var begin = _litany.TryBeginLitany(caster, HolyGuidance, LitanyCastOrigin.ManualSpeech);
             Assert.That(begin.Success, Is.True, begin.Reason?.Id ?? "HolyGuidance begin failed");
@@ -113,8 +119,12 @@ public sealed class LitanyEffectsOfferingsTest : GameTest
 
         await Server.WaitAssertion(() =>
         {
-            Assert.That(SComp<EyeOfTheProtectorComponent>(eye).Observation, Is.EqualTo(500f).Within(1e-6),
-                "The fruit offering must bank its observation on the Eye.");
+            var state = SComp<EyeOfTheProtectorComponent>(eye);
+            Assert.That(state.Observation, Is.Zero);
+            Assert.That(state.Power, Is.EqualTo(5f).Within(1e-6));
+            Assert.That(state.NextRewards, Is.EquivalentTo(new[]
+                { NeoTheologyMiracle.Alert, NeoTheologyMiracle.Inspiration, NeoTheologyMiracle.Oddity,
+                    NeoTheologyMiracle.StatBuff, NeoTheologyMiracle.Energy }));
             foreach (var apple in fruit)
                 Assert.That(Consumed(apple), Is.True,
                     "Every offered fruit must be consumed.");
@@ -198,6 +208,7 @@ public sealed class LitanyEffectsOfferingsTest : GameTest
         receiver.Powered = true;
         Assert.That(SComp<TransformComponent>(eye).Anchored, Is.True);
         SComp<EyeOfTheProtectorComponent>(eye).ObservationRadius = 0f;
+        SComp<EyeOfTheProtectorComponent>(eye).NextPowerUpdate = TimeSpan.MaxValue;
         return eye;
     }
 

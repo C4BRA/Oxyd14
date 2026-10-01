@@ -49,3 +49,14 @@
 - type: oxydCoreModule
   id: OxydNtModulePriestConvert
   activationProfile: OxydNtPreacher
+
+# Optional source core upgrade; Obey remains a commented-out rite, not a 61st litany.
+- type: oxydCoreModule
+  id: OxydNtModuleObey
+
+- type: entity
+  parent: BaseMindRole
+  id: OxydNtObeyRole
+  name: bound cruciform soul
+  components:
+  - type: NeoTheologyObeyRole

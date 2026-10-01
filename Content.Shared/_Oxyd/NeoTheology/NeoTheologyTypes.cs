@@ -105,6 +105,7 @@ public enum LitanyTargetMode : byte
     FrontTile,
     Ceremony,
     None,
+    GlobalFollower,
 }
 
 public enum LitanyCooldownScope : byte

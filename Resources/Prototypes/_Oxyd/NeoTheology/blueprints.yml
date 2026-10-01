@@ -237,6 +237,7 @@
   build: OxydNtEyeOfTheProtector
   buildTime: 3
   materials:
+  - item: OxydNtLastShelter
   - stack: Gold
     amount: 15
   - stack: Plasteel

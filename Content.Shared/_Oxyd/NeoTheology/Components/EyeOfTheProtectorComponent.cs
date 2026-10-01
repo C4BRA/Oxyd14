@@ -89,9 +89,12 @@ public sealed partial class EyeOfTheProtectorComponent : Component
     [DataField]
     public TimeSpan ScanInterval = TimeSpan.FromSeconds(5);
 
-    /// <summary>Oddity prototypes the ODDITY miracle may spawn. Empty until a real oddity exists in-tree.</summary>
+    /// <summary>Oddities the ODDITY miracle may spawn, once per Eye as in Eris.</summary>
     [DataField]
-    public List<EntProtoId> OddityRewards = new();
+    public List<EntProtoId> OddityRewards = new() { "OxydNtOddity" };
+
+    [DataField] public List<NeoTheologyMiracle> NextRewards = new();
+    [DataField] public bool OddityReleased;
 
     /// <summary>UI cooldown: the next power update.</summary>
     [ViewVariables]
@@ -127,4 +130,9 @@ public sealed partial class EyeOfTheProtectorComponent : Component
     /// <summary>Unique-buff id for the STAT_BUFF miracle, so a later miracle replaces it.</summary>
     [DataField]
     public string MiracleBuffId = "EyeOfTheProtector";
+}
+
+public enum NeoTheologyMiracle : byte
+{
+    Alert, Inspiration, Oddity, StatBuff, Material, Energy,
 }

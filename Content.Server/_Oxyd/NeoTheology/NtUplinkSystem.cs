@@ -6,6 +6,8 @@ using Content.Shared._Oxyd.NeoTheology.Events;
 using Content.Shared.FixedPoint;
 using Content.Shared.Implants;
 using Content.Shared.Mind;
+using Content.Shared.Mind.Components;
+using Content.Shared.UserInterface;
 using Content.Shared.Popups;
 using Content.Shared.Store;
 using Content.Shared.Store.Components;
@@ -65,6 +67,9 @@ public sealed partial class NtUplinkSystem : EntitySystem
             return false;
         }
 
+        if (!comp.Active || comp.ImplantedEntity is not { } body ||
+            !TryComp<CruciformBearerComponent>(body, out var bearer) || bearer.Cruciform != cruciform)
+            return false;
         uplink = component;
         return true;
     }
@@ -118,6 +123,32 @@ public sealed partial class NtUplinkSystem : EntitySystem
     private void OnImplantRemoved(Entity<NtUplinkComponent> ent, ref ImplantRemovedEvent args)
     {
         BankBalance(ent.Comp);
+    }
+
+    [SubscribeLocalEvent]
+    private void OnActivityChanged(Entity<NtUplinkComponent> ent, ref CruciformActivityChangedEvent args)
+    {
+        if (!args.Active)
+            BankBalance(ent.Comp);
+    }
+
+    [SubscribeLocalEvent]
+    private void OnMindRemoved(Entity<CruciformBearerComponent> ent, ref MindRemovedMessage args)
+    {
+        if (ent.Comp.Cruciform is { } implant && TryComp<NtUplinkComponent>(implant, out var uplink))
+            BankBalance(uplink);
+    }
+
+    [SubscribeLocalEvent]
+    private void OnStoreMessageAttempt(Entity<StoreComponent> ent, ref BoundUserInterfaceMessageAttempt args)
+    {
+        if (MetaData(ent.Owner).EntityPrototype?.ID != UplinkStore.Id)
+            return;
+        var valid = TryComp<CruciformBearerComponent>(args.Actor, out var bearer) &&
+            bearer.Cruciform is { } implant && TryGetUplink(implant, out var uplink) && uplink.Store == ent.Owner &&
+            _mind.TryGetMind(args.Actor, out var mind, out _) && ent.Comp.AccountOwner == mind;
+        if (!valid)
+            args.Cancel();
     }
 
     private void BankBalance(NtUplinkComponent component)

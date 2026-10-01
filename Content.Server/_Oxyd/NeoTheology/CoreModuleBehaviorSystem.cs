@@ -1,4 +1,12 @@
 using Content.Shared.Body;
+using Content.Shared.Roles;
+using Content.Server.Roles;
+using Content.Shared.Body.Components;
+using Content.Shared.Body.Systems;
+using Content.Shared.DetailExaminable;
+using Content.Shared._Oxyd;
+using Content.Shared._Oxyd.Skills;
+using Robust.Shared.Timing;
 using Content.Shared.Forensics.Components;
 using Content.Shared.Ghost.Components;
 using Content.Shared.Mobs.Systems;
@@ -37,12 +45,17 @@ public sealed partial class CoreModuleBehaviorSystem : EntitySystem
     [Dependency] private readonly IPlayerManager _player = default!;
     [Dependency] private readonly NtUplinkSystem _uplink = default!;
     [Dependency] private readonly CruciformSystem _cruciform = default!;
+    [Dependency] private readonly NeoTheologyWorldSystem _world = default!;
     [Dependency] private readonly SharedMindSystem _minds = default!;
     [Dependency] private readonly MobStateSystem _mobState = default!;
     [Dependency] private readonly CloningPodSystem _cloning = default!;
     [Dependency] private readonly MetaDataSystem _metadata = default!;
     [Dependency] private readonly HumanoidProfileSystem _profiles = default!;
     [Dependency] private readonly SharedVisualBodySystem _visualBody = default!;
+    [Dependency] private readonly SharedSkillSystem _skills = default!;
+    [Dependency] private readonly BloodstreamSystem _bloodstream = default!;
+    [Dependency] private readonly IGameTiming _timing = default!;
+    [Dependency] private readonly SharedRoleSystem _roles = default!;
 
     [SubscribeLocalEvent]
     private void OnModuleInstalled(EntityUid cruciform, CruciformComponent comp, ref CoreModuleInstalledEvent args)
@@ -51,6 +64,8 @@ public sealed partial class CoreModuleBehaviorSystem : EntitySystem
             WriteSnapshot(cruciform, comp);
         else if (args.Module == UplinkModule)
             _uplink.OnUplinkInstalled(cruciform);
+        else if (args.Module == "OxydNtModuleObey")
+            ActivateObey(cruciform, comp);
     }
 
     [SubscribeLocalEvent]
@@ -60,6 +75,28 @@ public sealed partial class CoreModuleBehaviorSystem : EntitySystem
             WriteSnapshot(cruciform, comp);
         else if (args.Module == UplinkModule)
             _uplink.OnUplinkUninstalled(cruciform);
+        else if (args.Module == "OxydNtModuleObey" && comp.ImplantedEntity is { } body &&
+            _minds.TryGetMind(body, out var mind, out _))
+            _roles.MindRemoveRole<NeoTheologyObeyRoleComponent>(mind);
+    }
+
+    [SubscribeLocalEvent]
+    private void OnObeyBriefing(Entity<NeoTheologyObeyRoleComponent> ent, ref GetBriefingEvent args)
+    {
+        args.Append(Loc.GetString("oxyd-nt-obey-laws", ("commander", ent.Comp.Commander)));
+    }
+
+    public void ActivateObey(EntityUid cruciform, CruciformComponent comp)
+    {
+        if (!comp.Active || comp.ImplantedEntity is not { } body ||
+            !comp.CoreUpgrades.TryGetValue("OxydNtModuleObey", out var item) ||
+            !TryComp<CruciformCoreUpgradeComponent>(item, out var kit) ||
+            !_minds.TryGetMind(body, out var mind, out var mindComp))
+            return;
+        if (!_roles.MindHasRole<NeoTheologyObeyRoleComponent>(mind))
+            _roles.MindAddRole(mind, "OxydNtObeyRole", mindComp);
+        if (_roles.MindHasRole<NeoTheologyObeyRoleComponent>(mind, out var role))
+            Comp<NeoTheologyObeyRoleComponent>(role.Value).Commander = kit.Commander;
     }
 
     /// <summary>Restore the saved mind, never replace it with the prepared body's identity.</summary>
@@ -88,6 +125,7 @@ public sealed partial class CoreModuleBehaviorSystem : EntitySystem
         _visualBody.ApplyProfileTo(ent.Owner, soul.Profile);
         _profiles.ApplyProfileTo(ent.Owner, soul.Profile);
         _metadata.SetEntityName(ent.Owner, soul.Name);
+        RestoreBodyState(ent.Owner, soul);
         _minds.TransferTo(mindId, ent.Owner, ghostCheckOverride: true, mind: mind);
         _minds.UnVisit(mindId, mind);
         _cloning.ClonesWaitingForMind.Remove(mind);
@@ -101,7 +139,11 @@ public sealed partial class CoreModuleBehaviorSystem : EntitySystem
     private void OnMindAdded(Entity<CruciformBearerComponent> ent, ref MindAddedMessage args)
     {
         if (_cruciform.TryGetCruciform(ent.Owner, out var cruciform, out var comp))
+        {
             WriteSnapshot(cruciform, comp);
+            ActivateObey(cruciform, comp);
+            _world.AssignObjectives(ent.Owner);
+        }
     }
 
     /// <summary>
@@ -126,6 +168,35 @@ public sealed partial class CoreModuleBehaviorSystem : EntitySystem
         soul.Fingerprint = TryComp<FingerprintComponent>(body, out var prints) ? prints.Fingerprint : null;
         soul.Name = MetaData(body).EntityName;
         soul.AtheistMutation = HasComp<AtheistMutationComponent>(body);
+        soul.HolyLight = HasComp<HolyLightComponent>(body);
+        soul.FlavorText = TryComp<DetailExaminableComponent>(body, out var flavor) ? flavor.Content : null;
+        var bloodReference = TryComp<BloodstreamComponent>(body, out var blood) ? blood.BloodReferenceSolution : null;
+        soul.BloodReference = bloodReference?.Clone();
+        soul.BaseSkills.Clear();
+        soul.SkillBuffs.Clear();
+        if (TryComp<MobSkillComponent>(body, out var skills))
+        {
+            foreach (var (skill, values) in skills.skills)
+                if (values.Length > 0)
+                    soul.BaseSkills[skill] = values[0];
+            foreach (var (skill, sources) in skills.buffSources)
+                foreach (var (source, buffs) in sources)
+                    foreach (var buff in buffs)
+                        if (buff.expires > _timing.CurTime)
+                            soul.SkillBuffs.Add(new SoulSkillBuff
+                            {
+                                Skill = skill, Source = source, Amount = buff.amount, Expires = buff.expires,
+                            });
+        }
+        soul.ChosenLanguage = null;
+        soul.Speaking.Clear();
+        soul.Understanding.Clear();
+        if (TryComp<LanguageKnowledgeComponent>(body, out var languages))
+        {
+            soul.ChosenLanguage = languages.chosen;
+            soul.Speaking.UnionWith(languages.speaking);
+            soul.Understanding.UnionWith(languages.understanding);
+        }
         soul.BiomassCost = TryComp<PhysicsComponent>(body, out var physics)
             ? Math.Max(1, (int) Math.Round(physics.FixturesMass))
             : 100;
@@ -167,5 +238,46 @@ public sealed partial class CoreModuleBehaviorSystem : EntitySystem
         }
 
         return true;
+    }
+
+    /// <summary>Shared by vessel growth and soul transfer; copying never aliases the implant's snapshot.</summary>
+    public void RestoreBodyState(EntityUid body, CruciformSoulComponent soul)
+    {
+        if (soul.BaseSkills.Count > 0)
+        {
+            var skills = EnsureComp<MobSkillComponent>(body);
+            skills.buffSources.Clear();
+            foreach (var (skill, value) in soul.BaseSkills)
+                skills.skills[skill] = new[] { value, 0 };
+            foreach (var buff in soul.SkillBuffs)
+                if (buff.Expires > _timing.CurTime)
+                    _skills.AddBuff((body, skills), buff.Source, buff.Amount, buff.Skill,
+                        buff.Expires == TimeSpan.MaxValue ? null : buff.Expires - _timing.CurTime);
+            _skills.RecalculateBuffs((body, skills));
+        }
+        if (soul.ChosenLanguage is { } chosen)
+        {
+            var languages = EnsureComp<LanguageKnowledgeComponent>(body);
+            languages.chosen = chosen;
+            languages.speaking = new(soul.Speaking);
+            languages.understanding = new(soul.Understanding);
+            Dirty(body, languages);
+        }
+        if (soul.BloodReference is { } blood && TryComp<BloodstreamComponent>(body, out var bloodstream))
+            _bloodstream.ChangeBloodReagents((body, bloodstream), blood.Clone());
+        if (soul.FlavorText is { } flavor)
+        {
+            var details = EnsureComp<DetailExaminableComponent>(body);
+            details.Content = flavor;
+            Dirty(body, details);
+        }
+        if (soul.HolyLight)
+            EnsureComp<HolyLightComponent>(body);
+        else
+            RemComp<HolyLightComponent>(body);
+        if (soul.AtheistMutation)
+            EnsureComp<AtheistMutationComponent>(body);
+        else
+            RemComp<AtheistMutationComponent>(body);
     }
 }

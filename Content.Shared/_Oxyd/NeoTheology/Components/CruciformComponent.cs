@@ -99,4 +99,10 @@ public sealed partial class CruciformComponent : Component
     /// </summary>
     [DataField]
     public TimeSpan LastHolinessUpdate;
+
+    [DataField] public TimeSpan PurityInterval = TimeSpan.FromSeconds(5);
+    public TimeSpan NextPurity;
+
+    /// <summary>Each Eye energy miracle adds one source base regeneration, not current holiness.</summary>
+    [DataField] public int EnergyMiracles;
 }

@@ -1,7 +1,10 @@
 using System.Linq;
 using Content.Server._Oxyd.NeoTheology.Machines;
 using Content.Shared.Humanoid;
-using Content.Server.Chat.Systems;
+using Content.Shared._Oxyd.NeoTheology.Effects;
+using Content.Shared.Mobs.Systems;
+using Robust.Shared.Utility;
+using Content.Shared._Oxyd.NeoTheology.Events;
 using Content.Server._Oxyd.SanityInsightAndResting;
 using Content.Shared._Oxyd.NeoTheology.Components;
 using Content.Shared._Oxyd.NeoTheology.UI;
@@ -26,12 +29,31 @@ public sealed partial class EyeOfTheProtectorSystem : EntitySystem
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly NeoTheologyMachineSystem _machines = default!;
     [Dependency] private readonly StatusEffectsSystem _statusEffects = default!;
-    [Dependency] private readonly ChatSystem _chat = default!;
     [Dependency] private readonly EntityLookupSystem _lookup = default!;
     [Dependency] private readonly SanitySystem _sanity = default!;
     [Dependency] private readonly SharedSkillSystem _skill = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly UserInterfaceSystem _ui = default!;
+    [Dependency] private readonly CruciformSystem _cruciform = default!;
+    [Dependency] private readonly LitanyEffectSystem _effects = default!;
+    [Dependency] private readonly MobStateSystem _mobState = default!;
+
+    [SubscribeLocalEvent]
+    private void OnActivityChanged(ref CruciformActivityChangedEvent args)
+    {
+        if (args.Body is { } body && FindEye(body) is { } eye)
+            AddObservation(eye, args.Active ? 50 : -50);
+    }
+
+    public bool ApplyOffering(EntityUid eye, float power, IReadOnlyList<NeoTheologyMiracle> rewards)
+    {
+        if (!TryComp<EyeOfTheProtectorComponent>(eye, out var comp) || !_machines.IsOperational(eye))
+            return false;
+        comp.Power += power;
+        comp.NextRewards = rewards.ToList();
+        Dirty(eye, comp);
+        return true;
+    }
 
     /// <summary>P3.7: push a read-only status snapshot when the Eye's UI is opened.</summary>
     [SubscribeLocalEvent]
@@ -185,8 +207,8 @@ public sealed partial class EyeOfTheProtectorSystem : EntitySystem
     }
 
     /// <summary>
-    /// Eris <c>updatePower()</c>: bank power from the observation level plus one per faithful
-    /// in range, and release a miracle whenever the bank fills.
+    /// Eris <c>updatePower()</c>: bank power from observation plus connected faithful
+    /// globally, and release a miracle whenever the bank fills.
     /// </summary>
     public void UpdatePower(EntityUid eye, EyeOfTheProtectorComponent comp)
     {
@@ -198,7 +220,8 @@ public sealed partial class EyeOfTheProtectorSystem : EntitySystem
 
         var gain = comp.PowerGainBase +
             Math.Clamp(comp.Observation, comp.MinObservation, comp.MaxObservation) / 100f;
-        gain += FaithfulInRange(eye, comp).Count;
+        // Source power counts connected disciples globally, not only bodies near the Eye.
+        gain += EnumerateFaithful().Count(f => HasComp<ActorComponent>(f.Body));
         comp.Power += gain;
 
         while (comp.Power >= comp.MaxPower)
@@ -224,38 +247,78 @@ public sealed partial class EyeOfTheProtectorSystem : EntitySystem
     {
         var xform = Transform(eye);
 
-        switch (_random.Next(6))
+        var rewards = comp.NextRewards.Count > 0
+            ? comp.NextRewards.ToList()
+            : Enum.GetValues<NeoTheologyMiracle>().ToList();
+        if (comp.OddityReleased || comp.OddityRewards.Count == 0)
+            rewards.Remove(NeoTheologyMiracle.Oddity);
+        comp.NextRewards.Clear();
+        if (rewards.Count == 0)
+            return;
+        FireMiracle(eye, _random.Pick(rewards), comp);
+    }
+
+    public void FireMiracle(EntityUid eye, NeoTheologyMiracle reward, EyeOfTheProtectorComponent? comp = null)
+    {
+        if (!Resolve(eye, ref comp) || !_machines.IsOperational(eye))
+            return;
+        var xform = Transform(eye);
+        switch (reward)
         {
-            case 0: // ALERT — only the faithful in range hear the Eye.
+            case NeoTheologyMiracle.Alert:
             {
-                var faithful = FaithfulInRange(eye, comp);
-                if (faithful.Count > 0)
+                var faithful = EnumerateFaithful();
+                if (faithful.Count == 0)
+                    break;
+                EntityUid? threat = null;
+                var threats = EntityQueryEnumerator<NeoTheologyThreatComponent>();
+                while (threats.MoveNext(out var target, out _))
+                    if (_mobState.IsAlive(target) && !TerminatingOrDeleted(target) &&
+                        !EntityManager.IsQueuedForDeletion(target))
+                    {
+                        threat = target;
+                        break;
+                    }
+                if (threat is { } enemy)
                 {
-                    _chat.DispatchFilteredAnnouncement(
-                        Filter.Entities(faithful.Select(f => f.Body).ToArray()),
-                        Loc.GetString("oxyd-eotp-miracle"),
-                        source: eye);
+                    var preacher = faithful.FirstOrDefault(f =>
+                        Comp<CruciformComponent>(f.Cruciform).InstalledModules.Contains("OxydNtModulePriest"));
+                    var recipient = preacher.Body == default ? _random.Pick(faithful).Body : preacher.Body;
+                    _effects.DeliverSocialNotice(recipient, Loc.GetString("oxyd-eotp-threat",
+                        ("location", FormattedMessage.EscapeText(_effects.DescribeLocation(enemy)))));
+                }
+                else
+                {
+                    foreach (var (body, _) in faithful)
+                    {
+                        _effects.DeliverSocialNotice(body, Loc.GetString("oxyd-eotp-calm"));
+                        if (_random.Prob(0.5f) && TryComp<SanityComponent>(body, out var sanity))
+                            _sanity.ApplySanityDelta((body, sanity), SanitySource.Belief, 20);
+                    }
                 }
                 break;
             }
 
-            case 1: // INSPIRATION — insight amount is a flagged balance choice.
-                foreach (var (body, _) in FaithfulInRange(eye, comp))
+            case NeoTheologyMiracle.Inspiration: // Native insight replaces Eris's perk breakdown.
+                foreach (var (body, _) in EnumerateFaithful())
                 {
-                    if (TryComp<SanityComponent>(body, out var sanity))
+                    if (_random.Prob(0.5f) && TryComp<SanityComponent>(body, out var sanity))
                         _sanity.GiveInsight((body, sanity), 20f);
                 }
                 break;
 
-            case 2: // ODDITY — no oddity prototype exists in-tree yet, so the list is empty and this no-ops.
-                if (comp.OddityRewards.Count > 0)
+            case NeoTheologyMiracle.Oddity:
+                if (!comp.OddityReleased && comp.OddityRewards.Count > 0)
+                {
                     SpawnAtPosition(_random.Pick(comp.OddityRewards), xform.Coordinates);
+                    comp.OddityReleased = true;
+                }
                 break;
 
-            case 3: // STAT_BUFF — Eris stat_buff_power (10) / duration (20 min).
+            case NeoTheologyMiracle.StatBuff:
             {
                 var skill = _random.Pick(comp.MiracleSkills);
-                foreach (var (body, _) in FaithfulInRange(eye, comp))
+                foreach (var (body, _) in EnumerateFaithful())
                 {
                     if (TryComp<MobSkillComponent>(body, out var mobSkill))
                         _skill.SetUniqueBuff((body, mobSkill), comp.MiracleBuffId, 10, skill, TimeSpan.FromMinutes(20));
@@ -263,16 +326,17 @@ public sealed partial class EyeOfTheProtectorSystem : EntitySystem
                 break;
             }
 
-            case 4: // MATERIAL_REWARD
+            case NeoTheologyMiracle.Material:
                 SpawnAtPosition(_random.Pick(comp.MiracleMaterials), xform.Coordinates);
                 break;
 
-            case 5: // ENERGY_REWARD — restore the cruciform's holiness to full.
-                foreach (var (_, cruciform) in FaithfulInRange(eye, comp))
+            case NeoTheologyMiracle.Energy:
+                foreach (var (_, cruciform) in EnumerateFaithful())
                 {
                     if (TryComp<CruciformComponent>(cruciform, out var state))
                     {
-                        state.Holiness = state.MaxHoliness;
+                        state.EnergyMiracles++;
+                        _cruciform.RecomputeProfile(cruciform, state);
                         Dirty(cruciform, state);
                     }
                 }
@@ -280,24 +344,16 @@ public sealed partial class EyeOfTheProtectorSystem : EntitySystem
         }
     }
 
-    /// <summary>Active faithful bodies (and their cruciform implants) within the observation radius.</summary>
-    private List<(EntityUid Body, EntityUid Cruciform)> FaithfulInRange(EntityUid eye, EyeOfTheProtectorComponent comp)
+    /// <summary>The source disciple registry, derived from live linked implants rather than stale registrations.</summary>
+    public List<(EntityUid Body, EntityUid Cruciform)> EnumerateFaithful()
     {
         var result = new List<(EntityUid, EntityUid)>();
-        if (comp.ObservationRadius <= 0)
-            return result;
-
-        var xform = Transform(eye);
-        foreach (var (body, bearer) in _lookup.GetEntitiesInRange<CruciformBearerComponent>(xform.Coordinates, comp.ObservationRadius))
-        {
-            if (bearer.Cruciform is not { } cruciform ||
-                !TryComp<CruciformComponent>(cruciform, out var state) ||
-                !state.Active)
-                continue;
-
-            result.Add((body, cruciform));
-        }
-
+        var query = EntityQueryEnumerator<CruciformBearerComponent>();
+        while (query.MoveNext(out var body, out _))
+            if (!TerminatingOrDeleted(body) && !EntityManager.IsQueuedForDeletion(body) &&
+                _cruciform.TryGetCruciform(body, out var implant, out _))
+                result.Add((body, implant));
         return result;
     }
+
 }

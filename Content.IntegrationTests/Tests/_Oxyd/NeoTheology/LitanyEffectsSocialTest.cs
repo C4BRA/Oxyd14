@@ -589,7 +589,7 @@ public sealed class LitanyEffectsSocialTest : SocialNoticeGameTest
         var proto = _prototypes.Index(Entreaty);
         Assert.That(proto.Cost, Is.EqualTo(0));
         Assert.That(proto.Effect, Is.EqualTo(LitanyEffectKind.Entreaty));
-        Assert.That(proto.TargetMode, Is.EqualTo(LitanyTargetMode.StationFollower));
+        Assert.That(proto.TargetMode, Is.EqualTo(LitanyTargetMode.GlobalFollower));
         Assert.That(proto.IgnoreStuttering, Is.True);
         Assert.That(proto.CooldownKey, Is.EqualTo(Entreaty.Id));
         Assert.That(proto.CooldownScope, Is.EqualTo(LitanyCooldownScope.Personal));

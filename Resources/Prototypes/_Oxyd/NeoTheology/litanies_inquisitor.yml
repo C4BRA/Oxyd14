@@ -73,7 +73,7 @@
   category: Inquisitor
   grantedBy: [OxydLitanyInquisitor]
   effect: Scrying
-  targetMode: StationFollower
+  targetMode: GlobalFollower
   range: 0
   cost: 100
   effectDuration: 30
@@ -90,7 +90,7 @@
   category: Inquisitor
   grantedBy: [OxydLitanyInquisitor]
   effect: Sending
-  targetMode: StationFollower
+  targetMode: GlobalFollower
   range: 0
   cost: 30
   selectTarget: true

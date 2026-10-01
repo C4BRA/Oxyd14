@@ -12,6 +12,8 @@ using Content.Shared.DoAfter;
 using Content.Shared.Examine;
 using Content.Shared.GameTicking;
 using Content.Shared.Mobs.Components;
+using Content.Shared.Movement.Pulling.Components;
+using Content.Shared.Humanoid;
 using Content.Shared.Mobs.Systems;
 using Robust.Shared.Map;
 using Robust.Shared.Player;
@@ -311,7 +313,7 @@ public sealed partial class LitanySystem
             return LitanyActionResult.Fail("oxyd-litany-choice-invalid");
         }
 
-        if (expectBook is { } book && cast.Book != book)
+        if (expectBook is { } book && cast.Book != book && cast.Prompt != book)
         {
             ClearPending(cast, cancelled: true);
             return LitanyActionResult.Fail("oxyd-litany-choice-invalid");
@@ -489,6 +491,11 @@ public sealed partial class LitanySystem
 
         cast.AwaitingBookSpeech = false;
         cast.DoAfterId = null;
+        if (cast.Prompt is { } prompt && !TerminatingOrDeleted(prompt))
+        {
+            _ui.CloseUi(prompt, LitanyUiKey.Book);
+            QueueDel(prompt);
+        }
 
         // Every terminal path sends idle state only after it removes the pending cast.
         if (!TerminatingOrDeleted(cast.Actor))
@@ -618,6 +625,7 @@ public sealed partial class LitanySystem
     private static readonly FrozenSet<LitanyTargetMode> EmptyTolerantModes = new HashSet<LitanyTargetMode>
     {
         LitanyTargetMode.StationFollower,
+        LitanyTargetMode.GlobalFollower,
         LitanyTargetMode.FrontTile,
     }.ToFrozenSet();
 
@@ -657,6 +665,9 @@ public sealed partial class LitanySystem
                 break;
             case LitanyTargetMode.StationFollower:
                 targets = new List<EntityUid>(_effects.EnumerateSameStationActiveFollowers(actor));
+                break;
+            case LitanyTargetMode.GlobalFollower:
+                targets = new List<EntityUid>(_effects.EnumerateGlobalActiveFollowers(actor));
                 break;
             case LitanyTargetMode.FrontMachine:
                 targets = ResolveFacedTileMachines(actor, proto);
@@ -706,6 +717,13 @@ public sealed partial class LitanySystem
         var allowDead = proto.Effects.Any(effect => effect.AllowsDeadTarget);
 
         var range = proto.Range > 0 ? proto.Range : 1f;
+        if (TryComp<PullerComponent>(actor, out var puller) && puller.Pulling is { } grabbed &&
+            HasComp<HumanoidProfileComponent>(grabbed) && !TerminatingOrDeleted(grabbed) &&
+            !EntityManager.IsQueuedForDeletion(grabbed) &&
+            (!_mobState.IsDead(grabbed) || allowDead) &&
+            (!followersOnly || _cruciform.IsActiveBearer(grabbed)) &&
+            _examine.InRangeUnOccluded(actor, grabbed, range, predicate: null))
+            return new List<EntityUid> { grabbed };
         foreach (var (mob, _) in _lookup.GetEntitiesInRange<MobStateComponent>(Transform(actor).Coordinates, range))
         {
             if (mob == actor)
@@ -715,7 +733,18 @@ public sealed partial class LitanySystem
                 continue;
             if (followersOnly && !_cruciform.IsActiveBearer(mob))
                 continue;
-            if (!IsOnTile(mob, actor, ownTile) && !IsOnTile(mob, actor, frontTile))
+            if (proto.Effect == LitanyEffectKind.Revelation)
+            {
+                var direction = Transform(actor).LocalRotation.ToVec();
+                var offset = _xform.WithEntityId(Transform(mob).Coordinates, Transform(actor).ParentUid).Position -
+                    Transform(actor).LocalPosition;
+                var along = Vector2.Dot(offset, direction);
+                var across = Math.Abs(offset.X * direction.Y - offset.Y * direction.X);
+                if (along < 0 || along > range || across > 0.5f ||
+                    !_examine.InRangeUnOccluded(actor, mob, range, predicate: null))
+                    continue;
+            }
+            else if (!IsOnTile(mob, actor, ownTile) && !IsOnTile(mob, actor, frontTile))
                 continue;
 
             results.Add(mob);

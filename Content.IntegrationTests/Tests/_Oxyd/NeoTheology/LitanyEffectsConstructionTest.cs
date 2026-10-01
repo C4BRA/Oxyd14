@@ -24,7 +24,7 @@ namespace Content.IntegrationTests.Tests._Oxyd.NeoTheology;
 /// <summary>
 /// Construction packet (P4.13): DivineGuidance prints a blueprint's materials, Manifestation
 /// spends materials on the tile in front and raises the structure, and Uproot returns the
-/// materials and deletes the structure. Book casts pick the blueprint; manual speech fails closed.
+/// materials and deletes the structure. Book and spoken casts both pick the blueprint.
 /// </summary>
 [TestOf(typeof(NeoTheologyConstructionSystem))]
 public sealed class LitanyEffectsConstructionTest : GameTest
@@ -195,7 +195,7 @@ public sealed class LitanyEffectsConstructionTest : GameTest
     }
 
     [Test]
-    public async Task Construction_ManualSpeechFailsClosed()
+    public async Task Construction_ManualSpeechOffersPrivateBlueprintChoice()
     {
         var map = await Pair.CreateTestMap();
 
@@ -203,8 +203,12 @@ public sealed class LitanyEffectsConstructionTest : GameTest
         {
             var caster = PrepareCaster(TileCentre(map.GridCoords));
             var result = _litany.TryBeginLitany(caster, Manifestation, LitanyCastOrigin.ManualSpeech);
-            Assert.That(result.Success, Is.False);
-            Assert.That(result.Reason?.Id, Is.EqualTo("oxyd-litany-book-required"));
+            Assert.That(result.Success, Is.True);
+            Assert.That(_litany.TestingTryGetPending(result.RequestId!, out var pending), Is.True);
+            Assert.That(pending!.Stage, Is.EqualTo(LitanyCastStage.Choosing));
+            Assert.That(pending.Prompt, Is.Not.Null);
+            Assert.That(pending.ChoiceBlueprints, Does.Contain(ObeliskBlueprint));
+            Assert.That(_litany.TryCancelLitany(caster, result.RequestId!).Reason?.Id, Is.EqualTo("oxyd-litany-cancelled"));
             Assert.That(_litany.TestingPendingCount, Is.Zero);
         });
     }

@@ -57,6 +57,10 @@ public sealed partial class ObeliskComponent : Component
     /// </summary>
     public TimeSpan ForceActiveUntil;
 
+    [DataField] public TimeSpan CooldownReduction = TimeSpan.FromSeconds(3);
+    [DataField] public TimeSpan CooldownPulseInterval = TimeSpan.FromSeconds(3);
+    public TimeSpan NextCooldownPulse;
+
     /// <summary>Implants affected by the last view tick. Used to remove expired aura contributions.</summary>
     public HashSet<EntityUid> AffectedCruciforms = new();
 }

@@ -8,8 +8,8 @@
   - type: CruciformCoreUpgrade
     module: OxydNtModulePriestConvert
   - type: Sprite
-    sprite: Objects/Specific/Chapel/bible.rsi
-    state: icon
+    sprite: Oxyd/NeoTheology/upgrades.rsi
+    state: cruciform_upgrade
   - type: Item
     size: Small
 
@@ -29,8 +29,8 @@
   - type: CruciformUpgrade
   - type: CruciformUpgradeAura
   - type: Sprite
-    sprite: Objects/Specific/Chapel/bible.rsi
-    state: icon
+    sprite: Oxyd/NeoTheology/upgrades.rsi
+    state: natures_blessing
   - type: Item
     size: Small
 
@@ -43,8 +43,8 @@
   - type: CruciformUpgrade
     damagedModifierDelta: -0.2
   - type: Sprite
-    sprite: Objects/Specific/Chapel/bible.rsi
-    state: icon
+    sprite: Oxyd/NeoTheology/upgrades.rsi
+    state: faiths_shield
   - type: Item
     size: Small
 
@@ -61,8 +61,8 @@
     plantHealPerSecond: 0
     cleanPuddles: true
   - type: Sprite
-    sprite: Objects/Specific/Chapel/bible.rsi
-    state: icon
+    sprite: Oxyd/NeoTheology/upgrades.rsi
+    state: cleansing_presence
   - type: Item
     size: Small
 
@@ -75,8 +75,8 @@
   - type: CruciformUpgrade
   - type: CruciformUpgradeMartyr
   - type: Sprite
-    sprite: Objects/Specific/Chapel/bible.rsi
-    state: icon
+    sprite: Oxyd/NeoTheology/upgrades.rsi
+    state: martyr_gift
   - type: Item
     size: Small
 
@@ -90,8 +90,8 @@
     damagedModifierDelta: 0.1
   - type: CruciformUpgradeMelee
   - type: Sprite
-    sprite: Objects/Specific/Chapel/bible.rsi
-    state: icon
+    sprite: Oxyd/NeoTheology/upgrades.rsi
+    state: wrath_of_god
   - type: Item
     size: Small
 
@@ -104,7 +104,7 @@
   - type: CruciformUpgrade
   - type: CruciformUpgradeSpeed
   - type: Sprite
-    sprite: Objects/Specific/Chapel/bible.rsi
-    state: icon
+    sprite: Oxyd/NeoTheology/upgrades.rsi
+    state: speed_of_the_chosen
   - type: Item
     size: Small

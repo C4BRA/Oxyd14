@@ -65,7 +65,7 @@ public sealed class LitanyTargetTest : GameTest
     }
 
     [Test]
-    public async Task AdjacentLiving_ResolvesOwnAndFacedTilesOnly()
+    public async Task Revelation_ResolvesItsForwardRayRatherThanOnlyTheFacedTile()
     {
         var map = await Pair.CreateTestMap();
 
@@ -80,11 +80,10 @@ public sealed class LitanyTargetTest : GameTest
 
             Assert.That(_litany.TryResolveTargets(caster, _prototypes.Index(Revelation), out var targets, out var reason),
                 Is.True, reason?.Id ?? "AdjacentLiving must resolve");
-            Assert.That(targets, Is.EquivalentTo(new[] { sameTile, ahead }),
-                "AdjacentLiving covers the actor's own tile and the faced tile only.");
+            Assert.That(targets, Is.EquivalentTo(new[] { sameTile, ahead, twoAhead }),
+                "Revelation covers its forward corridor rather than only the next tile.");
             Assert.That(targets, Does.Not.Contain(behind), "A mob behind the actor must not resolve.");
-            Assert.That(targets, Does.Not.Contain(twoAhead),
-                "A mob two tiles ahead is beyond the faced tile even when inside range.");
+            Assert.That(targets, Does.Contain(twoAhead), "The ray reaches further visible targets within its configured range.");
         });
     }
 

@@ -4,6 +4,7 @@ using Content.Shared._Oxyd.NeoTheology.Components;
 using Content.Shared._Oxyd.NeoTheology.Events;
 using Content.Shared.Item;
 using Content.Shared.Paper;
+using Content.Server._Oxyd.SanityInsightAndResting;
 using Content.Shared.Stacks;
 using Robust.Shared.Prototypes;
 
@@ -20,6 +21,7 @@ public sealed partial class AltarSystem : EntitySystem
     [Dependency] private readonly SharedStackSystem _stack = default!;
     [Dependency] private readonly EyeOfTheProtectorSystem _eye = default!;
     [Dependency] private readonly PaperSystem _paper = default!;
+    [Dependency] private readonly NeoTheologyMachineSystem _machines = default!;
 
     /// <summary>How far from the caster an altar still counts as theirs — the litany's own reach.</summary>
     private const float RitualReach = 1.5f;
@@ -63,10 +65,8 @@ public sealed partial class AltarSystem : EntitySystem
     [SubscribeLocalEvent]
     private void OnLitanyOffering(EntityUid eye, EyeOfTheProtectorComponent component, ref LitanyOfferingEvent args)
     {
-        if (!TryFindAltar(args.User, out var altar))
-            return;
-
-        args.Handled = TryMakeOffering(altar, eye, args.OfferingKey, out _, args.ValidateOnly);
+        // Eris scans offerings within seven tiles of the Eye; no altar is required.
+        args.Handled = TryMakeOffering(eye, eye, args.OfferingKey, out _, args.ValidateOnly);
     }
 
     /// <summary>The first altar within ritual reach of <paramref name="near"/>, uid-ordered for determinism.</summary>
@@ -120,22 +120,30 @@ public sealed partial class AltarSystem : EntitySystem
     {
         accepted = 0;
 
-        if (!ProtoMan.TryIndex<OfferingPrototype>(offeringKey, out var offering))
+        if (!_machines.IsOperational(eye) || !HasComp<EyeOfTheProtectorComponent>(eye) ||
+            !ProtoMan.TryIndex<OfferingPrototype>(offeringKey, out var offering))
             return false;
 
         // Available count per item on the altar; a non-stack item counts as one.
         var available = new Dictionary<EntityUid, int>();
-        foreach (var item in ItemsOnAltar(altar))
-            available[item] = TryComp<StackComponent>(item, out var stack) ? stack.Count : 1;
+        var items = HasComp<NeoTheologyAltarComponent>(altar)
+            ? ItemsOnAltar(altar)
+            : _lookup.GetEntitiesInRange<ItemComponent>(Transform(altar).Coordinates, 7f).Select(e => e.Owner);
+        foreach (var item in items)
+            if (!TerminatingOrDeleted(item) && !EntityManager.IsQueuedForDeletion(item))
+                available[item] = TryComp<StackComponent>(item, out var stack) ? stack.Count : 1;
 
         // Plan the consumption without mutating anything, so a short requirement refuses cleanly.
         var plan = new List<(EntityUid Item, int Amount)>();
         foreach (var req in offering.Required)
         {
+            if (req.Count <= 0 || req.Oddity == req.Proto.HasValue)
+                return false;
             var remaining = req.Count;
             foreach (var (item, count) in available)
             {
-                if (count <= 0 || !MatchesProto(item, req.Proto))
+                if (count <= 0 || (req.Proto is { } wanted
+                        ? !MatchesProto(item, wanted) : !HasComp<OddityComponent>(item)))
                     continue;
 
                 var take = Math.Min(count, remaining);
@@ -163,8 +171,7 @@ public sealed partial class AltarSystem : EntitySystem
             accepted += amount;
         }
 
-        _eye.AddObservation(eye, offering.Observation);
-        return true;
+        return _eye.ApplyOffering(eye, offering.Power, offering.Rewards);
     }
 
     /// <summary>

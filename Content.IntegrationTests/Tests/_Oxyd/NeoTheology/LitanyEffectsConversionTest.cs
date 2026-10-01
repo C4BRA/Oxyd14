@@ -125,6 +125,7 @@ public sealed class LitanyEffectsConversionTest : SocialNoticeGameTest
 
             var begin = _litany.TryBeginLitany(caster, Confirmation, LitanyCastOrigin.ManualSpeech);
             Assert.That(begin.Success, Is.True, begin.Reason?.Id ?? "Confirmation begin failed");
+            Assert.That(_litany.TestingSubmitChoices(caster, begin.RequestId!, ["d:OxydNtAcolyte"]).Success, Is.True);
         });
 
         await AdvancePastCast();

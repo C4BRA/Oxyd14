@@ -1,11 +1,11 @@
 using Robust.Shared.Prototypes;
+using Content.Shared._Oxyd.NeoTheology.Components;
 
 namespace Content.Shared._Oxyd.NeoTheology;
 
 /// <summary>
-/// Eris <c>/datum/ritual/offering</c> ported as data (P3.8). The priest names an offering; the
-/// altar collects matching items on its turf and the Eye converts them to observation.
-/// Only <c>divine_intervention</c> is ported — the oddity/fruit offering has no fork equivalent.
+/// Eris offering data: collect matching items near the Eye, add five power and restrict
+/// the next miracle to the offering's reward family.
 /// </summary>
 [Prototype("oxydOffering")]
 public sealed partial class OfferingPrototype : IPrototype
@@ -20,17 +20,19 @@ public sealed partial class OfferingPrototype : IPrototype
     [DataField]
     public List<OfferingRequirement> Required { get; private set; } = new();
 
-    /// <summary>Observation credited to the Eye when the offering is made.</summary>
-    [DataField]
-    public float Observation;
+    [DataField] public float Power = 5f;
+    [DataField] public List<NeoTheologyMiracle> Rewards = new();
 }
 
 [DataDefinition]
 public sealed partial class OfferingRequirement
 {
     /// <summary>Prototype the offered item must match (ancestors included).</summary>
-    [DataField(required: true)]
-    public EntProtoId Proto;
+    [DataField]
+    public EntProtoId? Proto;
+
+    /// <summary>Any native oddity, not only the Eye's honorary seal.</summary>
+    [DataField] public bool Oddity;
 
     /// <summary>Total count of matching items (stacks sum their <c>Stack.Count</c>).</summary>
     [DataField]

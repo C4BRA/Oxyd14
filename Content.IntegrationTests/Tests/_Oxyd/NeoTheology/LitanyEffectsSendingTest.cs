@@ -44,7 +44,7 @@ public sealed class LitanyEffectsSendingTest : SocialNoticeGameTest
     [SidedDependency(Side.Server)] private readonly SatiationSystem _satiation = default!;
 
     [Test]
-    public async Task Sending_DeliversTheAnonymousNoticeToStationFollowers()
+    public async Task Sending_DeliversChosenAnonymousTextToTheFollower()
     {
         var map = await Pair.CreateTestMap();
         EntityUid caster = default;
@@ -59,6 +59,7 @@ public sealed class LitanyEffectsSendingTest : SocialNoticeGameTest
 
             var begin = _litany.TryBeginLitany(caster, Sending, LitanyCastOrigin.ManualSpeech);
             Assert.That(begin.Success, Is.True, begin.Reason?.Id ?? "Sending begin failed");
+            Assert.That(_litany.TestingSubmitChoices(caster, begin.RequestId!, [], "A private message").Success, Is.True);
         });
 
         await AdvancePastCast();
@@ -66,7 +67,7 @@ public sealed class LitanyEffectsSendingTest : SocialNoticeGameTest
         await Server.WaitAssertion(() =>
         {
             Assert.That(_effects.TestingGetSocialNotices(recipient),
-                Does.Contain(Loc.GetString("oxyd-litany-private-sending")),
+                Does.Contain(Loc.GetString("oxyd-litany-private-sending-text", ("text", "A private message"))),
                 "The telepathic notice must reach the other station follower.");
             Assert.That(_effects.TestingGetSocialNotices(caster), Is.Empty,
                 "Sending must not echo back to its own sender.");

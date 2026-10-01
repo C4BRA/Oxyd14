@@ -59,6 +59,7 @@
   - OxydNtPaperRecipe
   - OxydNtClothRecipe
   - OxydNtAscensionKitRecipe
+  - OxydNtObeyKitRecipe
   - OxydNtNaturesBlessingRecipe
   - OxydNtFaithsShieldRecipe
   - OxydNtCleansingPresenceRecipe
@@ -111,7 +112,7 @@
   categories: [Tools]
   completetime: 5
   materials:
-    Biomatter: 50
+    Biomatter: 100
     Gold: 500
     Plasteel: 500
 
@@ -119,16 +120,29 @@
   parent: OxydNtNaturesBlessingRecipe
   id: OxydNtFaithsShieldRecipe
   result: OxydNtUpgradeFaithsShield
+  materials:
+    Biomatter: 50
+    Gold: 500
+    Plasteel: 1000
 
 - type: latheRecipe
   parent: OxydNtNaturesBlessingRecipe
   id: OxydNtCleansingPresenceRecipe
   result: OxydNtUpgradeCleansingPresence
+  materials:
+    Biomatter: 50
+    Gold: 500
+    Plasteel: 500
 
 - type: latheRecipe
   parent: OxydNtNaturesBlessingRecipe
   id: OxydNtMartyrGiftRecipe
   result: OxydNtUpgradeMartyrGift
+  materials:
+    Biomatter: 50
+    Gold: 500
+    Plasteel: 500
+    Plasma: 500
 
 - type: latheRecipe
   parent: OxydNtNaturesBlessingRecipe
@@ -143,3 +157,13 @@
   parent: OxydNtNaturesBlessingRecipe
   id: OxydNtSpeedOfTheChosenRecipe
   result: OxydNtUpgradeSpeedOfTheChosen
+  materials:
+    Biomatter: 120
+    Gold: 500
+    Plasteel: 500
+
+# Local fabrication cost for the optional source Obey core upgrade.
+- type: latheRecipe
+  parent: OxydNtAscensionKitRecipe
+  id: OxydNtObeyKitRecipe
+  result: OxydNtObeyKit

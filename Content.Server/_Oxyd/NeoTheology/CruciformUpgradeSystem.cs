@@ -34,12 +34,12 @@ public sealed partial class CruciformUpgradeSystem : EntitySystem
             return;
 
         if (_cruciform.TryGetCruciformEntity(target, out var implant, out var installed))
-            args.Handled = TryInstallCoreUpgrade(implant, installed, ent.Owner);
+            args.Handled = TryInstallCoreUpgrade(implant, installed, ent.Owner, args.User);
         else if (TryComp<CruciformComponent>(target, out var loose))
-            args.Handled = TryInstallCoreUpgrade(target, loose, ent.Owner);
+            args.Handled = TryInstallCoreUpgrade(target, loose, ent.Owner, args.User);
     }
 
-    public bool TryInstallCoreUpgrade(EntityUid cruciform, CruciformComponent comp, EntityUid item)
+    public bool TryInstallCoreUpgrade(EntityUid cruciform, CruciformComponent comp, EntityUid item, EntityUid? installer = null)
     {
         if (TerminatingOrDeleted(item) || EntityManager.IsQueuedForDeletion(item) ||
             !TryComp<CruciformCoreUpgradeComponent>(item, out var upgrade) ||
@@ -51,6 +51,7 @@ public sealed partial class CruciformUpgradeSystem : EntitySystem
         if (!_containers.Insert(item, container))
             return false;
 
+        upgrade.Commander = installer is { } user ? MetaData(user).EntityName : string.Empty;
         comp.CoreUpgrades[upgrade.Module] = item;
         _modules.TryInstall(cruciform, comp, upgrade.Module);
         return true;

@@ -324,7 +324,7 @@ public sealed class EyeOfTheProtectorTest : GameTest
             SEntMan.DeleteEntity(body);
             comp.NextRescan = TimeSpan.Zero;
             _eye.Scan(eye);
-            Assert.That(comp.Observation, Is.EqualTo(1795));
+            Assert.That(comp.Observation, Is.EqualTo(1745), "Forget the +5 scan award and the destroyed implant's -50 lifecycle observation.");
         });
     }
 
@@ -361,7 +361,12 @@ public sealed class EyeOfTheProtectorTest : GameTest
         var body = SSpawnAtPosition(HumanProto, coords);
         var implant = _implants.AddImplant(body, CruciformProto);
         Assert.That(implant, Is.Not.Null, "Setup: a cruciform must be implantable.");
+        // Isolate scan awards from the separately tested +50 activation observation event.
+        var eye = _eye.FindEye(body);
+        var before = eye is { } uid ? SComp<EyeOfTheProtectorComponent>(uid).Observation : 0;
         Assert.That(_cruciform.Activate(body), Is.True, "Setup: the bearer must be active.");
+        if (eye is { } found)
+            SComp<EyeOfTheProtectorComponent>(found).Observation = before;
         return body;
     }
 }
