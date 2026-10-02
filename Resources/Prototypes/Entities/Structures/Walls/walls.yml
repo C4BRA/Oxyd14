@@ -392,6 +392,14 @@
     node: reinforcedWall
   - type: Damageable
     damageModifierSet: PlasteelStaticMod
+  - type: PhysicalRicochetSurface
+    maxNormalSpeedRatio: 0.3 # Extrapolated shallow-impact cutoff for reinforced plasteel.
+    spallProto: BulletFragment
+    minSpall: 5
+    maxSpall: 8
+    spallCone: 14
+    spallSpeedFraction: 0.45
+    spallDamageFraction: 0.12
   - type: Destructible
     thresholds:
     - trigger: *DamageWallStrong
@@ -691,6 +699,14 @@
     fx: EffectRCDDeconstruct8
   - type: Damageable
     damageModifierSet: SteelStaticMod
+  - type: PhysicalRicochetSurface
+    maxNormalSpeedRatio: 0.3 # Extrapolated shallow-impact cutoff for steel.
+    spallProto: BulletFragment
+    minSpall: 4
+    maxSpall: 6
+    spallCone: 12
+    spallSpeedFraction: 0.4
+    spallDamageFraction: 0.1
   - type: Destructible
     thresholds:
     - trigger: &DamageWallNormal

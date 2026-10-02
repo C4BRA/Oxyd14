@@ -8,6 +8,21 @@
     damage:
       types:
         Piercing: 17
+  # Extrapolated profile for the fictional .20 intermediate-rifle cartridge.
+  - type: PhysicalRicochetProjectile
+    maxBounces: 1
+    normalRetention: 0.4
+    tangentialRetention: 0.8
+    damageRetention: 0.45
+    spread: 6
+    fragmentMaxRatio: 0.6
+    fragmentProto: BulletFragment
+    minFragments: 4
+    maxFragments: 6
+    fragmentCone: 22
+    fragmentSpeedFraction: 0.5
+    fragmentDamageFraction: 0.18
+    fragmentOnEmbed: true
 
 - type: entity
   parent: BaseBulletPractice

@@ -1,0 +1,18 @@
+- type: entity
+  parent: BaseBullet
+  id: BulletFragment
+  categories: [ HideSpawnMenu ]
+  name: bullet fragment
+  description: A tumbling shard of jacket, core and wall material.
+  components:
+  - type: Projectile
+    damage:
+      types:
+        Piercing: 1
+  # A zero bounce budget keeps the residual-contact guard so fragments spawned
+  # touching a surface pass back out, but they never deflect or shatter again.
+  - type: PhysicalRicochetProjectile
+    maxBounces: 0
+    damageRetention: 0.5
+  - type: TimedDespawn
+    lifetime: 0.15

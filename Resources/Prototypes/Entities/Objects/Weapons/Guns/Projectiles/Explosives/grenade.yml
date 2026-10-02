@@ -23,6 +23,13 @@
     damage:
       types:
         Piercing: 45
+  # Extrapolated as irregular casing fragments, not a cartridge.
+  - type: PhysicalRicochetProjectile
+    maxBounces: 1
+    normalRetention: 0.3
+    tangentialRetention: 0.5
+    damageRetention: 0.15
+    spread: 10
   - type: TimedDespawn
     lifetime: 0.10
 
@@ -53,5 +60,12 @@
     damage:
       types:
         Piercing: 5
+  # Extrapolated as low-energy fragments for the less-lethal grenade round.
+  - type: PhysicalRicochetProjectile
+    maxBounces: 1
+    normalRetention: 0.3
+    tangentialRetention: 0.5
+    damageRetention: 0.1
+    spread: 10
   - type: TimedDespawn
     lifetime: 0.10

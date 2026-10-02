@@ -254,7 +254,12 @@ public abstract partial class SharedGunSystem
             {
                 ent.Comp.UnspawnedCount--;
                 DirtyField(ent.AsNullable(), nameof(BallisticAmmoProviderComponent.UnspawnedCount));
-                ammoEntity = Spawn(ent.Comp.Proto, args.Coordinates);
+                // During prediction this produces a client-side placeholder
+                // (e.g. chambered by ChamberMagazine guns); it must carry
+                // PredictedSpawnComponent so ResetPredictedEntities removes it
+                // before the real entity's container insert — a lingering
+                // placeholder blocks the networked container slot.
+                ammoEntity = PredictedSpawnAtPosition(ent.Comp.Proto, args.Coordinates);
             }
 
             if (ammoEntity is not { } ammoEnt)

@@ -8,6 +8,21 @@
     damage:
       types:
         Piercing: 16
+  # Extrapolated profile for the fictional .35-auto handgun cartridge.
+  - type: PhysicalRicochetProjectile
+    maxBounces: 1
+    normalRetention: 0.35
+    tangentialRetention: 0.75
+    damageRetention: 0.35
+    spread: 4
+    fragmentMaxRatio: 0.55
+    fragmentProto: BulletFragment
+    minFragments: 2
+    maxFragments: 4
+    fragmentCone: 20
+    fragmentSpeedFraction: 0.5
+    fragmentDamageFraction: 0.2
+    fragmentOnEmbed: true
 
 - type: entity
   parent: BaseBulletPractice
