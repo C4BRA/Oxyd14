@@ -37,8 +37,10 @@ public sealed partial class PhysicalRicochetProjectileComponent : Component
     public Angle Spread = Angle.FromDegrees(4);
 
     /// <summary>
-    /// Upper bound of the breakup band, as a normal-speed ratio. Hits between the
-    /// surface's ricochet cutoff and this value shatter the projectile. Zero disables.
+    /// Upper bound of the breakup band, as a normal-speed ratio. First-impact hits
+    /// steeper than the surface's ricochet cutoff but no steeper than this shatter
+    /// into fragments. Steeper first impacts only fragment if <see cref="FragmentOnEmbed"/>
+    /// is set. Zero disables band fragmentation entirely.
     /// </summary>
     [DataField]
     public float FragmentMaxRatio = 0.6f;
@@ -71,8 +73,9 @@ public sealed partial class PhysicalRicochetProjectileComponent : Component
     public float FragmentDamageFraction = 0.2f;
 
     /// <summary>
-    /// Whether steep hits that fail to penetrate also splash fragments instead of
-    /// stopping cleanly.
+    /// Whether first-impact hits steeper than <see cref="FragmentMaxRatio"/> splash
+    /// fragments instead of embedding. When set, every non-deflecting first impact
+    /// fragments, so <see cref="FragmentMaxRatio"/> only matters while this is unset.
     /// </summary>
     [DataField]
     public bool FragmentOnEmbed;

@@ -22,7 +22,7 @@
     fragmentCone: 20
     fragmentSpeedFraction: 0.5
     fragmentDamageFraction: 0.2
-    fragmentOnEmbed: true
+    fragmentOnEmbed: false
 
 - type: entity
   parent: BaseBulletPractice

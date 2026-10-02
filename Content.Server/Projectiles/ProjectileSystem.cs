@@ -19,6 +19,7 @@ using Robust.Shared.Map;
 using Robust.Shared.Physics.Events;
 using Robust.Shared.Physics.Systems;
 using Robust.Shared.Player;
+using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Robust.Shared.Spawners;
 
@@ -35,6 +36,14 @@ public sealed partial class ProjectileSystem : SharedProjectileSystem
     [Dependency] private SharedPhysicsSystem _physics = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
     [Dependency] private IRobustRandom _random = default!;
+
+    // A projectile moving slower than ~4 u/s has been caught by collision
+    // resolution rather than flying free.
+    private const float LowSpeedThresholdSquared = 16f;
+
+    // Entities that self-delete within a second (fragments, spall) are excluded
+    // from the low-speed cull — their despawn timer handles cleanup.
+    private const float ShortLivedDespawnSeconds = 1f;
 
     public override void Initialize()
     {
@@ -60,7 +69,8 @@ public sealed partial class ProjectileSystem : SharedProjectileSystem
             return;
         }
 
-        // ponytail: harden only opted-in bullets; expose sensor normals if solver contacts become costly.
+        // Only ricochet-opted projectiles get a hard projectile fixture; the
+        // fly-by fixture stays a sensor so it reports contacts without colliding.
         _physics.SetHard(entity, fixture, true, fixtures);
     }
 
@@ -93,7 +103,7 @@ public sealed partial class ProjectileSystem : SharedProjectileSystem
 
                 // A trapped or solver-ejected projectile is spent instead of left
                 // drifting as a live hitbox.
-                if (mapVelocity.LengthSquared() < 16f)
+                if (mapVelocity.LengthSquared() < LowSpeedThresholdSquared)
                 {
                     component.ProjectileSpent = true;
                     if (component.DeleteOnCollide)
@@ -183,7 +193,7 @@ public sealed partial class ProjectileSystem : SharedProjectileSystem
                 _sharedCameraRecoil.KickCamera(target, args.OurBody.LinearVelocity.Normalized());
         }
 
-        if (component.DeleteOnCollide && component.ProjectileSpent)
+        if (component.DeleteOnCollide && component.ProjectileSpent && !EntityManager.IsQueuedForDeletion(uid))
             QueueDel(uid);
 
         if (component.ImpactEffect != null && TryComp(uid, out TransformComponent? xform))
@@ -201,16 +211,17 @@ public sealed partial class ProjectileSystem : SharedProjectileSystem
         var query = EntityQueryEnumerator<PhysicalRicochetProjectileComponent, ProjectileComponent, PhysicsComponent>();
         while (query.MoveNext(out var uid, out var ricochet, out var projectile, out var body))
         {
-            // Fragments and spall despawn on their own (sub-second) timer; never-fired
-            // spawns are left alone too.
+            // Short-lived entities (fragments, spall) despawn on their own timer.
+            // Unshot spawns — no shooter and no weapon — are left alone.
             if (projectile.ProjectileSpent ||
-                (TryComp<TimedDespawnComponent>(uid, out var despawn) && despawn.Lifetime <= 1f) ||
-                (projectile.Shooter == null && projectile.Weapon == null && ricochet.Bounces == 0))
+                EntityManager.IsQueuedForDeletion(uid) ||
+                (TryComp<TimedDespawnComponent>(uid, out var despawn) && despawn.Lifetime <= ShortLivedDespawnSeconds) ||
+                (projectile.Shooter == null && projectile.Weapon == null))
             {
                 continue;
             }
 
-            if (_physics.GetMapLinearVelocity(uid, body).LengthSquared() < 16f)
+            if (_physics.GetMapLinearVelocity(uid, body).LengthSquared() < LowSpeedThresholdSquared)
             {
                 projectile.ProjectileSpent = true;
                 if (projectile.DeleteOnCollide)
@@ -297,7 +308,10 @@ public sealed partial class ProjectileSystem : SharedProjectileSystem
             return;
         }
 
+        // Only the first impact can shatter the projectile — a bullet that already
+        // ricocheted embeds on its next hit.
         if (ricochetProjectile.FragmentProto != null && ricochetProjectile.MaxFragments > 0 &&
+            ricochetProjectile.Bounces == 0 &&
             (normalRatio <= ricochetProjectile.FragmentMaxRatio || ricochetProjectile.FragmentOnEmbed))
         {
             FragmentProjectile(uid, projectile, ricochetProjectile, surface, relativeVelocity, worldNormal, contactPoint);
@@ -317,6 +331,12 @@ public sealed partial class ProjectileSystem : SharedProjectileSystem
         Vector2 worldNormal,
         Vector2? contactPoint)
     {
+        if (ricochet.FragmentProto == null || !ProtoMan.HasIndex<EntityPrototype>(ricochet.FragmentProto.Value))
+        {
+            Log.Error($"Projectile {ToPrettyString(uid)} has invalid fragment prototype {ricochet.FragmentProto}; embedding instead.");
+            return;
+        }
+
         var specular = PhysicalRicochetMath.GetSpecularDirection(relativeVelocity, worldNormal);
         var baseDirection = specular.LengthSquared() > 0.000001f
             ? specular.Normalized()
@@ -359,6 +379,12 @@ public sealed partial class ProjectileSystem : SharedProjectileSystem
             ricochetSurface.SpallProto == null ||
             ricochetSurface.MaxSpall <= 0)
         {
+            return;
+        }
+
+        if (!ProtoMan.HasIndex<EntityPrototype>(ricochetSurface.SpallProto.Value))
+        {
+            Log.Error($"Ricochet surface {ToPrettyString(surface)} has invalid spall prototype {ricochetSurface.SpallProto}.");
             return;
         }
 
