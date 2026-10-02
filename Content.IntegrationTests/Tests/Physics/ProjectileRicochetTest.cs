@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Numerics;
 using Content.IntegrationTests.Fixtures;
 using Content.IntegrationTests.Fixtures.Attributes;
@@ -75,6 +76,109 @@ public sealed class ProjectileRicochetTest : GameTest
         {
             Assert.That(SEntMan.GetComponent<PhysicalRicochetProjectileComponent>(projectile).Bounces, Is.EqualTo(1));
             Assert.That(SEntMan.GetComponent<ProjectileComponent>(projectile).Shooter, Is.EqualTo(shooter));
+        });
+    }
+
+    [Test]
+    public async Task GrazingBulletRicochetsOffHorizontalWallRow()
+    {
+        var map = await CreateRicochetMap();
+
+        // Horizontal row of walls at y=4; shot from below, grazing the south faces.
+        for (var x = -5; x <= 5; x++)
+            await SpawnAtPosition("WallSolid", new EntityCoordinates(map.Grid.Owner, x, 4));
+
+        var shooter = await SpawnAtPosition("MobHuman", new EntityCoordinates(map.Grid.Owner, -3, 8));
+        var projectile = await SpawnAtPosition("BulletRifle", new EntityCoordinates(map.Grid.Owner, -0.3f, 3.4f));
+
+        await Fire(projectile, shooter, Vector2.Normalize(new Vector2(0.98f, 0.2f)), 40f);
+        await Server.WaitRunTicks(3);
+
+        await Server.WaitAssertion(() =>
+        {
+            Assert.That(SEntMan.Deleted(projectile), Is.False);
+            var ricochet = SEntMan.GetComponent<PhysicalRicochetProjectileComponent>(projectile);
+            var physics = SEntMan.GetComponent<PhysicsComponent>(projectile);
+            Assert.That(ricochet.Bounces, Is.EqualTo(1),
+                $"pos={SEntMan.GetComponent<TransformComponent>(projectile).LocalPosition} vel={physics.LinearVelocity}");
+            Assert.That(physics.LinearVelocity.Y, Is.LessThan(0f));
+            Assert.That(physics.LinearVelocity.X, Is.GreaterThan(0f));
+        });
+    }
+
+    [Test]
+    public async Task RicochetDirectionalSweep()
+    {
+        var map = await CreateRicochetMap();
+        var colShots = new List<EntityUid>();
+        var rowShots = new List<EntityUid>();
+
+        await Server.WaitAssertion(() =>
+        {
+            var gunSys = Server.System<GunSystem>();
+            var entMan = SEntMan;
+
+            // Walls anchor and snap to tile centers (i+0.5, j+0.5) — tiles must
+            // exist under them or they float unsnapped at integer positions.
+            // The column occupies x in [4,5] with its west face at x=4; the row
+            // occupies y in [-4,-3] with its south face at y=-4. The row is kept
+            // far west so its corridor stays clear of the column.
+            var mapSystem = Server.System<SharedMapSystem>();
+            for (var x = -15; x <= -5; x++)
+                mapSystem.SetTile(map.Grid, new EntityCoordinates(map.Grid.Owner, x, -4), new Tile(1));
+            for (var y = 7; y <= 10; y++)
+                mapSystem.SetTile(map.Grid, new EntityCoordinates(map.Grid.Owner, 4, y), new Tile(1));
+            for (var y = -5; y <= 10; y++)
+                entMan.SpawnEntity("WallSolid", new EntityCoordinates(map.Grid.Owner, 4, y));
+            for (var x = -15; x <= 0; x++)
+                entMan.SpawnEntity("WallSolid", new EntityCoordinates(map.Grid.Owner, x, -4));
+
+            var shooter = entMan.SpawnEntity("MobHuman", new EntityCoordinates(map.Grid.Owner, -8, 8));
+
+            for (var offset = -4.5f; offset <= 4.5f; offset += 0.5f)
+            {
+                // Grazes the column's west face traveling +Y with slight +X drift.
+                var pA = entMan.SpawnEntity("BulletRifle",
+                    new EntityCoordinates(map.Grid.Owner, 3.4f, offset));
+                gunSys.ShootProjectile(pA, Vector2.Normalize(new Vector2(0.2f, 0.98f)), Vector2.Zero, null, shooter, 40f);
+                colShots.Add(pA);
+
+                // Grazes the row's south face traveling +X with slight +Y drift.
+                var pB = entMan.SpawnEntity("BulletRifle",
+                    new EntityCoordinates(map.Grid.Owner, offset - 9f, -4.6f));
+                gunSys.ShootProjectile(pB, Vector2.Normalize(new Vector2(0.98f, 0.2f)), Vector2.Zero, null, shooter, 40f);
+                rowShots.Add(pB);
+            }
+        });
+
+        await Server.WaitRunTicks(4);
+
+        await Server.WaitAssertion(() =>
+        {
+            var summary = new System.Text.StringBuilder();
+            foreach (var (label, shots) in new[] { ("column-west", colShots), ("row-south", rowShots) })
+            {
+                var bounces = 0;
+                var misses = 0;
+                var alive = 0;
+                foreach (var uid in shots)
+                {
+                    if (SEntMan.Deleted(uid))
+                    {
+                        misses++;
+                        continue;
+                    }
+
+                    var ric = SEntMan.GetComponent<PhysicalRicochetProjectileComponent>(uid);
+                    if (ric.Bounces > 0)
+                        bounces++;
+                    else
+                        alive++;
+                }
+
+                summary.AppendLine($"{label}: bounced={bounces} embedded/deleted={misses} alive-unbounced={alive} of {shots.Count}");
+                Assert.That(bounces, Is.EqualTo(shots.Count), summary.ToString());
+            }
         });
     }
 

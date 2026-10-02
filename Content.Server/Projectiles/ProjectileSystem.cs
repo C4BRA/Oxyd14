@@ -12,8 +12,10 @@ using Content.Shared.FixedPoint;
 using Content.Shared.Projectiles;
 using Content.Shared.Weapons.Reflect;
 using Content.Shared.Weapons.Ranged.Components;
+using Robust.Shared.GameObjects;
 using Robust.Shared.Maths;
 using Robust.Shared.Physics;
+using Robust.Shared.Physics.Collision.Shapes;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Map;
 using Robust.Shared.Physics.Events;
@@ -33,6 +35,7 @@ public sealed partial class ProjectileSystem : SharedProjectileSystem
     [Dependency] private DestructibleSystem _destructibleSystem = default!;
     [Dependency] private GunSystem _guns = default!;
     [Dependency] private SharedCameraRecoilSystem _sharedCameraRecoil = default!;
+    [Dependency] private EntityLookupSystem _lookup = default!;
     [Dependency] private SharedPhysicsSystem _physics = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
     [Dependency] private IRobustRandom _random = default!;
@@ -52,11 +55,19 @@ public sealed partial class ProjectileSystem : SharedProjectileSystem
     // Squared speed above which a nominally static surface is treated as moving.
     private const float SurfaceMotionEpsilonSquared = 0.0001f;
 
+    // Distance beyond a fixture edge probed for an adjacent solid when deciding
+    // whether that edge is an internal seam of a connected wall run.
+    private const float SeamProbeOffset = 0.03f;
+
+    // Safety valve bounding fragment and spall entities spawned per tick so
+    // sustained fire into shatter-prone surfaces cannot spike entity count.
+    private const int MaxProjectileSpawnsPerTick = 48;
+    private int _projectileSpawnsThisTick;
+
     public override void Initialize()
     {
         base.Initialize();
         SubscribeLocalEvent<ProjectileComponent, StartCollideEvent>(OnStartCollide);
-        SubscribeLocalEvent<PhysicalRicochetProjectileComponent, ComponentStartup>(OnRicochetProjectileStartup);
         SubscribeLocalEvent<PhysicalRicochetProjectileComponent, PreventCollideEvent>(OnRicochetPreventCollide);
     }
 
@@ -66,19 +77,6 @@ public sealed partial class ProjectileSystem : SharedProjectileSystem
         // pass through it physically rather than being depenetrated or stopped.
         if (args.OtherEntity == ent.Comp.IgnoreSurface)
             args.Cancelled = true;
-    }
-
-    private void OnRicochetProjectileStartup(Entity<PhysicalRicochetProjectileComponent> entity, ref ComponentStartup args)
-    {
-        if (!TryComp<FixturesComponent>(entity, out var fixtures) ||
-            !fixtures.Fixtures.TryGetValue(ProjectileFixture, out var fixture))
-        {
-            return;
-        }
-
-        // Only ricochet-opted projectiles get a hard projectile fixture; the
-        // fly-by fixture stays a sensor so it reports contacts without colliding.
-        _physics.SetHard(entity, fixture, true, fixtures);
     }
 
     private void OnStartCollide(EntityUid uid, ProjectileComponent component, ref StartCollideEvent args)
@@ -99,8 +97,18 @@ public sealed partial class ProjectileSystem : SharedProjectileSystem
         if (TryComp<PhysicalRicochetSurfaceComponent>(target, out _) &&
             ricochetComp != null)
         {
-            worldNormal = OrientNormalTowardSurface(uid, target, args.WorldNormal, in args);
             var mapVelocity = _physics.GetMapLinearVelocity(uid, args.OurBody);
+            if (GetSurfaceNormal(uid, target, mapVelocity, args.WorldNormal, in args) is { } surfaceNormal)
+            {
+                worldNormal = surfaceNormal;
+            }
+            else
+            {
+                // Grazing-out contact: the projectile is outside the fixture and
+                // moving away or parallel — a brush against a tile seam's ghost
+                // edge, not a hit.
+                return;
+            }
             if (!PhysicalRicochetMath.IsIncoming(mapVelocity, worldNormal))
             {
                 // A departing ricochet still overlapping the surface must not re-deal
@@ -212,6 +220,7 @@ public sealed partial class ProjectileSystem : SharedProjectileSystem
     public override void Update(float frameTime)
     {
         base.Update(frameTime);
+        _projectileSpawnsThisTick = 0;
 
         // A projectile that was fired and is now barely moving is embedded or trapped
         // by collision resolution — spend it rather than leaving a live hitbox behind.
@@ -238,21 +247,96 @@ public sealed partial class ProjectileSystem : SharedProjectileSystem
     }
 
     /// <summary>
-    /// Orients a contact normal toward the hit surface. The engine gives both colliding
-    /// bodies the same A-to-B manifold normal, so flip it using the contact point when
-    /// the projectile happened to be the second body.
+    /// Returns the inward normal of the surface face the projectile approached, or
+    /// null when the contact is a grazing-out brush that is not a real hit.
+    /// Manifold normals and contact points are unreliable once the projectile is
+    /// inside the fixture (a deep physics step) or clips a neighboring tile's
+    /// leading edge at a seam, so the face is derived from the fixture geometry:
+    /// the polygon edge with the greatest signed separation from the projectile
+    /// position is the face it sits in front of. Outside the fixture only faces
+    /// the velocity points into count as approached; inside it the entry face
+    /// is the closest exposed face the velocity points into — faces covered by
+    /// an adjacent solid are internal seams of a connected run and cannot be
+    /// entry faces. Falls back to orienting the manifold normal for non-polygon
+    /// fixtures.
     /// </summary>
-    private Vector2 OrientNormalTowardSurface(
+    private Vector2? GetSurfaceNormal(
         EntityUid uid,
         EntityUid surface,
+        Vector2 mapVelocity,
         Vector2 worldNormal,
         in StartCollideEvent args)
     {
+        var projPos = _transform.GetWorldPosition(uid);
+
+        if (args.OtherFixture.Shape is PolygonShape polygon)
+        {
+            var xf = _physics.GetPhysicsTransform(surface);
+            var bestSeparation = float.MinValue;
+            var bestInward = Vector2.Zero;
+            var entrySeparation = float.MinValue;
+            var entryInward = Vector2.Zero;
+            var foundEntry = false;
+            var inside = true;
+            var mapId = _transform.GetMapId(uid);
+            for (var i = 0; i < polygon.VertexCount; i++)
+            {
+                var outward = Robust.Shared.Physics.Transform.Mul(xf.Quaternion2D, polygon.Normals[i]);
+                var vertexA = Robust.Shared.Physics.Transform.Mul(xf, polygon.Vertices[i]);
+                var separation = Vector2.Dot(outward, projPos - vertexA);
+                if (separation > bestSeparation)
+                {
+                    bestSeparation = separation;
+                    bestInward = -outward;
+                }
+
+                inside &= separation <= 0f;
+
+                var velDot = Vector2.Dot(mapVelocity, outward);
+                if (velDot >= 0f || separation <= entrySeparation)
+                    continue;
+
+                // A face whose outside is covered by another solid is an
+                // internal edge of a connected wall run — the projectile cannot
+                // have entered through it. Probe just outside the edge at the
+                // point where the flight path crossed its plane.
+                var vertexB = Robust.Shared.Physics.Transform.Mul(
+                    xf, polygon.Vertices[(i + 1) % polygon.VertexCount]);
+                var edge = vertexB - vertexA;
+                var edgeLenSquared = edge.LengthSquared();
+                var crossing = projPos - mapVelocity * (separation / velDot);
+                var along = edgeLenSquared > EpsilonSquared
+                    ? Math.Clamp(Vector2.Dot(crossing - vertexA, edge) / edgeLenSquared, 0f, 1f)
+                    : 0f;
+                var probe = vertexA + edge * along + outward * SeamProbeOffset;
+                if (_lookup.GetEntitiesIntersecting(
+                        new MapCoordinates(probe, mapId), LookupFlags.Static).Count > 0)
+                    continue;
+
+                entrySeparation = separation;
+                entryInward = -outward;
+                foundEntry = true;
+            }
+
+            // Outside (or brushing) the fixture the approach face is the one the
+            // projectile is in front of; it is a real hit only when the velocity
+            // actually points into it.
+            if (!inside)
+                return Vector2.Dot(mapVelocity, bestInward) > 0f ? bestInward : null;
+
+            // Inside the fixture the entry face is the closest exposed face the
+            // velocity points into; falling back to the nearest face for
+            // exiting motion.
+            return foundEntry ? entryInward : bestInward;
+        }
+
+        // Fallback: orient the manifold normal toward the surface using the
+        // contact point, then the surface origin when there is no contact point.
         var toSurface = args.PointCount > 0
-            ? args.WorldPoints[0] - _transform.GetWorldPosition(uid)
+            ? args.WorldPoints[0] - projPos
             : Vector2.Zero;
         if (toSurface.LengthSquared() < EpsilonSquared)
-            toSurface = _transform.GetWorldPosition(surface) - _transform.GetWorldPosition(uid);
+            toSurface = _transform.GetWorldPosition(surface) - projPos;
 
         return Vector2.Dot(toSurface, worldNormal) < 0f ? -worldNormal : worldNormal;
     }
@@ -360,7 +444,9 @@ public sealed partial class ProjectileSystem : SharedProjectileSystem
         var spawnPosition = new MapCoordinates(origin, Transform(uid).MapID);
 
         var minFragments = Math.Min(ricochet.MinFragments, ricochet.MaxFragments);
-        var count = _random.Next(minFragments, Math.Max(ricochet.MinFragments, ricochet.MaxFragments) + 1);
+        var count = Math.Min(
+            _random.Next(minFragments, Math.Max(ricochet.MinFragments, ricochet.MaxFragments) + 1),
+            MaxProjectileSpawnsPerTick - _projectileSpawnsThisTick);
         var baseSpeed = relativeVelocity.Length() * ricochet.FragmentSpeedFraction;
         for (var i = 0; i < count; i++)
         {
@@ -373,6 +459,8 @@ public sealed partial class ProjectileSystem : SharedProjectileSystem
             if (TryComp<PhysicalRicochetProjectileComponent>(fragment, out var fragmentRicochet))
                 fragmentRicochet.IgnoreSurface = surface;
         }
+
+        _projectileSpawnsThisTick += Math.Max(count, 0);
 
         // Shattering destroys the parent outright, even for deleteOnCollide: false
         // prototypes — the fragments are its remains.
@@ -418,7 +506,9 @@ public sealed partial class ProjectileSystem : SharedProjectileSystem
         var spawnPosition = new MapCoordinates(origin, Transform(uid).MapID);
 
         var minSpall = Math.Min(ricochetSurface.MinSpall, ricochetSurface.MaxSpall);
-        var count = _random.Next(minSpall, Math.Max(ricochetSurface.MinSpall, ricochetSurface.MaxSpall) + 1);
+        var count = Math.Min(
+            _random.Next(minSpall, Math.Max(ricochetSurface.MinSpall, ricochetSurface.MaxSpall) + 1),
+            MaxProjectileSpawnsPerTick - _projectileSpawnsThisTick);
         for (var i = 0; i < count; i++)
         {
             var spall = Spawn(ricochetSurface.SpallProto, spawnPosition);
@@ -430,6 +520,8 @@ public sealed partial class ProjectileSystem : SharedProjectileSystem
             if (TryComp<PhysicalRicochetProjectileComponent>(spall, out var spallRicochet))
                 spallRicochet.IgnoreSurface = surface;
         }
+
+        _projectileSpawnsThisTick += Math.Max(count, 0);
     }
 
     private bool TryPenetrate(Entity<ProjectileComponent> projectile, DamageSpecifier damage, FixedPoint2 damageRequired)
