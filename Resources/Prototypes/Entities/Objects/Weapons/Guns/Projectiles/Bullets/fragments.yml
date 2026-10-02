@@ -9,10 +9,12 @@
     damage:
       types:
         Piercing: 1
-  # A zero bounce budget keeps the residual-contact guard so fragments spawned
-  # touching a surface pass back out, but they never deflect or shatter again.
+  # A zero bounce and fragment budget keeps the residual-contact guard so
+  # fragments spawned touching a surface pass back out, but they never deflect
+  # or shatter again.
   - type: PhysicalRicochetProjectile
     maxBounces: 0
+    maxFragments: 0
     damageRetention: 0.5
   - type: TimedDespawn
     lifetime: 0.15

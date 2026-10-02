@@ -45,6 +45,13 @@ public sealed partial class ProjectileSystem : SharedProjectileSystem
     // from the low-speed cull — their despawn timer handles cleanup.
     private const float ShortLivedDespawnSeconds = 1f;
 
+    // Squared length below which a vector is treated as degenerate (zero-length
+    // direction, contact point at the projectile's own position, ...).
+    private const float EpsilonSquared = 0.000001f;
+
+    // Squared speed above which a nominally static surface is treated as moving.
+    private const float SurfaceMotionEpsilonSquared = 0.0001f;
+
     public override void Initialize()
     {
         base.Initialize();
@@ -244,7 +251,7 @@ public sealed partial class ProjectileSystem : SharedProjectileSystem
         var toSurface = args.PointCount > 0
             ? args.WorldPoints[0] - _transform.GetWorldPosition(uid)
             : Vector2.Zero;
-        if (toSurface.LengthSquared() < 0.000001f)
+        if (toSurface.LengthSquared() < EpsilonSquared)
             toSurface = _transform.GetWorldPosition(surface) - _transform.GetWorldPosition(uid);
 
         return Vector2.Dot(toSurface, worldNormal) < 0f ? -worldNormal : worldNormal;
@@ -266,6 +273,8 @@ public sealed partial class ProjectileSystem : SharedProjectileSystem
             !TryComp<PhysicalRicochetProjectileComponent>(uid, out var ricochetProjectile) ||
             !float.IsFinite(ricochetProjectile.DamageRetention) ||
             ricochetProjectile.DamageRetention is < 0f or > 1f ||
+            !float.IsFinite(ricochetSurface.MaxNormalSpeedRatio) ||
+            ricochetSurface.MaxNormalSpeedRatio is < 0f or > 1f ||
             !TryComp<PhysicsComponent>(surface, out var surfaceBody) ||
             surfaceBody.BodyType != BodyType.Static)
         {
@@ -273,8 +282,8 @@ public sealed partial class ProjectileSystem : SharedProjectileSystem
         }
 
         var surfaceVelocity = _physics.GetMapLinearVelocity(surface, surfaceBody);
-        if (surfaceVelocity.LengthSquared() > 0.0001f ||
-            MathF.Abs(_physics.GetMapAngularVelocity(surface, surfaceBody)) > 0.0001f)
+        if (surfaceVelocity.LengthSquared() > SurfaceMotionEpsilonSquared ||
+            MathF.Abs(_physics.GetMapAngularVelocity(surface, surfaceBody)) > SurfaceMotionEpsilonSquared)
         {
             return;
         }
@@ -337,13 +346,16 @@ public sealed partial class ProjectileSystem : SharedProjectileSystem
             return;
         }
 
+        if (Transform(uid).MapID == MapId.Nullspace)
+            return;
+
         var specular = PhysicalRicochetMath.GetSpecularDirection(relativeVelocity, worldNormal);
-        var baseDirection = specular.LengthSquared() > 0.000001f
+        var baseDirection = specular.LengthSquared() > EpsilonSquared
             ? specular.Normalized()
             : -relativeVelocity.Normalized();
 
         var origin = contactPoint ?? _transform.GetWorldPosition(uid);
-        if (specular.LengthSquared() > 0.000001f)
+        if (specular.LengthSquared() > EpsilonSquared)
             origin += specular.Normalized() * 0.15f;
         var spawnPosition = new MapCoordinates(origin, Transform(uid).MapID);
 
@@ -362,6 +374,8 @@ public sealed partial class ProjectileSystem : SharedProjectileSystem
                 fragmentRicochet.IgnoreSurface = surface;
         }
 
+        // Shattering destroys the parent outright, even for deleteOnCollide: false
+        // prototypes — the fragments are its remains.
         projectile.ProjectileSpent = true;
         QueueDel(uid);
     }
@@ -387,6 +401,9 @@ public sealed partial class ProjectileSystem : SharedProjectileSystem
             Log.Error($"Ricochet surface {ToPrettyString(surface)} has invalid spall prototype {ricochetSurface.SpallProto}.");
             return;
         }
+
+        if (Transform(uid).MapID == MapId.Nullspace)
+            return;
 
         var velocity = _physics.GetMapLinearVelocity(uid);
         var speed = velocity.Length();
