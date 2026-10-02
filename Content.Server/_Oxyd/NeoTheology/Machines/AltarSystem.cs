@@ -26,6 +26,9 @@ public sealed partial class AltarSystem : EntitySystem
     /// <summary>How far from the caster an altar still counts as theirs — the litany's own reach.</summary>
     private const float RitualReach = 1.5f;
 
+    /// <summary>Paper the baptismal record is printed on.</summary>
+    private static readonly EntProtoId BaptismalRecordPaper = "Paper";
+
     /// <summary>
     /// BaptismalRecord bridge (Eris <c>rituals/priest.dm:213-230</c>): a paper listing the
     /// parishioners slides out of the altar. Eris prints the global disciple list; this fork has
@@ -51,7 +54,7 @@ public sealed partial class AltarSystem : EntitySystem
 
         names.Sort(StringComparer.Ordinal);
 
-        var paper = Spawn("Paper", Transform(ent.Owner).Coordinates);
+        var paper = Spawn(BaptismalRecordPaper, Transform(ent.Owner).Coordinates);
         _paper.SetContent(paper, string.Join("\n", names));
         args.Handled = true;
     }

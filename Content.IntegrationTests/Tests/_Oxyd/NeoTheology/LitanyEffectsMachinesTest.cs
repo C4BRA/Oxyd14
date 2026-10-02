@@ -14,6 +14,7 @@ using Content.Shared.Doors.Components;
 using Content.Shared.Doors.Systems;
 using Content.Shared.FixedPoint;
 using Content.Shared.Implants;
+using Content.Shared.Power.Generator;
 using Content.Shared.Stacks;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
@@ -280,7 +281,9 @@ public sealed class LitanyEffectsMachinesTest : GameTest
     [Test]
     public async Task PowerBiogenerator_TogglesTheAdjacentMachine()
     {
-        var map = await Pair.CreateTestMap();
+        // Needs the plated machine map: the stock generator refuses to start unanchored,
+        // and a machine spawned off the single tile never anchors.
+        var map = await Pair.CreateMachineTestMap();
         EntityUid generator = default;
         EntityUid caster = default;
 
@@ -294,7 +297,16 @@ public sealed class LitanyEffectsMachinesTest : GameTest
             _litany.TestingTreatAsActor(caster);
 
             generator = SSpawnAtPosition(BiogeneratorProto, origin.Offset(new Vector2(1f, 0f)));
-            Assert.That(SComp<BiogeneratorComponent>(generator).Working, Is.False,
+            // MaterialStorage refuses inserts into an unpowered machine, and the stock
+            // generator shuts itself off the next tick once its fuel store is empty.
+            var receiver = SComp<ApcPowerReceiverComponent>(generator);
+            receiver.NeedsPower = false;
+            receiver.Powered = true;
+            var fuel = SSpawnAtPosition(BiomatterProto, origin);
+            _stack.SetCount((Entity<StackComponent?>) fuel, 10);
+            Assert.That(_materialStorage.TryInsertMaterialEntity(generator, fuel, generator), Is.True,
+                "Setup: the biogenerator must have fuel to stay switched on.");
+            Assert.That(SComp<FuelGeneratorComponent>(generator).On, Is.False,
                 "Setup: the biogenerator must start switched off.");
 
             var begin = _litany.TryBeginLitany(caster, PowerBiogenerator, LitanyCastOrigin.ManualSpeech);
@@ -305,7 +317,7 @@ public sealed class LitanyEffectsMachinesTest : GameTest
 
         await Server.WaitAssertion(() =>
         {
-            Assert.That(SComp<BiogeneratorComponent>(generator).Working, Is.True,
+            Assert.That(SComp<FuelGeneratorComponent>(generator).On, Is.True,
                 "The first cast must switch the biogenerator on.");
         });
 
@@ -322,7 +334,7 @@ public sealed class LitanyEffectsMachinesTest : GameTest
 
         await Server.WaitAssertion(() =>
         {
-            Assert.That(SComp<BiogeneratorComponent>(generator).Working, Is.False,
+            Assert.That(SComp<FuelGeneratorComponent>(generator).On, Is.False,
                 "The second cast must switch the biogenerator off again.");
         });
     }

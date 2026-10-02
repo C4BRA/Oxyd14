@@ -1,3 +1,4 @@
+using Content.Shared._Oxyd.NeoTheology;
 using Content.Shared._Oxyd.NeoTheology.Components;
 using Content.Shared.Mind;
 using Content.Shared.Store;
@@ -12,6 +13,6 @@ public sealed partial class NeoTheologyUplinkCondition : ListingCondition
         var em = args.EntityManager;
         var body = em.TryGetComponent<MindComponent>(args.Buyer, out var mind) ? mind.OwnedEntity : args.Buyer;
         return body is { } user && em.System<CruciformSystem>().TryGetCruciform(user, out _, out var comp) &&
-            (comp.InstalledModules.Contains("OxydNtModuleInquisitor") || comp.UnlockedSets.Contains("OxydLitanyCrusader"));
+            (comp.InstalledModules.Contains(NeoTheologyPrototypes.InquisitorModule) || comp.UnlockedSets.Contains(NeoTheologyPrototypes.CrusaderSet));
     }
 }

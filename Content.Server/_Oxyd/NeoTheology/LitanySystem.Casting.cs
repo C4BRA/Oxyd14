@@ -64,8 +64,13 @@ public sealed partial class LitanySystem
     [SubscribeLocalEvent]
     private void OnLitanyDoAfter(LitanyDoAfterEvent args)
     {
-        if (!_pendingByRequest.TryGetValue(args.RequestId, out var cast))
+        if (!TryComp(args.User, out LitanyPendingCastComponent? pending) ||
+            pending.Cast.RequestId != args.RequestId)
+        {
             return;
+        }
+
+        var cast = pending.Cast;
 
         if (args.Cancelled)
         {
@@ -177,8 +182,8 @@ public sealed partial class LitanySystem
         // 1. Nonce/stage
         if (!TryComp(cast.Actor, out CruciformBearerComponent? bearer) ||
             bearer.PendingRequestId != cast.RequestId ||
-            !_pendingByRequest.TryGetValue(cast.RequestId, out var live) ||
-            !ReferenceEquals(live, cast))
+            !TryComp(cast.Actor, out LitanyPendingCastComponent? pending) ||
+            !ReferenceEquals(pending.Cast, cast))
         {
             ClearPending(cast, cancelled: true);
             return;
@@ -305,13 +310,16 @@ public sealed partial class LitanySystem
             return LitanyActionResult.Fail("oxyd-litany-choice-invalid");
 
         if (string.IsNullOrEmpty(requestId) ||
-            !_pendingByRequest.TryGetValue(requestId, out var cast) ||
-            cast.Actor != actor ||
-            !cast.AwaitingChoice ||
-            cast.Stage != LitanyCastStage.Choosing)
+            !TryComp(actor, out LitanyPendingCastComponent? pending) ||
+            pending.Cast.Cleared ||
+            pending.Cast.RequestId != requestId ||
+            !pending.Cast.AwaitingChoice ||
+            pending.Cast.Stage != LitanyCastStage.Choosing)
         {
             return LitanyActionResult.Fail("oxyd-litany-choice-invalid");
         }
+
+        var cast = pending.Cast;
 
         if (expectBook is { } book && cast.Book != book && cast.Prompt != book)
         {
@@ -474,13 +482,21 @@ public sealed partial class LitanySystem
             return;
         }
 
-        _globalCooldowns[litany.CooldownKey] = until;
+        GlobalCooldowns[litany.CooldownKey] = until;
     }
 
     private void ClearPending(PendingLitanyCast cast, bool cancelled)
     {
-        if (!_pendingByRequest.Remove(cast.RequestId))
+        if (cast.Cleared)
             return;
+
+        cast.Cleared = true;
+        if (!TerminatingOrDeleted(cast.Actor) &&
+            TryComp(cast.Actor, out LitanyPendingCastComponent? pending) &&
+            ReferenceEquals(pending.Cast, cast))
+        {
+            RemCompDeferred<LitanyPendingCastComponent>(cast.Actor);
+        }
 
         if (TryComp(cast.Actor, out CruciformBearerComponent? bearer) &&
             bearer.PendingRequestId == cast.RequestId)
@@ -504,14 +520,13 @@ public sealed partial class LitanySystem
 
     private void ExpireStaleCasts()
     {
-        if (_pendingByRequest.Count == 0)
-            return;
-
         var now = _timing.CurTime;
-        List<string>? expired = null;
-        foreach (var (id, cast) in _pendingByRequest)
+        List<PendingLitanyCast>? expired = null;
+        var query = EntityQueryEnumerator<LitanyPendingCastComponent>();
+        while (query.MoveNext(out _, out var pending))
         {
-            if (cast.Committed)
+            var cast = pending.Cast;
+            if (cast.Committed || cast.Cleared)
                 continue;
 
             var orphaned = !TryComp(cast.Actor, out CruciformBearerComponent? bearer) ||
@@ -519,31 +534,45 @@ public sealed partial class LitanySystem
             if (!orphaned && now <= cast.ExpiresAt)
                 continue;
 
-            expired ??= new List<string>();
-            expired.Add(id);
+            expired ??= new List<PendingLitanyCast>();
+            expired.Add(cast);
         }
 
         if (expired == null)
             return;
 
-        foreach (var id in expired)
-        {
-            if (_pendingByRequest.TryGetValue(id, out var cast))
-                ClearPending(cast, cancelled: true);
-        }
+        foreach (var cast in expired)
+            ClearPending(cast, cancelled: true);
     }
 
     [SubscribeLocalEvent]
     private void OnRoundCleanup(RoundRestartCleanupEvent ev)
     {
-        _pendingByRequest.Clear();
-        _rateByActor.Clear();
-        _globalCooldowns.Clear();
-        _availabilityOverrides.Clear();
-        _testingTreatAsActor.Clear();
-        _bookViewers.Clear();
         _nextViewerRefresh = default;
-        _testingLastSnapshot.Clear();
+
+        var pendingCasts = EntityQueryEnumerator<LitanyPendingCastComponent>();
+        while (pendingCasts.MoveNext(out var actor, out _))
+            RemCompDeferred<LitanyPendingCastComponent>(actor);
+
+        var rateLimits = EntityQueryEnumerator<LitanyRateLimitComponent>();
+        while (rateLimits.MoveNext(out var actor, out _))
+            RemCompDeferred<LitanyRateLimitComponent>(actor);
+
+        var testActors = EntityQueryEnumerator<LitanyTestingActorComponent>();
+        while (testActors.MoveNext(out var actor, out _))
+            RemCompDeferred<LitanyTestingActorComponent>(actor);
+
+        var snapshots = EntityQueryEnumerator<LitanyTestingSnapshotComponent>();
+        while (snapshots.MoveNext(out var actor, out _))
+            RemCompDeferred<LitanyTestingSnapshotComponent>(actor);
+
+        var globals = EntityQueryEnumerator<LitanyGlobalStateComponent>();
+        while (globals.MoveNext(out var ent, out _))
+            QueueDel(ent);
+
+        var books = EntityQueryEnumerator<LitanyBookComponent>();
+        while (books.MoveNext(out _, out var book))
+            book.Viewers.Clear();
         TestingSnapshotSendCount = 0;
         _requestNonce = 0;
 
@@ -582,11 +611,7 @@ public sealed partial class LitanySystem
     {
         failure = LitanyActionResult.Ok();
         var now = _timing.CurTime;
-        if (!_rateByActor.TryGetValue(actor, out var state))
-        {
-            state = new ActorRateState { WindowStart = now };
-            _rateByActor[actor] = state;
-        }
+        var state = EnsureComp<LitanyRateLimitComponent>(actor);
 
         if (now - state.WindowStart >= TimeSpan.FromSeconds(1))
         {

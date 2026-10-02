@@ -11,8 +11,8 @@ namespace Content.Shared._Oxyd.NeoTheology.Effects;
 /// </summary>
 public sealed partial class LitanyInitiationEffect : LitanyEffect
 {
-    private static readonly ProtoId<CoreModulePrototype> PriestRankModule = "OxydNtModulePriest";
-    private static readonly ProtoId<CoreModulePrototype> InquisitorRankModule = "OxydNtModuleInquisitor";
+    private static readonly ProtoId<CoreModulePrototype> PriestRankModule = NeoTheologyPrototypes.PriestModule;
+    private static readonly ProtoId<CoreModulePrototype> InquisitorRankModule = NeoTheologyPrototypes.InquisitorModule;
 
     public override bool CanApply(
         LitanyEffectSystem system,
@@ -34,7 +34,7 @@ public sealed partial class LitanyInitiationEffect : LitanyEffect
             return false;
         }
 
-        if (!cruciform.InstalledModules.Contains("OxydNtModulePriestConvert"))
+        if (!cruciform.InstalledModules.Contains(NeoTheologyPrototypes.PriestConvertModule))
         {
             failure = "oxyd-litany-initiation-no-kit";
             return false;

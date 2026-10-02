@@ -34,7 +34,7 @@ public sealed partial class NeoTheologyDoorSystem : EntitySystem
     /// <summary>How far off a scanned tile a biomatter stack still counts as lying on it.</summary>
     private const float ScanRadius = 0.6f;
 
-    private static readonly ProtoId<StackPrototype> BiomatterStack = "Biomatter";
+    private static readonly ProtoId<StackPrototype> BiomatterStack = NeoTheologyPrototypes.BiomatterStack;
 
     public override void Initialize()
     {

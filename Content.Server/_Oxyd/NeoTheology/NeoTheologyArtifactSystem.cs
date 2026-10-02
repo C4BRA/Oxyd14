@@ -1,4 +1,5 @@
 using System.Linq;
+using Content.Shared._Oxyd.NeoTheology;
 using Content.Shared._Oxyd.NeoTheology.Components;
 using Content.Shared._Oxyd.NeoTheology.Events;
 using Content.Shared._Oxyd.Skills;
@@ -51,12 +52,9 @@ public sealed partial class NeoTheologyArtifactSystem : EntitySystem
                 continue;
             light.NextPulse = _timing.CurTime + light.Interval;
             foreach (var (target, _) in _lookup.GetEntitiesInRange<CruciformBearerComponent>(Transform(body).Coordinates, light.Radius))
-                if (_cruciform.IsActiveBearer(target) && _examine.InRangeUnOccluded(body, target, light.Radius, predicate: null))
-                    _damage.TryChangeDamage(target, new DamageSpecifier
-                    {
-                        DamageDict = { ["Blunt"] = -light.Healing / 3, ["Slash"] = -light.Healing / 3,
-                            ["Piercing"] = -light.Healing / 3, ["Heat"] = -light.Healing },
-                    });
+                if (_cruciform.TryGetCruciform(target, out _, out var targetCruciform) &&
+                    _examine.InRangeUnOccluded(body, target, light.Radius, predicate: null))
+                    _damage.TryChangeDamage(target, targetCruciform.HolyLightHealing * light.Healing);
         }
     }
 
@@ -64,7 +62,7 @@ public sealed partial class NeoTheologyArtifactSystem : EntitySystem
     private void OnSwordDamage(Entity<SwordOfTruthComponent> ent, ref GetMeleeDamageEvent args)
     {
         if (TryComp<NeoTheologyFactionItemComponent>(ent, out var item) && item.CrusadeActivated)
-            args.Damage.DamageDict["Slash"] = args.Damage.DamageDict.GetValueOrDefault("Slash") + 8;
+            args.Damage += ent.Comp.CrusadeDamageBonus;
     }
 
     [SubscribeLocalEvent]
@@ -120,15 +118,15 @@ public sealed partial class NeoTheologyArtifactSystem : EntitySystem
             _timing.CurTime >= ent.Comp.NextFlash)
         {
             ent.Comp.NextFlash = _timing.CurTime + ent.Comp.Cooldown;
-            foreach (var (target, _) in _lookup.GetEntitiesInRange<MobStateComponent>(Transform(args.User).Coordinates, 7f))
+            foreach (var (target, _) in _lookup.GetEntitiesInRange<MobStateComponent>(Transform(args.User).Coordinates, ent.Comp.FlashRange))
             {
                 if (_mobState.IsDead(target) || _cruciform.IsActiveBearer(target) ||
-                    !_examine.InRangeUnOccluded(args.User, target, 7f, predicate: null))
+                    !_examine.InRangeUnOccluded(args.User, target, ent.Comp.FlashRange, predicate: null))
                     continue;
-                _stun.TryKnockdown(target, TimeSpan.FromSeconds(5), force: true);
+                _stun.TryKnockdown(target, ent.Comp.FlashStunDuration, force: true);
                 if (TryComp<MobSkillComponent>(target, out var skills))
                     foreach (var skill in skills.skills.Keys.ToArray())
-                        _skills.SetUniqueBuff((target, skills), "SwordOfTruth", -40, skill, TimeSpan.FromSeconds(45));
+                        _skills.SetUniqueBuff((target, skills), ent.Comp.FlashBuffId, ent.Comp.FlashSkillPenalty, skill, ent.Comp.FlashDebuffDuration);
             }
         }
         args.Handled = true;

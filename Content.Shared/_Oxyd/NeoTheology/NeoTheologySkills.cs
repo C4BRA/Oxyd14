@@ -10,4 +10,7 @@ public static class NeoTheologySkills
 {
     /// <summary>Eris <c>STAT_VIG</c>, the resistance skill for Searing Revelation.</summary>
     public static readonly ProtoId<SkillPrototype> Vigilance = "Vig";
+
+    /// <summary>Eris <c>STAT_COG</c>, cognition — feeds cruciform regeneration.</summary>
+    public static readonly ProtoId<SkillPrototype> Cognition = "Cog";
 }

@@ -43,25 +43,6 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
     [Dependency] private readonly NeoTheologyWorldSystem _world = default!;
     [Dependency] private readonly NeoTheologyFoundationSystem _foundation = default!;
 
-    private static readonly ProtoId<CoreModulePrototype> PriestRankModule = "OxydNtModulePriest";
-    private static readonly ProtoId<CoreModulePrototype> InquisitorRankModule = "OxydNtModuleInquisitor";
-    private static readonly ProtoId<CoreModulePrototype> PriestConvertModule = "OxydNtModulePriestConvert";
-
-    private static readonly EntProtoId CruciformProto = "OxydNtCruciform";
-
-    private static readonly ProtoId<NeoTheologyProfilePrototype> DiscipleProfile = "OxydNtDisciple";
-    private static readonly ProtoId<NeoTheologyProfilePrototype> PreacherProfile = "OxydNtPreacher";
-    private static readonly ProtoId<NeoTheologyProfilePrototype> InquisitorProfile = "OxydNtInquisitor";
-    private static readonly ProtoId<NeoTheologyProfilePrototype> AcolyteProfile = "OxydNtAcolyte";
-    private static readonly ProtoId<NeoTheologyProfilePrototype> CustodianProfile = "OxydNtCustodian";
-    private static readonly ProtoId<NeoTheologyProfilePrototype> AgrolyteProfile = "OxydNtAgrolyte";
-
-    private static readonly ProtoId<CoreModulePrototype> BaseModule = "OxydNtModuleBase";
-    private static readonly ProtoId<CoreModulePrototype> AcolyteModule = "OxydNtModuleAcolyte";
-    private static readonly ProtoId<CoreModulePrototype> AgrolyteModule = "OxydNtModuleAgrolyte";
-    private static readonly ProtoId<CoreModulePrototype> CustodianModule = "OxydNtModuleCustodian";
-    private static readonly ProtoId<CoreModulePrototype> CloningModule = "OxydNtModuleCloning";
-
     /// <summary>
     /// Epiphany bridge: the shared litany effect cannot call this server system, so it
     /// raises <see cref="LitanyActivateCruciformEvent"/> on the target body. <c>Handled</c>
@@ -112,9 +93,9 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
 
         foreach (var module in SpecializationModules)
             _modules.TryRemove(cruciform, component, module);
-        if (!component.InstalledModules.Contains(PriestRankModule) &&
-            !component.InstalledModules.Contains(InquisitorRankModule))
-            component.Profile = DiscipleProfile;
+        if (!component.InstalledModules.Contains(NeoTheologyPrototypes.PriestModule) &&
+            !component.InstalledModules.Contains(NeoTheologyPrototypes.InquisitorModule))
+            component.Profile = NeoTheologyPrototypes.DiscipleProfile;
 
         RecomputeProfile(cruciform, component);
         Dirty(cruciform, component);
@@ -346,8 +327,8 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
 
         foreach (var access in profile.AccessPrivileges)
         {
-            if ((access == "OxydNtCommon" && component.Clearance < NeoTheologyClearance.Common) ||
-                (access == "OxydNtClergy" && component.Clearance < NeoTheologyClearance.Clergy))
+            if ((access == NeoTheologyPrototypes.CommonAccess && component.Clearance < NeoTheologyClearance.Common) ||
+                (access == NeoTheologyPrototypes.ClergyAccess && component.Clearance < NeoTheologyClearance.Clergy))
                 continue;
             args.Tags.Add(access);
         }
@@ -359,8 +340,8 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
 
             foreach (var level in module.Access)
             {
-                if ((level == "OxydNtCommon" && component.Clearance < NeoTheologyClearance.Common) ||
-                    (level == "OxydNtClergy" && component.Clearance < NeoTheologyClearance.Clergy))
+                if ((level == NeoTheologyPrototypes.CommonAccess && component.Clearance < NeoTheologyClearance.Common) ||
+                    (level == NeoTheologyPrototypes.ClergyAccess && component.Clearance < NeoTheologyClearance.Clergy))
                     continue;
                 args.Tags.Add(level);
             }
@@ -374,11 +355,11 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
             return;
 
         var penalty = 0f;
-        if (args.Stage == "Bloodstream" && args.Reagent.Group == "Narcotics")
+        if (args.Stage == NeoTheologyPrototypes.BloodstreamStage && args.Reagent.Group == NeoTheologyPrototypes.NarcoticsReagentGroup)
             penalty = 0.5f;
-        else if (args.Stage == "Digestion" && args.Reagent.ID != "NTCahors" &&
+        else if (args.Stage == NeoTheologyPrototypes.DigestionStage && args.Reagent.ID != NeoTheologyPrototypes.CahorsReagent.Id &&
             args.Reagent.Metabolisms?.Metabolisms.TryGetValue(args.Stage, out var metabolism) == true &&
-            metabolism.Metabolites?.ContainsKey("Ethanol") == true)
+            metabolism.Metabolites?.ContainsKey(NeoTheologyPrototypes.EthanolReagent) == true)
             penalty = 0.1f;
 
         if (penalty <= 0)
@@ -413,8 +394,8 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
 
         component.EverActivated = true;
 
-        _modules.TryInstall(cruciform, component, BaseModule);
-        _modules.TryInstall(cruciform, component, CloningModule);
+        _modules.TryInstall(cruciform, component, NeoTheologyPrototypes.BaseModule);
+        _modules.TryInstall(cruciform, component, NeoTheologyPrototypes.CloningModule);
         _souls.WriteSnapshot(cruciform, component);
         // Eris cruciform.dm:94-122 — installed activatable upgrades convert on activation.
         ApplyActivationModules(cruciform, component);
@@ -441,10 +422,10 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
             return;
 
         // Eris guards the perform: the target must not already be a preacher.
-        if (_modules.HasModule(component, PriestRankModule) || _modules.HasModule(component, InquisitorRankModule))
+        if (_modules.HasModule(component, NeoTheologyPrototypes.PriestModule) || _modules.HasModule(component, NeoTheologyPrototypes.InquisitorModule))
             return;
 
-        if (!_modules.HasModule(component, PriestConvertModule) ||
+        if (!_modules.HasModule(component, NeoTheologyPrototypes.PriestConvertModule) ||
             !ApplyActivationModules(cruciform, component))
             return;
 
@@ -486,7 +467,7 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
             !TryGetConfiguredProfile(profile, GetRules(), out _))
             return false;
 
-        if (_implants.AddImplant(body, CruciformProto) is not { } implant)
+        if (_implants.AddImplant(body, NeoTheologyPrototypes.CruciformEnt) is not { } implant)
             return false;
 
         if (!TryComp<CruciformComponent>(implant, out var comp))
@@ -494,9 +475,9 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
 
         comp.EverActivated = true;
         comp.LastHolinessUpdate = _timing.CurTime;
-        comp.Channeling = profile == PreacherProfile;
+        comp.Channeling = profile == NeoTheologyPrototypes.PreacherProfile;
         MakeRank(implant, comp, profile);
-        _modules.TryInstall(implant, comp, CloningModule);
+        _modules.TryInstall(implant, comp, NeoTheologyPrototypes.CloningModule);
         _souls.WriteSnapshot(implant, comp);
         SetActive(implant, comp, true);
 
@@ -604,7 +585,7 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
         foreach (var module in next.StartingModules)
             _modules.TryInstall(cruciform, comp, module);
 
-        if (profile == PreacherProfile || profile == InquisitorProfile)
+        if (profile == NeoTheologyPrototypes.PreacherProfile || profile == NeoTheologyPrototypes.InquisitorProfile)
         {
             comp.Clearance = NeoTheologyClearance.Clergy;
             if (specializations.Length > 0)
@@ -615,7 +596,7 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
                     _modules.TryInstall(cruciform, comp, module);
             }
         }
-        else if (profile == DiscipleProfile)
+        else if (profile == NeoTheologyPrototypes.DiscipleProfile)
         {
             foreach (var module in specializations)
                 _modules.TryInstall(cruciform, comp, module);
@@ -638,7 +619,7 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
             _modules.TryRemove(cruciform, comp, module);
         foreach (var module in next.StartingModules.Where(module => SpecializationModules.Contains(module)))
             _modules.TryInstall(cruciform, comp, module);
-        if (!comp.InstalledModules.Contains(PriestRankModule) && !comp.InstalledModules.Contains(InquisitorRankModule))
+        if (!comp.InstalledModules.Contains(NeoTheologyPrototypes.PriestModule) && !comp.InstalledModules.Contains(NeoTheologyPrototypes.InquisitorModule))
             comp.Profile = profile;
         RecomputeProfile(cruciform, comp);
         if (comp.ImplantedEntity is { } body)
@@ -646,35 +627,35 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
     }
 
     public void MakeCommon(EntityUid c, CruciformComponent comp)
-        => MakeRank(c, comp, DiscipleProfile);
+        => MakeRank(c, comp, NeoTheologyPrototypes.DiscipleProfile);
 
     public void MakePriest(EntityUid c, CruciformComponent comp)
     {
-        MakeRank(c, comp, PreacherProfile);
+        MakeRank(c, comp, NeoTheologyPrototypes.PreacherProfile);
         comp.Clearance = NeoTheologyClearance.Clergy;
     }
 
     public void MakeInquisitor(EntityUid c, CruciformComponent comp)
     {
-        MakeRank(c, comp, InquisitorProfile);
+        MakeRank(c, comp, NeoTheologyPrototypes.InquisitorProfile);
         comp.Clearance = NeoTheologyClearance.Clergy;
     }
 
     public void MakeAcolyte(EntityUid c, CruciformComponent comp)
-        => MakeSpecialization(c, comp, AcolyteProfile);
+        => MakeSpecialization(c, comp, NeoTheologyPrototypes.AcolyteProfile);
 
     public void MakeCustodian(EntityUid c, CruciformComponent comp)
-        => MakeSpecialization(c, comp, CustodianProfile);
+        => MakeSpecialization(c, comp, NeoTheologyPrototypes.CustodianProfile);
 
     public void MakeAgrolyte(EntityUid c, CruciformComponent comp)
-        => MakeSpecialization(c, comp, AgrolyteProfile);
+        => MakeSpecialization(c, comp, NeoTheologyPrototypes.AgrolyteProfile);
 
     /// <summary>Modules implied by a profile id. One table, no switch statements elsewhere.</summary>
     private static readonly ProtoId<CoreModulePrototype>[] SpecializationModules =
     [
-        AcolyteModule,
-        AgrolyteModule,
-        CustodianModule,
+        NeoTheologyPrototypes.AcolyteModule,
+        NeoTheologyPrototypes.AgrolyteModule,
+        NeoTheologyPrototypes.CustodianModule,
     ];
 
     private double AdvanceHoliness(Entity<CruciformComponent> ent, EntityUid body)
@@ -749,7 +730,7 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
         component.MaxHoliness = capacity;
 
         var cognitive = 0;
-        if (body is { } skillBody && TryComp<MobSkillComponent>(skillBody, out var skills) && skills.skills.TryGetValue("Cog", out var cog) && cog.Length > 0)
+        if (body is { } skillBody && TryComp<MobSkillComponent>(skillBody, out var skills) && skills.skills.TryGetValue(NeoTheologySkills.Cognition, out var cog) && cog.Length > 0)
             cognitive = cog[0] + (cog.Length > 1 ? cog[1] : 0);
 
         // Source regeneration starts at 20/min; rank modifiers are installed-module deltas,

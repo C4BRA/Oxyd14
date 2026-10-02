@@ -1,3 +1,4 @@
+using Content.Shared.Damage;
 using Robust.Shared.Map;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Maths;
@@ -27,6 +28,26 @@ public sealed partial class SwordOfTruthComponent : Component
 {
     [DataField] public TimeSpan Cooldown = TimeSpan.FromMinutes(1);
     public TimeSpan NextFlash;
+
+    /// <summary>Extra damage added to the blade while the wielder's crusade blessing is active.</summary>
+    [DataField]
+    public DamageSpecifier CrusadeDamageBonus = new()
+    {
+        DamageDict = { ["Slash"] = 8f },
+    };
+
+    /// <summary>Reach of the blinding flash.</summary>
+    [DataField] public float FlashRange = 7f;
+
+    [DataField] public TimeSpan FlashStunDuration = TimeSpan.FromSeconds(5);
+
+    /// <summary>Skill debuff the flash puts on every skill of a non-believer.</summary>
+    [DataField] public int FlashSkillPenalty = -40;
+
+    [DataField] public TimeSpan FlashDebuffDuration = TimeSpan.FromSeconds(45);
+
+    /// <summary>Unique-buff id so a repeated flash refreshes rather than stacks.</summary>
+    [DataField] public string FlashBuffId = "SwordOfTruth";
 }
 
 [RegisterComponent]

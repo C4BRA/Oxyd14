@@ -12,6 +12,7 @@ using Content.Shared.Chat;
 using Content.Shared.DoAfter;
 using Content.Shared.GameTicking;
 using Content.Shared.Hands.EntitySystems;
+using Robust.Shared.Map;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
@@ -26,8 +27,6 @@ namespace Content.Server._Oxyd.NeoTheology;
 public sealed partial class LitanySystem : EntitySystem
 {
     public const int MaxRequestsPerSecond = 5;
-    public const int MaxBeginsPerSecond = 1;
-    public static readonly TimeSpan ChoiceExpiry = TimeSpan.FromSeconds(30);
     public static readonly TimeSpan CastGrace = TimeSpan.FromSeconds(5);
 
     /// <summary>How long a book cast waits for the caster's choice before it expires.</summary>
@@ -48,13 +47,26 @@ public sealed partial class LitanySystem : EntitySystem
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly SanitySystem _sanity = default!;
 
-    private readonly Dictionary<string, PendingLitanyCast> _pendingByRequest = new(StringComparer.Ordinal);
-    private readonly Dictionary<EntityUid, ActorRateState> _rateByActor = new();
-    private readonly Dictionary<string, TimeSpan> _globalCooldowns = new(StringComparer.Ordinal);
-    private readonly Dictionary<string, bool> _availabilityOverrides = new(StringComparer.Ordinal);
-    private readonly HashSet<EntityUid> _testingTreatAsActor = new();
-
     private ulong _requestNonce;
+
+    /// <summary>
+    /// Round-global litany state lives on a dedicated nullspace entity so nothing about
+    /// entities or rounds is stored on the system itself.
+    /// </summary>
+    private LitanyGlobalStateComponent GlobalState
+    {
+        get
+        {
+            var query = EntityQueryEnumerator<LitanyGlobalStateComponent>();
+            if (query.MoveNext(out _, out var comp))
+                return comp;
+
+            var ent = Spawn(null, MapCoordinates.Nullspace);
+            return EnsureComp<LitanyGlobalStateComponent>(ent);
+        }
+    }
+
+    private Dictionary<string, TimeSpan> GlobalCooldowns => GlobalState.Cooldowns;
 
     public override void Initialize()
     {
@@ -91,18 +103,18 @@ public sealed partial class LitanySystem : EntitySystem
     /// </summary>
     public void TestingSetAvailabilityOverride(string litanyId, bool available)
     {
-        _availabilityOverrides[litanyId] = available;
+        GlobalState.AvailabilityOverrides[litanyId] = available;
     }
 
     public void TestingClearAvailabilityOverrides()
     {
-        _availabilityOverrides.Clear();
+        GlobalState.AvailabilityOverrides.Clear();
     }
 
     /// <summary>Test helper: drops round-global cooldowns so recast contracts can be exercised.</summary>
     public void TestingClearCooldowns()
     {
-        _globalCooldowns.Clear();
+        GlobalState.Cooldowns.Clear();
     }
 
     /// <summary>
@@ -111,25 +123,52 @@ public sealed partial class LitanySystem : EntitySystem
     /// </summary>
     public void TestingTreatAsActor(EntityUid uid)
     {
-        _testingTreatAsActor.Add(uid);
+        EnsureComp<LitanyTestingActorComponent>(uid);
     }
 
     public void TestingClearActors()
     {
-        _testingTreatAsActor.Clear();
+        var query = EntityQueryEnumerator<LitanyTestingActorComponent>();
+        while (query.MoveNext(out var uid, out _))
+            RemCompDeferred<LitanyTestingActorComponent>(uid);
     }
 
     private bool IsPlayerActor(EntityUid uid)
     {
-        return HasComp<ActorComponent>(uid) || _testingTreatAsActor.Contains(uid);
+        return HasComp<ActorComponent>(uid) || HasComp<LitanyTestingActorComponent>(uid);
     }
 
     public bool TestingTryGetPending(string requestId, [NotNullWhen(true)] out PendingLitanyCast? cast)
     {
-        return _pendingByRequest.TryGetValue(requestId, out cast);
+        var query = EntityQueryEnumerator<LitanyPendingCastComponent>();
+        while (query.MoveNext(out _, out var pending))
+        {
+            if (!pending.Cast.Cleared && pending.Cast.RequestId == requestId)
+            {
+                cast = pending.Cast;
+                return true;
+            }
+        }
+
+        cast = null;
+        return false;
     }
 
-    public int TestingPendingCount => _pendingByRequest.Count;
+    public int TestingPendingCount
+    {
+        get
+        {
+            // Component removal is deferred to end-of-tick; cleared casts don't count.
+            var count = 0;
+            var query = EntityQueryEnumerator<LitanyPendingCastComponent>();
+            while (query.MoveNext(out _, out var pending))
+            {
+                if (!pending.Cast.Cleared)
+                    count++;
+            }
+            return count;
+        }
+    }
 
     /// <summary>
     /// Server entry for beginning a litany from speech or book UI. Cost/authority
@@ -290,7 +329,7 @@ public sealed partial class LitanySystem : EntitySystem
                 cast.TargetCruciforms[target] = targetImplant;
         }
 
-        _pendingByRequest[requestId] = cast;
+        EnsureComp<LitanyPendingCastComponent>(actor).Cast = cast;
         bearer.PendingRequestId = requestId;
         Dirty(actor, bearer);
 
@@ -337,8 +376,13 @@ public sealed partial class LitanySystem : EntitySystem
         if (!TryRateLimit(actor, isBegin: false, out var rateFail))
             return rateFail;
 
-        if (!_pendingByRequest.TryGetValue(requestId, out var cast) || cast.Actor != actor)
+        if (!TryComp(actor, out LitanyPendingCastComponent? pending) ||
+            pending.Cast.RequestId != requestId)
+        {
             return LitanyActionResult.Fail("oxyd-litany-denied-unknown-request");
+        }
+
+        var cast = pending.Cast;
 
         if (cast.Committed)
             return LitanyActionResult.Fail("oxyd-litany-denied-already-committed");
@@ -355,7 +399,7 @@ public sealed partial class LitanySystem : EntitySystem
         if (litany.Dependency != NeoTheologyDependency.None)
             return false;
 
-        if (_availabilityOverrides.TryGetValue(litany.ID, out var forced))
+        if (GlobalState.AvailabilityOverrides.TryGetValue(litany.ID, out var forced))
             return forced;
 
         return litany.IsAvailable;
@@ -398,7 +442,7 @@ public sealed partial class LitanySystem : EntitySystem
             return true;
         }
 
-        if (_globalCooldowns.TryGetValue(key, out var globalUntil) && globalUntil > now)
+        if (GlobalCooldowns.TryGetValue(key, out var globalUntil) && globalUntil > now)
         {
             failure = LitanyActionResult.Fail("oxyd-litany-denied-cooldown");
             return false;
@@ -414,13 +458,8 @@ public sealed partial class LitanySystem : EntitySystem
 
     private bool HasPendingForActor(EntityUid actor)
     {
-        foreach (var cast in _pendingByRequest.Values)
-        {
-            if (cast.Actor == actor && !cast.Committed)
-                return true;
-        }
-
-        return false;
+        return TryComp(actor, out LitanyPendingCastComponent? pending) &&
+               !pending.Cast.Cleared && !pending.Cast.Committed;
     }
 }
 
@@ -459,6 +498,8 @@ public sealed class PendingLitanyCast
 
     /// <summary>True while the cast waits for the caster's book-UI selection.</summary>
     public bool AwaitingChoice;
+    /// <summary>Set once the cast reaches a terminal state so cleanup never runs twice.</summary>
+    public bool Cleared;
     public TimeSpan ChoiceExpiresAt;
     public List<EntityUid> ChoiceTargets = new();
     public List<ProtoId<NeoTheologyProfilePrototype>> ChoiceDesignations = new();
@@ -468,11 +509,4 @@ public sealed class PendingLitanyCast
     public string? SelectedText;
     public ProtoId<NeoTheologyProfilePrototype>? Designation;
     public ProtoId<NeoTheologyBlueprintPrototype>? SelectedBlueprint;
-}
-
-internal sealed class ActorRateState
-{
-    public TimeSpan WindowStart;
-    public int RequestsInWindow;
-    public TimeSpan LastBegin;
 }

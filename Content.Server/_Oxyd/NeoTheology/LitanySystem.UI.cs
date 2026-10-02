@@ -13,15 +13,8 @@ namespace Content.Server._Oxyd.NeoTheology;
 
 public sealed partial class LitanySystem
 {
-    /// <summary>
-    /// Per-book open viewers. Private holiness/roles are never stored on the book
-    /// component; this map only tracks which actors currently have the book UI open
-    /// so close/drop can clear presentation and revoke pending book-local tokens.
-    /// </summary>
-    private readonly Dictionary<EntityUid, HashSet<EntityUid>> _bookViewers = new();
-
-    /// <summary>Test capture of the last actor-targeted snapshot per viewer.</summary>
-    private readonly Dictionary<EntityUid, LitanyViewerSnapshotMessage> _testingLastSnapshot = new();
+    /// <summary>The nullspace proxy entity spawned for spoken-prayer choice prompts.</summary>
+    private static readonly EntProtoId PrayerPromptProto = "OxydNtBible";
 
     private uint _publicCatalogRevision = 1;
     private TimeSpan _nextViewerRefresh;
@@ -31,11 +24,11 @@ public sealed partial class LitanySystem
         if (_timing.CurTime < _nextViewerRefresh)
             return;
         _nextViewerRefresh = _timing.CurTime + TimeSpan.FromSeconds(1);
-        foreach (var (book, viewers) in _bookViewers.ToArray())
+
+        var books = EntityQueryEnumerator<LitanyBookComponent>();
+        while (books.MoveNext(out var book, out var bookComp))
         {
-            if (TerminatingOrDeleted(book))
-                continue;
-            foreach (var actor in viewers.ToArray())
+            foreach (var actor in bookComp.Viewers.ToArray())
             {
                 if (!TerminatingOrDeleted(actor))
                     SendViewerSnapshot(book, actor);
@@ -47,12 +40,21 @@ public sealed partial class LitanySystem
 
     public bool TestingTryGetLastSnapshot(EntityUid viewer, [NotNullWhen(true)] out LitanyViewerSnapshotMessage? snapshot)
     {
-        return _testingLastSnapshot.TryGetValue(viewer, out snapshot);
+        if (TryComp(viewer, out LitanyTestingSnapshotComponent? capture) && capture.Last is { } last)
+        {
+            snapshot = last;
+            return true;
+        }
+
+        snapshot = null;
+        return false;
     }
 
     public void TestingClearSnapshotCapture()
     {
-        _testingLastSnapshot.Clear();
+        var query = EntityQueryEnumerator<LitanyTestingSnapshotComponent>();
+        while (query.MoveNext(out var uid, out _))
+            RemCompDeferred<LitanyTestingSnapshotComponent>(uid);
         TestingSnapshotSendCount = 0;
     }
 
@@ -129,7 +131,7 @@ public sealed partial class LitanySystem
 
     private void CloseBookUiForActor(EntityUid book, EntityUid actor)
     {
-        if (!_bookViewers.TryGetValue(book, out var viewers) || !viewers.Contains(actor))
+        if (!TryComp(book, out LitanyBookComponent? bookComp) || !bookComp.Viewers.Contains(actor))
         {
             // Still ask the UI system — single-user / drop may race the tracker.
             if (_ui.GetActors(book, LitanyUiKey.Book).Contains(actor))
@@ -152,7 +154,7 @@ public sealed partial class LitanySystem
     {
         // Forged / non-subscriber actors: reject with no state change.
         if (!_ui.GetActors(book, LitanyUiKey.Book).Contains(actor) &&
-            !(_bookViewers.TryGetValue(book, out var viewers) && viewers.Contains(actor)))
+            !(TryComp(book, out LitanyBookComponent? bookComp) && bookComp.Viewers.Contains(actor)))
         {
             return LitanyActionResult.Fail("oxyd-litany-denied-forged-actor");
         }
@@ -204,7 +206,7 @@ public sealed partial class LitanySystem
     private void OpenPrayerPrompt(PendingLitanyCast cast)
     {
         // Reuse the existing private choice UI. The nullspace proxy is never a held book.
-        var prompt = Spawn("OxydNtBible", MapCoordinates.Nullspace);
+        var prompt = Spawn(PrayerPromptProto, MapCoordinates.Nullspace);
         cast.Prompt = prompt;
         _ui.SetUi(prompt, LitanyUiKey.Book, new InterfaceData("LitanyBoundUserInterface", 0f, false));
         _ui.OpenUi(prompt, LitanyUiKey.Book, cast.Actor);
@@ -249,7 +251,7 @@ public sealed partial class LitanySystem
             return;
 
         if (_ui.GetActors(bookUid, LitanyUiKey.Book).Contains(actor) ||
-            (_bookViewers.TryGetValue(bookUid, out var viewers) && viewers.Contains(actor)))
+            (TryComp(bookUid, out LitanyBookComponent? bookComp) && bookComp.Viewers.Contains(actor)))
         {
             SendViewerSnapshot(bookUid, actor);
         }
@@ -257,7 +259,7 @@ public sealed partial class LitanySystem
         {
             // Still capture for tests / future open; no broadcast of private data.
             var snapshot = BuildViewerSnapshot(actor);
-            _testingLastSnapshot[actor] = snapshot;
+            EnsureComp<LitanyTestingSnapshotComponent>(actor).Last = snapshot;
             TestingSnapshotSendCount++;
         }
     }
@@ -265,7 +267,7 @@ public sealed partial class LitanySystem
     private void SendViewerSnapshot(EntityUid book, EntityUid actor)
     {
         var snapshot = BuildViewerSnapshot(actor);
-        _testingLastSnapshot[actor] = snapshot;
+        EnsureComp<LitanyTestingSnapshotComponent>(actor).Last = snapshot;
         TestingSnapshotSendCount++;
 
         // Actor-targeted only — never SetUiState with holiness/roles.
@@ -275,12 +277,16 @@ public sealed partial class LitanySystem
     private EntityUid? FindActorBook(EntityUid actor)
     {
         if (TryComp<CruciformBearerComponent>(actor, out var bearer) &&
-            bearer.PendingRequestId is { } request && _pendingByRequest.TryGetValue(request, out var cast) &&
-            cast.Prompt is { } prompt)
+            bearer.PendingRequestId is { } request &&
+            TryComp(actor, out LitanyPendingCastComponent? pending) &&
+            pending.Cast.RequestId == request &&
+            pending.Cast.Prompt is { } prompt)
             return prompt;
-        foreach (var (book, viewers) in _bookViewers)
+
+        var books = EntityQueryEnumerator<LitanyBookComponent>();
+        while (books.MoveNext(out var book, out var bookComp))
         {
-            if (viewers.Contains(actor))
+            if (bookComp.Viewers.Contains(actor))
                 return book;
         }
 
@@ -342,9 +348,10 @@ public sealed partial class LitanySystem
             profile = cruciformComp.Profile;
 
             if (!string.IsNullOrEmpty(bearer.PendingRequestId) &&
-                _pendingByRequest.TryGetValue(bearer.PendingRequestId, out var cast) &&
-                cast.Actor == viewer)
+                TryComp(viewer, out LitanyPendingCastComponent? pendingComp) &&
+                pendingComp.Cast.RequestId == bearer.PendingRequestId)
             {
+                var cast = pendingComp.Cast;
                 busy = new LitanyBusyState(
                     cast.RequestId,
                     cast.LitanyId,
@@ -411,7 +418,7 @@ public sealed partial class LitanySystem
 
             var endsAt = TimeSpan.Zero;
             if (litany.CooldownScope == LitanyCooldownScope.Global)
-                endsAt = _globalCooldowns.GetValueOrDefault(litany.CooldownKey);
+                endsAt = GlobalCooldowns.GetValueOrDefault(litany.CooldownKey);
             else if (litany.CooldownScope == LitanyCooldownScope.Personal &&
                 TryComp<CruciformBearerComponent>(viewer, out var owner))
                 endsAt = owner.PersonalCooldowns.GetValueOrDefault(litany.CooldownKey);
@@ -428,34 +435,26 @@ public sealed partial class LitanySystem
 
     private void RememberViewer(EntityUid book, EntityUid actor)
     {
-        if (!_bookViewers.TryGetValue(book, out var viewers))
-        {
-            viewers = new HashSet<EntityUid>();
-            _bookViewers[book] = viewers;
-        }
-
-        viewers.Add(actor);
+        if (TryComp(book, out LitanyBookComponent? bookComp))
+            bookComp.Viewers.Add(actor);
     }
 
     private void ClearViewerState(EntityUid book, EntityUid actor)
     {
-        if (_bookViewers.TryGetValue(book, out var viewers))
-        {
-            viewers.Remove(actor);
-            if (viewers.Count == 0)
-                _bookViewers.Remove(book);
-        }
+        if (TryComp(book, out LitanyBookComponent? bookComp))
+            bookComp.Viewers.Remove(actor);
 
-        _testingLastSnapshot.Remove(actor);
+        RemComp<LitanyTestingSnapshotComponent>(actor);
 
         // Revoke book-origin pending casts for this viewer when the UI is gone.
         if (TryComp(actor, out CruciformBearerComponent? bearer) &&
             !string.IsNullOrEmpty(bearer.PendingRequestId) &&
-            _pendingByRequest.TryGetValue(bearer.PendingRequestId, out var cast) &&
-            cast.Actor == actor &&
-            (cast.Book == book || cast.Prompt == book) &&
-            !cast.Committed)
+            TryComp(actor, out LitanyPendingCastComponent? pending) &&
+            pending.Cast.RequestId == bearer.PendingRequestId &&
+            (pending.Cast.Book == book || pending.Cast.Prompt == book) &&
+            !pending.Cast.Committed)
         {
+            var cast = pending.Cast;
             if (cast.DoAfterId is { } doAfterId)
                 _doAfter.Cancel(doAfterId);
             ClearPending(cast, cancelled: true);

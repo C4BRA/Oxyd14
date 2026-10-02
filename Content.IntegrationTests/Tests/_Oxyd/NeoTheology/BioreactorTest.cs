@@ -73,7 +73,7 @@ public sealed class BioreactorTest : GameTest
         await Server.WaitAssertion(() =>
         {
             reactor = SpawnReactor(map.GridCoords);
-            crop = SSpawnAtPosition(CropProto, map.GridCoords.Offset(new Vector2(1f, 0f)));
+            crop = SSpawnAtPosition(CropProto, map.GridCoords);
             Assert.That(SEntMan.HasComponent<ProduceComponent>(crop), Is.True,
                 "Setup: the crop must be produce.");
         });

@@ -1,5 +1,6 @@
 using System.Linq;
 using Content.Server._Oxyd.NeoTheology.Machines;
+using Content.Shared._Oxyd.NeoTheology;
 using Content.Shared.Humanoid;
 using Content.Shared._Oxyd.NeoTheology.Effects;
 using Content.Shared.Mobs.Systems;
@@ -170,7 +171,7 @@ public sealed partial class EyeOfTheProtectorSystem : EntitySystem
                     !state.Active)
                     continue;
 
-                _statusEffects.TryAddStatusEffectDuration(body, "OxydNtEyeBlessing", comp.FaithfulBlessingDuration);
+                _statusEffects.TryAddStatusEffectDuration(body, NeoTheologyPrototypes.EyeBlessingStatusEnt, comp.FaithfulBlessingDuration);
             }
         }
 
@@ -282,7 +283,7 @@ public sealed partial class EyeOfTheProtectorSystem : EntitySystem
                 if (threat is { } enemy)
                 {
                     var preacher = faithful.FirstOrDefault(f =>
-                        Comp<CruciformComponent>(f.Cruciform).InstalledModules.Contains("OxydNtModulePriest"));
+                        Comp<CruciformComponent>(f.Cruciform).InstalledModules.Contains(NeoTheologyPrototypes.PriestModule));
                     var recipient = preacher.Body == default ? _random.Pick(faithful).Body : preacher.Body;
                     _effects.DeliverSocialNotice(recipient, Loc.GetString("oxyd-eotp-threat",
                         ("location", FormattedMessage.EscapeText(_effects.DescribeLocation(enemy)))));

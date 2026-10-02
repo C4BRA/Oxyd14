@@ -1,6 +1,7 @@
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
 using Content.Shared._Oxyd.NeoTheology;
+using Content.Shared.Damage;
 
 namespace Content.Shared._Oxyd.NeoTheology.Components;
 
@@ -105,4 +106,14 @@ public sealed partial class CruciformComponent : Component
 
     /// <summary>Each Eye energy miracle adds one source base regeneration, not current holiness.</summary>
     [DataField] public int EnergyMiracles;
+
+    /// <summary>
+    /// Healing applied per pulse to this bearer standing in a Holy Light aura, scaled by the
+    /// light's <c>Healing</c> intensity. Negative damage heals.
+    /// </summary>
+    [DataField]
+    public DamageSpecifier HolyLightHealing = new()
+    {
+        DamageDict = { ["Blunt"] = -1f / 3f, ["Slash"] = -1f / 3f, ["Piercing"] = -1f / 3f, ["Heat"] = -1f },
+    };
 }

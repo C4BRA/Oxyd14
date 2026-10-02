@@ -304,10 +304,14 @@ public sealed partial class LitanyEffectSystem : EntitySystem, ILitanyEffectRais
         return HasComp<SanityComponent>(uid);
     }
 
+    /// <summary>Review: there is no such thing as a permanent buff — litany-granted stat
+    /// changes always time out after fifteen minutes.</summary>
+    public static readonly TimeSpan LitanyBuffDuration = TimeSpan.FromMinutes(15);
+
     /// <summary>
     /// Applies or refreshes one unique skill buff per listed skill. <paramref name="sourceId"/>
     /// is the unique source: recasting from the same source refreshes it, never stacks.
-    /// A zero duration means no expiry (skill-system default), not an already-expired buff.
+    /// A zero duration falls back to <see cref="LitanyBuffDuration"/>, not an already-expired buff.
     /// </summary>
     public bool TryApplySkillBuff(
         EntityUid target,
@@ -318,7 +322,7 @@ public sealed partial class LitanyEffectSystem : EntitySystem, ILitanyEffectRais
         if (!CanReceiveSkillBuff(target) || !TryComp<MobSkillComponent>(target, out var skills))
             return false;
 
-        TimeSpan? expires = duration > TimeSpan.Zero ? duration : null;
+        var expires = duration > TimeSpan.Zero ? duration : LitanyBuffDuration;
         foreach (var (skill, amount) in amounts)
         {
             _skill.SetUniqueBuff((target, skills), sourceId, amount, skill, expires);
@@ -327,25 +331,25 @@ public sealed partial class LitanyEffectSystem : EntitySystem, ILitanyEffectRais
         return true;
     }
 
-    /// <summary>Adds a permanent skill change that stacks with earlier casts of the same rite.</summary>
-    public void TryAddPermanentSkill(EntityUid target, ProtoId<SkillPrototype> skill, int amount)
+    /// <summary>Adds a stacking skill change that times out after <see cref="LitanyBuffDuration"/>.</summary>
+    public void TryAddTimedSkill(EntityUid target, ProtoId<SkillPrototype> skill, int amount)
     {
         if (!CanReceiveSkillBuff(target) || !TryComp<MobSkillComponent>(target, out var skills))
             return;
 
-        _skill.AddBuff((target, skills), $"{skill}:{Guid.NewGuid()}", amount, skill, expires: null);
+        _skill.AddBuff((target, skills), $"{skill}:{Guid.NewGuid()}", amount, skill, LitanyBuffDuration);
     }
 
     /// <summary>
-    /// Applies or refreshes one litany-keyed unique skill penalty (negative amount) with no
-    /// expiry — Eris <c>changeStat</c> is permanent, unlike the timed buffs above.
+    /// Applies or refreshes one litany-keyed unique skill penalty (negative amount) that times
+    /// out after <see cref="LitanyBuffDuration"/> like every other buff.
     /// </summary>
     public bool TryApplySkillPenalty(EntityUid target, string sourceId, ProtoId<SkillPrototype> skill, int amount)
     {
         if (amount >= 0 || !CanReceiveSkillBuff(target) || !TryComp<MobSkillComponent>(target, out var skills))
             return false;
 
-        _skill.SetUniqueBuff((target, skills), sourceId, amount, skill, expires: null);
+        _skill.SetUniqueBuff((target, skills), sourceId, amount, skill, LitanyBuffDuration);
         return true;
     }
 

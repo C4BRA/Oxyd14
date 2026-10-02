@@ -23,10 +23,11 @@ public sealed partial class LitanySystem
 
         if (TryComp(args.Source, out CruciformBearerComponent? bearer) &&
             !string.IsNullOrEmpty(bearer.PendingRequestId) &&
-            _pendingByRequest.TryGetValue(bearer.PendingRequestId, out var pending) &&
-            pending.Actor == args.Source &&
-            pending.AwaitingBookSpeech)
+            TryComp(args.Source, out LitanyPendingCastComponent? pendingComp) &&
+            pendingComp.Cast.RequestId == bearer.PendingRequestId &&
+            pendingComp.Cast.AwaitingBookSpeech)
         {
+            var pending = pendingComp.Cast;
             var compare = ResolveCompareText(pending.LitanyId, args);
             if (!LitanyPhraseParser.TryMatchExact(compare, pending.Phrase))
                 return;

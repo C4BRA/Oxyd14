@@ -1,5 +1,6 @@
 using System.Linq;
 using Content.Server.Materials;
+using Content.Shared._Oxyd.NeoTheology;
 using Content.Shared._Oxyd.NeoTheology.Components;
 using Content.Shared.Interaction;
 using Content.Shared.Materials;
@@ -27,23 +28,23 @@ public sealed partial class BiomatterReservoirSystem : EntitySystem
             !TryComp<MaterialStorageComponent>(to, out var storage))
             return false;
 
-        var amount = _materials.GetMaterialAmount(from, "Biomatter");
+        var amount = _materials.GetMaterialAmount(from, NeoTheologyPrototypes.BiomatterMaterial);
         if (storage.StorageLimit is { } limit)
             amount = Math.Min(amount, limit - _materials.GetStoredMaterials((to, storage), localOnly: true).Values.Sum());
-        if (amount <= 0 || !_materials.TryChangeMaterialAmount(to, "Biomatter", amount, storage, localOnly: true))
+        if (amount <= 0 || !_materials.TryChangeMaterialAmount(to, NeoTheologyPrototypes.BiomatterMaterial, amount, storage, localOnly: true))
             return false;
 
-        if (_materials.TryChangeMaterialAmount(from, "Biomatter", -amount, localOnly: true))
+        if (_materials.TryChangeMaterialAmount(from, NeoTheologyPrototypes.BiomatterMaterial, -amount, localOnly: true))
             return true;
 
-        _materials.TryChangeMaterialAmount(to, "Biomatter", -amount, storage, localOnly: true);
+        _materials.TryChangeMaterialAmount(to, NeoTheologyPrototypes.BiomatterMaterial, -amount, storage, localOnly: true);
         return false;
     }
 
     [SubscribeLocalEvent]
     private void OnReleaseVerb(Entity<BiomatterReservoirComponent> ent, ref GetVerbsEvent<AlternativeVerb> args)
     {
-        if (!args.CanAccess || !args.CanInteract || _materials.GetMaterialAmount(ent.Owner, "Biomatter") <= 0)
+        if (!args.CanAccess || !args.CanInteract || _materials.GetMaterialAmount(ent.Owner, NeoTheologyPrototypes.BiomatterMaterial) <= 0)
             return;
 
         args.Verbs.Add(new AlternativeVerb
@@ -58,10 +59,10 @@ public sealed partial class BiomatterReservoirSystem : EntitySystem
         if (TerminatingOrDeleted(uid) || EntityManager.IsQueuedForDeletion(uid) ||
             !HasComp<BiomatterReservoirComponent>(uid))
             return false;
-        var amount = _materials.GetMaterialAmount(uid, "Biomatter");
-        if (amount <= 0 || !_materials.TryChangeMaterialAmount(uid, "Biomatter", -amount, localOnly: true))
+        var amount = _materials.GetMaterialAmount(uid, NeoTheologyPrototypes.BiomatterMaterial);
+        if (amount <= 0 || !_materials.TryChangeMaterialAmount(uid, NeoTheologyPrototypes.BiomatterMaterial, -amount, localOnly: true))
             return false;
-        _materials.SpawnMultipleFromMaterial(amount, "Biomatter", Transform(uid).Coordinates);
+        _materials.SpawnMultipleFromMaterial(amount, NeoTheologyPrototypes.BiomatterMaterial, Transform(uid).Coordinates);
         return true;
     }
 }

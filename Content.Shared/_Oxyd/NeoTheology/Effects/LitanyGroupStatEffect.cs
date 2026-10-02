@@ -61,7 +61,7 @@ public sealed partial class LitanyGroupStatEffect : LitanyCeremonyEffect
             if (system.RejectsHolyInfluence(target))
                 continue;
 
-            system.TryAddPermanentSkill(target, Skill, amount);
+            system.TryAddTimedSkill(target, Skill, amount);
             system.DeliverSocialNotice(target, Loc.GetString(Message));
         }
 

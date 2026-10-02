@@ -8,6 +8,7 @@ using Content.Shared._Oxyd.NeoTheology.Components;
 using Content.Shared.Materials;
 using Content.Shared.Stacks;
 using Content.Shared._Oxyd.NeoTheology.Events;
+using Content.Shared.Research.Prototypes;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Prototypes;
@@ -199,7 +200,7 @@ public sealed class CruciformForgeTest : GameTest
             receiver.Powered = true;
             _forge.Update(0);
             Assert.That(comp.Working, Is.True, "Restoring power must not finish paused work.");
-            comp.StartedAt = SGameTiming.CurTime - comp.WorkTime;
+            comp.StartedAt = SGameTiming.CurTime - _prototypes.Index<LatheRecipePrototype>(comp.Recipe).CompleteTime;
             _forge.Update(0);
             Assert.That(comp.Ready, Is.True);
         });

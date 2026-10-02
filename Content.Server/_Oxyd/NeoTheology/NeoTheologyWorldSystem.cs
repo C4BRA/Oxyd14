@@ -1,4 +1,5 @@
 using System.Linq;
+using Content.Shared._Oxyd.NeoTheology;
 using Content.Shared._Oxyd.NeoTheology.Components;
 using Content.Shared._Oxyd.NeoTheology.Events;
 using Content.Shared.Examine;
@@ -10,6 +11,7 @@ using Content.Shared.Mobs.Systems;
 using Content.Shared.Objectives.Components;
 using Content.Shared.Warps;
 using Robust.Shared.Maths;
+using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 
 namespace Content.Server._Oxyd.NeoTheology;
@@ -24,8 +26,11 @@ public sealed partial class NeoTheologyWorldSystem : EntitySystem
     [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
 
-    private static readonly string[] Objectives =
-        { "OxydNtConvertObjective", "OxydNtRevealObjective", "OxydNtSanctifyObjective", "OxydNtDestroyObjective" };
+    private static readonly EntProtoId[] Objectives =
+    {
+        NeoTheologyPrototypes.ConvertObjective, NeoTheologyPrototypes.RevealObjective,
+        NeoTheologyPrototypes.SanctifyObjective, NeoTheologyPrototypes.DestroyObjective,
+    };
 
     [SubscribeLocalEvent]
     private void OnActivityChanged(ref CruciformActivityChangedEvent args)
@@ -39,13 +44,14 @@ public sealed partial class NeoTheologyWorldSystem : EntitySystem
         if (!_cruciform.TryGetCruciform(body, out _, out var comp) ||
             !_minds.TryGetMind(body, out var mindId, out var mind))
             return;
-        var church = comp.InstalledModules.Any(module => module.Id is "OxydNtModulePriest" or
-            "OxydNtModuleInquisitor" or "OxydNtModuleAcolyte" or "OxydNtModuleAgrolyte" or "OxydNtModuleCustodian");
+        var church = comp.InstalledModules.Any(module => module == NeoTheologyPrototypes.PriestModule ||
+            module == NeoTheologyPrototypes.InquisitorModule || module == NeoTheologyPrototypes.AcolyteModule ||
+            module == NeoTheologyPrototypes.AgrolyteModule || module == NeoTheologyPrototypes.CustodianModule);
         foreach (var id in Objectives)
         {
-            if (!church && id is "OxydNtRevealObjective" or "OxydNtSanctifyObjective")
+            if (!church && (id == NeoTheologyPrototypes.RevealObjective || id == NeoTheologyPrototypes.SanctifyObjective))
                 continue;
-            if (!mind.Objectives.Any(o => MetaData(o).EntityPrototype?.ID == id))
+            if (!mind.Objectives.Any(o => MetaData(o).EntityPrototype?.ID == id.Id))
                 _minds.TryAddObjective(mindId, mind, id);
         }
     }

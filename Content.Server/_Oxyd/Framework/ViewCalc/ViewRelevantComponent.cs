@@ -8,15 +8,3 @@ public sealed partial class ViewRelevantComponent : Component
 {
 
 }
-
-/// <summary>
-///  Marks a entity as a view ticker, ticking every second
-/// </summary>
-[RegisterComponent]
-public sealed partial class ViewTickerComponent : Component
-{
-    [DataField]
-    public float range = 8f;
-
-    public HashSet<EntityUid> lastSeen = new();
-}

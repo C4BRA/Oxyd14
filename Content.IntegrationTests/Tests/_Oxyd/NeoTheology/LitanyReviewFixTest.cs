@@ -10,6 +10,7 @@ using Content.Shared.Nutrition.Components;
 using Content.Server._Oxyd.NeoTheology.Machines;
 using Content.Server.Materials;
 using Content.Server.Power.Components;
+using Content.Server.Power.Generator;
 using Content.Shared._Oxyd.NeoTheology;
 using Content.Shared._Oxyd.NeoTheology.Components;
 using Content.Shared._Oxyd.NeoTheology.Effects;
@@ -17,6 +18,7 @@ using Content.Shared._Oxyd.NeoTheology.Events;
 using Content.Shared.Botany.Components;
 using Content.Shared.Doors;
 using Content.Shared.Power;
+using Content.Shared.Power.Generator;
 using Content.Shared.Hands.Components;
 using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Materials;
@@ -277,13 +279,15 @@ public sealed class LitanyReviewFixTest : SocialNoticeGameTest
         {
             var generator = SSpawnAtPosition("OxydNtBiogenerator", map.GridCoords);
             Assert.That(_materials.TryChangeMaterialAmount(generator, "Biomatter", 1), Is.True);
-            var state = SComp<BiogeneratorComponent>(generator);
-            state.Working = true;
-            state.BiomatterAccumulator = 2;
-            _generator.Update(1f);
+            Assert.That(_generator.TryToggle(generator), Is.True);
+            var fuel = SComp<FuelGeneratorComponent>(generator);
+            Assert.That(fuel.On, Is.True);
+            // The stock generator burns the single unit, then shuts itself down on empty.
+            SEntMan.System<GeneratorSystem>().Update(1f);
+            SEntMan.System<GeneratorSystem>().Update(1f);
+            Assert.That(fuel.On, Is.False);
             Assert.That(SComp<PowerSupplierComponent>(generator).Enabled, Is.False);
-            Assert.That(SComp<PowerSupplierComponent>(generator).MaxSupply, Is.Zero);
-            Assert.That(_materials.GetMaterialAmount(generator, "Biomatter"), Is.EqualTo(1));
+            Assert.That(_materials.GetMaterialAmount(generator, "Biomatter"), Is.Zero);
             var canister = SSpawnAtPosition("OxydNtBiomatterCanister", map.GridCoords);
             var printer = SSpawnAtPosition("OxydNtBioprinter", map.GridCoords.Offset(Vector2.UnitX));
             Assert.That(_materials.TryChangeMaterialAmount(canister, "Biomatter", 100), Is.True);

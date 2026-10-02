@@ -1,15 +1,16 @@
 using System;
-using Content.Server.Materials;
-using Content.Server.Power.Components;
+using Content.Server.Power.Generator;
 using Content.Shared._Oxyd.NeoTheology.Components;
 using Content.Shared._Oxyd.NeoTheology.Events;
-using Content.Shared.Materials;
+using Content.Shared.Power.Generator;
 
 namespace Content.Server._Oxyd.NeoTheology.Machines;
 
 /// <summary>
-/// Feeds the power network from a working biogenerator, burning biomatter out of the machine's
-/// <see cref="MaterialStorageComponent"/> as it runs.
+/// The biogenerator litany surface. Fuel burn, fuel-empty shutdown and supplier management all
+/// live in <see cref="GeneratorSystem"/> via the stock <see cref="FuelGeneratorComponent"/> +
+/// <see cref="SolidFuelGeneratorAdapterComponent"/> pair; this system only toggles it for the
+/// litany and derates the target power by Eris' fouling (<see cref="BiogeneratorComponent.Dirtiness"/>).
 /// </summary>
 /// <remarks>
 /// Eris' console/port/generator/chamber/core part graph is flattened into one machine. No litany
@@ -18,11 +19,11 @@ namespace Content.Server._Oxyd.NeoTheology.Machines;
 /// </remarks>
 public sealed partial class BiogeneratorSystem : EntitySystem
 {
-    [Dependency] private readonly MaterialStorageSystem _materialStorage = default!;
+    [Dependency] private readonly GeneratorSystem _generator = default!;
 
     /// <summary>
-    /// Eris <c>power_biogen_awake</c>: switches the machine on or off. The machine carries a
-    /// single working flag, so the ritual is a toggle rather than Eris'
+    /// Eris <c>power_biogen_awake</c>: switches the machine on or off. The generator carries a
+    /// single on flag, so the ritual is a toggle rather than Eris'
     /// <c>activate</c>/<c>deactivate</c> pair.
     /// </summary>
     public bool TryToggle(EntityUid uid, BiogeneratorComponent? generator = null)
@@ -30,8 +31,9 @@ public sealed partial class BiogeneratorSystem : EntitySystem
         if (!Resolve(uid, ref generator))
             return false;
 
-        generator.Working = !generator.Working;
-        Dirty(uid, generator);
+        if (TryComp<FuelGeneratorComponent>(uid, out var fuel))
+            _generator.SetFuelGeneratorOn(uid, !fuel.On, fuel);
+
         return true;
     }
 
@@ -47,35 +49,14 @@ public sealed partial class BiogeneratorSystem : EntitySystem
 
     public override void Update(float frameTime)
     {
-        var query = EntityQueryEnumerator<BiogeneratorComponent, PowerSupplierComponent, MaterialStorageComponent>();
-
-        while (query.MoveNext(out var uid, out var gen, out var supplier, out var storage))
+        // Fouling derates the stock generator's target power; everything else (burn rate,
+        // supplier state, fuel exhaustion) is GeneratorSystem's own tick.
+        var query = EntityQueryEnumerator<BiogeneratorComponent, FuelGeneratorComponent>();
+        while (query.MoveNext(out var uid, out var bio, out var fuel))
         {
-            // Inert while switched off, and while the store is dry it supplies nothing.
-            if (!gen.Working || _materialStorage.GetMaterialAmount(uid, "Biomatter", storage) <= 0)
-            {
-                supplier.Enabled = false;
-                supplier.MaxSupply = 0f;
-                continue;
-            }
-
-            // Burn whole biomatter units only; carry the fraction to the next tick.
-            gen.BiomatterAccumulator += gen.BiomatterPerSecond * frameTime;
-            var owed = (int) gen.BiomatterAccumulator;
-            if (owed > 0)
-            {
-                if (!_materialStorage.TryChangeMaterialAmount(uid, "Biomatter", -owed, storage))
-                {
-                    supplier.Enabled = false;
-                    supplier.MaxSupply = 0f;
-                    continue;
-                }
-
-                gen.BiomatterAccumulator -= owed;
-            }
-
-            supplier.Enabled = true;
-            supplier.MaxSupply = gen.OutputWatts * (1f - Math.Clamp(gen.Dirtiness, 0f, 1f));
+            var target = fuel.MaxTargetPower * (1f - Math.Clamp(bio.Dirtiness, 0f, 1f));
+            if (Math.Abs(fuel.TargetPower - target) > 1f)
+                _generator.SetFuelGeneratorTargetPower(uid, target, fuel);
         }
     }
 }

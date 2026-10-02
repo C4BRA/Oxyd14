@@ -64,7 +64,7 @@ public sealed partial class CoreModuleBehaviorSystem : EntitySystem
             WriteSnapshot(cruciform, comp);
         else if (args.Module == UplinkModule)
             _uplink.OnUplinkInstalled(cruciform);
-        else if (args.Module == "OxydNtModuleObey")
+        else if (args.Module == NeoTheologyPrototypes.ObeyModule)
             ActivateObey(cruciform, comp);
     }
 
@@ -75,7 +75,7 @@ public sealed partial class CoreModuleBehaviorSystem : EntitySystem
             WriteSnapshot(cruciform, comp);
         else if (args.Module == UplinkModule)
             _uplink.OnUplinkUninstalled(cruciform);
-        else if (args.Module == "OxydNtModuleObey" && comp.ImplantedEntity is { } body &&
+        else if (args.Module == NeoTheologyPrototypes.ObeyModule && comp.ImplantedEntity is { } body &&
             _minds.TryGetMind(body, out var mind, out _))
             _roles.MindRemoveRole<NeoTheologyObeyRoleComponent>(mind);
     }
@@ -89,12 +89,12 @@ public sealed partial class CoreModuleBehaviorSystem : EntitySystem
     public void ActivateObey(EntityUid cruciform, CruciformComponent comp)
     {
         if (!comp.Active || comp.ImplantedEntity is not { } body ||
-            !comp.CoreUpgrades.TryGetValue("OxydNtModuleObey", out var item) ||
+            !comp.CoreUpgrades.TryGetValue(NeoTheologyPrototypes.ObeyModule, out var item) ||
             !TryComp<CruciformCoreUpgradeComponent>(item, out var kit) ||
             !_minds.TryGetMind(body, out var mind, out var mindComp))
             return;
         if (!_roles.MindHasRole<NeoTheologyObeyRoleComponent>(mind))
-            _roles.MindAddRole(mind, "OxydNtObeyRole", mindComp);
+            _roles.MindAddRole(mind, NeoTheologyPrototypes.ObeyRole, mindComp);
         if (_roles.MindHasRole<NeoTheologyObeyRoleComponent>(mind, out var role))
             Comp<NeoTheologyObeyRoleComponent>(role.Value).Commander = kit.Commander;
     }

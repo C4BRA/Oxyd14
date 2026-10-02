@@ -14,8 +14,4 @@ public sealed partial class BioreactorComponent : Component
     [DataField, AutoNetworkedField] public bool ChamberSolution;
 
     [DataField, AutoNetworkedField] public bool ChamberBreached;
-
-    [DataField] public float ProcessingRadius = 3f;
-
-    [DataField] public int BiomatterPerEntity = 10;
 }

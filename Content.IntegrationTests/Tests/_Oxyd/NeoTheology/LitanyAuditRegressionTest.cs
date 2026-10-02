@@ -162,13 +162,14 @@ public sealed class LitanyAuditRegressionTest : GameTest
             Assert.That(SComp<ViewTickerComponent>(observer).lastSeen, Does.Not.Contain(target));
             SEntMan.DeleteEntity(wall);
         });
-        await RunSeconds(1.2f);
+        // A stationary ticker keeps its cached view until the five-second staleness window.
+        await RunSeconds(6f);
         await Server.WaitAssertion(() =>
         {
             Assert.That(SComp<ViewTickerComponent>(observer).lastSeen, Does.Contain(target));
             _transform.SetCoordinates(target, map.GridCoords.Offset(new Vector2(20, 0)));
         });
-        await RunSeconds(1.2f);
+        await RunSeconds(6f);
         await Server.WaitAssertion(() =>
             Assert.That(SComp<ViewTickerComponent>(observer).lastSeen, Does.Not.Contain(target)));
     }

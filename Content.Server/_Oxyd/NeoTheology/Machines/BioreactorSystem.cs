@@ -1,3 +1,4 @@
+using Content.Shared._Oxyd.NeoTheology;
 using Content.Shared._Oxyd.NeoTheology.Components;
 using Content.Shared._Oxyd.NeoTheology.Events;
 using Content.Shared.Botany.Items.Components;
@@ -7,9 +8,12 @@ using Content.Shared.Body.Components;
 using Content.Shared.Implants.Components;
 using Content.Shared.Inventory;
 using Content.Shared.Hands.EntitySystems;
+using Content.Shared.Materials;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
 using Robust.Shared.Containers;
+using Robust.Shared.GameObjects;
+using Robust.Shared.Map.Components;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Prototypes;
 
@@ -17,16 +21,19 @@ namespace Content.Server._Oxyd.NeoTheology.Machines;
 
 /// <summary>
 /// Flattened Eris bioreactor. Three chamber booleans drive everything: the pump fills or empties
-/// the closed chamber, the platform door only opens on an unbreached, unsolved chamber, and crops
-/// left on the platforms are processed into biomatter.
+/// the closed chamber, the platform door only opens on an unbreached, unsolved chamber, and whatever
+/// is on the chamber's own tile — crops and dead bodies — is processed into biomatter.
 /// </summary>
 /// <remarks>
-/// Eris' platform/pump/console part graph is flattened into one machine. Split into parts only if
-/// construction gameplay needs it.
+/// Eris' platform/pump/console part graph is flattened into one machine; the chamber is the
+/// machine's own tile, so entity selection is a tile lookup, not a radius scan. Biomatter output
+/// comes from the processed entity's own material contents (its
+/// <see cref="PhysicalCompositionComponent"/>), not a per-entity constant.
 /// </remarks>
 public sealed partial class BioreactorSystem : EntitySystem
 {
-    private static readonly EntProtoId BiomatterProto = "OxydNtBiomatter";
+    private static readonly EntProtoId BiomatterProto = NeoTheologyPrototypes.BiomatterEnt;
+    private static readonly ProtoId<MaterialPrototype> BiomatterMaterial = NeoTheologyPrototypes.BiomatterMaterial;
 
     [Dependency] private readonly EntityLookupSystem _lookup = default!;
     [Dependency] private readonly NeoTheologyMachineSystem _machines = default!;
@@ -34,6 +41,8 @@ public sealed partial class BioreactorSystem : EntitySystem
     [Dependency] private readonly MobStateSystem _mobState = default!;
     [Dependency] private readonly SharedContainerSystem _containers = default!;
     [Dependency] private readonly SharedHandsSystem _hands = default!;
+    [Dependency] private readonly SharedMapSystem _map = default!;
+    [Dependency] private readonly SharedTransformSystem _transform = default!;
 
     /// <summary>
     /// BioreactorSolution bridge (Eris <c>rituals/machinery.dm:200-213</c>): the litany pumps the
@@ -56,6 +65,31 @@ public sealed partial class BioreactorSystem : EntitySystem
         args.Handled = args.ValidateOnly ? CanToggleChamber(ent.Owner, ent.Comp) : TryToggleChamber(ent.Owner, ent.Comp);
     }
 
+    /// <summary>
+    /// The entities intersecting the reactor's own tile — the flattened chamber.
+    /// </summary>
+    private IEnumerable<EntityUid> ChamberContents(EntityUid uid)
+    {
+        var xform = Transform(uid);
+        if (xform.GridUid is not { } grid || !TryComp<MapGridComponent>(grid, out var gridComp))
+            yield break;
+
+        foreach (var ent in _lookup.GetLocalEntitiesIntersecting(
+                     _map.GetTileRef(grid, gridComp, xform.Coordinates)))
+            yield return ent;
+    }
+
+    /// <summary>Whether <paramref name="target"/> sits on the reactor's chamber tile.</summary>
+    private bool InChamber(EntityUid uid, EntityUid target)
+    {
+        var reactorXform = Transform(uid);
+        var targetXform = Transform(target);
+        if (targetXform.MapID != reactorXform.MapID || targetXform.GridUid != reactorXform.GridUid)
+            return false;
+
+        return targetXform.Coordinates.Position.Floored() == reactorXform.Coordinates.Position.Floored();
+    }
+
     public override void Update(float frameTime)
     {
         var query = EntityQueryEnumerator<BioreactorComponent>();
@@ -66,21 +100,36 @@ public sealed partial class BioreactorSystem : EntitySystem
                 reactor.ChamberBreached || !reactor.ChamberSolution)
                 continue;
 
-            var coords = Transform(uid).Coordinates;
-            // Native single-machine adaptation: bodies must be on the chamber's own tile.
-            foreach (var (body, _) in _lookup.GetEntitiesInRange<BloodstreamComponent>(coords, 0.5f))
-                TryProcessBody(uid, body, reactor);
-
-            foreach (var crop in _lookup.GetEntitiesInRange<ProduceComponent>(coords, reactor.ProcessingRadius))
+            foreach (var ent in ChamberContents(uid))
             {
-                if (TerminatingOrDeleted(crop) || EntityManager.IsQueuedForDeletion(crop))
+                if (ent == uid || TerminatingOrDeleted(ent) || EntityManager.IsQueuedForDeletion(ent))
                     continue;
 
-                var pile = Spawn(BiomatterProto, coords);
-                _stack.SetCount(pile, reactor.BiomatterPerEntity);
-                QueueDel(crop);
+                if (HasComp<BloodstreamComponent>(ent))
+                    TryProcessBody(uid, ent, reactor);
+                else if (TryComp<ProduceComponent>(ent, out _))
+                    TryProcessProduce(uid, ent);
             }
         }
+    }
+
+    /// <summary>The entity's own biomatter content — zero for anything without one.</summary>
+    private int BiomatterContent(EntityUid uid)
+    {
+        return TryComp<PhysicalCompositionComponent>(uid, out var composition)
+            ? composition.MaterialComposition.GetValueOrDefault(BiomatterMaterial)
+            : 0;
+    }
+
+    private void TryProcessProduce(EntityUid uid, EntityUid crop)
+    {
+        var amount = BiomatterContent(crop);
+        QueueDel(crop);
+        if (amount <= 0)
+            return;
+
+        var pile = Spawn(BiomatterProto, Transform(uid).Coordinates);
+        _stack.SetCount(pile, amount);
     }
 
     public bool TryProcessBody(EntityUid uid, EntityUid body, BioreactorComponent? reactor = null)
@@ -88,8 +137,7 @@ public sealed partial class BioreactorSystem : EntitySystem
         if (!Resolve(uid, ref reactor) || !_machines.IsOperational(uid) || !reactor.ChamberClosed ||
             reactor.ChamberBreached || !reactor.ChamberSolution || TerminatingOrDeleted(body) ||
             EntityManager.IsQueuedForDeletion(body) || !HasComp<BloodstreamComponent>(body) ||
-            !_mobState.IsDead(body) || Transform(body).MapID != Transform(uid).MapID ||
-            (Transform(body).WorldPosition - Transform(uid).WorldPosition).Length() > 0.5f)
+            !_mobState.IsDead(body) || !InChamber(uid, body))
             return false;
         // Queue before output: a second call cannot sell the same corpse twice.
         _hands.DropAll(body, checkActionBlocker: false);
@@ -100,8 +148,12 @@ public sealed partial class BioreactorSystem : EntitySystem
             foreach (var implant in implanted.ImplantContainer.ContainedEntities.ToArray())
                 _containers.Remove(implant, implanted.ImplantContainer, force: true,
                     destination: Transform(uid).Coordinates);
-        var amount = TryComp<PhysicsComponent>(body, out var physics)
-            ? Math.Max(1, (int) Math.Round(physics.FixturesMass)) : reactor.BiomatterPerEntity;
+        // Organic matter has no PhysicalComposition yet; the corpse's mass is the content proxy.
+        var amount = BiomatterContent(body) is var composed && composed > 0
+            ? composed
+            : TryComp<PhysicsComponent>(body, out var physics)
+                ? Math.Max(1, (int) Math.Round(physics.FixturesMass))
+                : 1;
         QueueDel(body);
         var pile = Spawn(BiomatterProto, Transform(uid).Coordinates);
         _stack.SetCount(pile, amount);
@@ -164,7 +216,7 @@ public sealed partial class BioreactorSystem : EntitySystem
 
     private bool IsBreached(EntityUid uid, BioreactorComponent reactor)
     {
-        foreach (var ent in _lookup.GetEntitiesInRange(Transform(uid).Coordinates, reactor.ProcessingRadius))
+        foreach (var ent in ChamberContents(uid))
         {
             if (ent == uid)
                 continue;

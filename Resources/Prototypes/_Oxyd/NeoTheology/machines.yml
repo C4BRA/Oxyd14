@@ -33,7 +33,20 @@
   name: biogenerator
   description: Burns biomatter to feed the power network.
   components:
+  # Fuel burning rides the stock generator path: FuelGenerator + SolidFuelGeneratorAdapter,
+  # with MaterialStorage as the fuel hopper. Biogenerator only marks the machine for the
+  # litanies and derates output via Dirtiness.
   - type: Biogenerator
+  - type: FuelGenerator
+    targetPower: 500000
+    maxTargetPower: 500000
+    minTargetPower: 0
+    optimalPower: 500000
+    # One biomatter unit per second at full output.
+    optimalBurnRate: 1
+  - type: SolidFuelGeneratorAdapter
+    fuelMaterial: Biomatter
+    multiplier: 1
   - type: NodeContainer
     nodes:
       output_mv:
@@ -43,6 +56,7 @@
     supplyRampRate: 5000
     supplyRampTolerance: 1500
   - type: MaterialStorage
+    materialWhiteList: [Biomatter]
   - type: Appearance
   - type: Sprite
     sprite: Structures/Machines/biofabricator.rsi

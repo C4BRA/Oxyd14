@@ -9,4 +9,10 @@ public sealed partial class LitanyBookComponent : Component
 {
     [DataField]
     public bool ReferenceCatalog = true;
+
+    /// <summary>
+    /// Server-side set of actors currently viewing this book's UI. Used to send private
+    /// viewer snapshots and to revoke pending book casts on close/drop. Never networked.
+    /// </summary>
+    public readonly HashSet<EntityUid> Viewers = new();
 }
