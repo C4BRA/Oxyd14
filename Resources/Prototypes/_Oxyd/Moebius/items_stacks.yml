@@ -62,6 +62,9 @@
   - type: Stack
     stackType: OxydErisBrutepack
     count: 5
+  - type: OxydSurgeryTool
+    tools: [ TraumaKit ]
+    quality: 40
 
 # Ointment: 5 charges, heals burns (Eris ointment).
 - type: entity
@@ -83,6 +86,9 @@
   - type: Stack
     stackType: OxydErisOintment
     count: 5
+  - type: OxydSurgeryTool
+    tools: [ BurnKit ]
+    quality: 40
 
 # Advanced trauma kit: stronger brute healing (Eris traumakit).
 - type: entity
@@ -103,6 +109,9 @@
   - type: Stack
     stackType: OxydErisTraumakit
     count: 5
+  - type: OxydSurgeryTool
+    tools: [ TraumaKit ]
+    quality: 100
 
 # Advanced burn kit: stronger burn healing (Eris burnkit).
 - type: entity
@@ -124,6 +133,9 @@
   - type: Stack
     stackType: OxydErisBurnkit
     count: 5
+  - type: OxydSurgeryTool
+    tools: [ BurnKit ]
+    quality: 100
 
 # Splint: stabilises fractures while healing (Eris splint). Modeled as
 # modest brute heal; Eris fracture treatment lives in the surgery system.

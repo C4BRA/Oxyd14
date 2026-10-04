@@ -44,6 +44,11 @@ public sealed partial class OxydOrganSurgeryComponent : Component
     /// <summary>Bleed rate contributed by this organ's wounds/incision while it stays open (Eris wound bleeding).</summary>
     [DataField, AutoNetworkedField]
     public float WoundBleedRate;
+
+    /// <summary>The organ's wounds have been diagnosed (medical scanner or a wound probe). Until then the
+    /// surgery UI hides wound details, like Eris's undiagnosed limbs.</summary>
+    [DataField, AutoNetworkedField]
+    public bool Diagnosed;
 }
 
 [Serializable, NetSerializable]
@@ -71,6 +76,12 @@ public enum OxydSurgeryTool : uint
     Screwdriver = 1 << 9,
     Welder = 1 << 10,
     Tray = 1 << 11,
+    /// <summary>Brute-repair kits usable surgically: advanced trauma kit / bruise pack (Eris fix_organ, fix_brute).</summary>
+    TraumaKit = 1 << 12,
+    /// <summary>Burn-repair kits usable surgically: advanced burn kit / ointment (Eris fix_burn).</summary>
+    BurnKit = 1 << 13,
+    /// <summary>Cable coil for robotic burn repair (Eris wires on robotic organs). Usually applied via the CableCoil tag.</summary>
+    CableCoil = 1 << 14,
 }
 
 /// <summary>Marks an item as usable as one or more surgical tools (Eris tools/surgery.dm). Speed scales do_after time.</summary>
@@ -80,9 +91,14 @@ public sealed partial class OxydSurgeryToolComponent : Component
     [DataField, AutoNetworkedField]
     public OxydSurgeryTool Tools = OxydSurgeryTool.None;
 
-    /// <summary>Multiplier on step duration; lower is faster (Eris tool quality).</summary>
+    /// <summary>Multiplier on step duration; lower is faster (Eris tool tier).</summary>
     [DataField]
     public float Speed = 1f;
+
+    /// <summary>Base success chance 0-100 before step difficulty and self-surgery penalties
+    /// (Eris allowed_tools quality values: ~80-100 proper tools, ~20-40 improvised).</summary>
+    [DataField]
+    public int Quality = 80;
 }
 
 /// <summary>Surgical steps, mirroring Eris modules/surgery generic steps and organ repair steps.</summary>
@@ -107,6 +123,9 @@ public enum OxydSurgeryStep : byte
     RoboFixBurn,    // cable coil (mapped to fixovein slot for now)
     RoboClose,      // screwdriver to close robo shell
     DiagnoseWound,  // surgical tool usage to read wound info
+    ExtractShrapnel,// Eris remove_shrapnel: dig embedded objects out on a standing patient
+    CloseWounds,    // Eris close_wounds: standing cauterise that seals surface bleeding
+    FixOrgan,       // Eris fix_organ/fix_brute: trauma kit on an open site heals organ damage
 }
 
 /// <summary>DoAfter payload for a surgery step (Eris surgery step preop/do_surgery flow).</summary>
@@ -117,6 +136,8 @@ public sealed partial class OxydSurgeryDoAfterEvent : SimpleDoAfterEvent
     public NetEntity Organ;
     public OxydSurgeryStep Step;
     public NetEntity Tool;
+    /// <summary>Self-surgery penalty applied to the success roll (Eris +20% fail).</summary>
+    public bool SelfSurgery;
 
     public OxydSurgeryDoAfterEvent(NetEntity patient, NetEntity organ, OxydSurgeryStep step, NetEntity tool)
     {

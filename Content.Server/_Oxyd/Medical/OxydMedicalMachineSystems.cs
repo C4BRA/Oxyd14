@@ -48,6 +48,8 @@ public sealed partial class OxydMedicalScannerSystem : EntitySystem
     // subscription and calls here when the used item is a scanner.
     public void OpenScanUi(EntityUid user, EntityUid patient)
     {
+        // A scan diagnoses every organ, unlocking wound details in the surgery UI (Eris diagnosed flag).
+        _wounds.DiagnoseAll(patient);
         var proxy = Spawn(UiProxyProto, MapCoordinates.Nullspace);
         _ui.SetUi(proxy, OxydScannerUiKey.Key, new InterfaceData("OxydScannerBoundUserInterface", 0f, false));
         _ui.SetUiState(proxy, OxydScannerUiKey.Key, BuildState(patient));

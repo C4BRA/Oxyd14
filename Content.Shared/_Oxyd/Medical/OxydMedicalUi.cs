@@ -28,6 +28,8 @@ public sealed class OxydSurgeryOrganEntry
     public bool Splinted;
     public float OrganDamage;
     public int EmbeddedCount;
+    /// <summary>Wound details were diagnosed (scanner / wound probe). Eris hides them until then.</summary>
+    public bool Diagnosed = true;
     /// <summary>Steps the held tool can start on this organ right now.</summary>
     public List<OxydSurgeryStep> AvailableSteps = new();
     /// <summary>Step currently running on this organ, if any.</summary>
@@ -39,6 +41,12 @@ public sealed class OxydSurgeryState : BoundUserInterfaceState
 {
     public string PatientName = string.Empty;
     public OxydSurgeryTool HeldTools = OxydSurgeryTool.None;
+    /// <summary>Display name of the item actually being used (not always a surgical tool).</summary>
+    public string HeldItemName = string.Empty;
+    /// <summary>Patient isn't on an operating surface: only surface steps are possible (Eris CAN_OPERATE_STANDING).</summary>
+    public bool StandingOnly;
+    /// <summary>Operating on yourself: heavier failure penalty (Eris self-surgery).</summary>
+    public bool SelfSurgery;
     public List<OxydSurgeryOrganEntry> Organs = new();
 }
 

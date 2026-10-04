@@ -21,6 +21,7 @@
     state: scalpel
   - type: OxydSurgeryTool
     tools: [ Scalpel ]
+    quality: 80
   - type: MeleeWeapon
     damage:
       types:
@@ -37,6 +38,7 @@
     state: scalpel_adv
   - type: OxydSurgeryTool
     tools: [ Scalpel ]
+    quality: 90
     speed: 0.7
 
 - type: entity
@@ -47,6 +49,7 @@
     state: scalpel_laser
   - type: OxydSurgeryTool
     tools: [ Scalpel, Cautery ]
+    quality: 100
     speed: 0.5
 
 - type: entity
@@ -57,6 +60,7 @@
     state: hemostat
   - type: OxydSurgeryTool
     tools: [ Hemostat ]
+    quality: 80
 
 - type: entity
   parent: OxydMoebiusSurgicalBase
@@ -66,6 +70,7 @@
     state: retractor
   - type: OxydSurgeryTool
     tools: [ Retractor ]
+    quality: 80
 
 - type: entity
   parent: OxydMoebiusSurgicalBase
@@ -75,6 +80,7 @@
     state: cautery
   - type: OxydSurgeryTool
     tools: [ Cautery ]
+    quality: 80
 
 - type: entity
   parent: OxydMoebiusSurgicalBase
@@ -84,6 +90,7 @@
     state: bonesetter
   - type: OxydSurgeryTool
     tools: [ BoneSetter ]
+    quality: 75
 
 - type: entity
   parent: OxydMoebiusSurgicalBase
@@ -93,6 +100,7 @@
     state: saw
   - type: OxydSurgeryTool
     tools: [ Saw ]
+    quality: 70
   - type: Item
     size: Normal
   - type: MeleeWeapon
@@ -111,6 +119,7 @@
     state: saw_circular
   - type: OxydSurgeryTool
     tools: [ Saw ]
+    quality: 85
     speed: 0.7
 
 - type: entity
@@ -121,6 +130,7 @@
     state: drill
   - type: OxydSurgeryTool
     tools: [ Drill ]
+    quality: 75
 
 # Tray for organ transport (Eris surgery tray).
 - type: entity
@@ -132,3 +142,4 @@
     state: surgeon
   - type: OxydSurgeryTool
     tools: [ Tray ]
+    quality: 60

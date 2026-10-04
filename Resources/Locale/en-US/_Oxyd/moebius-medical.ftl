@@ -29,10 +29,11 @@ oxyd-proxy-scanner = scanner interface
 
 ## Surgery UI
 oxyd-surgery-window-title = Moebius Surgery
-oxyd-surgery-patient = Patient:
+oxyd-surgery-patient = Patient: {$patient}
 oxyd-surgery-select-organ = Select an organ
-oxyd-surgery-held-tools = Held tool: {$tool}
-oxyd-surgery-no-tool = No surgical tool in hand
+oxyd-surgery-held-tools = Using: {$tool}
+oxyd-surgery-no-tool = bare hands
+oxyd-surgery-not-operable = You can't operate on {$patient} standing up - they need to be lying on an operating surface.
 oxyd-surgery-flag-external = [external]
 oxyd-surgery-flag-internal = [internal]
 oxyd-surgery-flag-robotic = [robotic]
@@ -54,10 +55,14 @@ oxyd-surgery-step-roboopen = Unscrew panel
 oxyd-surgery-step-robofixbrute = Repair brute damage
 oxyd-surgery-step-robofixburn = Repair burn damage
 oxyd-surgery-step-roboclose = Screw panel shut
+oxyd-surgery-step-extractshrapnel = Extract shrapnel
+oxyd-surgery-step-closewounds = Close surface wounds
+oxyd-surgery-step-fixorgan = Treat organ damage
 
 oxyd-medical-surgery-start = You begin the procedure.
 oxyd-medical-surgery-success = You complete the procedure.
 oxyd-medical-surgery-fail = The procedure fails!
+oxyd-medical-surgery-malpractice = Your hand slips, mangling {THE($organ)}!
 oxyd-medical-diagnose-healthy = The organ appears healthy.
 oxyd-medical-diagnose-damage = The organ shows {$amount} damage.
 oxyd-medical-diagnose-fracture = Bones are fractured!

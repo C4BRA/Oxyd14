@@ -36,9 +36,9 @@ public sealed partial class OxydSurgeryWindow : FancyWindow
         _state = state;
         PatientLabel.Text = Loc.GetString("oxyd-surgery-patient", ("patient", state.PatientName));
         ToolLabel.Text = Loc.GetString("oxyd-surgery-held-tools",
-            ("tools", state.HeldTools == OxydSurgeryTool.None
+            ("tool", string.IsNullOrEmpty(state.HeldItemName)
                 ? Loc.GetString("oxyd-surgery-no-tool")
-                : state.HeldTools.ToString()));
+                : state.HeldItemName));
 
         OrganList.Clear();
         foreach (var organ in state.Organs)
@@ -48,10 +48,18 @@ public sealed partial class OxydSurgeryWindow : FancyWindow
                 markers.Add(organ.Incision == OxydIncisionStage.Retracted ? "retracted" : "open");
             if (organ is { Incision: not OxydIncisionStage.None, Clamped: false })
                 markers.Add("bleeding");
-            if (organ.Fractured)
-                markers.Add("fractured");
-            if (organ.OrganDamage > 0)
-                markers.Add($"dmg {(int) organ.OrganDamage}");
+            // Eris hides wound details until the limb is diagnosed (scanner/probe).
+            if (!organ.Diagnosed)
+                markers.Add("undiagnosed");
+            else
+            {
+                if (organ.Fractured)
+                    markers.Add("fractured");
+                if (organ.OrganDamage > 0)
+                    markers.Add($"dmg {(int) organ.OrganDamage}");
+                if (organ.EmbeddedCount > 0)
+                    markers.Add($"embedded x{organ.EmbeddedCount}");
+            }
 
             var suffix = markers.Count > 0 ? $" ({string.Join(", ", markers)})" : "";
             OrganList.AddItem($"{organ.Name}{suffix}", metadata: organ.Organ);

@@ -136,6 +136,18 @@ public sealed partial class OxydWoundSystem : EntitySystem
         }
     }
 
+    /// <summary>Marks every organ of the body diagnosed (medical scanner / full scan, Eris autodiagnose).</summary>
+    public void DiagnoseAll(EntityUid body)
+    {
+        foreach (var (orgUid, _, surg) in GetOrgans(body))
+        {
+            if (surg.Diagnosed)
+                continue;
+            surg.Diagnosed = true;
+            Dirty(orgUid, surg);
+        }
+    }
+
     /// <summary>Heals per-organ damage (Eris chems like peridaxon, surgical repair).</summary>
     public void HealOrganDamage(EntityUid body, float amount)
     {

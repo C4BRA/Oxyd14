@@ -4,29 +4,34 @@ using Content.Shared._Oxyd.Medical;
 using Content.Shared.Damage.Systems;
 using Content.Shared.Body;
 using Content.Shared.Body.Components;
+using Content.Shared.Buckle.Components;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Prototypes;
 using Content.Shared.DoAfter;
 using Content.Shared.Interaction;
+using Content.Shared.Medical.Healing;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.Popups;
+using Content.Shared.Stacks;
+using Content.Shared.Standing;
+using Content.Shared.Tag;
 using Robust.Server.GameObjects;
 using Robust.Shared.Containers;
 using Robust.Shared.Map;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
-using Robust.Shared.Timing;
 
 namespace Content.Server._Oxyd.Medical;
 
 /// <summary>
-/// Ports Eris's click-to-operate surgery tree (modules/surgery). A surgical tool used on a
-/// patient opens an organ/step window hosted on a nullspace proxy; selecting a step runs a
-/// DoAfter and mutates the target organ's <see cref="OxydOrganSurgeryComponent"/>.
+/// Ports Eris's organ-based surgery (modules/surgery). A surgical tool clicked on a patient
+/// attempts the matching step directly (Eris do_surgery tool-quality dispatch); when no step
+/// applies the organ/step window opens on a nullspace proxy. Patients not lying on an
+/// operating surface only allow surface steps (Eris CAN_OPERATE_STANDING), and every step
+/// rolls quality minus difficulty like Eris's FAILCHANCE_* checks.
 /// </summary>
 public sealed partial class OxydSurgerySystem : EntitySystem
 {
-    [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly UserInterfaceSystem _ui = default!;
     [Dependency] private readonly DoAfterSystem _doAfter = default!;
     [Dependency] private readonly OxydWoundSystem _wounds = default!;
@@ -36,10 +41,16 @@ public sealed partial class OxydSurgerySystem : EntitySystem
     [Dependency] private readonly MobStateSystem _mobs = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
+    [Dependency] private readonly StandingStateSystem _standing = default!;
+    [Dependency] private readonly EntityLookupSystem _lookup = default!;
+    [Dependency] private readonly SharedStackSystem _stacks = default!;
+    [Dependency] private readonly TagSystem _tag = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly OxydMedicalScannerSystem _medicalScanner = default!;
 
     private static readonly EntProtoId UiProxyProto = "OxydMedicalSurgeryUiProxy";
+    private const string ImplantContainerId = "oxyd-surgery-implants";
+    private static readonly ProtoId<TagPrototype> CableCoilTag = "CableCoil";
 
     /// <summary>proxy entity -> session state.</summary>
     private readonly Dictionary<EntityUid, SurgerySession> _sessions = new();
@@ -48,12 +59,20 @@ public sealed partial class OxydSurgerySystem : EntitySystem
     {
         public EntityUid Surgeon;
         public EntityUid Patient;
-        public EntityUid Tool;
+        public EntityUid? Tool;
+        public bool SelfSurgery;
+    }
+
+    private record struct OrganEntry(EntityUid Uid, OrganComponent Organ, OxydOrganSurgeryComponent Surg)
+    {
+        public bool Valid => Uid.IsValid();
     }
 
     public override void Initialize()
     {
         SubscribeLocalEvent<BodyComponent, InteractUsingEvent>(OnInteractUsing);
+        SubscribeLocalEvent<BodyComponent, InteractHandEvent>(OnInteractHand);
+        SubscribeLocalEvent<BodyComponent, OxydSurgeryDoAfterEvent>(OnPatientStepDone);
         SubscribeLocalEvent<OxydSurgeryUiProxyComponent, OxydSurgerySelectStepMessage>(OnSelectStep);
         SubscribeLocalEvent<OxydSurgeryUiProxyComponent, OxydSurgeryDoAfterEvent>(OnStepDone);
         SubscribeLocalEvent<OxydSurgeryUiProxyComponent, BoundUIClosedEvent>(OnUiClosed);
@@ -73,17 +92,571 @@ public sealed partial class OxydSurgerySystem : EntitySystem
             return;
         }
 
-        if (!TryComp<OxydSurgeryToolComponent>(args.Used, out var tool) || tool.Tools == 0)
+        // Cable coil repairs robotic burns (Eris wires on robotic organs) and carries no
+        // surgery component of its own.
+        if (_tag.HasTag(args.Used, CableCoilTag))
+        {
+            if (!IsOperable(uid))
+                return;
+            args.Handled = TryDirectStep(args.User, uid, args.Used, null, OxydSurgeryTool.CableCoil);
+            return;
+        }
+
+        if (TryComp<OxydSurgeryToolComponent>(args.Used, out var tool) && tool.Tools != OxydSurgeryTool.None)
+        {
+            if (!IsOperable(uid))
+            {
+                if (TryStandingStep(args.User, uid, args.Used, tool))
+                    args.Handled = true;
+                else if (!IsHealingKit(tool))
+                {
+                    args.Handled = true;
+                    _popup.PopupEntity(Loc.GetString("oxyd-surgery-not-operable",
+                        ("patient", Name(uid))), args.User, args.User);
+                }
+                // else leave unhandled so the stack heals normally.
+                return;
+            }
+
+            if (TryDirectStep(args.User, uid, args.Used, tool, tool.Tools))
+            {
+                args.Handled = true;
+                return;
+            }
+
+            // Kits with no surgical target fall through to normal topical healing.
+            if (IsHealingKit(tool))
+                return;
+
+            args.Handled = true;
+            OpenSurgeryUi(args.User, uid, args.Used);
+            return;
+        }
+
+        // Healing items without a surgical role keep their normal topical behaviour.
+        if (HasComp<HealingComponent>(args.Used))
+            return;
+
+        if (!IsOperable(uid))
+            return;
+
+        // Any other item goes into a retracted cavity (Eris insert_item accepts any /obj/item).
+        var cavity = FindOrgan(uid, o =>
+            o.Surg is { Incision: OxydIncisionStage.Retracted } && OxydWoundSystem.IsExternal(o.Organ));
+        if (cavity.Valid)
+        {
+            args.Handled = true;
+            RunStep(args.User, uid, cavity.Uid, OxydSurgeryStep.InsertItem, args.Used, null);
+            return;
+        }
+
+        if (FindOrgan(uid, o => o.Surg.Incision != OxydIncisionStage.None).Valid)
+        {
+            args.Handled = true;
+            OpenSurgeryUi(args.User, uid, args.Used);
+        }
+    }
+
+    // Eris opens the organ window when clicking a patient with an open incision, bare hands too.
+    private void OnInteractHand(EntityUid uid, BodyComponent comp, InteractHandEvent args)
+    {
+        if (args.Handled || !IsOperable(uid))
+            return;
+
+        if (!FindOrgan(uid, o => o.Surg.Incision != OxydIncisionStage.None).Valid)
             return;
 
         args.Handled = true;
-        OpenSurgeryUi(args.User, uid, args.Used, tool);
+        OpenSurgeryUi(args.User, uid, null);
     }
 
-    private void OpenSurgeryUi(EntityUid surgeon, EntityUid patient, EntityUid tool, OxydSurgeryToolComponent toolComp)
+    /// <summary>Eris can_operate: full surgery needs the patient lying down or buckled
+    /// (op table, bed, chair). Otherwise only CAN_OPERATE_STANDING surface steps run.
+    /// Self-surgery is always standing-only.</summary>
+    private bool IsOperable(EntityUid patient)
+    {
+        if (_standing.IsDown(patient))
+            return true;
+        if (TryComp<BuckleComponent>(patient, out var buckle) && buckle.Buckled)
+            return true;
+        // An operating table under the patient counts even without buckling (resting on it).
+        var coords = Transform(patient).Coordinates;
+        return _lookup.GetEntitiesInRange(coords, 0.4f).Any(e => HasComp<OxydOperatingTableComponent>(e));
+    }
+
+    private static bool IsHealingKit(OxydSurgeryToolComponent tool) =>
+        (tool.Tools & (OxydSurgeryTool.TraumaKit | OxydSurgeryTool.BurnKit)) != 0;
+
+    private List<OrganEntry> GetOrganEntries(EntityUid body) =>
+        _wounds.GetOrgans(body).Select(o => new OrganEntry(o.Uid, o.Organ, o.Surgery)).ToList();
+
+    private OrganEntry FindOrgan(EntityUid body, Func<OrganEntry, bool> pred)
+    {
+        foreach (var o in GetOrganEntries(body))
+        {
+            if (pred(o))
+                return o;
+        }
+        return default;
+    }
+
+    // Eris standing mode: shrapnel removal and cautery only (surgery.dm CAN_OPERATE_STANDING).
+    private bool TryStandingStep(EntityUid user, EntityUid patient, EntityUid toolEnt, OxydSurgeryToolComponent tool)
+    {
+        if ((tool.Tools & (OxydSurgeryTool.Scalpel | OxydSurgeryTool.Saw | OxydSurgeryTool.Drill)) != 0)
+        {
+            var embedded = FindOrgan(patient, o => o.Surg.EmbeddedItems.Count > 0);
+            if (embedded.Valid)
+            {
+                RunStep(user, patient, embedded.Uid, OxydSurgeryStep.ExtractShrapnel, toolEnt, tool);
+                return true;
+            }
+        }
+
+        if ((tool.Tools & OxydSurgeryTool.Cautery) != 0)
+        {
+            var wounded = FindOrgan(patient, o =>
+                OxydWoundSystem.IsExternal(o.Organ) &&
+                (o.Surg.OrganDamage > 0 || o.Surg.WoundBleedRate > 0 || o.Surg.Incision != OxydIncisionStage.None));
+            if (wounded.Valid)
+            {
+                RunStep(user, patient, wounded.Uid, OxydSurgeryStep.CloseWounds, toolEnt, tool);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    // Eris do_surgery: map the clicked tool straight onto the applicable step for the best organ.
+    private bool TryDirectStep(EntityUid user, EntityUid patient, EntityUid toolEnt,
+        OxydSurgeryToolComponent? tool, OxydSurgeryTool tools)
+    {
+        var organs = GetOrganEntries(patient);
+
+        OrganEntry FirstExternal(Func<OxydOrganSurgeryComponent, bool> pred) =>
+            organs.FirstOrDefault(o => OxydWoundSystem.IsExternal(o.Organ) && !o.Surg.Robotic && pred(o.Surg));
+
+        OrganEntry FirstRobotic(Func<OxydOrganSurgeryComponent, bool> pred) =>
+            organs.FirstOrDefault(o => o.Surg.Robotic && pred(o.Surg));
+
+        OxydSurgeryStep? step = null;
+        EntityUid organ = default;
+
+        void Pick(OrganEntry o, OxydSurgeryStep s)
+        {
+            if (o.Valid && step == null)
+            {
+                organ = o.Uid;
+                step = s;
+            }
+        }
+
+        if ((tools & OxydSurgeryTool.CableCoil) != 0)
+            Pick(FirstRobotic(s => s is { Incision: not OxydIncisionStage.None, OrganDamage: > 0 }),
+                OxydSurgeryStep.RoboFixBurn);
+
+        if (step == null && (tools & OxydSurgeryTool.Screwdriver) != 0)
+        {
+            Pick(FirstRobotic(s => s.Incision != OxydIncisionStage.None), OxydSurgeryStep.RoboClose);
+            Pick(FirstRobotic(s => s.Incision == OxydIncisionStage.None), OxydSurgeryStep.RoboOpen);
+        }
+
+        if (step == null && (tools & OxydSurgeryTool.Welder) != 0)
+            Pick(FirstRobotic(s => s is { Incision: not OxydIncisionStage.None, OrganDamage: > 0 }),
+                OxydSurgeryStep.RoboFixBrute);
+
+        if (step == null && (tools & (OxydSurgeryTool.TraumaKit | OxydSurgeryTool.BurnKit)) != 0)
+        {
+            // Eris fix_organ/fix_brute: works through any open site on the most damaged organ.
+            if (organs.Any(o => o.Surg.Incision != OxydIncisionStage.None))
+            {
+                var damaged = organs.Where(o => o.Surg.OrganDamage > 0)
+                    .OrderByDescending(o => o.Surg.OrganDamage)
+                    .FirstOrDefault();
+                if (damaged.Valid)
+                {
+                    organ = damaged.Uid;
+                    step = OxydSurgeryStep.FixOrgan;
+                }
+            }
+        }
+
+        if (step == null && (tools & OxydSurgeryTool.Scalpel) != 0)
+        {
+            Pick(FirstExternal(s => s.Incision == OxydIncisionStage.None), OxydSurgeryStep.CutOpen);
+            Pick(FirstExternal(s => s.Incision == OxydIncisionStage.Retracted && s.EmbeddedItems.Count > 0),
+                OxydSurgeryStep.RemoveEmbedded);
+        }
+
+        if (step == null && (tools & OxydSurgeryTool.Retractor) != 0)
+            Pick(FirstExternal(s => s.Incision == OxydIncisionStage.Open), OxydSurgeryStep.RetractSkin);
+
+        if (step == null && (tools & OxydSurgeryTool.Hemostat) != 0)
+        {
+            Pick(FirstExternal(s => s is { Incision: not OxydIncisionStage.None, Clamped: false }),
+                OxydSurgeryStep.FixBleeding);
+            Pick(FirstExternal(s => s is { Incision: OxydIncisionStage.Retracted, EmbeddedItems.Count: > 0 }),
+                OxydSurgeryStep.RemoveEmbedded);
+        }
+
+        if (step == null && (tools & OxydSurgeryTool.Cautery) != 0)
+            Pick(FirstExternal(s => s.Incision != OxydIncisionStage.None), OxydSurgeryStep.Cauterize);
+
+        if (step == null && (tools & OxydSurgeryTool.BoneSetter) != 0)
+        {
+            Pick(FirstExternal(s => s is { Incision: OxydIncisionStage.Retracted, Fractured: true }),
+                OxydSurgeryStep.MendBone);
+            Pick(FirstExternal(s => s is { Incision: OxydIncisionStage.Retracted, Fractured: false }),
+                OxydSurgeryStep.BreakBone);
+        }
+
+        if (step == null && (tools & OxydSurgeryTool.BoneGel) != 0)
+            Pick(FirstExternal(s => s is { Incision: OxydIncisionStage.Retracted, Fractured: false }),
+                OxydSurgeryStep.FixBone);
+
+        if (step == null && (tools & OxydSurgeryTool.Saw) != 0)
+            Pick(FirstExternal(s => s.Incision == OxydIncisionStage.Retracted), OxydSurgeryStep.Amputate);
+
+        if (step == null)
+            return false;
+
+        RunStep(user, patient, organ, step.Value, toolEnt, tool);
+        return true;
+    }
+
+    // ----- shared step execution (direct click + UI selection) -----
+
+    private static float StepDuration(OxydSurgeryStep step) => step switch
+    {
+        OxydSurgeryStep.DiagnoseWound => 0.5f,
+        OxydSurgeryStep.CutOpen => 3f,
+        OxydSurgeryStep.Cauterize or OxydSurgeryStep.CloseWounds => 3f,
+        OxydSurgeryStep.FixBleeding => 2.5f,
+        OxydSurgeryStep.RetractSkin => 2f,
+        OxydSurgeryStep.MendBone or OxydSurgeryStep.FixBone => 4f,
+        OxydSurgeryStep.Amputate or OxydSurgeryStep.DetachOrgan => 6f,
+        OxydSurgeryStep.RemoveEmbedded or OxydSurgeryStep.RemoveItem => 3f,
+        OxydSurgeryStep.ExtractShrapnel => 6f,
+        OxydSurgeryStep.InsertItem or OxydSurgeryStep.AttachOrgan => 5f,
+        OxydSurgeryStep.FixOrgan => 4f,
+        OxydSurgeryStep.RoboOpen or OxydSurgeryStep.RoboClose => 2f,
+        OxydSurgeryStep.RoboFixBrute or OxydSurgeryStep.RoboFixBurn => 4f,
+        _ => 3f,
+    };
+
+    /// <summary>Eris FAILCHANCE_* per step: subtracted from tool quality for the success roll.</summary>
+    private static int StepDifficulty(OxydSurgeryStep step) => step switch
+    {
+        OxydSurgeryStep.DiagnoseWound => 0,
+        OxydSurgeryStep.RetractSkin or OxydSurgeryStep.RoboOpen or OxydSurgeryStep.RoboClose => 10,
+        OxydSurgeryStep.Cauterize or OxydSurgeryStep.CloseWounds or OxydSurgeryStep.FixBleeding => 15,
+        OxydSurgeryStep.CutOpen => 20,
+        OxydSurgeryStep.RemoveEmbedded or OxydSurgeryStep.RemoveItem or OxydSurgeryStep.InsertItem
+            or OxydSurgeryStep.ExtractShrapnel => 20,
+        OxydSurgeryStep.BreakBone or OxydSurgeryStep.MendBone or OxydSurgeryStep.FixBone
+            or OxydSurgeryStep.RoboFixBrute or OxydSurgeryStep.RoboFixBurn => 25,
+        OxydSurgeryStep.FixOrgan => 15,
+        OxydSurgeryStep.Amputate or OxydSurgeryStep.DetachOrgan => 30,
+        OxydSurgeryStep.AttachOrgan => 35,
+        _ => 20,
+    };
+
+    /// <summary>Pain inflicted by an attempt (Eris inflict_agony).</summary>
+    private static float StepAgony(OxydSurgeryStep step) => step switch
+    {
+        OxydSurgeryStep.DiagnoseWound or OxydSurgeryStep.RoboOpen or OxydSurgeryStep.RoboClose
+            or OxydSurgeryStep.RoboFixBrute or OxydSurgeryStep.RoboFixBurn => 0f,
+        OxydSurgeryStep.Amputate or OxydSurgeryStep.DetachOrgan or OxydSurgeryStep.BreakBone => 20f,
+        _ => 10f,
+    };
+
+    /// <summary>Starts a surgery step DoAfter. The completion event lands on the UI proxy
+    /// when a window is open (keeps it refreshed), otherwise on the patient.</summary>
+    private void RunStep(EntityUid surgeon, EntityUid patient, EntityUid organ, OxydSurgeryStep step,
+        EntityUid? tool, OxydSurgeryToolComponent? toolComp, EntityUid? proxy = null)
+    {
+        var speed = toolComp?.Speed ?? 1f;
+        var ev = new OxydSurgeryDoAfterEvent(GetNetEntity(patient), GetNetEntity(organ), step,
+            tool is { } t ? GetNetEntity(t) : NetEntity.Invalid)
+        {
+            SelfSurgery = surgeon == patient,
+        };
+
+        var doArgs = new DoAfterArgs(EntityManager, surgeon, TimeSpan.FromSeconds(StepDuration(step) * speed), ev,
+            proxy ?? patient, patient, tool)
+        {
+            BreakOnMove = true,
+            MovementThreshold = 0.5f,
+            BreakOnDamage = true,
+            DamageThreshold = 5,
+            NeedHand = true,
+        };
+
+        if (_doAfter.TryStartDoAfter(doArgs))
+            Announce(surgeon, patient, "oxyd-medical-surgery-start", organ);
+    }
+
+    // UI path.
+    private void OnSelectStep(EntityUid proxy, OxydSurgeryUiProxyComponent comp, OxydSurgerySelectStepMessage args)
+    {
+        if (!_sessions.TryGetValue(proxy, out var s))
+            return;
+
+        var organ = GetEntity(args.Organ);
+        if (!TryComp<OrganComponent>(organ, out var organComp) || organComp.Body != s.Patient)
+            return;
+
+        var surg = EnsureComp<OxydOrganSurgeryComponent>(organ);
+        var tools = ToolFlagsOf(s.Tool);
+        if (!AvailableSteps(tools, s.Tool, organComp, surg).Contains(args.Step))
+            return;
+
+        RunStep(s.Surgeon, s.Patient, organ, args.Step, s.Tool,
+            s.Tool is { } t ? CompOrNull<OxydSurgeryToolComponent>(t) : null, proxy);
+    }
+
+    private T? CompOrNull<T>(EntityUid uid) where T : Component =>
+        TryComp<T>(uid, out var c) ? c : null;
+
+    private OxydSurgeryTool ToolFlagsOf(EntityUid? tool)
+    {
+        if (tool is not { } t)
+            return OxydSurgeryTool.None;
+        var flags = TryComp<OxydSurgeryToolComponent>(t, out var c) ? c.Tools : OxydSurgeryTool.None;
+        if (_tag.HasTag(t, CableCoilTag))
+            flags |= OxydSurgeryTool.CableCoil;
+        return flags;
+    }
+
+    // DoAfter landing on the proxy (UI-open steps).
+    private void OnStepDone(EntityUid proxy, OxydSurgeryUiProxyComponent comp, OxydSurgeryDoAfterEvent args)
+    {
+        if (args.Cancelled || !_sessions.TryGetValue(proxy, out var s))
+            return;
+
+        CompleteStep(args, s.Surgeon, s.Patient);
+        PushState(proxy);
+    }
+
+    // DoAfter landing on the patient (direct-click steps).
+    private void OnPatientStepDone(EntityUid uid, BodyComponent comp, OxydSurgeryDoAfterEvent args)
+    {
+        if (args.Cancelled)
+            return;
+
+        CompleteStep(args, args.User, uid);
+    }
+
+    /// <summary>Eris try_surgery_step: roll quality minus difficulty (plus self-surgery penalty),
+    /// run end_step on success or fail_step malpractice on failure.</summary>
+    private void CompleteStep(OxydSurgeryDoAfterEvent args, EntityUid surgeon, EntityUid patient)
+    {
+        var organ = GetEntity(args.Organ);
+        if (!TryComp<OrganComponent>(organ, out var organComp) || organComp.Body != patient)
+            return;
+
+        var surg = EnsureComp<OxydOrganSurgeryComponent>(organ);
+        var tool = args.Tool == NetEntity.Invalid ? (EntityUid?) null : GetEntity(args.Tool);
+        var toolComp = tool is { } t ? CompOrNull<OxydSurgeryToolComponent>(t) : null;
+
+        var quality = toolComp?.Quality ?? 60;
+        var chance = Math.Clamp(quality - StepDifficulty(args.Step) - (args.SelfSurgery ? 20 : 0), 5, 95);
+        var success = _random.Prob(chance / 100f);
+
+        InflictAgony(patient, args.Step);
+
+        if (!success)
+        {
+            FailStep(args.Step, surgeon, patient, organ, surg);
+            return;
+        }
+
+        var invalid = ApplyStep(args.Step, surgeon, patient, organ, organComp, surg, tool);
+        if (invalid)
+            _popup.PopupEntity(Loc.GetString("oxyd-medical-surgery-fail"), surgeon, surgeon);
+        else
+            Announce(surgeon, patient, "oxyd-medical-surgery-success", organ);
+    }
+
+    /// <summary>Eris after_attempted_step pain (scaled down; no stat system to key off).</summary>
+    private void InflictAgony(EntityUid patient, OxydSurgeryStep step)
+    {
+        if (!_mobs.IsAlive(patient) || !TryComp<PainComponent>(patient, out var pain))
+            return;
+        pain.TemporaryPain += StepAgony(step) * pain.TemporaryPainMultiplier;
+    }
+
+    /// <summary>Eris fail_step: malpractice — organ takes damage, the site keeps bleeding,
+    /// and the patient gets a spike of pain.</summary>
+    private void FailStep(OxydSurgeryStep step, EntityUid surgeon, EntityUid patient,
+        EntityUid organ, OxydOrganSurgeryComponent surg)
+    {
+        surg.OrganDamage += 8f;
+        if (surg.Incision != OxydIncisionStage.None)
+            surg.Clamped = false;
+        Dirty(organ, surg);
+
+        _damage.TryChangeDamage(patient, new DamageSpecifier { DamageDict = { ["Slash"] = 6 } },
+            ignoreResistances: true);
+        if (TryComp<PainComponent>(patient, out var pain))
+            pain.TemporaryPain += 15;
+
+        var text = Loc.GetString("oxyd-medical-surgery-malpractice",
+            ("organ", Name(organ)), ("patient", Name(patient)));
+        _popup.PopupEntity(text, surgeon, surgeon);
+        if (patient != surgeon && _mobs.IsAlive(patient))
+            _popup.PopupEntity(text, patient, patient);
+    }
+
+    /// <summary>Eris end_step effects. Returns true when the step's preconditions no longer hold.</summary>
+    private bool ApplyStep(OxydSurgeryStep step, EntityUid surgeon, EntityUid patient, EntityUid organ,
+        OrganComponent organComp, OxydOrganSurgeryComponent surg, EntityUid? tool)
+    {
+        switch (step)
+        {
+            case OxydSurgeryStep.DiagnoseWound:
+                surg.Diagnosed = true;
+                _popup.PopupEntity(Diagnose(organComp, surg), surgeon, surgeon);
+                break;
+            case OxydSurgeryStep.CutOpen:
+                surg.Incision = OxydIncisionStage.Open;
+                surg.Clamped = false;
+                break;
+            case OxydSurgeryStep.RetractSkin:
+                if (surg.Incision != OxydIncisionStage.Open) return true;
+                surg.Incision = OxydIncisionStage.Retracted;
+                break;
+            case OxydSurgeryStep.FixBleeding:
+                if (surg.Incision == OxydIncisionStage.None) return true;
+                surg.Clamped = true;
+                break;
+            case OxydSurgeryStep.Cauterize:
+                surg.Incision = OxydIncisionStage.None;
+                surg.Clamped = true;
+                surg.WoundBleedRate = 0;
+                _damage.TryChangeDamage(patient, new DamageSpecifier { DamageDict = { ["Heat"] = 2 } },
+                    ignoreResistances: true);
+                break;
+            case OxydSurgeryStep.CloseWounds:
+                // Standing cautery: seals surface bleeding without an incision.
+                surg.Clamped = true;
+                surg.WoundBleedRate = 0;
+                surg.OrganDamage = Math.Max(0, surg.OrganDamage - 10);
+                _damage.TryChangeDamage(patient, new DamageSpecifier { DamageDict = { ["Heat"] = 3 } },
+                    ignoreResistances: true);
+                break;
+            case OxydSurgeryStep.MendBone:
+            case OxydSurgeryStep.FixBone:
+                if (!surg.Fractured || surg.Incision != OxydIncisionStage.Retracted) return true;
+                surg.Fractured = false;
+                surg.OrganDamage = Math.Max(0, surg.OrganDamage - 15);
+                if (TryComp<PainComponent>(patient, out var pain))
+                    pain.TemporaryPain += 12;
+                break;
+            case OxydSurgeryStep.BreakBone:
+                if (surg.Incision != OxydIncisionStage.Retracted) return true;
+                surg.Fractured = true;
+                surg.Splinted = false;
+                break;
+            case OxydSurgeryStep.RemoveEmbedded:
+            case OxydSurgeryStep.RemoveItem:
+            case OxydSurgeryStep.ExtractShrapnel:
+                if (surg.EmbeddedItems.Count == 0)
+                    return true;
+                if (step != OxydSurgeryStep.ExtractShrapnel && surg.Incision == OxydIncisionStage.None)
+                    return true;
+                ExtractEmbedded(patient, surg);
+                break;
+            case OxydSurgeryStep.InsertItem:
+                if (tool is not { } item || surg.Incision != OxydIncisionStage.Retracted)
+                    return true;
+                var cavity = _container.EnsureContainer<Container>(organ, ImplantContainerId);
+                if (!_container.Insert(item, cavity))
+                    return true;
+                surg.EmbeddedItems.Add(GetNetEntity(item));
+                break;
+            case OxydSurgeryStep.Amputate:
+            case OxydSurgeryStep.DetachOrgan:
+                if (!OxydWoundSystem.IsExternal(organComp) && surg.Incision != OxydIncisionStage.Retracted)
+                    return true;
+                _detach.Detach(organ);
+                _damage.TryChangeDamage(patient,
+                    new DamageSpecifier { DamageDict = { ["Slash"] = 25 } }, ignoreResistances: true);
+                break;
+            case OxydSurgeryStep.AttachOrgan:
+                if (surg.Incision != OxydIncisionStage.Retracted) return true;
+                if (!TryAttach(patient, tool)) return true;
+                break;
+            case OxydSurgeryStep.FixOrgan:
+                if (surg.OrganDamage <= 0) return true;
+                // Kits work through an open site; stacks consume a charge only on success
+                // (Eris tool.use(1) in end_step).
+                if (!FindOrgan(patient, o => o.Surg.Incision != OxydIncisionStage.None).Valid)
+                    return true;
+                if (tool is { } kit && TryComp<StackComponent>(kit, out var stack))
+                    _stacks.ReduceCount((kit, stack), 1);
+                surg.OrganDamage = 0;
+                break;
+            case OxydSurgeryStep.RoboOpen:
+                if (!surg.Robotic || surg.Incision != OxydIncisionStage.None) return true;
+                surg.Incision = OxydIncisionStage.Open;
+                break;
+            case OxydSurgeryStep.RoboClose:
+                if (!surg.Robotic || surg.Incision == OxydIncisionStage.None) return true;
+                surg.Incision = OxydIncisionStage.None;
+                surg.Clamped = true;
+                break;
+            case OxydSurgeryStep.RoboFixBrute:
+            case OxydSurgeryStep.RoboFixBurn:
+                if (!surg.Robotic || surg.Incision == OxydIncisionStage.None || surg.OrganDamage <= 0)
+                    return true;
+                surg.OrganDamage = Math.Max(0, surg.OrganDamage - 15);
+                if (step == OxydSurgeryStep.RoboFixBurn && tool is { } coil &&
+                    TryComp<StackComponent>(coil, out var coilStack))
+                    _stacks.ReduceCount((coil, coilStack), 1);
+                break;
+        }
+
+        Dirty(organ, surg);
+        return false;
+    }
+
+    private void ExtractEmbedded(EntityUid patient, OxydOrganSurgeryComponent surg)
+    {
+        var net = surg.EmbeddedItems[^1];
+        surg.EmbeddedItems.RemoveAt(surg.EmbeddedItems.Count - 1);
+        var item = GetEntity(net);
+        _container.TryRemoveFromContainer(item);
+        _transform.SetCoordinates(item, Transform(patient).Coordinates);
+    }
+
+    private bool TryAttach(EntityUid body, EntityUid? heldItem)
+    {
+        if (heldItem is not { } item)
+            return false;
+
+        if (!TryComp<OrganComponent>(item, out var organ) || OxydWoundSystem.IsExternal(organ))
+            return false;
+
+        if (!_container.TryGetContainer(body, BodyComponent.ContainerID, out var container))
+            return false;
+
+        return _container.Insert(item, container, force: true);
+    }
+
+    // ----- UI -----
+
+    private void OpenSurgeryUi(EntityUid surgeon, EntityUid patient, EntityUid? tool)
     {
         var proxy = Spawn(UiProxyProto, MapCoordinates.Nullspace);
-        _sessions[proxy] = new SurgerySession { Surgeon = surgeon, Patient = patient, Tool = tool };
+        _sessions[proxy] = new SurgerySession
+        {
+            Surgeon = surgeon,
+            Patient = patient,
+            Tool = tool,
+            SelfSurgery = surgeon == patient,
+        };
         _ui.SetUi(proxy, OxydSurgeryUiKey.Key,
             new InterfaceData("OxydSurgeryBoundUserInterface", 0f, false));
         _ui.OpenUi(proxy, OxydSurgeryUiKey.Key, surgeon);
@@ -96,8 +669,6 @@ public sealed partial class OxydSurgerySystem : EntitySystem
         QueueDel(proxy);
     }
 
-    // ----- state -----
-
     private void PushState(EntityUid proxy)
     {
         if (!_sessions.TryGetValue(proxy, out var s))
@@ -106,7 +677,9 @@ public sealed partial class OxydSurgerySystem : EntitySystem
         var state = new OxydSurgeryState
         {
             PatientName = Name(s.Patient),
-            HeldTools = TryComp<OxydSurgeryToolComponent>(s.Tool, out var t) ? t.Tools : OxydSurgeryTool.None,
+            HeldTools = ToolFlagsOf(s.Tool),
+            HeldItemName = s.Tool is { } t ? Name(t) : string.Empty,
+            SelfSurgery = s.SelfSurgery,
         };
 
         foreach (var (orgUid, organ, surg) in _wounds.GetOrgans(s.Patient))
@@ -123,7 +696,8 @@ public sealed partial class OxydSurgerySystem : EntitySystem
                 Splinted = surg.Splinted,
                 OrganDamage = surg.OrganDamage,
                 EmbeddedCount = surg.EmbeddedItems.Count,
-                AvailableSteps = AvailableSteps(state.HeldTools, organ, surg),
+                Diagnosed = surg.Diagnosed,
+                AvailableSteps = AvailableSteps(state.HeldTools, s.Tool, organ, surg),
             };
             state.Organs.Add(entry);
         }
@@ -134,21 +708,24 @@ public sealed partial class OxydSurgerySystem : EntitySystem
     private static OxydSurgeryTool ToolForStep(OxydSurgeryStep step) => step switch
     {
         OxydSurgeryStep.CutOpen or OxydSurgeryStep.DetachOrgan or OxydSurgeryStep.DiagnoseWound
-            => OxydSurgeryTool.Scalpel,
+            or OxydSurgeryStep.ExtractShrapnel => OxydSurgeryTool.Scalpel,
         OxydSurgeryStep.RetractSkin => OxydSurgeryTool.Retractor,
         OxydSurgeryStep.FixBleeding or OxydSurgeryStep.RemoveEmbedded or OxydSurgeryStep.RemoveItem
             => OxydSurgeryTool.Hemostat,
-        OxydSurgeryStep.Cauterize => OxydSurgeryTool.Cautery,
+        OxydSurgeryStep.Cauterize or OxydSurgeryStep.CloseWounds => OxydSurgeryTool.Cautery,
         OxydSurgeryStep.MendBone or OxydSurgeryStep.BreakBone => OxydSurgeryTool.BoneSetter,
-        OxydSurgeryStep.FixBone => OxydSurgeryTool.BoneSetter,
+        OxydSurgeryStep.FixBone => OxydSurgeryTool.BoneGel,
         OxydSurgeryStep.Amputate => OxydSurgeryTool.Saw,
-        OxydSurgeryStep.AttachOrgan => OxydSurgeryTool.Cautery,
+        OxydSurgeryStep.AttachOrgan => OxydSurgeryTool.FixOVein,
         OxydSurgeryStep.RoboOpen or OxydSurgeryStep.RoboClose => OxydSurgeryTool.Screwdriver,
-        OxydSurgeryStep.RoboFixBrute or OxydSurgeryStep.RoboFixBurn => OxydSurgeryTool.Welder,
+        OxydSurgeryStep.RoboFixBrute => OxydSurgeryTool.Welder,
+        OxydSurgeryStep.RoboFixBurn => OxydSurgeryTool.CableCoil,
+        OxydSurgeryStep.FixOrgan => OxydSurgeryTool.TraumaKit | OxydSurgeryTool.BurnKit,
         _ => OxydSurgeryTool.None,
     };
 
-    private static List<OxydSurgeryStep> AvailableSteps(OxydSurgeryTool tools, OrganComponent organ, OxydOrganSurgeryComponent surg)
+    private static List<OxydSurgeryStep> AvailableSteps(OxydSurgeryTool tools, EntityUid? heldItem,
+        OrganComponent organ, OxydOrganSurgeryComponent surg)
     {
         var steps = new List<OxydSurgeryStep>();
         var external = OxydWoundSystem.IsExternal(organ);
@@ -196,11 +773,16 @@ public sealed partial class OxydSurgerySystem : EntitySystem
                     Add(OxydSurgeryStep.MendBone);
                     Add(OxydSurgeryStep.FixBone);
                 }
+                if (external && !surg.Fractured)
+                    Add(OxydSurgeryStep.BreakBone);
                 if (surg.EmbeddedItems.Count > 0)
                 {
                     Add(OxydSurgeryStep.RemoveEmbedded);
                     Add(OxydSurgeryStep.RemoveItem);
                 }
+                // Cavity work accepts whatever non-surgical item is being held.
+                if (external && heldItem != null && tools == OxydSurgeryTool.None)
+                    steps.Add(OxydSurgeryStep.InsertItem);
                 if (!external)
                     Add(OxydSurgeryStep.DetachOrgan);
                 if (external)
@@ -208,177 +790,12 @@ public sealed partial class OxydSurgerySystem : EntitySystem
                 break;
         }
 
+        if (surg.OrganDamage > 0 && (tools & (OxydSurgeryTool.TraumaKit | OxydSurgeryTool.BurnKit)) != 0)
+            steps.Add(OxydSurgeryStep.FixOrgan);
+
         // Always offer a wound read on the held scalpel (Eris incision examine).
         Add(OxydSurgeryStep.DiagnoseWound);
         return steps;
-    }
-
-    // ----- step execution -----
-
-    private static float StepDuration(OxydSurgeryStep step) => step switch
-    {
-        OxydSurgeryStep.DiagnoseWound => 0.5f,
-        OxydSurgeryStep.CutOpen => 3f,
-        OxydSurgeryStep.Cauterize => 3f,
-        OxydSurgeryStep.FixBleeding => 2.5f,
-        OxydSurgeryStep.RetractSkin => 2f,
-        OxydSurgeryStep.MendBone or OxydSurgeryStep.FixBone => 4f,
-        OxydSurgeryStep.Amputate or OxydSurgeryStep.DetachOrgan => 6f,
-        OxydSurgeryStep.RemoveEmbedded or OxydSurgeryStep.RemoveItem => 3f,
-        OxydSurgeryStep.AttachOrgan => 5f,
-        OxydSurgeryStep.RoboOpen or OxydSurgeryStep.RoboClose => 2f,
-        OxydSurgeryStep.RoboFixBrute or OxydSurgeryStep.RoboFixBurn => 4f,
-        _ => 3f,
-    };
-
-    private void OnSelectStep(EntityUid proxy, OxydSurgeryUiProxyComponent comp, OxydSurgerySelectStepMessage args)
-    {
-        if (!_sessions.TryGetValue(proxy, out var s))
-            return;
-
-        var organ = GetEntity(args.Organ);
-        if (!TryComp<OrganComponent>(organ, out var organComp) || organComp.Body != s.Patient)
-            return;
-
-        var surg = EnsureComp<OxydOrganSurgeryComponent>(organ);
-        var tools = TryComp<OxydSurgeryToolComponent>(s.Tool, out var t) ? t.Tools : OxydSurgeryTool.None;
-        if (!AvailableSteps(tools, organComp, surg).Contains(args.Step))
-            return;
-
-        var delay = StepDuration(args.Step) * (t?.Speed ?? 1f);
-        var ev = new OxydSurgeryDoAfterEvent(GetNetEntity(s.Patient), GetNetEntity(organ), args.Step, GetNetEntity(s.Tool));
-        var doArgs = new DoAfterArgs(EntityManager, s.Surgeon, TimeSpan.FromSeconds(delay), ev, proxy, s.Patient, s.Tool)
-        {
-            BreakOnMove = true,
-            MovementThreshold = 0.5f,
-            BreakOnDamage = true,
-            DamageThreshold = 5,
-            NeedHand = true,
-        };
-
-        if (_doAfter.TryStartDoAfter(doArgs))
-            Announce(s.Surgeon, s.Patient, "oxyd-medical-surgery-start", organ);
-    }
-
-    private void OnStepDone(EntityUid proxy, OxydSurgeryUiProxyComponent comp, OxydSurgeryDoAfterEvent args)
-    {
-        if (args.Cancelled || !_sessions.TryGetValue(proxy, out var s))
-            return;
-
-        var patient = GetEntity(args.Patient);
-        var organ = GetEntity(args.Organ);
-        if (!TryComp<OrganComponent>(organ, out var organComp) || organComp.Body != patient)
-            return;
-
-        var surg = EnsureComp<OxydOrganSurgeryComponent>(organ);
-        var fail = false;
-
-        switch (args.Step)
-        {
-            case OxydSurgeryStep.DiagnoseWound:
-                _popup.PopupEntity(Diagnose(organComp, surg), s.Surgeon, s.Surgeon);
-                break;
-            case OxydSurgeryStep.CutOpen:
-                surg.Incision = OxydIncisionStage.Open;
-                surg.Clamped = false;
-                break;
-            case OxydSurgeryStep.RetractSkin:
-                if (surg.Incision != OxydIncisionStage.Open) fail = true;
-                else surg.Incision = OxydIncisionStage.Retracted;
-                break;
-            case OxydSurgeryStep.FixBleeding:
-                if (surg.Incision == OxydIncisionStage.None) fail = true;
-                else surg.Clamped = true;
-                break;
-            case OxydSurgeryStep.Cauterize:
-                surg.Incision = OxydIncisionStage.None;
-                surg.Clamped = true;
-                surg.WoundBleedRate = 0;
-                _damage.TryChangeDamage(patient, new DamageSpecifier { DamageDict = { ["Heat"] = 2 } },
-                    ignoreResistances: true);
-                break;
-            case OxydSurgeryStep.MendBone:
-            case OxydSurgeryStep.FixBone:
-                if (!surg.Fractured || surg.Incision != OxydIncisionStage.Retracted) fail = true;
-                else
-                {
-                    surg.Fractured = false;
-                    surg.OrganDamage = Math.Max(0, surg.OrganDamage - 15);
-                    if (TryComp<PainComponent>(patient, out var pain))
-                        pain.TemporaryPain += 12;
-                }
-                break;
-            case OxydSurgeryStep.BreakBone:
-                surg.Fractured = true;
-                surg.Splinted = false;
-                break;
-            case OxydSurgeryStep.RemoveEmbedded:
-            case OxydSurgeryStep.RemoveItem:
-                if (surg.Incision == OxydIncisionStage.None || surg.EmbeddedItems.Count == 0)
-                {
-                    fail = true;
-                }
-                else
-                {
-                    var net = surg.EmbeddedItems[^1];
-                    surg.EmbeddedItems.RemoveAt(surg.EmbeddedItems.Count - 1);
-                    var item = GetEntity(net);
-                    _transform.SetCoordinates(item, Transform(patient).Coordinates);
-                    _container.TryRemoveFromContainer(item);
-                }
-                break;
-            case OxydSurgeryStep.Amputate:
-            case OxydSurgeryStep.DetachOrgan:
-                if (!OxydWoundSystem.IsExternal(organComp) && surg.Incision != OxydIncisionStage.Retracted)
-                {
-                    fail = true;
-                }
-                else
-                {
-                    _detach.Detach(organ);
-                    _damage.TryChangeDamage(patient,
-                        new DamageSpecifier { DamageDict = { ["Slash"] = 25 } }, ignoreResistances: true);
-                }
-                break;
-            case OxydSurgeryStep.AttachOrgan:
-                if (surg.Incision != OxydIncisionStage.Retracted) fail = true;
-                else if (!TryAttach(patient, s.Tool))
-                    fail = true;
-                break;
-            case OxydSurgeryStep.RoboOpen:
-                if (!surg.Robotic || surg.Incision != OxydIncisionStage.None) fail = true;
-                else surg.Incision = OxydIncisionStage.Open;
-                break;
-            case OxydSurgeryStep.RoboClose:
-                if (!surg.Robotic || surg.Incision == OxydIncisionStage.None) fail = true;
-                else { surg.Incision = OxydIncisionStage.None; surg.Clamped = true; }
-                break;
-            case OxydSurgeryStep.RoboFixBrute:
-            case OxydSurgeryStep.RoboFixBurn:
-                if (!surg.Robotic || surg.Incision == OxydIncisionStage.None || surg.OrganDamage <= 0)
-                    fail = true;
-                else
-                    surg.OrganDamage = Math.Max(0, surg.OrganDamage - 15);
-                break;
-        }
-
-        if (fail)
-            _popup.PopupEntity(Loc.GetString("oxyd-medical-surgery-fail"), s.Surgeon, s.Surgeon);
-        else
-            Announce(s.Surgeon, patient, "oxyd-medical-surgery-success", organ);
-
-        PushState(proxy);
-    }
-
-    private bool TryAttach(EntityUid body, EntityUid heldItem)
-    {
-        if (!TryComp<OrganComponent>(heldItem, out var organ) || OxydWoundSystem.IsExternal(organ))
-            return false;
-
-        if (!_container.TryGetContainer(body, BodyComponent.ContainerID, out var container))
-            return false;
-
-        return _container.Insert(heldItem, container, force: true);
     }
 
     private string Diagnose(OrganComponent organ, OxydOrganSurgeryComponent surg)
