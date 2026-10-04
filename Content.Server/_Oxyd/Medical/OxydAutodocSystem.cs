@@ -4,6 +4,7 @@ using Content.Shared.Body;
 using Content.Shared.Body.Components;
 using Content.Shared.DragDrop;
 using Content.Shared.Mobs.Systems;
+using Content.Shared.Movement.Pulling.Components;
 using Content.Shared.Popups;
 using Content.Shared.Verbs;
 using Robust.Server.Containers;
@@ -83,11 +84,13 @@ public sealed partial class OxydAutodocSystem : EntitySystem
 
     private void AddInsertVerb(EntityUid uid, OxydAutodocComponent comp, GetVerbsEvent<InteractionVerb> args)
     {
-        if (!args.CanInteract || comp.Running || BodySlot(uid).ContainedEntity != null ||
-            !HasComp<BodyComponent>(args.Target))
+        if (!args.CanInteract || comp.Running || BodySlot(uid).ContainedEntity != null)
             return;
 
-        var target = args.Target;
+        // Insert the body the user is pulling (args.Target is the autodoc itself).
+        if (!TryComp<PullerComponent>(args.User, out var puller) || puller.Pulling is not { } target ||
+            !HasComp<BodyComponent>(target))
+            return;
         args.Verbs.Add(new InteractionVerb
         {
             Act = () =>

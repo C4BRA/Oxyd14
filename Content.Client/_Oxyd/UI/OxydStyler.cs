@@ -160,7 +160,5 @@ public sealed class OxydStyler : UIController
 
 
         }
-
-        Log.Debug(UIManager.RootControl.UIScale.ToString());
     }
 }

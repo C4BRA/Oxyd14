@@ -11,6 +11,7 @@ using Content.Shared.DragDrop;
 using Content.Shared.Interaction;
 using Content.Shared.Item;
 using Content.Shared.Mobs.Systems;
+using Content.Shared.Movement.Pulling.Components;
 using Content.Shared.Popups;
 using Content.Shared.Verbs;
 using Robust.Server.Containers;
@@ -83,10 +84,11 @@ public sealed partial class OxydSleeperSystem : EntitySystem
         if (!args.CanInteract || BodySlot(uid).ContainedEntity != null)
             return;
 
-        if (!HasComp<BodyComponent>(args.Target))
+        // Insert the body the user is pulling (args.Target is the sleeper itself).
+        if (!TryComp<PullerComponent>(args.User, out var puller) || puller.Pulling is not { } target ||
+            !HasComp<BodyComponent>(target))
             return;
 
-        var target = args.Target;
         args.Verbs.Add(new InteractionVerb
         {
             Act = () => _container.Insert(target, BodySlot(uid)),

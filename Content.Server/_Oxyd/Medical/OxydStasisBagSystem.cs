@@ -7,6 +7,7 @@ using Content.Shared.DragDrop;
 using Content.Shared.Interaction;
 using Content.Shared.Mobs;
 using Content.Shared.Mobs.Systems;
+using Content.Shared.Movement.Pulling.Components;
 using Content.Shared.Popups;
 using Content.Shared.Verbs;
 using Robust.Server.Containers;
@@ -63,11 +64,13 @@ public sealed partial class OxydStasisBagSystem : EntitySystem
 
     private void AddSealVerb(EntityUid uid, OxydStasisBagComponent comp, GetVerbsEvent<InteractionVerb> args)
     {
-        if (!args.CanInteract || BodySlot(uid).ContainedEntities.Count > 0 ||
-            !HasComp<BodyComponent>(args.Target))
+        if (!args.CanInteract || BodySlot(uid).ContainedEntities.Count > 0)
             return;
 
-        var target = args.Target;
+        // Seal the body the user is pulling (args.Target is the bag itself).
+        if (!TryComp<PullerComponent>(args.User, out var puller) || puller.Pulling is not { } target ||
+            !HasComp<BodyComponent>(target))
+            return;
         args.Verbs.Add(new InteractionVerb
         {
             Act = () => Seal(uid, comp, target),

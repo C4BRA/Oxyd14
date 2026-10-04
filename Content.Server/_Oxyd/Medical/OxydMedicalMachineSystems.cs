@@ -9,6 +9,7 @@ using Content.Shared.Body;
 using Content.Shared.Body.Components;
 using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Damage;
+using Content.Shared.DragDrop;
 using Content.Shared.Interaction;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.Popups;
@@ -40,20 +41,17 @@ public sealed partial class OxydMedicalScannerSystem : EntitySystem
 
     public override void Initialize()
     {
-        SubscribeLocalEvent<OxydScannerItemComponent, InteractUsingEvent>(OnInteractUsing);
         SubscribeLocalEvent<OxydScannerUiProxyComponent, BoundUIClosedEvent>(OnUiClosed);
     }
 
-    private void OnInteractUsing(EntityUid uid, OxydScannerItemComponent comp, InteractUsingEvent args)
+    // InteractUsingEvent is raised on the patient; OxydSurgerySystem owns the BodyComponent
+    // subscription and calls here when the used item is a scanner.
+    public void OpenScanUi(EntityUid user, EntityUid patient)
     {
-        if (args.Handled || !HasComp<BodyComponent>(args.Target))
-            return;
-
-        args.Handled = true;
         var proxy = Spawn(UiProxyProto, MapCoordinates.Nullspace);
         _ui.SetUi(proxy, OxydScannerUiKey.Key, new InterfaceData("OxydScannerBoundUserInterface", 0f, false));
-        _ui.SetUiState(proxy, OxydScannerUiKey.Key, BuildState(args.Target));
-        _ui.OpenUi(proxy, OxydScannerUiKey.Key, args.User);
+        _ui.SetUiState(proxy, OxydScannerUiKey.Key, BuildState(patient));
+        _ui.OpenUi(proxy, OxydScannerUiKey.Key, user);
     }
 
     private void OnUiClosed(EntityUid proxy, OxydScannerUiProxyComponent comp, BoundUIClosedEvent args)
@@ -151,7 +149,11 @@ public sealed partial class OxydIvDripSystem : EntitySystem
     public override void Initialize()
     {
         SubscribeLocalEvent<OxydIvDripComponent, ComponentInit>(OnInit);
-        SubscribeLocalEvent<OxydIvDripComponent, InteractUsingEvent>(OnUseOnPatient);
+        // Attach/detach by dragging either the drip onto the patient or the patient onto the drip.
+        SubscribeLocalEvent<BodyComponent, DragDropTargetEvent>(OnDragOntoPatient);
+        SubscribeLocalEvent<BodyComponent, CanDropTargetEvent>(OnCanDropOntoPatient);
+        SubscribeLocalEvent<OxydIvDripComponent, DragDropTargetEvent>(OnDropPatientOnDrip);
+        SubscribeLocalEvent<OxydIvDripComponent, CanDropTargetEvent>(OnCanDropPatientOnDrip);
         SubscribeLocalEvent<OxydIvDripComponent, GetVerbsEvent<AlternativeVerb>>(AddIvVerbs);
         SubscribeLocalEvent<OxydIvDripComponent, GetVerbsEvent<InteractionVerb>>(AddInsertBeakerVerb);
     }
@@ -164,24 +166,54 @@ public sealed partial class OxydIvDripSystem : EntitySystem
     private ContainerSlot BeakerSlot(EntityUid uid) =>
         _container.EnsureContainer<ContainerSlot>(uid, OxydIvDripComponent.BeakerContainerId);
 
-    private void OnUseOnPatient(EntityUid uid, OxydIvDripComponent comp, InteractUsingEvent args)
+    private void OnCanDropOntoPatient(EntityUid uid, BodyComponent comp, ref CanDropTargetEvent args)
     {
-        if (args.Handled || !HasComp<BodyComponent>(args.Target))
+        if (args.Handled || !HasComp<OxydIvDripComponent>(args.Dragged))
+            return;
+        args.CanDrop = true;
+        args.Handled = true;
+    }
+
+    private void OnDragOntoPatient(EntityUid uid, BodyComponent comp, DragDropTargetEvent args)
+    {
+        if (args.Handled || !TryComp<OxydIvDripComponent>(args.Dragged, out var drip))
             return;
 
         args.Handled = true;
-        if (comp.AttachedTo == GetNetEntity(args.Target))
+        ToggleAttach(args.Dragged, drip, uid, args.User);
+    }
+
+    private void OnCanDropPatientOnDrip(EntityUid uid, OxydIvDripComponent comp, ref CanDropTargetEvent args)
+    {
+        if (args.Handled || !HasComp<BodyComponent>(args.Dragged))
+            return;
+        args.CanDrop = true;
+        args.Handled = true;
+    }
+
+    private void OnDropPatientOnDrip(EntityUid uid, OxydIvDripComponent comp, DragDropTargetEvent args)
+    {
+        if (args.Handled || !HasComp<BodyComponent>(args.Dragged))
+            return;
+
+        args.Handled = true;
+        ToggleAttach(uid, comp, args.Dragged, args.User);
+    }
+
+    private void ToggleAttach(EntityUid dripUid, OxydIvDripComponent drip, EntityUid patient, EntityUid user)
+    {
+        if (drip.AttachedTo == GetNetEntity(patient))
         {
-            comp.AttachedTo = null;
-            _popup.PopupEntity(Loc.GetString("oxyd-medical-iv-detached"), uid, args.User);
+            drip.AttachedTo = null;
+            _popup.PopupEntity(Loc.GetString("oxyd-medical-iv-detached"), dripUid, user);
         }
         else
         {
-            comp.AttachedTo = GetNetEntity(args.Target);
-            _popup.PopupEntity(Loc.GetString("oxyd-medical-iv-attached", ("patient", Name(args.Target))),
-                uid, args.User);
+            drip.AttachedTo = GetNetEntity(patient);
+            _popup.PopupEntity(Loc.GetString("oxyd-medical-iv-attached", ("patient", Name(patient))),
+                dripUid, user);
         }
-        Dirty(uid, comp);
+        Dirty(dripUid, drip);
     }
 
     private void AddIvVerbs(EntityUid uid, OxydIvDripComponent comp, GetVerbsEvent<AlternativeVerb> args)

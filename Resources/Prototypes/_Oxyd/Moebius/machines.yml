@@ -188,6 +188,9 @@
   - type: Icon
     sprite: Oxyd/erisported/eris_optable.rsi
     state: optable_idle
+  - type: IconSmooth
+    # TableBase inherits Corners smoothing that would request state_* the Eris rsi lacks.
+    mode: NoSprite
   - type: OxydOperatingTable
 
 # ---------------------------------------------------------------------------

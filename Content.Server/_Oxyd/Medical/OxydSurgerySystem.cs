@@ -37,6 +37,7 @@ public sealed partial class OxydSurgerySystem : EntitySystem
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
+    [Dependency] private readonly OxydMedicalScannerSystem _medicalScanner = default!;
 
     private static readonly EntProtoId UiProxyProto = "OxydMedicalSurgeryUiProxy";
 
@@ -58,9 +59,21 @@ public sealed partial class OxydSurgerySystem : EntitySystem
         SubscribeLocalEvent<OxydSurgeryUiProxyComponent, BoundUIClosedEvent>(OnUiClosed);
     }
 
+    // Sole InteractUsingEvent subscriber on BodyComponent (the bus allows one per comp+event):
+    // dispatch by what's being used on the patient.
     private void OnInteractUsing(EntityUid uid, BodyComponent comp, InteractUsingEvent args)
     {
-        if (args.Handled || !TryComp<OxydSurgeryToolComponent>(args.Used, out var tool) || tool.Tools == 0)
+        if (args.Handled)
+            return;
+
+        if (HasComp<OxydScannerItemComponent>(args.Used))
+        {
+            args.Handled = true;
+            _medicalScanner.OpenScanUi(args.User, uid);
+            return;
+        }
+
+        if (!TryComp<OxydSurgeryToolComponent>(args.Used, out var tool) || tool.Tools == 0)
             return;
 
         args.Handled = true;
