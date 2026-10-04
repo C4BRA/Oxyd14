@@ -13,6 +13,7 @@ using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
 using Robust.Shared.Containers;
 using Robust.Shared.GameObjects;
+using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Prototypes;
@@ -140,14 +141,7 @@ public sealed partial class BioreactorSystem : EntitySystem
             !_mobState.IsDead(body) || !InChamber(uid, body))
             return false;
         // Queue before output: a second call cannot sell the same corpse twice.
-        _hands.DropAll(body, checkActionBlocker: false);
-        if (TryComp<InventoryComponent>(body, out var inventory))
-            foreach (var slot in inventory.Containers)
-                _containers.EmptyContainer(slot);
-        if (TryComp<ImplantedComponent>(body, out var implanted))
-            foreach (var implant in implanted.ImplantContainer.ContainedEntities.ToArray())
-                _containers.Remove(implant, implanted.ImplantContainer, force: true,
-                    destination: Transform(uid).Coordinates);
+        RemoveAllStorage(body, Transform(uid).Coordinates);
         // Organic matter has no PhysicalComposition yet; the corpse's mass is the content proxy.
         var amount = BiomatterContent(body) is var composed && composed > 0
             ? composed
@@ -158,6 +152,19 @@ public sealed partial class BioreactorSystem : EntitySystem
         var pile = Spawn(BiomatterProto, Transform(uid).Coordinates);
         _stack.SetCount(pile, amount);
         return true;
+    }
+
+    /// <summary>Drops everything the body stores: held items, inventory slots, and implants.</summary>
+    private void RemoveAllStorage(EntityUid body, EntityCoordinates destination)
+    {
+        _hands.DropAll(body, checkActionBlocker: false);
+        if (TryComp<InventoryComponent>(body, out var inventory))
+            foreach (var slot in inventory.Containers)
+                _containers.EmptyContainer(slot, destination: destination);
+        if (TryComp<ImplantedComponent>(body, out var implanted))
+            foreach (var implant in implanted.ImplantContainer.ContainedEntities.ToArray())
+                _containers.Remove(implant, implanted.ImplantContainer, force: true,
+                    destination: destination);
     }
 
     /// <summary>

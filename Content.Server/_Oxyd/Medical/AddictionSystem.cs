@@ -79,7 +79,7 @@ public sealed partial class AddictionSystem : EntitySystem
     {
         ent.Comp.Reagents.Remove(reagent);
         if (TryComp<SanityComponent>(ent, out var sanity))
-            _sanity.ApplySanityDelta((ent, sanity), SanitySource.Mental, 15);
+            _sanity.ApplySanityDelta((ent, sanity), SanitySource.Chemical, 15);
 
         _popup.PopupEntity(Loc.GetString("oxyd-medical-addiction-recovered",
             ("reagent", _prototypes.Index(reagent).LocalizedName)), ent, ent);
@@ -98,16 +98,10 @@ public sealed partial class AddictionSystem : EntitySystem
                 continue;
 
             comp.UpdateRemaining = comp.UpdateInterval;
-            _solutions.TryGetSolution(uid, BloodstreamComponent.DefaultBloodSolutionName, out _, out var blood);
             foreach (var (reagent, state) in comp.Reagents.ToArray())
             {
-                if (blood?.GetTotalPrototypeQuantity(reagent) > 0)
-                {
-                    if (state.Progress != null)
-                        state.Progress = -15;
-                    continue;
-                }
-
+                // While the reagent is still in the bloodstream, the Addictive entity effect
+                // keeps firing Expose each metabolism tick and pinning Progress at -15.
                 if (state.Progress == null)
                 {
                     comp.Reagents.Remove(reagent);
@@ -127,7 +121,7 @@ public sealed partial class AddictionSystem : EntitySystem
                 _popup.PopupEntity(Loc.GetString("oxyd-medical-addiction-craving",
                     ("reagent", _prototypes.Index(reagent).LocalizedName)), uid, uid);
                 if (state.Progress > 30 && TryComp<SanityComponent>(uid, out var sanity))
-                    _sanity.ApplySanityDelta((uid, sanity), SanitySource.Mental, state.Progress > 40 ? -10 : -5);
+                    _sanity.ApplySanityDelta((uid, sanity), SanitySource.Chemical, state.Progress > 40 ? -10 : -5);
             }
         }
     }

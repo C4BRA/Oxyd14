@@ -17,7 +17,6 @@ using Content.Shared.Mobs;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.Movement.Systems;
-using Content.Shared.Station;
 using Robust.Shared.Containers;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Prototypes;
@@ -34,7 +33,6 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
 {
     [Dependency] private SharedContainerSystem _containers = default!;
     [Dependency] private MobStateSystem _mobStates = default!;
-    [Dependency] private SharedStationSystem _stations = default!;
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private readonly CoreModuleSystem _modules = default!;
     [Dependency] private readonly SharedSubdermalImplantSystem _implants = default!;
@@ -311,7 +309,7 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
             SetActive(cruciform, component, true);
 
         component.LastHolinessUpdate = _timing.CurTime;
-        RecomputeProfile(cruciform, component);
+        RecomputeRegeneration(component);
         Dirty(cruciform, component);
         BumpRevision(ent.Owner, ent.Comp);
     }
@@ -365,7 +363,8 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
         if (penalty <= 0)
             return;
         comp.RighteousLife = Math.Max(0f, comp.RighteousLife - penalty);
-        RecomputeProfile(implant, comp);
+        RecomputeRegeneration(comp);
+        Dirty(implant, comp);
     }
 
     [SubscribeLocalEvent]
@@ -496,7 +495,7 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
         AdvanceHoliness((cruciform, component), body);
         SetActive(cruciform, component, false);
         component.LastHolinessUpdate = _timing.CurTime;
-        RecomputeProfile(cruciform, component);
+        RecomputeRegeneration(component);
         Dirty(cruciform, component);
         BumpRevision(body);
         return true;
@@ -553,9 +552,9 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
 
     public double GetRegenerationPerSecond(EntityUid body)
     {
-        if (!TryGetCruciformEntity(body, out var implant, out var component))
+        if (!TryGetCruciformEntity(body, out _, out var component))
             return 0;
-        RecomputeProfile(implant, component);
+        RecomputeRegeneration(component);
         return component.RegenerationPerSecond;
     }
 
@@ -670,7 +669,7 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
             return ent.Comp.Holiness;
 
         // Cognition, righteous life, and the faithful roster are live regeneration inputs.
-        RecomputeProfile(ent.Owner, ent.Comp);
+        RecomputeRegeneration(ent.Comp);
         var seconds = elapsed.TotalSeconds;
         if (double.IsFinite(seconds) && seconds > 0)
             ent.Comp.Holiness = NeoTheologyHoliness.ClampResource(
@@ -681,14 +680,16 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
         return ent.Comp.Holiness;
     }
 
+    /// <summary>
+    /// Full structural rebuild: litany sets, capacity, and the regeneration rate. Call when
+    /// the module set, upgrade, or profile changes. Holiness-only ticks use
+    /// <see cref="RecomputeRegeneration"/> instead.
+    /// </summary>
     public void RecomputeProfile(EntityUid cruciform, CruciformComponent component)
     {
-        var rules = GetRules();
-        var hasProfile = TryGetConfiguredProfile(component.Profile, rules, out var profile);
-        var body = component.ImplantedEntity;
+        var hasProfile = TryGetConfiguredProfile(component.Profile, GetRules(), out var profile);
 
         var capacity = hasProfile ? profile.CruciformCapacity : 50d;
-        var regenMultiplier = hasProfile ? profile.RegenerationMultiplier : 1d;
 
         component.UnlockedSets.Clear();
 
@@ -701,7 +702,6 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
                 component.UnlockedSets.Add(set);
 
             capacity *= module.MaxHolinessMultiplier;
-            regenMultiplier += module.RegenMultiplierDelta;
         }
 
         // Runtime grants (the Crusade rite) survive the recompute; Eris keeps them in
@@ -718,16 +718,40 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
                 component.UnlockedSets.Add(set);
 
             capacity += upgrade.MaxHolinessDelta;
-            regenMultiplier += upgrade.RegenMultiplierDelta;
         }
+
+        component.MaxHoliness = capacity;
+        RecomputeRegeneration(component);
+        component.Holiness = NeoTheologyHoliness.ClampResource(component.Holiness, component.MaxHoliness);
+    }
+
+    /// <summary>
+    /// Refreshes only the holiness regeneration rate — the live inputs (cognition, righteous
+    /// life, channeling roster, module/upgrade/aura multipliers) without rebuilding litany
+    /// sets or capacity.
+    /// </summary>
+    public void RecomputeRegeneration(CruciformComponent component)
+    {
+        var rules = GetRules();
+        var hasProfile = TryGetConfiguredProfile(component.Profile, rules, out var profile);
+        var body = component.ImplantedEntity;
+
+        var regenMultiplier = hasProfile ? profile.RegenerationMultiplier : 1d;
+        foreach (var moduleId in component.InstalledModules)
+        {
+            if (ProtoMan.TryIndex(moduleId, out CoreModulePrototype? module) && module != null)
+                regenMultiplier += module.RegenMultiplierDelta;
+        }
+
+        if (component.Upgrade is { } upgradeItem &&
+            TryComp<CruciformUpgradeComponent>(upgradeItem, out var upgrade))
+            regenMultiplier += upgrade.RegenMultiplierDelta;
 
         regenMultiplier += component.EnergyMiracles;
 
         // Auras (the obelisk) ride the same derivation, so an aura pulse can neither compound on
         // itself nor be lost when a module changes.
         regenMultiplier *= component.RegenerationMultiplier;
-
-        component.MaxHoliness = capacity;
 
         var cognitive = 0;
         if (body is { } skillBody && TryComp<MobSkillComponent>(skillBody, out var skills) && skills.skills.TryGetValue(NeoTheologySkills.Cognition, out var cog) && cog.Length > 0)
@@ -744,8 +768,6 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
                 rules.BaseHolinessPerMinute,
                 regenMultiplier)
             : 0d;
-
-        component.Holiness = NeoTheologyHoliness.ClampResource(component.Holiness, component.MaxHoliness);
     }
 
     private int CountEligibleChannelingFollowers(EntityUid source)
@@ -760,17 +782,6 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
         }
 
         return count;
-    }
-
-    private bool SameStationOrMap(EntityUid left, EntityUid right)
-    {
-        var leftStation = _stations.GetOwningStation(left);
-        var rightStation = _stations.GetOwningStation(right);
-        if (leftStation != null && rightStation != null)
-            return leftStation == rightStation;
-        if (leftStation == null && rightStation == null)
-            return Transform(left).MapID == Transform(right).MapID;
-        return false;
     }
 
     private void BumpRevision(EntityUid body, CruciformBearerComponent? bearer = null)

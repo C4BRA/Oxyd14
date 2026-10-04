@@ -5,6 +5,7 @@ using Content.Shared._Oxyd.NeoTheology.Events;
 using Content.Shared._Oxyd.NeoTheology.UI;
 using Content.Shared.UserInterface;
 using Robust.Server.GameObjects;
+using Robust.Shared.GameObjects;
 using Robust.Shared.Prototypes;
 
 namespace Content.Server._Oxyd.NeoTheology.Machines;
@@ -20,6 +21,7 @@ public sealed partial class ArmamentsPrinterSystem : EntitySystem
     [Dependency] private readonly NeoTheologyMachineSystem _machines = default!;
     [Dependency] private readonly EyeOfTheProtectorSystem _eye = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
+    [Dependency] private readonly EntityLookupSystem _lookup = default!;
     [Dependency] private readonly UserInterfaceSystem _ui = default!;
 
     /// <summary>
@@ -41,17 +43,18 @@ public sealed partial class ArmamentsPrinterSystem : EntitySystem
     /// <summary>The nearest operational printer on the eye's map. The shop UI lives on the printer.</summary>
     private EntityUid? FindOperationalPrinter(EntityUid eye)
     {
-        var map = Transform(eye).MapID;
-        var origin = Transform(eye).WorldPosition;
+        var xform = Transform(eye);
+        var origin = xform.WorldPosition;
+        var printers = new HashSet<Entity<ArmamentsPrinterComponent, TransformComponent>>();
+        _lookup.GetEntitiesOnMap<ArmamentsPrinterComponent, TransformComponent>(xform.MapID, printers);
         EntityUid? best = null;
         var bestDistance = float.MaxValue;
-        var query = EntityQueryEnumerator<ArmamentsPrinterComponent, TransformComponent>();
-        while (query.MoveNext(out var uid, out _, out var xform))
+        foreach (var (uid, _, printerXform) in printers)
         {
-            if (xform.MapID != map || !_machines.IsOperational(uid))
+            if (!_machines.IsOperational(uid))
                 continue;
 
-            var distance = (xform.WorldPosition - origin).LengthSquared();
+            var distance = (printerXform.WorldPosition - origin).LengthSquared();
             if (distance >= bestDistance)
                 continue;
 

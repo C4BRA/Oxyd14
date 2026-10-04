@@ -76,7 +76,7 @@ public sealed partial class ObeliskSystem : EntitySystem
             return;
 
         state.RegenerationMultiplier = strongest;
-        _cruciform.RecomputeProfile(implant, state);
+        _cruciform.RecomputeRegeneration(state);
     }
 
     /// <summary>Runs one pulse. Direct callers request a fresh view; event handlers reuse the supplied view.</summary>

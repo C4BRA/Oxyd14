@@ -337,7 +337,7 @@ public sealed partial class EyeOfTheProtectorSystem : EntitySystem
                     if (TryComp<CruciformComponent>(cruciform, out var state))
                     {
                         state.EnergyMiracles++;
-                        _cruciform.RecomputeProfile(cruciform, state);
+                        _cruciform.RecomputeRegeneration(state);
                         Dirty(cruciform, state);
                     }
                 }
