@@ -71,12 +71,12 @@ oxyd-medical-nsa-overload = Your nerves burn - neural system accumulation overlo
 
 ## Sleeper UI
 oxyd-sleeper-window-title = Moebius Sleeper
-oxyd-sleeper-occupant = Occupant:
+oxyd-sleeper-occupant = Occupant: {$name}
 oxyd-sleeper-empty = Empty
-oxyd-sleeper-health = Health:
-oxyd-sleeper-beaker = Beaker:
+oxyd-sleeper-health = Health: {$health}
+oxyd-sleeper-beaker = Beaker: {$vol} / {$max}
 oxyd-sleeper-no-beaker = no beaker
-oxyd-sleeper-inject-chem = Inject {$chem}
+oxyd-sleeper-inject-chem = Inject {$name} ({$dose}u, {$current}u in patient)
 oxyd-sleeper-eject = Eject patient
 oxyd-sleeper-eject-beaker = Eject beaker
 oxyd-sleeper-chem-inaprovaline = Inaprovaline
