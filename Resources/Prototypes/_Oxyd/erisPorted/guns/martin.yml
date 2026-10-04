@@ -23,12 +23,16 @@
   - type: BatteryWeaponFireModes
     fireModes:
     - proto: BulletDisabler
-      visualState: stun
       fireCost: 62.5
       pacifismAllowedMode: true
     - proto: RedLaser
-      visualState: lethal
       fireCost: 62.5
+  - type: GenericVisualizer
+    visuals:
+      enum.BatteryWeaponFireModeVisuals.State:
+        enum.GunVisualLayers.Base:
+          BulletDisabler: { state: stun }
+          RedLaser: { state: lethal }
   - type: BatterySelfRecharger
     autoRechargeRate: 40
   - type: StaticPrice

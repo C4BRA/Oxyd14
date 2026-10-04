@@ -3,7 +3,6 @@
   icon:
     sprite: /Textures/Oxyd/erisported/gunactions16.rsi
     state: auto
-  provider: OxydMagazineChamber
   providerId: 0
   addedInaccuracyMaximum: 0
   fireSound:
@@ -19,7 +18,6 @@
   - !type:GunEffectTryFireMouseDirection
   - !type:GunEffectRepeatMouseHeld
     stepBack: 6
-    validDiff: 0.4
   - !type:GunEffectStop
 
 - type: gunFiremode
@@ -27,7 +25,6 @@
   icon:
     sprite: /Textures/Oxyd/erisported/gunactions16.rsi
     state: auto
-  provider: OxydMagazineChamber
   providerId: 0
   addedInaccuracyMaximum: 0
   fireSound:
@@ -43,6 +40,5 @@
   - !type:GunEffectTryFireMouseDirection
   - !type:GunEffectRepeatMouseHeld
     stepBack: 6
-    validDiff: 0.4
   - !type:GunEffectStop
 

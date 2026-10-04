@@ -1,0 +1,42 @@
+using Content.Shared._Oxyd.Medical;
+using Robust.Client.UserInterface;
+
+namespace Content.Client._Oxyd.Medical.UI;
+
+/// <summary>Eris autodoc UI port.</summary>
+public sealed class OxydAutodocBoundUserInterface : BoundUserInterface
+{
+    private OxydAutodocWindow? _window;
+
+    public OxydAutodocBoundUserInterface(EntityUid owner, Enum uiKey) : base(owner, uiKey)
+    {
+    }
+
+    protected override void Open()
+    {
+        base.Open();
+        _window = this.CreateWindow<OxydAutodocWindow>();
+        _window.EnqueueRequested += step => SendMessage(new OxydAutodocEnqueueMessage { Step = step });
+        _window.ClearRequested += () => SendMessage(new OxydAutodocClearMessage());
+        _window.StartRequested += () => SendMessage(new OxydAutodocStartMessage());
+        _window.EjectRequested += () => SendMessage(new OxydAutodocEjectMessage());
+        _window.OnClose += Close;
+    }
+
+    protected override void UpdateState(BoundUserInterfaceState state)
+    {
+        base.UpdateState(state);
+        if (state is OxydAutodocState doc)
+            _window?.UpdateState(doc);
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            _window?.Dispose();
+            _window = null;
+        }
+        base.Dispose(disposing);
+    }
+}

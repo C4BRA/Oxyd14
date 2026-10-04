@@ -1,0 +1,132 @@
+using Content.Shared.DoAfter;
+using Robust.Shared.GameObjects;
+using Robust.Shared.GameStates;
+using Robust.Shared.Prototypes;
+using Robust.Shared.Serialization;
+
+namespace Content.Shared._Oxyd.Medical;
+
+/// <summary>
+/// Surgical and wound state carried on an organ entity (one per <see cref="Content.Shared.Body.Components.OrganComponent"/>).
+/// Ports Eris modules/surgery + organs/external damage flags: incisions, fractures, clamped bleeders and embedded items.
+/// </summary>
+[RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
+public sealed partial class OxydOrganSurgeryComponent : Component
+{
+    /// <summary>Whether this organ is machined. Affects which surgical steps apply (Eris "robotic" organs).</summary>
+    [DataField, AutoNetworkedField]
+    public bool Robotic;
+
+    /// <summary>Eris incision stage: closed skin, open, or held open by a retractor.</summary>
+    [DataField, AutoNetworkedField]
+    public OxydIncisionStage Incision = OxydIncisionStage.None;
+
+    /// <summary>The incision's bleeders are not yet clamped (Eris incision.healed/clamped state).</summary>
+    [DataField, AutoNetworkedField]
+    public bool Clamped = true;
+
+    /// <summary>A bone fracture sustained from brute damage or deliberate breakage (Eris is_broken()).</summary>
+    [DataField, AutoNetworkedField]
+    public bool Fractured;
+
+    /// <summary>A splint item is stabilising a fracture so it can heal (Eris wound splint).</summary>
+    [DataField, AutoNetworkedField]
+    public bool Splinted;
+
+    /// <summary>Per-organ damage pool that surgery and chems can reduce. Raised by severities of wounds.</summary>
+    [DataField, AutoNetworkedField]
+    public float OrganDamage;
+
+    /// <summary>Embedded objects inside this organ (shrapnel, cavity items). Eris wound.embedded_objects.</summary>
+    [DataField]
+    public List<NetEntity> EmbeddedItems = new();
+
+    /// <summary>Bleed rate contributed by this organ's wounds/incision while it stays open (Eris wound bleeding).</summary>
+    [DataField, AutoNetworkedField]
+    public float WoundBleedRate;
+}
+
+[Serializable, NetSerializable]
+public enum OxydIncisionStage : byte
+{
+    None,
+    Open,
+    Retracted,
+}
+
+/// <summary>Surgical tool roles. Items can cover several (Eris has e.g. combined items, ghetto substitutes).</summary>
+[Serializable, NetSerializable, Flags]
+public enum OxydSurgeryTool : uint
+{
+    None = 0,
+    Scalpel = 1 << 0,
+    Retractor = 1 << 1,
+    Hemostat = 1 << 2,
+    Cautery = 1 << 3,
+    BoneSetter = 1 << 4,
+    Saw = 1 << 5,
+    Drill = 1 << 6,
+    FixOVein = 1 << 7,
+    BoneGel = 1 << 8,
+    Screwdriver = 1 << 9,
+    Welder = 1 << 10,
+    Tray = 1 << 11,
+}
+
+/// <summary>Marks an item as usable as one or more surgical tools (Eris tools/surgery.dm). Speed scales do_after time.</summary>
+[RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
+public sealed partial class OxydSurgeryToolComponent : Component
+{
+    [DataField, AutoNetworkedField]
+    public OxydSurgeryTool Tools = OxydSurgeryTool.None;
+
+    /// <summary>Multiplier on step duration; lower is faster (Eris tool quality).</summary>
+    [DataField]
+    public float Speed = 1f;
+}
+
+/// <summary>Surgical steps, mirroring Eris modules/surgery generic steps and organ repair steps.</summary>
+[Serializable, NetSerializable]
+public enum OxydSurgeryStep : byte
+{
+    CutOpen,        // scalpel
+    RetractSkin,    // retractor (also clamps with hemostat first)
+    FixBleeding,    // hemostat
+    Cauterize,      // cautery
+    MendBone,       // bone setter (fractured)
+    BreakBone,      // advanced: deliberately break
+    FixBone,        // bone gel to seal a mended bone
+    RemoveEmbedded, // hemostat on embedded object
+    InsertItem,     // cavity implant
+    RemoveItem,     // cavity extract
+    AttachOrgan,    // fixovein + organ item
+    DetachOrgan,    // scalpel on internal organ
+    Amputate,       // saw on external organ
+    RoboOpen,       // screwdriver on robotic organ
+    RoboFixBrute,   // welder
+    RoboFixBurn,    // cable coil (mapped to fixovein slot for now)
+    RoboClose,      // screwdriver to close robo shell
+    DiagnoseWound,  // surgical tool usage to read wound info
+}
+
+/// <summary>DoAfter payload for a surgery step (Eris surgery step preop/do_surgery flow).</summary>
+[Serializable, NetSerializable]
+public sealed partial class OxydSurgeryDoAfterEvent : SimpleDoAfterEvent
+{
+    public NetEntity Patient;
+    public NetEntity Organ;
+    public OxydSurgeryStep Step;
+    public NetEntity Tool;
+
+    public OxydSurgeryDoAfterEvent(NetEntity patient, NetEntity organ, OxydSurgeryStep step, NetEntity tool)
+    {
+        Patient = patient;
+        Organ = organ;
+        Step = step;
+        Tool = tool;
+    }
+
+    private OxydSurgeryDoAfterEvent()
+    {
+    }
+}

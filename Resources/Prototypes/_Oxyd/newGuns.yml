@@ -182,12 +182,10 @@
     mods:
      - !type:DamageMod
         addMod:
-          types:
-          Heat: 250
+          types: { Heat: 250 }
      - !type:DamageMod
         addMod:
-          types:
-          Heat: 250
+          types: { Heat: 250 }
 
 - type: entity
   name: Oxyd Capacity Attachment

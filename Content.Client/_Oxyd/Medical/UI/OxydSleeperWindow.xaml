@@ -1,0 +1,16 @@
+<controls:FancyWindow xmlns="https://spacestation14.io"
+               xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
+               Title="{Loc 'oxyd-sleeper-window-title'}"
+               MinSize="420 380"
+               SetSize="460 420">
+    <BoxContainer Orientation="Vertical" Margin="8" SeparationOverride="6">
+        <Label Name="OccupantLabel"/>
+        <Label Name="HealthLabel"/>
+        <BoxContainer Name="ChemButtons" Orientation="Vertical" SeparationOverride="4" VerticalExpand="True"/>
+        <Label Name="BeakerLabel"/>
+        <BoxContainer Orientation="Horizontal" SeparationOverride="8">
+            <Button Name="EjectButton" Text="{Loc 'oxyd-sleeper-eject'}"/>
+            <Button Name="EjectBeakerButton" Text="{Loc 'oxyd-sleeper-eject-beaker'}"/>
+        </BoxContainer>
+    </BoxContainer>
+</controls:FancyWindow>

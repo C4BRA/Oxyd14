@@ -1,0 +1,41 @@
+using Content.Shared._Oxyd.Medical;
+using Robust.Client.UserInterface;
+
+namespace Content.Client._Oxyd.Medical.UI;
+
+/// <summary>Eris sleeper pod UI port.</summary>
+public sealed class OxydSleeperBoundUserInterface : BoundUserInterface
+{
+    private OxydSleeperWindow? _window;
+
+    public OxydSleeperBoundUserInterface(EntityUid owner, Enum uiKey) : base(owner, uiKey)
+    {
+    }
+
+    protected override void Open()
+    {
+        base.Open();
+        _window = this.CreateWindow<OxydSleeperWindow>();
+        _window.InjectRequested += id => SendMessage(new OxydSleeperInjectMessage { Reagent = id });
+        _window.EjectRequested += () => SendMessage(new OxydSleeperEjectMessage());
+        _window.EjectBeakerRequested += () => SendMessage(new OxydSleeperEjectBeakerMessage());
+        _window.OnClose += Close;
+    }
+
+    protected override void UpdateState(BoundUserInterfaceState state)
+    {
+        base.UpdateState(state);
+        if (state is OxydSleeperState sleeper)
+            _window?.UpdateState(sleeper);
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            _window?.Dispose();
+            _window = null;
+        }
+        base.Dispose(disposing);
+    }
+}

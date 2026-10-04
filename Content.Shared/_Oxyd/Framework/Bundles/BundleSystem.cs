@@ -38,7 +38,7 @@ public abstract partial class BundleSystem : EntitySystem
     private IRobustRandom random = new RobustRandom();
 
     public static readonly string storeKey = "storagebase";
-    public static readonly ProtoId<BundleGroup> bundleProto = "BaseBundle";
+    public static readonly ProtoId<BundleGroup> bundleProto = "BundleGroup";
     /// <inheritdoc/>
     public override void Initialize()
     {

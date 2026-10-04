@@ -1,4 +1,3 @@
-
 {
   "version": 1,
   "license": "",
@@ -7,15 +6,13 @@
     "x": 32,
     "y": 32
   },
-  "states":  [
-        {
-            "name": "equipped-HELMET",
-            "directions": 4
-        },
-        {
-            "name": "icon"
-        }
-
-      ]
+  "states": [
+    {
+      "name": "equipped-HELMET",
+      "directions": 1
+    },
+    {
+      "name": "icon"
+    }
+  ]
 }
-
