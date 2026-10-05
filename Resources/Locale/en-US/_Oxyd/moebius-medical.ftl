@@ -61,11 +61,9 @@ oxyd-medical-diagnose-healthy = The organ appears healthy.
 oxyd-medical-diagnose-damage = The organ shows {$amount} damage.
 oxyd-medical-diagnose-fracture = Bones are fractured!
 oxyd-medical-diagnose-bleeding = The incision is bleeding.
-oxyd-medical-diagnose-embedded = Something is embedded inside.
-oxyd-medical-fracture = You feel a bone fracture!
+oxyd-medical-diagnose-embedded = Embedded objects detected: {$count}.
+oxyd-medical-fracture = You feel a bone fracture in {THE($organ)}!
 oxyd-medical-bone-mended = Your bone knits back together.
-oxyd-medical-addiction-craving = You crave more...
-oxyd-medical-addiction-recovered = The craving fades.
 oxyd-medical-nsa-overload = Your nerves burn - neural system accumulation overload!
 
 ## Sleeper UI
@@ -90,7 +88,7 @@ oxyd-medical-sleeper-chem-saturated = Cannot inject: bloodstream saturated.
 
 ## Autodoc UI
 oxyd-autodoc-window-title = Autodoc Surgeon
-oxyd-autodoc-occupant = Occupant:
+oxyd-autodoc-occupant = Occupant: {$name}
 oxyd-autodoc-empty = Empty
 oxyd-autodoc-idle = Idle
 oxyd-autodoc-running = Running: {$step}
@@ -119,24 +117,35 @@ oxyd-medical-autodoc-step-roboclose = Screw panel shut
 
 ## Scanner UI
 oxyd-scanner-window-title = Moebius Health Scanner
-oxyd-scanner-patient = Patient:
-oxyd-scanner-vitals = Vitals
-oxyd-scanner-extras = Organ status
+oxyd-scanner-patient = Patient: {$name}
+oxyd-scanner-vitals = Vitals - Health {$health} | Brute {$brute} | Burn {$burn} | Toxin {$toxin} | Oxy {$oxy}
+oxyd-scanner-extras = Pain {$pain} | NSA {$nsa} | Blood {$blood}/{$bloodmax}
 oxyd-scanner-none = none detected
+
+## Reagent guidebook
+oxyd-medical-effect-nsa = Increases neural system accumulation by { $value }.
+oxyd-medical-effect-nsa-tolerance = Raises the NSA threshold by { $value }.
+oxyd-medical-effect-stim = Boosts { $skill } by { $amount } while metabolised.
+oxyd-medical-effect-chem-sanity = Applies { $amount } sanity while metabolised.
+oxyd-medical-effect-mend-bone = Mends a random fractured organ.
+oxyd-medical-effect-heal-organ = Repairs damage to the most wounded organs.
+oxyd-medical-effect-reduce-addiction = Advances addiction recovery.
+oxyd-medical-effect-suppress-withdrawal = Suppresses withdrawal cravings.
+oxyd-medical-effect-seal-wounds = Stops active bleeding.
 oxyd-medical-scan-normal = normal
 oxyd-medical-scan-robotic = robotic
 oxyd-medical-scan-incision = incision
 oxyd-medical-scan-bleeding = bleeding
 oxyd-medical-scan-fractured = fractured
-oxyd-medical-scan-embedded = embedded object
+oxyd-medical-scan-embedded = embedded objects ({$count})
 
 ## Chem processor UI
 oxyd-processor-window-title = Chemical Processor
 oxyd-processor-mode-centrifuge = Centrifuge
 oxyd-processor-mode-electrolyzer = Electrolyzer
 oxyd-processor-no-beaker = Insert a beaker into the main slot.
-oxyd-processor-beaker-status = Beaker {$n}: {$status}
-oxyd-processor-beaker-empty = empty
+oxyd-processor-beaker-status = Beaker {$n}: {$vol}u
+oxyd-processor-beaker-empty = Beaker {$n}: empty
 oxyd-processor-beaker-n = separation beaker {$n}
 oxyd-processor-leave = leave in main beaker
 oxyd-processor-start = Start
@@ -149,7 +158,7 @@ oxyd-medical-iv-verb-insert-beaker = Attach beaker
 oxyd-medical-iv-verb-inject = Transfuse into patient
 oxyd-medical-iv-verb-draw = Draw blood from patient
 oxyd-medical-iv-verb-detach = Detach from patient
-oxyd-medical-iv-attached = You attach the drip.
+oxyd-medical-iv-attached = You attach the drip to {THE($patient)}.
 oxyd-medical-iv-detached = You detach the drip.
 
 ## Stasis bag
