@@ -83,7 +83,6 @@ public sealed partial class OxydSurgeryWindow : FancyWindow
         var modsButton = new Button
         {
             Text = Loc.GetString("oxyd-surgery-mods-wounds"),
-            StyleClasses = { StyleClass.ButtonSmall },
             HorizontalAlignment = HAlignment.Right,
             HorizontalExpand = true,
         };
