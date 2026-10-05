@@ -1,11 +1,5 @@
 # Eris Moebius medical port. Eris source: CEV-Eris (discordia-space/CEV-Eris).
-
-## Access
-oxyd-access-moebius = Moebius Medical
-oxyd-access-moebius-equipment = Moebius equipment
-oxyd-access-moebius-morgue = Moebius morgue
-oxyd-access-moebius-officer = Moebius biolab officer
-oxyd-access-moebius-surgery = Moebius surgery
+# Access names live in _Oxyd/moebius/jobs.ftl.
 
 ## Surgical tools
 oxyd-item-saw-circular-desc-line = For harder materials.

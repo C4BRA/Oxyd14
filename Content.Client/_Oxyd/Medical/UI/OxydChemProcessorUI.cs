@@ -15,6 +15,10 @@ public sealed class OxydChemProcessorBoundUserInterface : BoundUserInterface
     protected override void Open()
     {
         base.Open();
+        // The engine may queue Open() twice for proxy-spawned BUIs (state-apply +
+        // interface startup); a second CreateWindow would assert in RegisterControl.
+        if (_window != null)
+            return;
         _window = this.CreateWindow<OxydChemProcessorWindow>();
         _window.TargetSet += (id, target) =>
             SendMessage(new OxydChemProcessorSetTargetMessage { Reagent = id, TargetBeaker = target });

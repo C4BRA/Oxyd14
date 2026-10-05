@@ -15,6 +15,10 @@ public sealed class OxydAutodocBoundUserInterface : BoundUserInterface
     protected override void Open()
     {
         base.Open();
+        // The engine may queue Open() twice for proxy-spawned BUIs (state-apply +
+        // interface startup); a second CreateWindow would assert in RegisterControl.
+        if (_window != null)
+            return;
         _window = this.CreateWindow<OxydAutodocWindow>();
         _window.EnqueueRequested += step => SendMessage(new OxydAutodocEnqueueMessage { Step = step });
         _window.ClearRequested += () => SendMessage(new OxydAutodocClearMessage());

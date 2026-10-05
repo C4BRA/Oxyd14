@@ -15,6 +15,10 @@ public sealed class OxydSleeperBoundUserInterface : BoundUserInterface
     protected override void Open()
     {
         base.Open();
+        // The engine may queue Open() twice for proxy-spawned BUIs (state-apply +
+        // interface startup); a second CreateWindow would assert in RegisterControl.
+        if (_window != null)
+            return;
         _window = this.CreateWindow<OxydSleeperWindow>();
         _window.InjectRequested += id => SendMessage(new OxydSleeperInjectMessage { Reagent = id });
         _window.EjectRequested += () => SendMessage(new OxydSleeperEjectMessage());
