@@ -10,6 +10,7 @@ using Robust.Client.UserInterface.Controls;
 using Robust.Client.UserInterface.XAML;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Maths;
+using Robust.Shared.Utility;
 
 namespace Content.Client._Oxyd.Medical.UI;
 
@@ -42,11 +43,12 @@ public sealed partial class OxydSurgeryWindow : FancyWindow
     public void UpdateState(OxydSurgeryState state)
     {
         _state = state;
-        PatientLabel.Text = Loc.GetString("oxyd-surgery-patient", ("patient", state.PatientName));
+        PatientLabel.Text = Loc.GetString("oxyd-surgery-patient",
+            ("patient", FormattedMessage.EscapeText(state.PatientName)));
         ToolLabel.Text = Loc.GetString("oxyd-surgery-held-tools",
             ("tool", string.IsNullOrEmpty(state.HeldItemName)
                 ? Loc.GetString("oxyd-surgery-no-tool")
-                : state.HeldItemName));
+                : FormattedMessage.EscapeText(state.HeldItemName)));
 
         // Keep the selection across state pushes; fall back to the first organ like Eris's view.
         if (_selectedOrgan is not { } cur || state.Organs.All(o => o.Organ != cur))
@@ -96,11 +98,11 @@ public sealed partial class OxydSurgeryWindow : FancyWindow
         card.AddChild(headRow);
 
         if (organ.RunningStep is { } running)
-            card.AddChild(new Label { Text = $"{Loc.GetString($"oxyd-surgery-step-{running.ToString().ToLowerInvariant()}")}…", StyleClasses = { StyleClass.LabelWeak } });
+            card.AddChild(new RichTextLabel { Text = $"{Loc.GetString($"oxyd-surgery-step-{running.ToString().ToLowerInvariant()}")}…", HorizontalExpand = true, StyleClasses = { StyleClass.LabelSubText } });
 
         if (!organ.Diagnosed)
         {
-            card.AddChild(new Label { Text = Loc.GetString("oxyd-surgery-undiagnosed"), StyleClasses = { StyleClass.LabelWeak } });
+            card.AddChild(new RichTextLabel { Text = Loc.GetString("oxyd-surgery-undiagnosed"), HorizontalExpand = true, StyleClasses = { StyleClass.LabelSubText } });
         }
         else
         {
@@ -113,7 +115,7 @@ public sealed partial class OxydSurgeryWindow : FancyWindow
 
             var status = string.Join(", ", StatusMarkers(organ));
             if (status.Length > 0)
-                card.AddChild(new Label { Text = status, StyleClasses = { StyleClass.LabelSubText } });
+                card.AddChild(new RichTextLabel { Text = status, HorizontalExpand = true, StyleClasses = { StyleClass.LabelSubText } });
         }
 
         AddConditionRows(card, organ);
@@ -181,23 +183,25 @@ public sealed partial class OxydSurgeryWindow : FancyWindow
         foreach (var (name, fix) in ConditionsFor(organ))
         {
             var fixText = Loc.GetString($"oxyd-surgery-step-{fix.ToString().ToLowerInvariant()}");
-            if (!organ.AvailableSteps.Contains(fix))
+            // Vertical rows + wrapping text: nothing can collide at any string length.
+            var row = new BoxContainer
             {
-                // Eris renders unusable fixes as plain text, not links; a single label can't collide.
-                parent.AddChild(new Label { Text = $"{name}: {fixText}", StyleClasses = { StyleClass.LabelWeak } });
-                continue;
-            }
-            var row = new BoxContainer { SeparationOverride = 6 };
-            row.AddChild(new Label { Text = $"{name}:", StyleClasses = { StyleClass.LabelKeyText } });
-            var fixButton = new Button
-            {
-                Text = fixText,
-                HorizontalAlignment = HAlignment.Right,
-                HorizontalExpand = true,
+                Orientation = BoxContainer.LayoutOrientation.Vertical,
+                SeparationOverride = 2,
             };
+            row.AddChild(new RichTextLabel { Text = $"{name}:", HorizontalExpand = true, StyleClasses = { StyleClass.LabelKeyText } });
             var organNet = organ.Organ;
-            fixButton.OnPressed += _ => StepSelected?.Invoke(organNet, fix);
-            row.AddChild(fixButton);
+            if (organ.AvailableSteps.Contains(fix))
+            {
+                var fixButton = new Button { Text = fixText, HorizontalExpand = true };
+                fixButton.OnPressed += _ => StepSelected?.Invoke(organNet, fix);
+                row.AddChild(fixButton);
+            }
+            else
+            {
+                // Eris renders unusable fixes as plain text, not links.
+                row.AddChild(new RichTextLabel { Text = fixText, HorizontalExpand = true, StyleClasses = { StyleClass.LabelSubText } });
+            }
             parent.AddChild(row);
         }
     }

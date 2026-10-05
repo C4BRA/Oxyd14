@@ -4,8 +4,8 @@
                MinSize="720 480"
                SetSize="780 560">
     <BoxContainer Orientation="Vertical" Margin="8" SeparationOverride="6">
-        <Label Name="PatientLabel"/>
-        <Label Name="ToolLabel" StyleClasses="LabelSubText"/>
+        <RichTextLabel Name="PatientLabel" HorizontalExpand="True"/>
+        <RichTextLabel Name="ToolLabel" StyleClasses="LabelSubText" HorizontalExpand="True"/>
         <BoxContainer Orientation="Horizontal" SeparationOverride="8" VerticalExpand="True">
             <!-- Left: organ cards (Eris surgery_organ.tmpl contents column) -->
             <ScrollContainer SetWidth="320" VerticalExpand="True" HScrollEnabled="False">
@@ -21,7 +21,7 @@
                             <Label Text="{Loc 'oxyd-surgery-health'}" StyleClasses="LabelKeyText" SetWidth="70"/>
                             <ProgressBar Name="DiagHealthBar" MinValue="0" MaxValue="1" HorizontalExpand="True"/>
                         </BoxContainer>
-                        <Label Name="DiagStatusLabel" StyleClasses="LabelSubText"/>
+                        <RichTextLabel Name="DiagStatusLabel" StyleClasses="LabelSubText" HorizontalExpand="True"/>
                         <Label Name="DiagEffLabel"/>
                         <Button Name="DiagnoseButton" Text="{Loc 'oxyd-surgery-diagnose'}"/>
                     </BoxContainer>
