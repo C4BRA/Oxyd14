@@ -8,6 +8,7 @@ using Content.Shared.Buckle.Components;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Prototypes;
 using Content.Shared.DoAfter;
+using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Interaction;
 using Content.Shared.Medical.Healing;
 using Content.Shared.Chemistry.EntitySystems;
@@ -17,6 +18,7 @@ using Content.Shared.Popups;
 using Content.Shared.Stacks;
 using Content.Shared.Standing;
 using Content.Shared.Tag;
+using Content.Shared.Verbs;
 using Robust.Server.GameObjects;
 using Robust.Shared.Containers;
 using Robust.Shared.Map;
@@ -49,6 +51,7 @@ public sealed partial class OxydSurgerySystem : EntitySystem
     [Dependency] private readonly TagSystem _tag = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly OxydMedicalScannerSystem _medicalScanner = default!;
+    [Dependency] private readonly SharedHandsSystem _hands = default!;
     [Dependency] private readonly SharedSolutionContainerSystem _solutions = default!;
     [Dependency] private readonly IPrototypeManager _prototypes = default!;
 
@@ -83,6 +86,34 @@ public sealed partial class OxydSurgerySystem : EntitySystem
         SubscribeLocalEvent<OxydSurgeryUiProxyComponent, OxydSurgerySelectStepMessage>(OnSelectStep);
         SubscribeLocalEvent<OxydSurgeryUiProxyComponent, OxydSurgeryDoAfterEvent>(OnStepDone);
         SubscribeLocalEvent<OxydSurgeryUiProxyComponent, BoundUIClosedEvent>(OnUiClosed);
+        SubscribeLocalEvent<BodyComponent, GetVerbsEvent<InteractionVerb>>(OnGetSurgeryVerbs);
+    }
+
+    // Context-menu mirror of the click path so the window is reachable without pixel clicks
+    // (also the standard SS14 affordance for interactions like this).
+    private void OnGetSurgeryVerbs(EntityUid uid, BodyComponent comp, GetVerbsEvent<InteractionVerb> args)
+    {
+        if (!args.CanAccess || !args.CanInteract || !IsOperable(uid))
+            return;
+
+        // A surgical tool in any hand qualifies (args.Using is only the active one).
+        EntityUid? surgicalTool = null;
+        var hasFreeHand = _hands.CountFreeHands(args.User) > 0;
+        foreach (var held in _hands.EnumerateHeld(args.User))
+        {
+            if (TryComp<OxydSurgeryToolComponent>(held, out var tool) && tool.Tools != OxydSurgeryTool.None)
+                surgicalTool ??= held;
+        }
+        var bareHandsOnOpenSite = hasFreeHand
+            && FindOrgan(uid, o => o.Surg.Incision != OxydIncisionStage.None).Valid;
+        if (surgicalTool == null && !bareHandsOnOpenSite)
+            return;
+
+        args.Verbs.Add(new InteractionVerb
+        {
+            Text = Loc.GetString("oxyd-surgery-verb"),
+            Act = () => OpenSurgeryUi(args.User, uid, surgicalTool),
+        });
     }
 
     // Sole InteractUsingEvent subscriber on BodyComponent (the bus allows one per comp+event):

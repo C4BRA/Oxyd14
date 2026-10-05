@@ -335,3 +335,4 @@ ent-OxydErisOintmentSingle = ointment
 ent-OxydErisTraumaKitSingle = advanced trauma kit
 ent-OxydErisBurnKitSingle = advanced burn kit
 ent-OxydErisSplintSingle = medical splint
+oxyd-surgery-verb = Surgery
