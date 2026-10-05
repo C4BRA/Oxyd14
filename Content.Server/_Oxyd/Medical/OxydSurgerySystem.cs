@@ -10,6 +10,8 @@ using Content.Shared.Damage.Prototypes;
 using Content.Shared.DoAfter;
 using Content.Shared.Interaction;
 using Content.Shared.Medical.Healing;
+using Content.Shared.Chemistry.EntitySystems;
+using Content.Shared.Damage.Components;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.Popups;
 using Content.Shared.Stacks;
@@ -47,6 +49,8 @@ public sealed partial class OxydSurgerySystem : EntitySystem
     [Dependency] private readonly TagSystem _tag = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly OxydMedicalScannerSystem _medicalScanner = default!;
+    [Dependency] private readonly SharedSolutionContainerSystem _solutions = default!;
+    [Dependency] private readonly IPrototypeManager _prototypes = default!;
 
     private static readonly EntProtoId UiProxyProto = "OxydMedicalSurgeryUiProxy";
     private const string ImplantContainerId = "oxyd-surgery-implants";
@@ -54,6 +58,9 @@ public sealed partial class OxydSurgerySystem : EntitySystem
 
     /// <summary>proxy entity -> session state.</summary>
     private readonly Dictionary<EntityUid, SurgerySession> _sessions = new();
+
+    /// <summary>organ -> step currently running on it (shown on its card while the do_after runs).</summary>
+    private readonly Dictionary<EntityUid, OxydSurgeryStep> _running = new();
 
     private sealed class SurgerySession
     {
@@ -394,7 +401,12 @@ public sealed partial class OxydSurgerySystem : EntitySystem
         };
 
         if (_doAfter.TryStartDoAfter(doArgs))
+        {
+            _running[organ] = step;
             Announce(surgeon, patient, "oxyd-medical-surgery-start", organ);
+            if (proxy is { } p)
+                PushState(p);
+        }
     }
 
     // UI path.
@@ -432,8 +444,12 @@ public sealed partial class OxydSurgerySystem : EntitySystem
     // DoAfter landing on the proxy (UI-open steps).
     private void OnStepDone(EntityUid proxy, OxydSurgeryUiProxyComponent comp, OxydSurgeryDoAfterEvent args)
     {
+        _running.Remove(GetEntity(args.Organ));
         if (args.Cancelled || !_sessions.TryGetValue(proxy, out var s))
+        {
+            PushState(proxy);
             return;
+        }
 
         CompleteStep(args, s.Surgeon, s.Patient);
         PushState(proxy);
@@ -442,6 +458,7 @@ public sealed partial class OxydSurgerySystem : EntitySystem
     // DoAfter landing on the patient (direct-click steps).
     private void OnPatientStepDone(EntityUid uid, BodyComponent comp, OxydSurgeryDoAfterEvent args)
     {
+        _running.Remove(GetEntity(args.Organ));
         if (args.Cancelled)
             return;
 
@@ -492,7 +509,7 @@ public sealed partial class OxydSurgerySystem : EntitySystem
     private void FailStep(OxydSurgeryStep step, EntityUid surgeon, EntityUid patient,
         EntityUid organ, OxydOrganSurgeryComponent surg)
     {
-        surg.OrganDamage += 8f;
+        OxydWoundSystem.AddOrganDamage(surg, 8f);
         if (surg.Incision != OxydIncisionStage.None)
             surg.Clamped = false;
         Dirty(organ, surg);
@@ -542,7 +559,7 @@ public sealed partial class OxydSurgerySystem : EntitySystem
                 // Standing cautery: seals surface bleeding without an incision.
                 surg.Clamped = true;
                 surg.WoundBleedRate = 0;
-                surg.OrganDamage = Math.Max(0, surg.OrganDamage - 10);
+                OxydWoundSystem.ReduceOrganDamage(surg, 10);
                 _damage.TryChangeDamage(patient, new DamageSpecifier { DamageDict = { ["Heat"] = 3 } },
                     ignoreResistances: true);
                 break;
@@ -550,7 +567,7 @@ public sealed partial class OxydSurgerySystem : EntitySystem
             case OxydSurgeryStep.FixBone:
                 if (!surg.Fractured || surg.Incision != OxydIncisionStage.Retracted) return true;
                 surg.Fractured = false;
-                surg.OrganDamage = Math.Max(0, surg.OrganDamage - 15);
+                OxydWoundSystem.ReduceOrganDamage(surg, 15);
                 if (TryComp<PainComponent>(patient, out var pain))
                     pain.TemporaryPain += 12;
                 break;
@@ -597,6 +614,8 @@ public sealed partial class OxydSurgerySystem : EntitySystem
                     return true;
                 if (tool is { } kit && TryComp<StackComponent>(kit, out var stack))
                     _stacks.ReduceCount((kit, stack), 1);
+                surg.BruteDamage = 0;
+                surg.BurnDamage = 0;
                 surg.OrganDamage = 0;
                 break;
             case OxydSurgeryStep.RoboOpen:
@@ -612,10 +631,18 @@ public sealed partial class OxydSurgerySystem : EntitySystem
             case OxydSurgeryStep.RoboFixBurn:
                 if (!surg.Robotic || surg.Incision == OxydIncisionStage.None || surg.OrganDamage <= 0)
                     return true;
-                surg.OrganDamage = Math.Max(0, surg.OrganDamage - 15);
-                if (step == OxydSurgeryStep.RoboFixBurn && tool is { } coil &&
-                    TryComp<StackComponent>(coil, out var coilStack))
-                    _stacks.ReduceCount((coil, coilStack), 1);
+                if (step == OxydSurgeryStep.RoboFixBrute)
+                {
+                    surg.BruteDamage = Math.Max(0, surg.BruteDamage - 15);
+                    surg.OrganDamage = surg.BruteDamage + surg.BurnDamage;
+                }
+                else
+                {
+                    surg.BurnDamage = Math.Max(0, surg.BurnDamage - 15);
+                    surg.OrganDamage = surg.BruteDamage + surg.BurnDamage;
+                    if (tool is { } coil && TryComp<StackComponent>(coil, out var coilStack))
+                        _stacks.ReduceCount((coil, coilStack), 1);
+                }
                 break;
         }
 
@@ -681,31 +708,178 @@ public sealed partial class OxydSurgerySystem : EntitySystem
             HeldTools = ToolFlagsOf(s.Tool),
             HeldItemName = s.Tool is { } t ? Name(t) : string.Empty,
             SelfSurgery = s.SelfSurgery,
+            StandingOnly = !IsOperable(s.Patient),
         };
+
+        // Eris owner_oxyloss: airloss group drives the Oxygen bar on respiratory organs.
+        if (TryComp<DamageableComponent>(s.Patient, out var dmg))
+        {
+            var spec = _damage.GetAllDamage((s.Patient, dmg));
+            spec.TryGetDamageInGroup(_prototypes.Index<DamageGroupPrototype>("Airloss"), out var airloss);
+            state.OwnerOxyLoss = airloss.Float();
+        }
+
+        // Blood bars read the body's bloodstream (Eris organ.current_blood / max_blood_storage).
+        float bloodLevel = 0f, bloodMax = 0f;
+        if (_solutions.TryGetSolution(s.Patient, BloodstreamComponent.DefaultBloodSolutionName,
+                out _, out var blood))
+        {
+            bloodLevel = blood.Volume.Float();
+            bloodMax = blood.MaxVolume.Float();
+        }
 
         foreach (var (orgUid, organ, surg) in _wounds.GetOrgans(s.Patient))
         {
+            var external = OxydWoundSystem.IsExternal(organ);
+            var efficiency = Math.Clamp(
+                (OxydOrganSurgeryComponent.OrganMaxDamage - surg.OrganDamage) /
+                OxydOrganSurgeryComponent.OrganMaxDamage * 100f, 0f, 100f);
+            var steps = AvailableSteps(state.HeldTools, s.Tool, organ, surg);
             var entry = new OxydSurgeryOrganEntry
             {
                 Organ = GetNetEntity(orgUid),
                 Name = Name(orgUid),
                 Robotic = surg.Robotic,
-                External = OxydWoundSystem.IsExternal(organ),
+                External = external,
                 Incision = surg.Incision,
                 Clamped = surg.Clamped,
                 Fractured = surg.Fractured,
                 Splinted = surg.Splinted,
                 OrganDamage = surg.OrganDamage,
+                BruteDamage = surg.BruteDamage,
+                BurnDamage = surg.BurnDamage,
                 EmbeddedCount = surg.EmbeddedItems.Count,
                 Diagnosed = surg.Diagnosed,
                 MaxDamage = OxydOrganSurgeryComponent.OrganMaxDamage,
                 CavityMax = OxydOrganSurgeryComponent.ImplantCavityMax,
-                AvailableSteps = AvailableSteps(state.HeldTools, s.Tool, organ, surg),
+                AvailableSteps = steps,
+                RunningStep = _running.TryGetValue(orgUid, out var running) ? running : null,
+                // Eris organ.is_open(): organic organs need a retracted incision, robotic an open panel.
+                Open = surg.Robotic ? surg.Incision != OxydIncisionStage.None
+                                    : surg.Incision == OxydIncisionStage.Retracted,
+                Efficiency = efficiency,
+                // Eris limb cards list their internal process types; organs list themselves.
+                Processes = external
+                    ? new List<string> { "Bone", "Muscle", "Nerves" }
+                    : new List<string> { Name(orgUid) },
+                StoredBlood = bloodLevel,
+                MaxBlood = bloodMax,
+                // Respiratory/brain organs expose the patient's oxygen bar (Eris BP_BRAIN organs).
+                ShowOxygen = organ.Category is { } cat &&
+                             (cat.Id == "Brain" || cat.Id == "Lungs" || cat.Id == "Heart"),
             };
+
+            foreach (var net in surg.EmbeddedItems)
+            {
+                var item = GetEntity(net);
+                if (item.IsValid())
+                    entry.ModNames.Add(Name(item));
+            }
+
+            if (surg.Diagnosed)
+            {
+                entry.Wounds = BuildWounds(surg, steps);
+                entry.WoundCount = entry.Wounds.Count;
+            }
+
             state.Organs.Add(entry);
         }
 
         _ui.SetUiState(proxy, OxydSurgeryUiKey.Key, state);
+    }
+
+    /// <summary>Synthesises the internal view's wound cards from the organ's surgical state
+    /// (Eris wounddatums: each wound has a type, severity, and treatment list).</summary>
+    private List<OxydSurgeryWoundEntry> BuildWounds(OxydOrganSurgeryComponent surg,
+        List<OxydSurgeryStep> steps)
+    {
+        var list = new List<OxydSurgeryWoundEntry>();
+        bool Fixable(OxydSurgeryStep s) => steps.Contains(s);
+
+        if (surg is { Incision: not OxydIncisionStage.None, Clamped: false })
+        {
+            list.Add(new OxydSurgeryWoundEntry
+            {
+                Name = Loc.GetString("oxyd-surgery-wound-incision"),
+                Severity = 1,
+                SeverityMax = 2,
+                Treatments = Loc.GetString("oxyd-surgery-treat-incision"),
+                FixStep = Fixable(OxydSurgeryStep.FixBleeding) ? OxydSurgeryStep.FixBleeding
+                          : Fixable(OxydSurgeryStep.Cauterize) ? OxydSurgeryStep.Cauterize
+                          : OxydSurgeryStep.FixBleeding,
+            });
+        }
+
+        if (surg.WoundBleedRate > 0 && surg.Incision == OxydIncisionStage.None)
+        {
+            list.Add(new OxydSurgeryWoundEntry
+            {
+                Name = Loc.GetString("oxyd-surgery-wound-bleeding"),
+                Severity = 1,
+                SeverityMax = 2,
+                Treatments = Loc.GetString("oxyd-surgery-treat-cauterise"),
+                FixStep = OxydSurgeryStep.CloseWounds,
+            });
+        }
+
+        if (surg.Fractured)
+        {
+            list.Add(new OxydSurgeryWoundEntry
+            {
+                Name = Loc.GetString("oxyd-surgery-wound-fracture"),
+                Severity = surg.Splinted ? 1 : 2,
+                SeverityMax = 2,
+                Treatments = Loc.GetString("oxyd-surgery-treat-fracture"),
+                FixStep = OxydSurgeryStep.MendBone,
+            });
+        }
+
+        if (surg.EmbeddedItems.Count > 0)
+        {
+            list.Add(new OxydSurgeryWoundEntry
+            {
+                Name = Loc.GetString("oxyd-surgery-wound-embedded"),
+                Severity = surg.EmbeddedItems.Count,
+                SeverityMax = OxydOrganSurgeryComponent.ImplantCavityMax,
+                Treatments = Loc.GetString("oxyd-surgery-treat-embedded"),
+                FixStep = OxydSurgeryStep.RemoveEmbedded,
+            });
+        }
+
+        // Damage pools become internal-trauma / burn-tissue / mechanical-damage cards.
+        if (surg.BruteDamage > 0)
+        {
+            list.Add(new OxydSurgeryWoundEntry
+            {
+                Name = Loc.GetString(surg.Robotic
+                    ? "oxyd-surgery-wound-mech"
+                    : "oxyd-surgery-wound-brute"),
+                Severity = (int) MathF.Ceiling(surg.BruteDamage / 10f),
+                SeverityMax = (int) MathF.Ceiling(OxydOrganSurgeryComponent.OrganMaxDamage / 10f),
+                Treatments = Loc.GetString(surg.Robotic
+                    ? "oxyd-surgery-treat-robo"
+                    : "oxyd-surgery-treat-trauma"),
+                FixStep = surg.Robotic ? OxydSurgeryStep.RoboFixBrute : OxydSurgeryStep.FixOrgan,
+            });
+        }
+
+        if (surg.BurnDamage > 0)
+        {
+            list.Add(new OxydSurgeryWoundEntry
+            {
+                Name = Loc.GetString(surg.Robotic
+                    ? "oxyd-surgery-wound-short"
+                    : "oxyd-surgery-wound-burn"),
+                Severity = (int) MathF.Ceiling(surg.BurnDamage / 10f),
+                SeverityMax = (int) MathF.Ceiling(OxydOrganSurgeryComponent.OrganMaxDamage / 10f),
+                Treatments = Loc.GetString(surg.Robotic
+                    ? "oxyd-surgery-treat-coil"
+                    : "oxyd-surgery-treat-burn"),
+                FixStep = surg.Robotic ? OxydSurgeryStep.RoboFixBurn : OxydSurgeryStep.FixOrgan,
+            });
+        }
+
+        return list;
     }
 
     private static OxydSurgeryTool ToolForStep(OxydSurgeryStep step) => step switch

@@ -80,7 +80,9 @@ public sealed partial class OxydWoundSystem : EntitySystem
             return;
 
         var (orgUid, organ, surg) = _random.Pick(externals);
-        surg.OrganDamage += incoming * 0.35f;
+        surg.BruteDamage += brute.Float() * 0.35f;
+        surg.BurnDamage += burn.Float() * 0.5f * 0.35f;
+        surg.OrganDamage = surg.BruteDamage + surg.BurnDamage;
 
         if (brute.Float() >= FractureThreshold && !surg.Fractured && _random.Prob(FractureChance))
         {
@@ -127,7 +129,8 @@ public sealed partial class OxydWoundSystem : EntitySystem
             // Organ damage slowly recovers once the wound is sealed and set.
             if (surg is { OrganDamage: > 0, Incision: OxydIncisionStage.None, Fractured: false })
             {
-                surg.OrganDamage = Math.Max(0, surg.OrganDamage - 0.15f * UpdateInterval);
+                var heal = Math.Min(surg.OrganDamage, 0.15f * UpdateInterval);
+                ReduceOrganDamage(surg, heal);
                 dirty = true;
             }
 
@@ -154,8 +157,29 @@ public sealed partial class OxydWoundSystem : EntitySystem
         foreach (var (_, _, surg) in GetOrgans(body).Where(o => o.Surgery.OrganDamage > 0)
                      .OrderByDescending(o => o.Surgery.OrganDamage).Take(2))
         {
-            surg.OrganDamage = Math.Max(0, surg.OrganDamage - amount);
+            ReduceOrganDamage(surg, amount);
         }
+    }
+
+    /// <summary>Heals organ damage proportionally across the brute/burn pools.</summary>
+    public static void ReduceOrganDamage(OxydOrganSurgeryComponent surg, float amount)
+    {
+        if (surg.OrganDamage <= 0)
+            return;
+        var frac = Math.Clamp(amount / surg.OrganDamage, 0f, 1f);
+        surg.BruteDamage = Math.Max(0, surg.BruteDamage - surg.BruteDamage * frac);
+        surg.BurnDamage = Math.Max(0, surg.BurnDamage - surg.BurnDamage * frac);
+        surg.OrganDamage = surg.BruteDamage + surg.BurnDamage;
+    }
+
+    /// <summary>Adds organ damage into a specific pool (brute or burn).</summary>
+    public static void AddOrganDamage(OxydOrganSurgeryComponent surg, float amount, bool burn = false)
+    {
+        if (burn)
+            surg.BurnDamage = Math.Max(0, surg.BurnDamage + amount);
+        else
+            surg.BruteDamage = Math.Max(0, surg.BruteDamage + amount);
+        surg.OrganDamage = surg.BruteDamage + surg.BurnDamage;
     }
 
     /// <summary>Mends a random fractured organ (Eris ossisine behaviour).</summary>

@@ -37,6 +37,14 @@ public sealed partial class OxydOrganSurgeryComponent : Component
     [DataField, AutoNetworkedField]
     public float OrganDamage;
 
+    /// <summary>Brute share of <see cref="OrganDamage"/> (Eris organ.brute_dam, shown as its own bar).</summary>
+    [DataField, AutoNetworkedField]
+    public float BruteDamage;
+
+    /// <summary>Burn share of <see cref="OrganDamage"/> (Eris organ.burn_dam, shown as its own bar).</summary>
+    [DataField, AutoNetworkedField]
+    public float BurnDamage;
+
     /// <summary>Embedded objects inside this organ (shrapnel, cavity items). Eris wound.embedded_objects.</summary>
     [DataField]
     public List<NetEntity> EmbeddedItems = new();

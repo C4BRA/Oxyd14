@@ -27,6 +27,10 @@ public sealed class OxydSurgeryOrganEntry
     public bool Fractured;
     public bool Splinted;
     public float OrganDamage;
+    /// <summary>Brute damage on this organ (Eris brute_dam, separate Diagnostics bar).</summary>
+    public float BruteDamage;
+    /// <summary>Burn damage on this organ (Eris burn_dam, separate Diagnostics bar).</summary>
+    public float BurnDamage;
     public int EmbeddedCount;
     /// <summary>Wound details were diagnosed (scanner / wound probe). Eris hides them until then.</summary>
     public bool Diagnosed = true;
@@ -38,6 +42,42 @@ public sealed class OxydSurgeryOrganEntry
     public List<OxydSurgeryStep> AvailableSteps = new();
     /// <summary>Step currently running on this organ, if any.</summary>
     public OxydSurgeryStep? RunningStep;
+
+    /// <summary>Eris organ.is_open(): surgical site exposed (retracted incision, or open robo panel).
+    /// Condition/action links are disabled until this is true.</summary>
+    public bool Open;
+    /// <summary>Limb efficiency percentage (Eris limb_efficiency, shown green in Diagnostics).</summary>
+    public float Efficiency;
+    /// <summary>Organ type names for the pink types line (Eris organ processes; externals show
+    /// Bone/Muscle/Nerves, internals their own name). Rendered as "type (efficiency%)".</summary>
+    public List<string> Processes = new();
+    /// <summary>Blood stored by this organ's share of the body's bloodstream
+    /// (Eris organ.current_blood / max_blood_storage).</summary>
+    public float StoredBlood;
+    public float MaxBlood;
+    /// <summary>Number of internal wounds (Eris wounddatums length, orange "Wounds:" count).</summary>
+    public int WoundCount;
+    /// <summary>Wound cards for the internal view (Eris diag_wounds: type/severity/treatments).</summary>
+    public List<OxydSurgeryWoundEntry> Wounds = new();
+    /// <summary>Names of implanted/cavity items for the Modifications panel (Eris diag_mods).</summary>
+    public List<string> ModNames = new();
+    /// <summary>Show an Oxygen bar on this card (Eris respiratory/brain organs).</summary>
+    public bool ShowOxygen;
+}
+
+/// <summary>One wound row on the internal view's Wounds panel (Eris diag_wounds entry).</summary>
+[Serializable, NetSerializable]
+public sealed class OxydSurgeryWoundEntry
+{
+    /// <summary>Wound type name (Eris wound.name).</summary>
+    public string Name = string.Empty;
+    /// <summary>Current severity and cap (Eris wound.severity / severity_max).</summary>
+    public int Severity;
+    public int SeverityMax;
+    /// <summary>What can treat it (Eris wound.treatments text).</summary>
+    public string Treatments = string.Empty;
+    /// <summary>The surgery step that treats this wound, if one exists and the held tool can run it.</summary>
+    public OxydSurgeryStep? FixStep;
 }
 
 [Serializable, NetSerializable]
@@ -51,6 +91,10 @@ public sealed class OxydSurgeryState : BoundUserInterfaceState
     public bool StandingOnly;
     /// <summary>Operating on yourself: heavier failure penalty (Eris self-surgery).</summary>
     public bool SelfSurgery;
+    /// <summary>Patient's oxy loss for the Oxygen bars (Eris owner_oxyloss; bar shows oxymax-oxyloss).</summary>
+    public float OwnerOxyLoss;
+    /// <summary>Oxygen bar max (Eris 100 - owner.total_oxygen_req).</summary>
+    public float OwnerOxyMax = 100f;
     public List<OxydSurgeryOrganEntry> Organs = new();
 }
 
