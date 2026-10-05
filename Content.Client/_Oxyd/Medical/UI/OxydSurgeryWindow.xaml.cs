@@ -181,14 +181,20 @@ public sealed partial class OxydSurgeryWindow : FancyWindow
     {
         foreach (var (name, fix) in ConditionsFor(organ))
         {
+            var fixText = Loc.GetString($"oxyd-surgery-step-{fix.ToString().ToLowerInvariant()}");
+            if (!organ.AvailableSteps.Contains(fix))
+            {
+                // Eris renders unusable fixes as plain text, not links; a single label can't collide.
+                parent.AddChild(new Label { Text = $"{name}: {fixText}", StyleClasses = { StyleClass.LabelWeak } });
+                continue;
+            }
             var row = new BoxContainer { SeparationOverride = 6 };
             row.AddChild(new Label { Text = $"{name}:", StyleClasses = { StyleClass.LabelKeyText } });
             var fixButton = new Button
             {
-                Text = Loc.GetString($"oxyd-surgery-step-{fix.ToString().ToLowerInvariant()}"),
+                Text = fixText,
                 HorizontalAlignment = HAlignment.Right,
                 HorizontalExpand = true,
-                Disabled = !organ.AvailableSteps.Contains(fix),
             };
             var organNet = organ.Organ;
             fixButton.OnPressed += _ => StepSelected?.Invoke(organNet, fix);
