@@ -569,7 +569,8 @@ public sealed partial class OxydSurgerySystem : EntitySystem
                 ExtractEmbedded(patient, surg);
                 break;
             case OxydSurgeryStep.InsertItem:
-                if (tool is not { } item || surg.Incision != OxydIncisionStage.Retracted)
+                if (tool is not { } item || surg.Incision != OxydIncisionStage.Retracted ||
+                    surg.EmbeddedItems.Count >= OxydOrganSurgeryComponent.ImplantCavityMax)
                     return true;
                 var cavity = _container.EnsureContainer<Container>(organ, ImplantContainerId);
                 if (!_container.Insert(item, cavity))
@@ -697,6 +698,8 @@ public sealed partial class OxydSurgerySystem : EntitySystem
                 OrganDamage = surg.OrganDamage,
                 EmbeddedCount = surg.EmbeddedItems.Count,
                 Diagnosed = surg.Diagnosed,
+                MaxDamage = OxydOrganSurgeryComponent.OrganMaxDamage,
+                CavityMax = OxydOrganSurgeryComponent.ImplantCavityMax,
                 AvailableSteps = AvailableSteps(state.HeldTools, s.Tool, organ, surg),
             };
             state.Organs.Add(entry);
@@ -780,8 +783,9 @@ public sealed partial class OxydSurgerySystem : EntitySystem
                     Add(OxydSurgeryStep.RemoveEmbedded);
                     Add(OxydSurgeryStep.RemoveItem);
                 }
-                // Cavity work accepts whatever non-surgical item is being held.
-                if (external && heldItem != null && tools == OxydSurgeryTool.None)
+                // Cavity work accepts whatever non-surgical item is being held, until full.
+                if (external && heldItem != null && tools == OxydSurgeryTool.None &&
+                    surg.EmbeddedItems.Count < OxydOrganSurgeryComponent.ImplantCavityMax)
                     steps.Add(OxydSurgeryStep.InsertItem);
                 if (!external)
                     Add(OxydSurgeryStep.DetachOrgan);
@@ -793,8 +797,12 @@ public sealed partial class OxydSurgerySystem : EntitySystem
         if (surg.OrganDamage > 0 && (tools & (OxydSurgeryTool.TraumaKit | OxydSurgeryTool.BurnKit)) != 0)
             steps.Add(OxydSurgeryStep.FixOrgan);
 
-        // Always offer a wound read on the held scalpel (Eris incision examine).
-        Add(OxydSurgeryStep.DiagnoseWound);
+        // Eris diagnose: any surgeon can probe an undiagnosed organ (no tool needed);
+        // on a diagnosed organ it's the scalpel's wound examine.
+        if (!surg.Diagnosed)
+            steps.Add(OxydSurgeryStep.DiagnoseWound);
+        else
+            Add(OxydSurgeryStep.DiagnoseWound);
         return steps;
     }
 

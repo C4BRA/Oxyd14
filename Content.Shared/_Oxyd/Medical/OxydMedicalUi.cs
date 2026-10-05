@@ -30,6 +30,10 @@ public sealed class OxydSurgeryOrganEntry
     public int EmbeddedCount;
     /// <summary>Wound details were diagnosed (scanner / wound probe). Eris hides them until then.</summary>
     public bool Diagnosed = true;
+    /// <summary>Display cap for the organ's health bar (Eris organ.max_damage).</summary>
+    public float MaxDamage = OxydOrganSurgeryComponent.OrganMaxDamage;
+    /// <summary>Maximum cavity implants (Eris limb.max_volume).</summary>
+    public int CavityMax = OxydOrganSurgeryComponent.ImplantCavityMax;
     /// <summary>Steps the held tool can start on this organ right now.</summary>
     public List<OxydSurgeryStep> AvailableSteps = new();
     /// <summary>Step currently running on this organ, if any.</summary>

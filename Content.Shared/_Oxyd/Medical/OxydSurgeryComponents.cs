@@ -49,6 +49,12 @@ public sealed partial class OxydOrganSurgeryComponent : Component
     /// surgery UI hides wound details, like Eris's undiagnosed limbs.</summary>
     [DataField, AutoNetworkedField]
     public bool Diagnosed;
+
+    /// <summary>Display cap for the health bar on an organ (Eris organ.max_damage ~ 60).</summary>
+    public const float OrganMaxDamage = 60f;
+
+    /// <summary>Maximum cavity implants per organ (Eris limb.max_volume, simplified to a count).</summary>
+    public const int ImplantCavityMax = 3;
 }
 
 [Serializable, NetSerializable]

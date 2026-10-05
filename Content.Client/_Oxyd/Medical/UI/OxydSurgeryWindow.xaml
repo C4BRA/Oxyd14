@@ -1,16 +1,46 @@
 <controls:FancyWindow xmlns="https://spacestation14.io"
                xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
                Title="{Loc 'oxyd-surgery-window-title'}"
-               MinSize="520 400"
-               SetSize="560 460">
+               MinSize="680 460"
+               SetSize="720 520">
     <BoxContainer Orientation="Vertical" Margin="8" SeparationOverride="6">
         <Label Name="PatientLabel"/>
-        <Label Name="ToolLabel"/>
+        <Label Name="ToolLabel" StyleClasses="LabelSubText"/>
         <BoxContainer Orientation="Horizontal" SeparationOverride="8" VerticalExpand="True">
-            <ItemList Name="OrganList" HorizontalExpand="True" VerticalExpand="True"/>
-            <BoxContainer Orientation="Vertical" SeparationOverride="4" HorizontalExpand="True">
-                <RichTextLabel Name="OrganStatusLabel" MinHeight="60"/>
-                <BoxContainer Name="StepButtons" Orientation="Vertical" SeparationOverride="4" VerticalExpand="True"/>
+            <!-- Left: organ cards (Eris surgery_organ.tmpl contents column) -->
+            <ScrollContainer SetWidth="290" VerticalExpand="True">
+                <BoxContainer Name="OrganCards" Orientation="Vertical" SeparationOverride="6" HorizontalExpand="True"/>
+            </ScrollContainer>
+            <!-- Right: selected organ diagnostics / volume / conditions -->
+            <BoxContainer Orientation="Vertical" SeparationOverride="6" HorizontalExpand="True">
+                <PanelContainer StyleClasses="BackgroundPanelDark">
+                    <BoxContainer Orientation="Vertical" SeparationOverride="4" Margin="6">
+                        <Label Text="{Loc 'oxyd-surgery-diagnostics'}" StyleClasses="LabelHeading"/>
+                        <Label Name="DiagOrganLabel" StyleClasses="LabelSubText"/>
+                        <BoxContainer Orientation="Horizontal" SeparationOverride="6">
+                            <Label Text="{Loc 'oxyd-surgery-health'}" StyleClasses="LabelKeyText" SetWidth="70"/>
+                            <ProgressBar Name="DiagHealthBar" MinValue="0" MaxValue="1" HorizontalExpand="True"/>
+                        </BoxContainer>
+                        <Label Name="DiagStatusLabel" StyleClasses="LabelSubText"/>
+                        <Label Name="DiagEffLabel"/>
+                        <Button Name="DiagnoseButton" Text="{Loc 'oxyd-surgery-diagnose'}"/>
+                    </BoxContainer>
+                </PanelContainer>
+                <PanelContainer StyleClasses="BackgroundPanelDark">
+                    <BoxContainer Orientation="Vertical" SeparationOverride="4" Margin="6">
+                        <Label Text="{Loc 'oxyd-surgery-volume'}" StyleClasses="LabelHeading"/>
+                        <Label Name="VolumeLabel"/>
+                        <Button Name="ShrapnelButton" Text="{Loc 'oxyd-surgery-remove-shrapnel'}"/>
+                    </BoxContainer>
+                </PanelContainer>
+                <PanelContainer StyleClasses="BackgroundPanelDark" VerticalExpand="True">
+                    <BoxContainer Orientation="Vertical" SeparationOverride="4" Margin="6">
+                        <Label Text="{Loc 'oxyd-surgery-conditions'}" StyleClasses="LabelHeading"/>
+                        <ScrollContainer VerticalExpand="True">
+                            <BoxContainer Name="ConditionRows" Orientation="Vertical" SeparationOverride="4" HorizontalExpand="True"/>
+                        </ScrollContainer>
+                    </BoxContainer>
+                </PanelContainer>
             </BoxContainer>
         </BoxContainer>
     </BoxContainer>
