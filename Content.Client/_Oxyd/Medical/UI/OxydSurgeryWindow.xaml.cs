@@ -262,12 +262,12 @@ public sealed partial class OxydSurgeryWindow : FancyWindow
                 card.AddChild(inner);
             }
 
-            // Conditions + fix links (disabled unless the organ is open).
+            // Conditions + fix links (enabled when the session tool can run the fix).
             foreach (var (name, fix) in ConditionsFor(organ))
             {
                 var row = MakeSectionRow($"{name}:");
                 var fixLink = new ErisLink(StepName(fix)) { HorizontalExpand = true };
-                if (organ.Open)
+                if (organ.AvailableSteps.Contains(fix))
                 {
                     var f = fix;
                     fixLink.OnPressed += _ => SelectStep(organNet, f);
@@ -279,18 +279,14 @@ public sealed partial class OxydSurgeryWindow : FancyWindow
             }
         }
 
-        // Action links (Eris organ.actions, disabled unless open).
+        // Action links (Eris organ.actions). AvailableSteps is already stage- and
+        // tool-filtered server-side, so every listed step is enabled here.
         foreach (var step in organ.AvailableSteps)
         {
             var row = new BoxContainer { Margin = new Thickness(0, 1, 0, 0) };
             var link = new ErisLink(StepName(step)) { HorizontalExpand = true };
-            if (organ.Open || StepNeedsNoOpen(step))
-            {
-                var s = step;
-                link.OnPressed += _ => SelectStep(organNet, s);
-            }
-            else
-                link.SetDisabledLook();
+            var s = step;
+            link.OnPressed += _ => SelectStep(organNet, s);
             row.AddChild(link);
             card.AddChild(row);
         }
@@ -321,13 +317,7 @@ public sealed partial class OxydSurgeryWindow : FancyWindow
         return new ErisPanel { Children = { card } };
     }
 
-    /// <summary>Steps Eris allows on a closed organ (cut open, robo open, diagnose, extraction).</summary>
-    private static bool StepNeedsNoOpen(OxydSurgeryStep step) => step switch
-    {
-        OxydSurgeryStep.CutOpen or OxydSurgeryStep.RoboOpen or OxydSurgeryStep.DiagnoseWound
-            or OxydSurgeryStep.ExtractShrapnel or OxydSurgeryStep.CloseWounds => true,
-        _ => false,
-    };
+
 
     /// <summary>Eris Diagnostics card for the selected organ: Health/Brute/Burn bars and
     /// green Efficiency; undiagnosed organs only offer the Diagnose link.</summary>
@@ -446,7 +436,7 @@ public sealed partial class OxydSurgeryWindow : FancyWindow
                     any = true;
                     var row = MakeSectionRow($"{TitleCase(organ.Name)} — {name}:");
                     var link = new ErisLink(StepName(fix)) { HorizontalExpand = true };
-                    if (organ.Open && organ.AvailableSteps.Contains(fix))
+                    if (organ.AvailableSteps.Contains(fix))
                     {
                         var net = organ.Organ;
                         var f = fix;
@@ -500,7 +490,7 @@ public sealed partial class OxydSurgeryWindow : FancyWindow
             });
         }
         foreach (var wound in organ.Wounds)
-            wrows.AddChild(BuildWoundCard(organ.Organ, wound));
+            wrows.AddChild(BuildWoundCard(organ, wound));
         wscroll.AddChild(wrows);
         woundsBox.AddChild(wscroll);
         left.AddChild(new ErisPanel { Children = { woundsBox }, VerticalExpand = true });
@@ -546,7 +536,7 @@ public sealed partial class OxydSurgeryWindow : FancyWindow
             }
         }
         var examine = new ErisLink(Loc.GetString("oxyd-surgery-examine")) { HorizontalExpand = true };
-        if (organ.Open)
+        if (!organ.Diagnosed || organ.AvailableSteps.Contains(OxydSurgeryStep.DiagnoseWound))
         {
             var net = organ.Organ;
             examine.OnPressed += _ => SelectStep(net, OxydSurgeryStep.DiagnoseWound);
@@ -576,12 +566,12 @@ public sealed partial class OxydSurgeryWindow : FancyWindow
         var attach = new ErisLink(Loc.GetString("oxyd-surgery-attach")) { HorizontalExpand = true };
         var remove = new ErisLink(Loc.GetString("oxyd-surgery-remove")) { HorizontalExpand = true };
         var organNet = organ.Organ;
-        if (organ.Open && organ.AvailableSteps.Contains(OxydSurgeryStep.InsertItem))
+        if (organ.AvailableSteps.Contains(OxydSurgeryStep.InsertItem))
             attach.OnPressed += _ => SelectStep(organNet, OxydSurgeryStep.InsertItem);
         else
             attach.SetDisabledLook();
-        if (organ.Open && (organ.AvailableSteps.Contains(OxydSurgeryStep.RemoveItem) ||
-                           organ.AvailableSteps.Contains(OxydSurgeryStep.RemoveEmbedded)))
+        if (organ.AvailableSteps.Contains(OxydSurgeryStep.RemoveItem) ||
+            organ.AvailableSteps.Contains(OxydSurgeryStep.RemoveEmbedded))
         {
             var step = organ.AvailableSteps.Contains(OxydSurgeryStep.RemoveItem)
                 ? OxydSurgeryStep.RemoveItem
@@ -598,7 +588,7 @@ public sealed partial class OxydSurgeryWindow : FancyWindow
     }
 
     /// <summary>Eris wound card (.nanoMap): Type / Severity x/max / Treatments / Treat link.</summary>
-    private Control BuildWoundCard(NetEntity organ, OxydSurgeryWoundEntry wound)
+    private Control BuildWoundCard(OxydSurgeryOrganEntry organ, OxydSurgeryWoundEntry wound)
     {
         var box = new BoxContainer { Orientation = BoxContainer.LayoutOrientation.Vertical, SeparationOverride = 2 };
 
@@ -620,7 +610,10 @@ public sealed partial class OxydSurgeryWindow : FancyWindow
         if (wound.FixStep is { } fix)
         {
             var link = new ErisLink(Loc.GetString("oxyd-surgery-treat")) { HorizontalExpand = true };
-            link.OnPressed += _ => SelectStep(organ, fix);
+            if (organ.AvailableSteps.Contains(fix))
+                link.OnPressed += _ => SelectStep(organ.Organ, fix);
+            else
+                link.SetDisabledLook();
             box.AddChild(link);
         }
 

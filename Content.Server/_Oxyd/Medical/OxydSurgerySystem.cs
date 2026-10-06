@@ -52,6 +52,7 @@ public sealed partial class OxydSurgerySystem : EntitySystem
     [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly OxydMedicalScannerSystem _medicalScanner = default!;
     [Dependency] private readonly SharedHandsSystem _hands = default!;
+    [Dependency] private readonly SharedInteractionSystem _interaction = default!;
     [Dependency] private readonly SharedSolutionContainerSystem _solutions = default!;
     [Dependency] private readonly IPrototypeManager _prototypes = default!;
 
@@ -490,10 +491,34 @@ public sealed partial class OxydSurgerySystem : EntitySystem
     private void OnPatientStepDone(EntityUid uid, BodyComponent comp, OxydSurgeryDoAfterEvent args)
     {
         _running.Remove(GetEntity(args.Organ));
-        if (args.Cancelled)
+        if (!args.Cancelled)
+            CompleteStep(args, args.User, uid);
+
+        // Refresh any surgery windows open on this patient so direct-click
+        // progress shows up without closing and reopening.
+        foreach (var (proxy, s) in _sessions)
+        {
+            if (s.Patient == uid)
+                PushState(proxy);
+        }
+    }
+
+    /// <summary>Eris ui_check: the window follows the surgeon's adjacency to the
+    /// patient — close it once they can no longer reach the table.</summary>
+    public override void Update(float frameTime)
+    {
+        base.Update(frameTime);
+        if (_sessions.Count == 0)
             return;
 
-        CompleteStep(args, args.User, uid);
+        foreach (var (proxy, s) in _sessions.ToList())
+        {
+            if (TerminatingOrDeleted(s.Surgeon) || TerminatingOrDeleted(s.Patient) ||
+                !_interaction.InRangeUnobstructed(s.Surgeon, s.Patient))
+            {
+                _ui.CloseUi(proxy, OxydSurgeryUiKey.Key, s.Surgeon);
+            }
+        }
     }
 
     /// <summary>Eris try_surgery_step: roll quality minus difficulty (plus self-surgery penalty),
