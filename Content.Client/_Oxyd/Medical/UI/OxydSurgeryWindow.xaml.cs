@@ -183,21 +183,14 @@ public sealed partial class OxydSurgeryWindow : FancyWindow
         card.AddChild(headRow);
 
         if (organ.RunningStep is { } running)
-            card.AddChild(new Label
-            {
-                Text = Loc.GetString("oxyd-surgery-running", ("step", StepName(running))),
-                FontColorOverride = ErisSurgeryColors.WoundCountText,
-                HorizontalExpand = true,
-            });
+            card.AddChild(MakeText(
+                Loc.GetString("oxyd-surgery-running", ("step", StepName(running))),
+                ErisSurgeryColors.WoundCountText));
 
         if (!organ.Diagnosed)
         {
-            card.AddChild(new Label
-            {
-                Text = Loc.GetString("oxyd-surgery-undiagnosed"),
-                FontColorOverride = ErisSurgeryColors.LabelText,
-                HorizontalExpand = true,
-            });
+            card.AddChild(MakeText(Loc.GetString("oxyd-surgery-undiagnosed"),
+                ErisSurgeryColors.LabelText));
         }
         else
         {
@@ -241,23 +234,17 @@ public sealed partial class OxydSurgeryWindow : FancyWindow
                 card.AddChild(row);
             }
 
-            // Organ types (efficiency): pink text inside a nested .display.
+            // Organ types (efficiency): pink text inside a nested .display. Stacked + wrapped —
+            // a side-by-side Label pair runs past the card edge instead of reflowing.
             if (organ.Processes.Count > 0)
             {
                 var inner = new ErisPanel { Margin = new Thickness(0, 2, 0, 2) };
                 var innerBox = new BoxContainer { Orientation = BoxContainer.LayoutOrientation.Vertical };
-                var typeRow = new BoxContainer { SeparationOverride = 4 };
-                typeRow.AddChild(new Label
-                {
-                    Text = Loc.GetString("oxyd-surgery-organ-types"),
-                    FontColorOverride = ErisSurgeryColors.Text,
-                });
-                typeRow.AddChild(new Label
-                {
-                    Text = string.Join(" ", organ.Processes.Select(p => $"{p} ({Math.Round(organ.Efficiency)}%)")),
-                    FontColorOverride = ErisSurgeryColors.OrganTypeText,
-                });
-                innerBox.AddChild(typeRow);
+                innerBox.AddChild(MakeText(Loc.GetString("oxyd-surgery-organ-types"),
+                    ErisSurgeryColors.Text));
+                innerBox.AddChild(MakeText(
+                    string.Join(" ", organ.Processes.Select(p => $"{p} ({Math.Round(organ.Efficiency)}%)")),
+                    ErisSurgeryColors.OrganTypeText));
                 inner.AddChild(innerBox);
                 card.AddChild(inner);
             }
@@ -329,7 +316,8 @@ public sealed partial class OxydSurgeryWindow : FancyWindow
 
         if (organ == null)
         {
-            box.AddChild(new Label { Text = Loc.GetString("oxyd-surgery-select-organ"), FontColorOverride = ErisSurgeryColors.LabelText });
+            box.AddChild(MakeText(Loc.GetString("oxyd-surgery-select-organ"),
+                ErisSurgeryColors.LabelText));
         }
         else if (!organ.Diagnosed)
         {
@@ -434,7 +422,7 @@ public sealed partial class OxydSurgeryWindow : FancyWindow
                 foreach (var (name, fix) in ConditionsFor(organ))
                 {
                     any = true;
-                    var row = MakeSectionRow($"{TitleCase(organ.Name)} — {name}:");
+                    var row = MakeSectionRow($"{TitleCase(organ.Name)} — {name}:", width: 0);
                     var link = new ErisLink(StepName(fix)) { HorizontalExpand = true };
                     if (organ.AvailableSteps.Contains(fix))
                     {
@@ -450,7 +438,7 @@ public sealed partial class OxydSurgeryWindow : FancyWindow
             }
         }
         if (!any)
-            rows.AddChild(new Label { Text = "—", FontColorOverride = ErisSurgeryColors.LabelText });
+            rows.AddChild(MakeText("—", ErisSurgeryColors.LabelText));
 
         scroll.AddChild(rows);
         box.AddChild(scroll);
@@ -483,11 +471,9 @@ public sealed partial class OxydSurgeryWindow : FancyWindow
         };
         if (organ.Wounds.Count == 0)
         {
-            wrows.AddChild(new Label
-            {
-                Text = Loc.GetString(organ.Diagnosed ? "oxyd-surgery-no-wounds" : "oxyd-surgery-undiagnosed"),
-                FontColorOverride = ErisSurgeryColors.LabelText,
-            });
+            wrows.AddChild(MakeText(
+                Loc.GetString(organ.Diagnosed ? "oxyd-surgery-no-wounds" : "oxyd-surgery-undiagnosed"),
+                ErisSurgeryColors.LabelText));
         }
         foreach (var wound in organ.Wounds)
             wrows.AddChild(BuildWoundCard(organ, wound));
@@ -584,7 +570,15 @@ public sealed partial class OxydSurgeryWindow : FancyWindow
         modsBox.AddChild(remove);
         right.AddChild(new ErisPanel { Children = { modsBox } });
 
-        ContentRoot.AddChild(right);
+        // Scroll the stacked panels so a long mods/wounds list can't run past the window bottom.
+        var rightScroll = new ScrollContainer
+        {
+            VerticalExpand = true,
+            HorizontalExpand = true,
+            HScrollEnabled = false,
+        };
+        rightScroll.AddChild(right);
+        ContentRoot.AddChild(rightScroll);
     }
 
     /// <summary>Eris wound card (.nanoMap): Type / Severity x/max / Treatments / Treat link.</summary>
@@ -593,18 +587,18 @@ public sealed partial class OxydSurgeryWindow : FancyWindow
         var box = new BoxContainer { Orientation = BoxContainer.LayoutOrientation.Vertical, SeparationOverride = 2 };
 
         var typeRow = new BoxContainer { SeparationOverride = 6 };
-        typeRow.AddChild(new Label { Text = Loc.GetString("oxyd-surgery-type"), FontColorOverride = ErisSurgeryColors.ItemLabelText });
-        typeRow.AddChild(new Label { Text = wound.Name, FontColorOverride = ErisSurgeryColors.Text });
+        typeRow.AddChild(new Label { Text = Loc.GetString("oxyd-surgery-type"), FontColorOverride = ErisSurgeryColors.ItemLabelText, SetWidth = 80, ClipText = true });
+        typeRow.AddChild(MakeText(wound.Name, ErisSurgeryColors.Text));
         box.AddChild(typeRow);
 
         var sevRow = new BoxContainer { SeparationOverride = 6 };
-        sevRow.AddChild(new Label { Text = Loc.GetString("oxyd-surgery-severity"), FontColorOverride = ErisSurgeryColors.ItemLabelText });
-        sevRow.AddChild(new Label { Text = $"{wound.Severity} / {wound.SeverityMax}", FontColorOverride = ErisSurgeryColors.Text });
+        sevRow.AddChild(new Label { Text = Loc.GetString("oxyd-surgery-severity"), FontColorOverride = ErisSurgeryColors.ItemLabelText, SetWidth = 80, ClipText = true });
+        sevRow.AddChild(MakeText($"{wound.Severity} / {wound.SeverityMax}", ErisSurgeryColors.Text));
         box.AddChild(sevRow);
 
         var treatRow = new BoxContainer { SeparationOverride = 6 };
-        treatRow.AddChild(new Label { Text = Loc.GetString("oxyd-surgery-treatments"), FontColorOverride = ErisSurgeryColors.ItemLabelText });
-        treatRow.AddChild(new Label { Text = wound.Treatments, FontColorOverride = ErisSurgeryColors.Text });
+        treatRow.AddChild(new Label { Text = Loc.GetString("oxyd-surgery-treatments"), FontColorOverride = ErisSurgeryColors.ItemLabelText, SetWidth = 80, ClipText = true });
+        treatRow.AddChild(MakeText(wound.Treatments, ErisSurgeryColors.Text));
         box.AddChild(treatRow);
 
         if (wound.FixStep is { } fix)
@@ -659,18 +653,36 @@ public sealed partial class OxydSurgeryWindow : FancyWindow
         return box;
     }
 
-    /// <summary>Eris &lt;section&gt;: a .label cell then a .content cell.</summary>
-    private static BoxContainer MakeSectionRow(string label)
+    /// <summary>Eris &lt;section&gt;: a .label cell then a .content cell. The label cell is a
+    /// fixed-width column (default 130px, fits "Occupied space:" etc.) with ClipText so
+    /// overlong labels truncate instead of drawing over the value — ClipText without an
+    /// explicit width collapses the label's measure to zero, so the width must stay.
+    /// Pass width 0 for a natural-width label in a roomy row (e.g. the Conditions card).</summary>
+    private static BoxContainer MakeSectionRow(string label, float width = 130)
     {
-        var row = new BoxContainer { SeparationOverride = 6 };
-        row.AddChild(new Label
+        var cell = new Label
         {
             Text = label,
             FontColorOverride = ErisSurgeryColors.LabelText,
-            SetWidth = 95,
             HorizontalExpand = false,
-        });
+        };
+        if (width > 0)
+        {
+            cell.SetWidth = width;
+            cell.ClipText = true;
+        }
+        var row = new BoxContainer { SeparationOverride = 6 };
+        row.AddChild(cell);
         return row;
+    }
+
+    /// <summary>Wrapping body text — nanoUI reflows long lines inside the card; a plain
+    /// Label just draws past the card bounds. RichTextLabel wraps at its own width.</summary>
+    private static RichTextLabel MakeText(string text, Color color)
+    {
+        var label = new RichTextLabel { HorizontalExpand = true };
+        label.SetMessage(text, color);
+        return label;
     }
 
     private static ErisBar MakeBar(float fraction, Color fill, string text)
