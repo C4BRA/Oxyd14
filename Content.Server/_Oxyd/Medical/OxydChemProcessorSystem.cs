@@ -1,10 +1,12 @@
 using System.Linq;
 using Content.Shared._Oxyd.Medical;
+using Content.Shared.Chemistry.Components;
 using Content.Shared.Chemistry.Reaction;
 using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Chemistry.Reagent;
 using Content.Shared.Interaction;
 using Content.Shared.Popups;
+using Content.Shared.UserInterface;
 using Content.Shared.Verbs;
 using Robust.Server.Containers;
 using Robust.Server.GameObjects;
@@ -33,6 +35,10 @@ public sealed partial class OxydChemProcessorSystem : EntitySystem
     {
         SubscribeLocalEvent<OxydChemProcessorComponent, ComponentInit>(OnInit);
         SubscribeLocalEvent<OxydChemProcessorComponent, GetVerbsEvent<InteractionVerb>>(AddBeakerVerbs);
+        SubscribeLocalEvent<OxydChemProcessorComponent, InteractUsingEvent>(OnInteractUsing);
+        SubscribeLocalEvent<OxydChemProcessorComponent, AfterActivatableUIOpenEvent>(OnUiOpen);
+        SubscribeLocalEvent<OxydChemProcessorComponent, EntInsertedIntoContainerMessage>(OnContainerChanged);
+        SubscribeLocalEvent<OxydChemProcessorComponent, EntRemovedFromContainerMessage>(OnContainerChanged);
         SubscribeLocalEvent<OxydChemProcessorComponent, OxydChemProcessorSetTargetMessage>(OnSetTarget);
         SubscribeLocalEvent<OxydChemProcessorComponent, OxydChemProcessorStartMessage>(OnStart);
         SubscribeLocalEvent<OxydChemProcessorComponent, OxydChemProcessorEjectMessage>(OnEject);
@@ -50,6 +56,37 @@ public sealed partial class OxydChemProcessorSystem : EntitySystem
     private ContainerSlot Slot(EntityUid uid, string id) =>
         _container.EnsureContainer<ContainerSlot>(uid, id);
 
+    private void OnUiOpen(EntityUid uid, OxydChemProcessorComponent comp, AfterActivatableUIOpenEvent args)
+        => PushState(uid, comp);
+
+    private void OnContainerChanged(EntityUid uid, OxydChemProcessorComponent comp, ContainerModifiedMessage args)
+        => PushState(uid, comp);
+
+    /// <summary>Main beaker first, then the first free separation slot (Eris insert order).</summary>
+    private string? FindFreeSlot(EntityUid uid)
+    {
+        if (Slot(uid, OxydChemProcessorComponent.MainBeakerId).ContainedEntity == null)
+            return OxydChemProcessorComponent.MainBeakerId;
+        for (var i = 0; i < OxydChemProcessorComponent.SeparationBeakerCount; i++)
+        {
+            if (Slot(uid, SepId(i)).ContainedEntity == null)
+                return SepId(i);
+        }
+        return null;
+    }
+
+    /// <summary>Eris attackby: clicking the machine with a beaker loads it.</summary>
+    private void OnInteractUsing(EntityUid uid, OxydChemProcessorComponent comp, InteractUsingEvent args)
+    {
+        if (args.Handled || comp.Working || FindFreeSlot(uid) is not { } slotId)
+            return;
+        if (!_solutions.TryGetSolution(args.Used, "beaker", out _, out _))
+            return;
+
+        args.Handled = true;
+        _container.Insert(args.Used, Slot(uid, slotId));
+    }
+
     private void AddBeakerVerbs(EntityUid uid, OxydChemProcessorComponent comp, GetVerbsEvent<InteractionVerb> args)
     {
         if (!args.CanInteract || args.Using is not { } used || comp.Working)
@@ -58,25 +95,8 @@ public sealed partial class OxydChemProcessorSystem : EntitySystem
         if (!_solutions.TryGetSolution(used, "beaker", out _, out _))
             return;
 
-        // Fill main beaker first, then separation slots (Eris inserts separation beakers).
-        string slotId;
-        if (Slot(uid, OxydChemProcessorComponent.MainBeakerId).ContainedEntity == null)
-            slotId = OxydChemProcessorComponent.MainBeakerId;
-        else
-        {
-            var free = -1;
-            for (var i = 0; i < OxydChemProcessorComponent.SeparationBeakerCount; i++)
-            {
-                if (Slot(uid, SepId(i)).ContainedEntity == null)
-                {
-                    free = i;
-                    break;
-                }
-            }
-            if (free < 0)
-                return;
-            slotId = SepId(free);
-        }
+        if (FindFreeSlot(uid) is not { } slotId)
+            return;
 
         args.Verbs.Add(new InteractionVerb
         {
@@ -169,8 +189,10 @@ public sealed partial class OxydChemProcessorSystem : EntitySystem
     }
 
     /// <summary>
-    /// Eris electrolyzer: applies power to force "reverse" synthesis — each reagent with a known
-    /// synthesis recipe decomposes back into its reactants (halved by power inefficiency).
+    /// Eris electrolyzer (machinery/electrolyzer.dm): decomposes the first reagent that has a
+    /// known synthesis recipe. The first reactant goes back into the main beaker and the rest go
+    /// into the first loaded separation beaker — splitting the output is what stops the reactants
+    /// from instantly re-synthesizing (SS14 solutions auto-react on add, like Eris').
     /// </summary>
     private void RunElectrolyzer(EntityUid uid, OxydChemProcessorComponent comp)
     {
@@ -178,6 +200,26 @@ public sealed partial class OxydChemProcessorSystem : EntitySystem
             !_solutions.TryGetSolution(beaker, "beaker", out var beakerEnt, out var sol))
             return;
 
+        // Eris requires a separation beaker for the overflow reactants.
+        Entity<SolutionComponent>? sepSoln = null;
+        Solution? sepSol = null;
+        for (var i = 0; i < OxydChemProcessorComponent.SeparationBeakerCount; i++)
+        {
+            if (Slot(uid, SepId(i)).ContainedEntity is { } sep &&
+                _solutions.TryGetSolution(sep, "beaker", out var sEnt, out var s))
+            {
+                sepSoln = sEnt;
+                sepSol = s;
+                break;
+            }
+        }
+        if (sepSoln is not { } sepSolnEnt || sepSol == null)
+        {
+            _popup.PopupEntity(Loc.GetString("oxyd-medical-processor-need-sep-beaker"), uid, uid);
+            return;
+        }
+
+        // One reagent per work cycle — Eris decomposes only the first reagent with a recipe.
         foreach (var (reagentId, qty) in sol.Contents.ToArray())
         {
             var reaction = _prototypes.EnumeratePrototypes<ReactionPrototype>()
@@ -185,15 +227,26 @@ public sealed partial class OxydChemProcessorSystem : EntitySystem
             if (reaction == null)
                 continue;
 
+            var reactants = reaction.Reactants.Where(p => !p.Value.Catalyst).ToList();
+            // Needs 2+ reactants so the overflow has somewhere to go; a single reactant would
+            // sit in the same beaker as its product and instantly re-synthesize.
+            if (reactants.Count < 2)
+                continue;
+
             var produced = reaction.Products[reagentId.Prototype].Float();
-            var scale = qty.Float() / produced * 0.5f; // decomposition returns half the reactants
-            _solutions.RemoveReagent(beakerEnt.Value, reagentId.Prototype, qty);
-            foreach (var reactantPair in reaction.Reactants)
-            {
-                if (reactantPair.Value.Catalyst)
-                    continue;
-                _solutions.TryAddReagent(beakerEnt.Value, reactantPair.Key, reactantPair.Value.Amount.Float() * scale);
-            }
+            var outPerBatch = reactants.Skip(1).Sum(p => p.Value.Amount.Float());
+            var batches = Math.Min(qty.Float() / produced,
+                sepSol.AvailableVolume.Float() / outPerBatch);
+            var volumeToHandle = batches * produced;
+            if (volumeToHandle <= 0)
+                return; // separation beaker full — nothing more to do
+
+            _solutions.RemoveReagent(beakerEnt.Value, reagentId.Prototype, volumeToHandle);
+            _solutions.TryAddReagent(beakerEnt.Value, reactants[0].Key,
+                reactants[0].Value.Amount.Float() * batches);
+            foreach (var p in reactants.Skip(1))
+                _solutions.TryAddReagent(sepSolnEnt, p.Key, p.Value.Amount.Float() * batches);
+            return;
         }
     }
 

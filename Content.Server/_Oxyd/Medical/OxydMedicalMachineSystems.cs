@@ -148,6 +148,7 @@ public sealed partial class OxydIvDripSystem : EntitySystem
         SubscribeLocalEvent<OxydIvDripComponent, CanDropTargetEvent>(OnCanDropPatientOnDrip);
         SubscribeLocalEvent<OxydIvDripComponent, GetVerbsEvent<AlternativeVerb>>(AddIvVerbs);
         SubscribeLocalEvent<OxydIvDripComponent, GetVerbsEvent<InteractionVerb>>(AddInsertBeakerVerb);
+        SubscribeLocalEvent<OxydIvDripComponent, InteractUsingEvent>(OnInteractUsing);
     }
 
     private void OnInit(EntityUid uid, OxydIvDripComponent comp, ComponentInit args)
@@ -251,12 +252,37 @@ public sealed partial class OxydIvDripSystem : EntitySystem
         }
     }
 
-    private void AddInsertBeakerVerb(EntityUid uid, OxydIvDripComponent comp, GetVerbsEvent<InteractionVerb> args)
+    /// <summary>Eris attackby: clicking the drip with a beaker/bloodpack loads it.</summary>
+    private void OnInteractUsing(EntityUid uid, OxydIvDripComponent comp, InteractUsingEvent args)
     {
-        if (!args.CanInteract || args.Using == null || BeakerSlot(uid).ContainedEntity != null)
+        if (args.Handled || BeakerSlot(uid).ContainedEntity != null)
+            return;
+        if (!_solutions.TryGetSolution(args.Used, "beaker", out _, out _))
             return;
 
-        if (!_solutions.TryGetSolution(args.Using.Value, "beaker", out _, out _))
+        args.Handled = true;
+        _container.Insert(args.Used, BeakerSlot(uid));
+    }
+
+    private void AddInsertBeakerVerb(EntityUid uid, OxydIvDripComponent comp, GetVerbsEvent<InteractionVerb> args)
+    {
+        if (!args.CanInteract)
+            return;
+
+        // Eject whatever is loaded (no held item needed), or load the held beaker.
+        if (BeakerSlot(uid).ContainedEntity is { } loaded)
+        {
+            var b = loaded;
+            args.Verbs.Add(new InteractionVerb
+            {
+                Act = () => _container.Remove(b, BeakerSlot(uid)),
+                Text = Loc.GetString("oxyd-medical-iv-verb-eject-beaker"),
+            });
+            return;
+        }
+
+        if (args.Using == null ||
+            !_solutions.TryGetSolution(args.Using.Value, "beaker", out _, out _))
             return;
 
         var beaker = args.Using.Value;

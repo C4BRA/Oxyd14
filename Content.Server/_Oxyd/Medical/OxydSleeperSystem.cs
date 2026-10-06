@@ -13,6 +13,7 @@ using Content.Shared.Item;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.Movement.Pulling.Components;
 using Content.Shared.Popups;
+using Content.Shared.UserInterface;
 using Content.Shared.Verbs;
 using Robust.Server.Containers;
 using Robust.Server.GameObjects;
@@ -45,6 +46,7 @@ public sealed partial class OxydSleeperSystem : EntitySystem
         SubscribeLocalEvent<OxydSleeperComponent, DragDropTargetEvent>(OnDragDropOn);
         SubscribeLocalEvent<OxydSleeperComponent, CanDropTargetEvent>(OnCanDropOn);
         SubscribeLocalEvent<OxydSleeperComponent, InteractUsingEvent>(OnInteractUsing);
+        SubscribeLocalEvent<OxydSleeperComponent, AfterActivatableUIOpenEvent>(OnUiOpen);
         SubscribeLocalEvent<OxydSleeperComponent, EntInsertedIntoContainerMessage>(OnContainerChanged);
         SubscribeLocalEvent<OxydSleeperComponent, EntRemovedFromContainerMessage>(OnContainerChanged);
         SubscribeLocalEvent<OxydSleeperComponent, OxydSleeperInjectMessage>(OnInject);
@@ -141,6 +143,9 @@ public sealed partial class OxydSleeperSystem : EntitySystem
     {
         _container.Remove(occupant, BodySlot(uid));
     }
+
+    private void OnUiOpen(EntityUid uid, OxydSleeperComponent comp, AfterActivatableUIOpenEvent args)
+        => PushState(uid, comp);
 
     private void OnContainerChanged(EntityUid uid, OxydSleeperComponent comp, ContainerModifiedMessage args)
     {

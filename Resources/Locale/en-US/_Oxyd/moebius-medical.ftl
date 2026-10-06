@@ -218,9 +218,11 @@ oxyd-processor-start = Start
 oxyd-processor-eject = Eject
 oxyd-processor-eject-main = Eject main beaker
 oxyd-medical-processor-insert-beaker = Insert beaker
+oxyd-medical-processor-need-sep-beaker = The electrolyzer needs a separation beaker!
 
 ## IV drip
 oxyd-medical-iv-verb-insert-beaker = Attach beaker
+oxyd-medical-iv-verb-eject-beaker = Remove beaker
 oxyd-medical-iv-verb-inject = Transfuse into patient
 oxyd-medical-iv-verb-draw = Draw blood from patient
 oxyd-medical-iv-verb-detach = Detach from patient
