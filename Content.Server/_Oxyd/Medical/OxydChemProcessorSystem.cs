@@ -113,10 +113,33 @@ public sealed partial class OxydChemProcessorSystem : EntitySystem
         PushState(uid, comp);
     }
 
+    /// <summary>First loaded separation beaker (Eris' single secondary), or null.</summary>
+    private Entity<SolutionComponent>? FindSepBeaker(EntityUid uid, out Solution? sepSol)
+    {
+        sepSol = null;
+        for (var i = 0; i < OxydChemProcessorComponent.SeparationBeakerCount; i++)
+        {
+            if (Slot(uid, SepId(i)).ContainedEntity is { } sep &&
+                _solutions.TryGetSolution(sep, "beaker", out var sEnt, out var s))
+            {
+                sepSol = s;
+                return sEnt;
+            }
+        }
+        return null;
+    }
+
     private void OnStart(EntityUid uid, OxydChemProcessorComponent comp, OxydChemProcessorStartMessage args)
     {
         if (comp.Working || Slot(uid, OxydChemProcessorComponent.MainBeakerId).ContainedEntity == null)
             return;
+
+        // Eris electrolyzer needs a separation beaker for the overflow reactants.
+        if (comp.Mode == OxydChemProcessorMode.Electrolyzer && FindSepBeaker(uid, out _) == null)
+        {
+            _popup.PopupEntity(Loc.GetString("oxyd-medical-processor-need-sep-beaker"), uid, args.Actor);
+            return;
+        }
 
         comp.Working = true;
         _appearance.SetData(uid, OxydMachineVisuals.Working, true);
@@ -200,24 +223,9 @@ public sealed partial class OxydChemProcessorSystem : EntitySystem
             !_solutions.TryGetSolution(beaker, "beaker", out var beakerEnt, out var sol))
             return;
 
-        // Eris requires a separation beaker for the overflow reactants.
-        Entity<SolutionComponent>? sepSoln = null;
-        Solution? sepSol = null;
-        for (var i = 0; i < OxydChemProcessorComponent.SeparationBeakerCount; i++)
-        {
-            if (Slot(uid, SepId(i)).ContainedEntity is { } sep &&
-                _solutions.TryGetSolution(sep, "beaker", out var sEnt, out var s))
-            {
-                sepSoln = sEnt;
-                sepSol = s;
-                break;
-            }
-        }
-        if (sepSoln is not { } sepSolnEnt || sepSol == null)
-        {
-            _popup.PopupEntity(Loc.GetString("oxyd-medical-processor-need-sep-beaker"), uid, uid);
+        // Start already validates this, but stay defensive for mid-work beaker loss.
+        if (FindSepBeaker(uid, out var sepSol) is not { } sepSolnEnt || sepSol == null)
             return;
-        }
 
         // One reagent per work cycle — Eris decomposes only the first reagent with a recipe.
         foreach (var (reagentId, qty) in sol.Contents.ToArray())
