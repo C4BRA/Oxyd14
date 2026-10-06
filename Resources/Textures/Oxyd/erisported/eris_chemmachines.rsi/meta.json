@@ -24,6 +24,24 @@
     },
     {
       "name": "electrolysis_working"
+    },
+    {
+      "name": "dispenser"
+    },
+    {
+      "name": "mixer0"
+    },
+    {
+      "name": "mixer0_nopower"
+    },
+    {
+      "name": "mixer1"
+    },
+    {
+      "name": "mixer1_nopower"
+    },
+    {
+      "name": "mixer_loaded"
     }
   ]
 }

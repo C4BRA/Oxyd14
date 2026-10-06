@@ -54,6 +54,15 @@ public sealed partial class OxydSleeperComponent : Component
     /// <summary>Ensures an occupant (Eris checks stat(CONSCIOUS) for injection warnings).</summary>
     [DataField]
     public float MaxChemInPatient = 50f;
+
+    /// <summary>Eris dialysis (Sleeper.dm filtering): while on, every tick moves DialysisRate
+    /// units of each bloodstream reagent into the loaded beaker. Requires an occupant and a
+    /// beaker; auto-stops when the beaker fills or is removed.</summary>
+    [DataField]
+    public float DialysisRate = 3f;
+
+    /// <summary>Whether dialysis is currently running (Eris `filtering`).</summary>
+    public bool Filtering;
 }
 
 [DataDefinition, Serializable, NetSerializable]
@@ -73,30 +82,67 @@ public sealed partial class OxydSleeperChemEntry
     public float MaxInPatient = 50f;
 }
 
-/// <summary>Autodoc: automatic surgeon pod (Eris machinery/autodoc.dm). Queued surgical steps
-/// run on the occupant without a surgeon, consuming power and per-step duration.</summary>
+/// <summary>Autodoc: automatic surgeon pod (Eris machinery/autodoc.dm + surgery/autodoc.dm's
+/// capitalist_autodoc). Scan builds patchnotes of detected problems; the user toggles operations
+/// per organ, pays in inserted credits, and the pod processes them one operation per step.
+/// Eris charges personal bank accounts; SS14 has no per-person banking, so the balance is
+/// physical SpaceCash inserted into the machine's credit slot.</summary>
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
 public sealed partial class OxydAutodocComponent : Component
 {
     public static readonly string BodyContainerId = "oxyd_autodoc_body";
+    public static readonly string CreditsContainerId = "oxyd_autodoc_credits";
+
+    /// <summary>Seconds per operation tick (Eris capitalist processing_speed = 20s; shortened
+    /// for SS14 round pacing).</summary>
+    [DataField]
+    public float StepDuration = 8f;
+
+    /// <summary>Damage healed / units pumped per operation tick (Eris damage_heal_amount).</summary>
+    [DataField]
+    public float HealPerTick = 20f;
+
+    /// <summary>Bloodstream units purged per dialysis tick (Eris AUTODOC_DIALYSIS_AMOUNT).</summary>
+    [DataField]
+    public float DialysisPerTick = 5f;
+
+    /// <summary>Eris cost defines (surgery/autodoc.dm).</summary>
+    [DataField]
+    public int ScanCost = 200;
 
     [DataField]
-    public float StepDuration = 4f;
-
-    [DataField]
-    public List<OxydSurgeryStep> Queue = new();
+    public Dictionary<OxydAutodocOp, int> OpCosts = new()
+    {
+        [OxydAutodocOp.Damage] = 800,
+        [OxydAutodocOp.Shrapnel] = 1000,
+        [OxydAutodocOp.Fracture] = 1200,
+        [OxydAutodocOp.OpenWounds] = 600,
+        [OxydAutodocOp.InternalWounds] = 1200,
+        [OxydAutodocOp.Blood] = 800,
+        [OxydAutodocOp.Toxin] = 600,
+        [OxydAutodocOp.Dialysis] = 1000,
+    };
 
     [DataField, AutoNetworkedField]
-    public new bool Running;
+    public bool Running;
 
-    [DataField, AutoNetworkedField]
-    public string? ActiveStepName;
+    /// <summary>Current scan results; Organ == null is the global toxnote.</summary>
+    public List<OxydAutodocPatchnote> Notes = new();
 
-    /// <summary>External organ targeted by queued steps (first damaged/clamped one).</summary>
-    public EntityUid? CurrentOrgan;
-    public OxydSurgeryStep? CurrentStep;
-    public TimeSpan CurrentStepEnd;
+    /// <summary>Ops selected when the run started (progress denominator).</summary>
+    public int OpsTotal;
+
+    public TimeSpan NextOpTime;
     public EntityUid? Occupant;
+}
+
+/// <summary>One Eris autodoc_patchnote: operations detected (Scanned) and selected (Picked)
+/// on a single organ — or globally when Organ is null.</summary>
+public sealed class OxydAutodocPatchnote
+{
+    public EntityUid? Organ;
+    public HashSet<OxydAutodocOp> Scanned = new();
+    public HashSet<OxydAutodocOp> Picked = new();
 }
 
 /// <summary>Centrifuge/electrolyzer (Eris machinery/centrifuge.dm, electrolyzer.dm).</summary>

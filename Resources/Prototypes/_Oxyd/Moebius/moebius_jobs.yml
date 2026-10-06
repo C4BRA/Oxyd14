@@ -97,7 +97,7 @@
     mask: erisport_medical_mask
     eyes: erisport_Health_Scanner_HUD
     ears: ClothingHeadsetMedical
-    id: MedicalPDA
+    id: OxydMoebiusPDA
   storage:
     back:
     - OxydErisMedkitAdvanced
@@ -146,7 +146,7 @@
     eyes: erisport_Health_Scanner_HUD
     ears: ClothingHeadsetMedical
     back: erisport_chemistry_backpack
-    id: ChemistryPDA
+    id: OxydMoebiusChemistPDA
   storage:
     back:
     - BoxSyringe
@@ -245,7 +245,7 @@
     gloves: erisport_latex_gloves
     eyes: erisport_Health_Scanner_HUD
     ears: ClothingHeadsetMedical
-    id: MedicalPDA
+    id: OxydMoebiusPDA
   storage:
     back:
     - OxydErisOrganFreezer

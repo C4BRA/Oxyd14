@@ -20,10 +20,13 @@ public sealed class OxydAutodocBoundUserInterface : BoundUserInterface
         if (_window != null)
             return;
         _window = this.CreateWindow<OxydAutodocWindow>();
-        _window.EnqueueRequested += step => SendMessage(new OxydAutodocEnqueueMessage { Step = step });
-        _window.ClearRequested += () => SendMessage(new OxydAutodocClearMessage());
-        _window.StartRequested += () => SendMessage(new OxydAutodocStartMessage());
+        _window.ScanRequested += () => SendMessage(new OxydAutodocScanMessage());
+        _window.ProcessAllRequested += () => SendMessage(new OxydAutodocProcessAllMessage());
+        _window.ProcessPickedRequested += () => SendMessage(new OxydAutodocProcessPickedMessage());
+        _window.AbortRequested += () => SendMessage(new OxydAutodocAbortMessage());
+        _window.ToggleRequested += (id, op) => SendMessage(new OxydAutodocToggleMessage { EntryId = id, Op = op });
         _window.EjectRequested += () => SendMessage(new OxydAutodocEjectMessage());
+        _window.EjectCreditsRequested += () => SendMessage(new OxydAutodocEjectCreditsMessage());
         _window.OnClose += Close;
     }
 

@@ -223,6 +223,7 @@ oxyd-medical-iv-verb-insert-beaker = Attach beaker
 oxyd-medical-iv-verb-inject = Transfuse into patient
 oxyd-medical-iv-verb-draw = Draw blood from patient
 oxyd-medical-iv-verb-detach = Detach from patient
+oxyd-medical-iv-verb-attach = Attach patient
 oxyd-medical-iv-attached = You attach the drip to {THE($patient)}.
 oxyd-medical-iv-detached = You detach the drip.
 
@@ -336,3 +337,45 @@ ent-OxydErisTraumaKitSingle = advanced trauma kit
 ent-OxydErisBurnKitSingle = advanced burn kit
 ent-OxydErisSplintSingle = medical splint
 oxyd-surgery-verb = Surgery
+
+## Sleeper dialysis + Eris chem menu
+oxyd-sleeper-dialysis = Dialysis
+oxyd-sleeper-dialysis-on = Dialysis: ON
+oxyd-sleeper-chem-soporific = Soporific
+oxyd-sleeper-chem-paracetamol = Paracetamol
+oxyd-sleeper-chem-tricordrazine = Tricordrazine
+
+## Autodoc (Eris capitalist model)
+oxyd-autodoc-balance = Balance: {$balance} cr
+oxyd-autodoc-scan = Scan ({$cost} cr)
+oxyd-autodoc-process-all = Process all: {$cost} cr
+oxyd-autodoc-process-picked = Process picked: {$cost} cr
+oxyd-autodoc-abort = Abort
+oxyd-autodoc-eject-credits = Eject credits
+oxyd-autodoc-in-progress = Procedure in progress...
+oxyd-autodoc-no-scan = Occupant present — run a scan to diagnose.
+oxyd-autodoc-overall = Overall status
+oxyd-autodoc-brute = Brute
+oxyd-autodoc-burn = Burn
+oxyd-autodoc-toxin = Toxin
+oxyd-autodoc-oxy = Suffocation
+oxyd-autodoc-blood-level = Blood level
+oxyd-autodoc-organ-damage = External — Brute: {$brute} Burn: {$burn}
+oxyd-autodoc-inner-damage = Internal — damage: {$dmg}
+oxyd-autodoc-op-cost = {$op} ({$cost} cr)
+oxyd-autodoc-op-damage = Repair damage
+oxyd-autodoc-op-openwounds = Close open wounds
+oxyd-autodoc-op-internalwounds = Internal wounds
+oxyd-autodoc-op-fracture = Set fracture
+oxyd-autodoc-op-shrapnel = Remove embedded objects
+oxyd-autodoc-op-toxin = Toxin chelation
+oxyd-autodoc-op-dialysis = Dialysis
+oxyd-autodoc-op-blood = Replenish blood
+oxyd-medical-autodoc-insufficient = Insufficient credits inserted.
+oxyd-medical-autodoc-locked = The pod is locked while a procedure is running.
+oxyd-medical-autodoc-done = Procedure complete.
+oxyd-medical-autodoc-nothing = Nothing to do.
+
+## MIRC
+oxyd-mirc-program-name = MIRC
+oxyd-mirc-no-recipe = No known synthesis.

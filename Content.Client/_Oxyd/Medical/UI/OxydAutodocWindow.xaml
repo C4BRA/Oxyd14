@@ -1,18 +1,25 @@
 <controls:FancyWindow xmlns="https://spacestation14.io"
                xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
                Title="{Loc 'oxyd-autodoc-window-title'}"
-               MinSize="480 420"
-               SetSize="520 460">
+               MinSize="540 460"
+               SetSize="580 560">
     <BoxContainer Orientation="Vertical" Margin="8" SeparationOverride="6">
-        <Label Name="OccupantLabel"/>
-        <Label Name="StatusLabel"/>
-        <BoxContainer Orientation="Horizontal" SeparationOverride="8" VerticalExpand="True">
-            <BoxContainer Name="AvailableSteps" Orientation="Vertical" SeparationOverride="4" HorizontalExpand="True"/>
-            <BoxContainer Name="QueueList" Orientation="Vertical" SeparationOverride="4" HorizontalExpand="True"/>
+        <BoxContainer Orientation="Horizontal" SeparationOverride="10">
+            <Label Name="BalanceLabel" HorizontalExpand="True"/>
+            <Button Name="EjectCreditsButton" Text="{Loc 'oxyd-autodoc-eject-credits'}"/>
         </BoxContainer>
         <BoxContainer Orientation="Horizontal" SeparationOverride="8">
-            <Button Name="StartButton" Text="{Loc 'oxyd-autodoc-start'}"/>
-            <Button Name="ClearButton" Text="{Loc 'oxyd-autodoc-clear'}"/>
+            <Button Name="ScanButton"/>
+            <Button Name="ProcessAllButton"/>
+            <Button Name="ProcessPickedButton"/>
+            <Button Name="AbortButton" Text="{Loc 'oxyd-autodoc-abort'}"/>
+        </BoxContainer>
+        <Label Name="RunningLabel" />
+        <ProgressBar Name="ProgressBar" MinValue="0" MaxValue="100" Value="0" Visible="False"/>
+        <ScrollContainer VerticalExpand="True">
+            <BoxContainer Name="EntriesBox" Orientation="Vertical" SeparationOverride="8"/>
+        </ScrollContainer>
+        <BoxContainer Orientation="Horizontal" SeparationOverride="8">
             <Button Name="EjectButton" Text="{Loc 'oxyd-autodoc-eject'}"/>
         </BoxContainer>
     </BoxContainer>

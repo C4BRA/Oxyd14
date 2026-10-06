@@ -17,13 +17,16 @@
     - state: sleeper_occupied
       map: ["enum.OxydMachineVisualLayers.Occupied"]
       visible: false
+  # Eris sleeper chem menu: Synth-Inaprovaline, Soporific, Paracetamol,
+  # Dylovene, Dexalin, Tricordrazine; each capped at 20u in the patient.
   - type: OxydSleeper
     chems:
-    - { reagent: Inaprovaline, name: oxyd-sleeper-chem-inaprovaline, dose: 10 }
-    - { reagent: OxydMedTramadol, name: oxyd-sleeper-chem-tramadol, dose: 5 }
-    - { reagent: OxydMedAlkysine, name: oxyd-sleeper-chem-alkysine, dose: 5 }
-    - { reagent: Dylovene, name: oxyd-sleeper-chem-antitoxin, dose: 10 }
-    - { reagent: Dexalin, name: oxyd-sleeper-chem-dexalin, dose: 10 }
+    - { reagent: OxydMedSynthInaprovaline, name: oxyd-sleeper-chem-inaprovaline, dose: 5, maxInPatient: 20 }
+    - { reagent: ChloralHydrate, name: oxyd-sleeper-chem-soporific, dose: 5, maxInPatient: 20 }
+    - { reagent: OxydMedParacetamol, name: oxyd-sleeper-chem-paracetamol, dose: 10, maxInPatient: 20 }
+    - { reagent: Dylovene, name: oxyd-sleeper-chem-antitoxin, dose: 10, maxInPatient: 20 }
+    - { reagent: Dexalin, name: oxyd-sleeper-chem-dexalin, dose: 10, maxInPatient: 20 }
+    - { reagent: Tricordrazine, name: oxyd-sleeper-chem-tricordrazine, dose: 10, maxInPatient: 20 }
   - type: ActivatableUI
     key: enum.OxydSleeperUiKey.Key
   - type: ActivatableUIRequiresPower
@@ -274,3 +277,72 @@
     interfaces:
       enum.OxydScannerUiKey.Key:
         type: OxydScannerBoundUserInterface
+
+# ---------------------------------------------------------------------------
+# Cryo cell (Eris cryo.dm): piped cryo pod on the engine's CryoPod system,
+# skinned with the Eris cryogenics sprite (pod0/pod1 + lids composited to
+# SS14's two-tall 32x64 layout).
+# ---------------------------------------------------------------------------
+- type: entity
+  parent: CryoPod
+  id: OxydCryoPod
+  name: cryo cell
+  description: A freezing pod designed to slowly restore patients in critical condition with cryo-active reagents.
+  components:
+  - type: Sprite
+    sprite: Oxyd/erisported/eris_cryo.rsi
+    drawdepth: Mobs
+    noRot: true
+    offset: 0, 0.5
+    layers:
+    - sprite: Structures/Piping/Atmospherics/pipe.rsi
+      state: pipeHalf
+      offset: 0, -0.5
+      map: [ "enum.PipeVisualLayers.Pipe" ]
+    - state: pod-open
+      map: [ "enum.CryoPodVisualLayers.Base" ]
+    - state: cover-on
+      map: [ "enum.CryoPodVisualLayers.Cover" ]
+      visible: false
+    - state: pod-panel
+      map: [ "enum.WiresVisualLayers.MaintenancePanel" ]
+      visible: false
+  - type: Icon
+    sprite: Oxyd/erisported/eris_cryo.rsi
+    state: pod-off
+
+# ---------------------------------------------------------------------------
+# Chem Dispenser 5000 (Eris chemical_dispenser): engine ReagentDispenser with
+# the Eris chemical.dmi "dispenser" skin.
+# ---------------------------------------------------------------------------
+- type: entity
+  parent: ChemDispenser
+  id: OxydChemDispenser
+  name: Chem Dispenser 5000
+  description: A sophisticated dispenser for industrial-grade chemical synthesis.
+  components:
+  - type: Sprite
+    sprite: Oxyd/erisported/eris_chemmachines.rsi
+    state: dispenser
+    snapCardinals: true
+
+# ---------------------------------------------------------------------------
+# ChemMaster 3000 (Eris chem_master): engine ChemMaster skinned with the Eris
+# mixer0/mixer1 sprites; nopower base + powered overlay + loaded overlay.
+# ---------------------------------------------------------------------------
+- type: entity
+  parent: ChemMaster
+  id: OxydChemMaster
+  name: ChemMaster 3000
+  description: A pill and bottle production machine for finished medications.
+  components:
+  - type: Sprite
+    sprite: Oxyd/erisported/eris_chemmachines.rsi
+    snapCardinals: true
+    layers:
+    - state: mixer0_nopower
+    - state: mixer0
+      map: ["enum.PowerDeviceVisualLayers.Powered"]
+  - type: Icon
+    sprite: Oxyd/erisported/eris_chemmachines.rsi
+    state: mixer0

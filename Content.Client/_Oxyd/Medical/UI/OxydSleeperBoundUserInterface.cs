@@ -20,9 +20,10 @@ public sealed class OxydSleeperBoundUserInterface : BoundUserInterface
         if (_window != null)
             return;
         _window = this.CreateWindow<OxydSleeperWindow>();
-        _window.InjectRequested += id => SendMessage(new OxydSleeperInjectMessage { Reagent = id });
+        _window.InjectRequested += (id, dose) => SendMessage(new OxydSleeperInjectMessage { Reagent = id, Dose = dose });
         _window.EjectRequested += () => SendMessage(new OxydSleeperEjectMessage());
         _window.EjectBeakerRequested += () => SendMessage(new OxydSleeperEjectBeakerMessage());
+        _window.ToggleDialysisRequested += () => SendMessage(new OxydSleeperToggleFilterMessage());
         _window.OnClose += Close;
     }
 

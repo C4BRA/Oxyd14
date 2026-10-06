@@ -32,6 +32,7 @@ public sealed partial class OxydSleeperSystem : EntitySystem
     [Dependency] private readonly ContainerSystem _container = default!;
     [Dependency] private readonly SharedSolutionContainerSystem _solutions = default!;
     [Dependency] private readonly MobStateSystem _mobs = default!;
+    [Dependency] private readonly MobThresholdSystem _mobThreshold = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
 
     private float _refreshRemaining;
@@ -48,6 +49,7 @@ public sealed partial class OxydSleeperSystem : EntitySystem
         SubscribeLocalEvent<OxydSleeperComponent, OxydSleeperInjectMessage>(OnInject);
         SubscribeLocalEvent<OxydSleeperComponent, OxydSleeperEjectMessage>(OnEject);
         SubscribeLocalEvent<OxydSleeperComponent, OxydSleeperEjectBeakerMessage>(OnEjectBeaker);
+        SubscribeLocalEvent<OxydSleeperComponent, OxydSleeperToggleFilterMessage>(OnToggleFilter);
     }
 
     private void OnInit(EntityUid uid, OxydSleeperComponent comp, ComponentInit args)
@@ -115,6 +117,9 @@ public sealed partial class OxydSleeperSystem : EntitySystem
 
     private void OnContainerChanged(EntityUid uid, OxydSleeperComponent comp, ContainerModifiedMessage args)
     {
+        // Eris: dialysis requires both an occupant and a beaker; losing either stops it.
+        if (BodySlot(uid).ContainedEntity == null || BeakerSlot(uid).ContainedEntity == null)
+            comp.Filtering = false;
         _appearance.SetData(uid, OxydMachineVisuals.Occupied, BodySlot(uid).ContainedEntity != null);
         PushState(uid, comp);
     }
@@ -139,7 +144,8 @@ public sealed partial class OxydSleeperSystem : EntitySystem
             return;
         }
 
-        _solutions.TryAddReagent(solEnt.Value, chem.Reagent, chem.Dose);
+        var dose = Math.Min(args.Dose > 0 ? args.Dose : chem.Dose, chem.Dose);
+        _solutions.TryAddReagent(solEnt.Value, chem.Reagent, dose);
         PushState(uid, comp);
     }
 
@@ -151,8 +157,52 @@ public sealed partial class OxydSleeperSystem : EntitySystem
 
     private void OnEjectBeaker(EntityUid uid, OxydSleeperComponent comp, OxydSleeperEjectBeakerMessage args)
     {
+        comp.Filtering = false;
         if (BeakerSlot(uid).ContainedEntity is { } beaker)
             _container.Remove(beaker, BeakerSlot(uid));
+    }
+
+    private void OnToggleFilter(EntityUid uid, OxydSleeperComponent comp, OxydSleeperToggleFilterMessage args)
+    {
+        // Eris toggle_filter: needs an occupant and a beaker, otherwise snaps back to off.
+        comp.Filtering = !comp.Filtering
+                         && BodySlot(uid).ContainedEntity != null
+                         && BeakerSlot(uid).ContainedEntity != null;
+        PushState(uid, comp);
+    }
+
+    /// <summary>Eris Process(): while filtering, move DialysisRate of every bloodstream reagent
+    /// (blood included) into the beaker; auto-stop when the beaker is full.</summary>
+    private void RunDialysis(EntityUid uid, OxydSleeperComponent comp)
+    {
+        if (!comp.Filtering)
+            return;
+        if (BodySlot(uid).ContainedEntity is not { } occupant ||
+            BeakerSlot(uid).ContainedEntity is not { } beaker)
+        {
+            comp.Filtering = false;
+            return;
+        }
+        if (!_solutions.TryGetSolution(occupant, BloodstreamComponent.DefaultBloodSolutionName,
+                out var bloodEnt, out var blood) ||
+            !_solutions.TryGetSolution(beaker, "beaker", out var beakerEnt, out var beakerSol))
+            return;
+
+        if (beakerSol.AvailableVolume <= 0 || blood.Volume <= 0)
+        {
+            comp.Filtering = false;
+            PushState(uid, comp);
+            return;
+        }
+
+        // Eris pumps 3u of *each* bloodstream reagent per tick (blood included) into the beaker.
+        var moved = _solutions.RemoveEachReagent(bloodEnt.Value, comp.DialysisRate);
+        if (moved.Volume > 0)
+            _solutions.TryAddSolution(beakerEnt.Value, moved);
+
+        if (beakerSol.AvailableVolume <= 0)
+            comp.Filtering = false;
+        PushState(uid, comp);
     }
 
     private void PushState(EntityUid uid, OxydSleeperComponent comp)
@@ -166,7 +216,13 @@ public sealed partial class OxydSleeperSystem : EntitySystem
             state.OccupantName = Name(occ);
             state.OccupantCritical = _mobs.IsCritical(occ);
             if (TryComp<DamageableComponent>(occ, out var dmg))
-                state.OccupantHealth = _damage.GetTotalDamage((occ, dmg)).Float();
+            {
+                var damage = _damage.GetTotalDamage((occ, dmg)).Float();
+                var crit = _mobThreshold.GetThresholdForState(occ, Content.Shared.Mobs.MobState.Critical).Float();
+                state.OccupantHealth = crit > 0
+                    ? Math.Clamp(100f - damage / crit * 100f, 0f, 100f)
+                    : Math.Max(0f, 100f - damage);
+            }
 
             var bloodSol = _solutions.TryGetSolution(occ, BloodstreamComponent.DefaultBloodSolutionName,
                 out _, out var sol) ? sol : null;
@@ -198,6 +254,9 @@ public sealed partial class OxydSleeperSystem : EntitySystem
             }
         }
 
+        state.Filtering = comp.Filtering;
+        state.FilterAvailable = state.HasOccupant && state.HasBeaker;
+
         _ui.SetUiState(uid, OxydSleeperUiKey.Key, state);
     }
 
@@ -211,6 +270,7 @@ public sealed partial class OxydSleeperSystem : EntitySystem
         var query = EntityQueryEnumerator<OxydSleeperComponent>();
         while (query.MoveNext(out var uid, out var comp))
         {
+            RunDialysis(uid, comp);
             if (BodySlot(uid).ContainedEntity == null && !_ui.IsUiOpen(uid, OxydSleeperUiKey.Key))
                 continue;
             PushState(uid, comp);

@@ -132,6 +132,10 @@ public sealed class OxydSleeperState : BoundUserInterfaceState
     public float BeakerVolume;
     public float BeakerMaxVolume;
     public bool HasBeaker;
+    /// <summary>Eris dialysis `filtering`: pumping bloodstream reagents into the beaker.</summary>
+    public bool Filtering;
+    /// <summary>Dialysis can be toggled (occupant + beaker loaded).</summary>
+    public bool FilterAvailable;
 }
 
 [Serializable, NetSerializable]
@@ -149,6 +153,7 @@ public sealed class OxydSleeperChem
 public sealed class OxydSleeperInjectMessage : BoundUserInterfaceMessage
 {
     public string Reagent = string.Empty;
+    public float Dose;
 }
 
 [Serializable, NetSerializable]
@@ -161,13 +166,33 @@ public sealed class OxydSleeperEjectBeakerMessage : BoundUserInterfaceMessage
 {
 }
 
+[Serializable, NetSerializable]
+public sealed class OxydSleeperToggleFilterMessage : BoundUserInterfaceMessage
+{
+}
+
 // ---------------- Autodoc ----------------
-// Ports Eris machinery/autodoc.dm: automated surgery pod executing a queued procedure list.
+// Ports Eris machinery/autodoc.dm + surgery/autodoc.dm (capitalist_autodoc): scan detects
+// patchnotes of problems, the user toggles operations, inserted credits pay per operation.
 
 [Serializable, NetSerializable]
 public enum OxydAutodocUiKey : byte
 {
     Key,
+}
+
+/// <summary>Autodoc operations (Eris AUTODOC_* bitflags).</summary>
+[Serializable, NetSerializable]
+public enum OxydAutodocOp : byte
+{
+    Damage,          // brute/burn on an organ (AUTODOC_DAMAGE)
+    OpenWounds,      // bandage/clamp/salve wounds, seal incisions (AUTODOC_OPEN_WOUNDS)
+    InternalWounds,  // internal organ damage (AUTODOC_INTERNAL_WOUNDS)
+    Fracture,        // mend fracture (AUTODOC_FRACTURE)
+    Shrapnel,        // remove embedded objects (AUTODOC_EMBED_OBJECT)
+    Toxin,           // anti-toxin chelation (AUTODOC_TOXIN)
+    Dialysis,        // purge bloodstream reagents (AUTODOC_DIALYSIS)
+    Blood,           // replenish blood volume (AUTODOC_BLOOD)
 }
 
 [Serializable, NetSerializable]
@@ -176,39 +201,103 @@ public sealed class OxydAutodocState : BoundUserInterfaceState
     public bool HasOccupant;
     public string OccupantName = string.Empty;
     public bool Running;
-    public string? ActiveStepName;
-    public List<OxydSurgeryStep> Queue = new();
-    public List<OxydAutodocProcedure> Available = new();
+    /// <summary>Overall progress 0-1 (Eris displayBar over the queue).</summary>
+    public float Progress;
+
+    // Overall status bars (Eris overall_status).
+    public float BruteLoss;
+    public float BurnLoss;
+    public float ToxinLoss;
+    public float OxyLoss;
+    public float BloodPercent;
+
+    /// <summary>Credits loaded in the machine (Eris patient_account balance; here: SpaceCash).</summary>
+    public int Balance;
+    public int ScanCost;
+    public int TotalCost;
+    public int CustomCost;
+
+    /// <summary>Global toxnote ops (organ == null entry rendered on top).</summary>
+    public OxydAutodocEntry Global = new() { Name = "", Global = true };
+    public List<OxydAutodocEntry> Organs = new();
+    /// <summary>Operation costs for rendering the per-op links.</summary>
+    public Dictionary<OxydAutodocOp, int> OpCosts = new();
 }
 
+/// <summary>One patchnote row: an organ (or the global toxnote) with available/picked ops.</summary>
 [Serializable, NetSerializable]
-public sealed class OxydAutodocProcedure
+public sealed class OxydAutodocEntry
 {
+    /// <summary>Index into the server's patchnote list (0 = global).</summary>
+    public int Id;
     public string Name = string.Empty;
-    public OxydSurgeryStep Step;
-    public bool Applicable = true;
-    public string? BlockedReason;
+    public bool Global;
+    /// <summary>Internal organ (Eris renders inner_damage only).</summary>
+    public bool Internal;
+    public float BruteDamage;
+    public float BurnDamage;
+    public float InnerDamage;
+    public List<OxydAutodocOp> Available = new();
+    public List<OxydAutodocOp> Picked = new();
 }
 
 [Serializable, NetSerializable]
-public sealed class OxydAutodocEnqueueMessage : BoundUserInterfaceMessage
-{
-    public OxydSurgeryStep Step;
-}
-
-[Serializable, NetSerializable]
-public sealed class OxydAutodocClearMessage : BoundUserInterfaceMessage
+public sealed class OxydAutodocScanMessage : BoundUserInterfaceMessage
 {
 }
 
+/// <summary>Process every scanned operation (Eris 'full').</summary>
 [Serializable, NetSerializable]
-public sealed class OxydAutodocStartMessage : BoundUserInterfaceMessage
+public sealed class OxydAutodocProcessAllMessage : BoundUserInterfaceMessage
 {
+}
+
+/// <summary>Process only the picked operations (Eris 'picked').</summary>
+[Serializable, NetSerializable]
+public sealed class OxydAutodocProcessPickedMessage : BoundUserInterfaceMessage
+{
+}
+
+[Serializable, NetSerializable]
+public sealed class OxydAutodocAbortMessage : BoundUserInterfaceMessage
+{
+}
+
+[Serializable, NetSerializable]
+public sealed class OxydAutodocToggleMessage : BoundUserInterfaceMessage
+{
+    public int EntryId;
+    public OxydAutodocOp Op;
 }
 
 [Serializable, NetSerializable]
 public sealed class OxydAutodocEjectMessage : BoundUserInterfaceMessage
 {
+}
+
+[Serializable, NetSerializable]
+public sealed class OxydAutodocEjectCreditsMessage : BoundUserInterfaceMessage
+{
+}
+
+// ---------------- MIRC (Moebius Internal Reagent Catalogue) ----------------
+// Ports Eris modular_computers/.../medical/chem_catalog.dm: a PDA program that lists
+// the Moebius reagents and how to mix them.
+
+[Serializable, NetSerializable]
+public sealed class OxydMircUiState : BoundUserInterfaceState
+{
+    public List<OxydMircEntry> Entries = new();
+}
+
+[Serializable, NetSerializable]
+public sealed class OxydMircEntry
+{
+    public string Id = string.Empty;
+    public string Name = string.Empty;
+    public string Description = string.Empty;
+    /// <summary>Pre-formatted recipe lines, e.g. "20u Hydrogen + 10u Oxygen".</summary>
+    public List<string> Recipes = new();
 }
 
 // ---------------- Health scanner ----------------

@@ -17,6 +17,7 @@ using Content.Shared.Verbs;
 using Robust.Server.Containers;
 using Robust.Server.GameObjects;
 using Robust.Shared.Containers;
+using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Timing;
 
@@ -147,6 +148,7 @@ public sealed partial class OxydIvDripSystem : EntitySystem
     [Dependency] private readonly SharedSolutionContainerSystem _solutions = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
+    [Dependency] private readonly EntityLookupSystem _lookup = default!;
 
     public override void Initialize()
     {
@@ -244,6 +246,21 @@ public sealed partial class OxydIvDripSystem : EntitySystem
                 ? Loc.GetString("oxyd-medical-iv-verb-inject")
                 : Loc.GetString("oxyd-medical-iv-verb-draw"),
         });
+
+        if (comp.AttachedTo == null)
+        {
+            args.Verbs.Add(new AlternativeVerb
+            {
+                Act = () =>
+                {
+                    var patient = _lookup.GetEntitiesInRange(uid, 1.5f)
+                        .FirstOrDefault(e => e != uid && HasComp<BodyComponent>(e));
+                    if (patient != default)
+                        ToggleAttach(uid, comp, patient, args.User);
+                },
+                Text = Loc.GetString("oxyd-medical-iv-verb-attach"),
+            });
+        }
     }
 
     private void AddInsertBeakerVerb(EntityUid uid, OxydIvDripComponent comp, GetVerbsEvent<InteractionVerb> args)

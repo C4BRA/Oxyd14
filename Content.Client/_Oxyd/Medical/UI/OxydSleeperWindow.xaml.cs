@@ -9,9 +9,10 @@ namespace Content.Client._Oxyd.Medical.UI;
 [GenerateTypedNameReferences]
 public sealed partial class OxydSleeperWindow : FancyWindow
 {
-    public event Action<string>? InjectRequested;
+    public event Action<string, float>? InjectRequested;
     public event Action? EjectRequested;
     public event Action? EjectBeakerRequested;
+    public event Action? ToggleDialysisRequested;
 
     public OxydSleeperWindow()
     {
@@ -19,6 +20,7 @@ public sealed partial class OxydSleeperWindow : FancyWindow
 
         EjectButton.OnPressed += _ => EjectRequested?.Invoke();
         EjectBeakerButton.OnPressed += _ => EjectBeakerRequested?.Invoke();
+        DialysisButton.OnPressed += _ => ToggleDialysisRequested?.Invoke();
     }
 
     public void UpdateState(OxydSleeperState state)
@@ -36,16 +38,22 @@ public sealed partial class OxydSleeperWindow : FancyWindow
             foreach (var chem in state.Chems)
             {
                 var local = chem.Reagent;
-                var button = new Button
+                foreach (var dose in new[] { 5f, 10f })
                 {
-                    Text = Loc.GetString("oxyd-sleeper-inject-chem",
-                        ("name", chem.Name), ("dose", chem.DoseSize), ("current", (int) chem.InPatient)),
-                    Disabled = !chem.Enabled,
-                };
-                if (chem.DisabledReason != null)
-                    button.ToolTip = chem.DisabledReason;
-                button.OnPressed += _ => InjectRequested?.Invoke(local);
-                ChemButtons.AddChild(button);
+                    if (dose > chem.DoseSize)
+                        continue;
+                    var d = dose;
+                    var button = new Button
+                    {
+                        Text = Loc.GetString("oxyd-sleeper-inject-chem",
+                            ("name", Loc.GetString(chem.Name)), ("dose", (int) d), ("current", (int) chem.InPatient)),
+                        Disabled = !chem.Enabled,
+                    };
+                    if (chem.DisabledReason != null)
+                        button.ToolTip = chem.DisabledReason;
+                    button.OnPressed += _ => InjectRequested?.Invoke(local, d);
+                    ChemButtons.AddChild(button);
+                }
             }
         }
 
@@ -53,5 +61,10 @@ public sealed partial class OxydSleeperWindow : FancyWindow
             ? Loc.GetString("oxyd-sleeper-beaker", ("vol", (int) state.BeakerVolume), ("max", (int) state.BeakerMaxVolume))
             : Loc.GetString("oxyd-sleeper-no-beaker");
         EjectBeakerButton.Disabled = !state.HasBeaker;
+
+        DialysisButton.Disabled = !state.FilterAvailable;
+        DialysisButton.Text = state.Filtering
+            ? Loc.GetString("oxyd-sleeper-dialysis-on")
+            : Loc.GetString("oxyd-sleeper-dialysis");
     }
 }
