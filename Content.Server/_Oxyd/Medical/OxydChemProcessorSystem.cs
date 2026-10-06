@@ -107,7 +107,8 @@ public sealed partial class OxydChemProcessorSystem : EntitySystem
 
     private void OnEject(EntityUid uid, OxydChemProcessorComponent comp, OxydChemProcessorEjectMessage args)
     {
-        if (comp.Working)
+        // Reject out-of-range indexes: EnsureContainer would happily create a phantom slot.
+        if (comp.Working || args.BeakerIndex >= OxydChemProcessorComponent.SeparationBeakerCount)
             return;
 
         var slotId = args.BeakerIndex < 0

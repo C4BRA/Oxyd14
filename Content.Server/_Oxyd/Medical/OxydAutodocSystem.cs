@@ -170,8 +170,9 @@ public sealed partial class OxydAutodocSystem : EntitySystem
     {
         if (args.Handled)
             return;
-        args.Handled = true;
+        // Only claim the drop for a body we can accept so other drop handlers can still run.
         args.CanDrop = !comp.Running && BodySlot(uid).ContainedEntity == null && HasComp<BodyComponent>(args.Dragged);
+        args.Handled = args.CanDrop;
     }
 
     private void OnDragDropOn(EntityUid uid, OxydAutodocComponent comp, DragDropTargetEvent args)
@@ -182,7 +183,6 @@ public sealed partial class OxydAutodocSystem : EntitySystem
 
         args.Handled = true;
         _container.Insert(args.Dragged, BodySlot(uid));
-        comp.Occupant = args.Dragged;
         comp.Notes.Clear();
         PushState(uid, comp);
     }
@@ -201,7 +201,6 @@ public sealed partial class OxydAutodocSystem : EntitySystem
             Act = () =>
             {
                 _container.Insert(target, BodySlot(uid));
-                comp.Occupant = target;
                 comp.Notes.Clear();
                 PushState(uid, comp);
             },
@@ -231,7 +230,6 @@ public sealed partial class OxydAutodocSystem : EntitySystem
         }
         if (BodySlot(uid).ContainedEntity is { } occ)
             _container.Remove(occ, BodySlot(uid));
-        comp.Occupant = null;
         comp.Notes.Clear();
         _appearance.SetData(uid, OxydMachineVisuals.Working, false);
         PushState(uid, comp);
@@ -525,7 +523,7 @@ public sealed partial class OxydAutodocSystem : EntitySystem
         {
             state.HasOccupant = true;
             state.OccupantName = Name(occ);
-                state.BruteLoss = Group(occ, "Brute");
+            state.BruteLoss = Group(occ, "Brute");
             state.BurnLoss = Group(occ, "Burn");
             state.ToxinLoss = Group(occ, "Toxin");
             state.OxyLoss = Group(occ, "Airloss");

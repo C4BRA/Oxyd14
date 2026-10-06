@@ -133,7 +133,6 @@ public sealed partial class OxydAutodocComponent : Component
     public int OpsTotal;
 
     public TimeSpan NextOpTime;
-    public EntityUid? Occupant;
 }
 
 /// <summary>One Eris autodoc_patchnote: operations detected (Scanned) and selected (Picked)
@@ -223,5 +222,19 @@ public sealed partial class OxydOrganFreezerComponent : Component
 /// <summary>A reusable morgue tray marker.</summary>
 [RegisterComponent, NetworkedComponent]
 public sealed partial class OxydMorgueTrayComponent : Component
+{
+}
+
+/// <summary>Marker on the Eris-style scanner item (health analyzer sprite w/ organ table).
+/// Referenced by item prototypes, so it lives in Shared.</summary>
+[RegisterComponent]
+public sealed partial class OxydScannerItemComponent : Component
+{
+}
+
+/// <summary>Marker on the scanner's UI proxy entity.
+/// Referenced by the proxy prototype, so it lives in Shared.</summary>
+[RegisterComponent]
+public sealed partial class OxydScannerUiProxyComponent : Component
 {
 }

@@ -88,10 +88,12 @@ public sealed partial class OxydWoundSystem : EntitySystem
         {
             surg.Fractured = true;
             surg.Splinted = false;
-            Dirty(orgUid, surg);
             _popup.PopupEntity(Loc.GetString("oxyd-medical-fracture",
                 ("organ", Name(orgUid))), uid, uid);
         }
+
+        // Damage pools and Fractured are networked fields: sync every mutation, not just fractures.
+        Dirty(orgUid, surg);
     }
 
     public override void Update(float frameTime)
@@ -154,10 +156,11 @@ public sealed partial class OxydWoundSystem : EntitySystem
     /// <summary>Heals per-organ damage (Eris chems like peridaxon, surgical repair).</summary>
     public void HealOrganDamage(EntityUid body, float amount)
     {
-        foreach (var (_, _, surg) in GetOrgans(body).Where(o => o.Surgery.OrganDamage > 0)
+        foreach (var (orgUid, _, surg) in GetOrgans(body).Where(o => o.Surgery.OrganDamage > 0)
                      .OrderByDescending(o => o.Surgery.OrganDamage).Take(2))
         {
             ReduceOrganDamage(surg, amount);
+            Dirty(orgUid, surg);
         }
     }
 

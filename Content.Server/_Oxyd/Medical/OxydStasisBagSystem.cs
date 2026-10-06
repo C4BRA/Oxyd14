@@ -12,6 +12,7 @@ using Content.Shared.Popups;
 using Content.Shared.Verbs;
 using Robust.Server.Containers;
 using Robust.Shared.Containers;
+using Robust.Shared.GameObjects;
 
 namespace Content.Server._Oxyd.Medical;
 
@@ -33,8 +34,9 @@ public sealed partial class OxydStasisBagSystem : EntitySystem
         SubscribeLocalEvent<OxydStasisBagComponent, GetVerbsEvent<AlternativeVerb>>(AddOpenVerb);
         SubscribeLocalEvent<OxydStasisBagComponent, DragDropTargetEvent>(OnDragDropOn);
         SubscribeLocalEvent<OxydStasisBagComponent, CanDropTargetEvent>(OnCanDropOn);
+        SubscribeLocalEvent<OxydStasisBagComponent, EntRemovedFromContainerMessage>(OnOccupantRemoved);
+        SubscribeLocalEvent<OxydStasisBagComponent, EntityTerminatingEvent>(OnTerminating);
         SubscribeLocalEvent<OxydInStasisComponent, DamageModifyEvent>(OnStasisDamage);
-        SubscribeLocalEvent<OxydInStasisComponent, ComponentShutdown>(OnStasisRemoved);
     }
 
     private void OnInit(EntityUid uid, OxydStasisBagComponent comp, ComponentInit args)
@@ -49,8 +51,9 @@ public sealed partial class OxydStasisBagSystem : EntitySystem
     {
         if (args.Handled)
             return;
-        args.Handled = true;
+        // Only claim the drop for a body we can accept so other drop handlers can still run.
         args.CanDrop = BodySlot(uid).ContainedEntities.Count == 0 && HasComp<BodyComponent>(args.Dragged);
+        args.Handled = args.CanDrop;
     }
 
     private void OnDragDropOn(EntityUid uid, OxydStasisBagComponent comp, DragDropTargetEvent args)
@@ -119,8 +122,17 @@ public sealed partial class OxydStasisBagSystem : EntitySystem
         args.Damage = new DamageSpecifier();
     }
 
-    private void OnStasisRemoved(EntityUid uid, OxydInStasisComponent comp, ComponentShutdown args)
+    /// <summary>Any occupant leaving the body container loses stasis protection, even when
+    /// removed by something other than the Open verb (admin pull, teleport, destroy).</summary>
+    private void OnOccupantRemoved(EntityUid uid, OxydStasisBagComponent comp, EntRemovedFromContainerMessage args)
     {
-        // Free component removal when the patient somehow leaves without the bag opening.
+        RemCompDeferred<OxydInStasisComponent>(args.Entity);
+    }
+
+    /// <summary>A deleted bag frees its patient instead of leaving them permanently in stasis.</summary>
+    private void OnTerminating(EntityUid uid, OxydStasisBagComponent comp, EntityTerminatingEvent args)
+    {
+        foreach (var occupant in BodySlot(uid).ContainedEntities.ToArray())
+            RemComp<OxydInStasisComponent>(occupant);
     }
 }

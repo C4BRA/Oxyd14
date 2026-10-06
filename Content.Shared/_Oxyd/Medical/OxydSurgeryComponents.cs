@@ -115,6 +115,13 @@ public sealed partial class OxydSurgeryToolComponent : Component
     public int Quality = 80;
 }
 
+/// <summary>Marker on the nullspace proxy hosting the surgery BUI.
+/// Referenced by the proxy prototype, so it lives in Shared.</summary>
+[RegisterComponent]
+public sealed partial class OxydSurgeryUiProxyComponent : Component
+{
+}
+
 /// <summary>Surgical steps, mirroring Eris modules/surgery generic steps and organ repair steps.</summary>
 [Serializable, NetSerializable]
 public enum OxydSurgeryStep : byte

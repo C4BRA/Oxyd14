@@ -148,6 +148,7 @@ oxyd-sleeper-chem-antitoxin = Anti-toxin
 oxyd-sleeper-chem-dexalin = Dexalin
 oxyd-medical-sleeper-verb-insert = Get inside
 oxyd-medical-sleeper-verb-eject = Eject occupant
+oxyd-medical-sleeper-verb-insert-beaker = Insert beaker
 oxyd-medical-sleeper-chem-max = Patient is saturated with {$chem}.
 oxyd-medical-sleeper-chem-saturated = Cannot inject: bloodstream saturated.
 

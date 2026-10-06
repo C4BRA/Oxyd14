@@ -1061,8 +1061,3 @@ public sealed partial class OxydSurgerySystem : EntitySystem
     }
 }
 
-/// <summary>Marker on the nullspace proxy hosting the surgery BUI.</summary>
-[RegisterComponent]
-public sealed partial class OxydSurgeryUiProxyComponent : Component
-{
-}

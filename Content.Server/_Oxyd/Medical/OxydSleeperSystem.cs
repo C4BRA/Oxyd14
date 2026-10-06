@@ -44,6 +44,7 @@ public sealed partial class OxydSleeperSystem : EntitySystem
         SubscribeLocalEvent<OxydSleeperComponent, GetVerbsEvent<AlternativeVerb>>(AddEjectVerb);
         SubscribeLocalEvent<OxydSleeperComponent, DragDropTargetEvent>(OnDragDropOn);
         SubscribeLocalEvent<OxydSleeperComponent, CanDropTargetEvent>(OnCanDropOn);
+        SubscribeLocalEvent<OxydSleeperComponent, InteractUsingEvent>(OnInteractUsing);
         SubscribeLocalEvent<OxydSleeperComponent, EntInsertedIntoContainerMessage>(OnContainerChanged);
         SubscribeLocalEvent<OxydSleeperComponent, EntRemovedFromContainerMessage>(OnContainerChanged);
         SubscribeLocalEvent<OxydSleeperComponent, OxydSleeperInjectMessage>(OnInject);
@@ -68,8 +69,10 @@ public sealed partial class OxydSleeperSystem : EntitySystem
     {
         if (args.Handled)
             return;
-        args.Handled = true;
+        // Only claim the drop when it's a body we can accept, so other drop
+        // handlers (e.g. beaker insertion) can still run for anything else.
         args.CanDrop = BodySlot(uid).ContainedEntity == null && HasComp<BodyComponent>(args.Dragged);
+        args.Handled = args.CanDrop;
     }
 
     private void OnDragDropOn(EntityUid uid, OxydSleeperComponent comp, DragDropTargetEvent args)
@@ -83,11 +86,23 @@ public sealed partial class OxydSleeperSystem : EntitySystem
 
     private void AddInsertVerb(EntityUid uid, OxydSleeperComponent comp, GetVerbsEvent<InteractionVerb> args)
     {
-        if (!args.CanInteract || BodySlot(uid).ContainedEntity != null)
+        if (!args.CanInteract)
             return;
 
+        // Insert a held beaker for dialysis output (Eris loads the beaker by clicking).
+        if (args.Using is { } used && BeakerSlot(uid).ContainedEntity == null &&
+            _solutions.TryGetSolution(used, "beaker", out _, out _))
+        {
+            args.Verbs.Add(new InteractionVerb
+            {
+                Act = () => _container.Insert(used, BeakerSlot(uid)),
+                Text = Loc.GetString("oxyd-medical-sleeper-verb-insert-beaker"),
+            });
+        }
+
         // Insert the body the user is pulling (args.Target is the sleeper itself).
-        if (!TryComp<PullerComponent>(args.User, out var puller) || puller.Pulling is not { } target ||
+        if (BodySlot(uid).ContainedEntity != null ||
+            !TryComp<PullerComponent>(args.User, out var puller) || puller.Pulling is not { } target ||
             !HasComp<BodyComponent>(target))
             return;
 
@@ -96,6 +111,18 @@ public sealed partial class OxydSleeperSystem : EntitySystem
             Act = () => _container.Insert(target, BodySlot(uid)),
             Text = Loc.GetString("oxyd-medical-sleeper-verb-insert"),
         });
+    }
+
+    /// <summary>Eris: clicking the sleeper with a beaker loads it into the dialysis slot.</summary>
+    private void OnInteractUsing(EntityUid uid, OxydSleeperComponent comp, InteractUsingEvent args)
+    {
+        if (args.Handled || BeakerSlot(uid).ContainedEntity != null)
+            return;
+        if (!_solutions.TryGetSolution(args.Used, "beaker", out _, out _))
+            return;
+
+        args.Handled = true;
+        _container.Insert(args.Used, BeakerSlot(uid));
     }
 
     private void AddEjectVerb(EntityUid uid, OxydSleeperComponent comp, GetVerbsEvent<AlternativeVerb> args)
@@ -140,7 +167,8 @@ public sealed partial class OxydSleeperSystem : EntitySystem
         var inPatient = sol.GetTotalPrototypeQuantity(chem.Reagent).Float();
         if (inPatient >= chem.MaxInPatient)
         {
-            _popup.PopupEntity(Loc.GetString("oxyd-medical-sleeper-chem-max"), uid, uid);
+            _popup.PopupEntity(Loc.GetString("oxyd-medical-sleeper-chem-max",
+                ("chem", chem.Name != null ? Loc.GetString(chem.Name) : chem.Reagent)), uid, uid);
             return;
         }
 

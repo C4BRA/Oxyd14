@@ -126,18 +126,6 @@ public sealed partial class OxydMedicalScannerSystem : EntitySystem
     }
 }
 
-/// <summary>Marker on the Eris-style scanner item (health analyzer sprite w/ organ table).</summary>
-[RegisterComponent]
-public sealed partial class OxydScannerItemComponent : Component
-{
-}
-
-/// <summary>Marker on the scanner's UI proxy entity.</summary>
-[RegisterComponent]
-public sealed partial class OxydScannerUiProxyComponent : Component
-{
-}
-
 /// <summary>
 /// Ports the Eris IV drip (machinery/iv_drip.dm): attach to a patient to transfer blood,
 /// detach to stop. Ticks transfer a few units between the attached beaker and the bloodstream.
