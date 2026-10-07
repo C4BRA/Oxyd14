@@ -1,9 +1,12 @@
 using Content.Shared.Damage.Components;
 using Content.Shared.Damage.Prototypes;
 using Content.Shared.Damage.Systems;
+using Content.Shared.Examine;
 using System.Linq;
 using Content.Server.Body.Components;
 using Content.Shared._Oxyd.Medical;
+using Content.Shared.Atmos;
+using Content.Shared.Temperature.Components;
 using Robust.Shared.Prototypes;
 using Content.Shared.Body;
 using Content.Shared.Body.Components;
@@ -68,6 +71,11 @@ public sealed partial class OxydMedicalScannerSystem : EntitySystem
         {
             HasScan = true,
             PatientName = Name(patient),
+            Alive = _mobs.IsAlive(patient),
+            Critical = _mobs.IsCritical(patient),
+            Temperature = TryComp<TemperatureComponent>(patient, out var temp)
+                ? temp.Temperature
+                : Atmospherics.T20C,
         };
 
         if (TryComp<DamageableComponent>(patient, out var dmg))
@@ -149,6 +157,25 @@ public sealed partial class OxydIvDripSystem : EntitySystem
         SubscribeLocalEvent<OxydIvDripComponent, GetVerbsEvent<AlternativeVerb>>(AddIvVerbs);
         SubscribeLocalEvent<OxydIvDripComponent, GetVerbsEvent<InteractionVerb>>(AddInsertBeakerVerb);
         SubscribeLocalEvent<OxydIvDripComponent, InteractUsingEvent>(OnInteractUsing);
+        SubscribeLocalEvent<OxydIvDripComponent, ExaminedEvent>(OnExamine);
+    }
+
+    /// <summary>Eris examine: reports the loaded tank and attached vessel + the mode.</summary>
+    private void OnExamine(EntityUid uid, OxydIvDripComponent comp, ExaminedEvent args)
+    {
+        if (!args.IsInDetailsRange)
+            return;
+        if (BeakerSlot(uid).ContainedEntity is { } beaker)
+            args.PushMarkup(Loc.GetString("oxyd-medical-iv-examine-tank", ("tank", Name(beaker))));
+        else
+            args.PushMarkup(Loc.GetString("oxyd-medical-iv-examine-no-tank"));
+        if (comp.AttachedTo is { } net && !TerminatingOrDeleted(GetEntity(net)))
+            args.PushMarkup(Loc.GetString("oxyd-medical-iv-examine-vessel", ("vessel", Name(GetEntity(net)))));
+        else
+            args.PushMarkup(Loc.GetString("oxyd-medical-iv-examine-no-vessel"));
+        args.PushMarkup(Loc.GetString(comp.DrainMode
+            ? "oxyd-medical-iv-examine-mode-draw"
+            : "oxyd-medical-iv-examine-mode-inject", ("amount", comp.TransferPerTick)));
     }
 
     private void OnInit(EntityUid uid, OxydIvDripComponent comp, ComponentInit args)
@@ -250,6 +277,21 @@ public sealed partial class OxydIvDripSystem : EntitySystem
                 Text = Loc.GetString("oxyd-medical-iv-verb-attach"),
             });
         }
+
+        // Eris "Set IV transfer amount": cycles through the usual drip rates.
+        args.Verbs.Add(new AlternativeVerb
+        {
+            Act = () =>
+            {
+                var rates = OxydIvDripComponent.TransferRates;
+                var idx = Array.IndexOf(rates, comp.TransferPerTick);
+                comp.TransferPerTick = rates[(idx + 1) % rates.Length];
+                Dirty(uid, comp);
+                _popup.PopupEntity(Loc.GetString("oxyd-medical-iv-amount-set",
+                    ("amount", comp.TransferPerTick)), uid, args.User);
+            },
+            Text = Loc.GetString("oxyd-medical-iv-verb-amount", ("amount", comp.TransferPerTick)),
+        });
     }
 
     /// <summary>Eris attackby: clicking the drip with a beaker/bloodpack loads it.</summary>

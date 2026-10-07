@@ -41,6 +41,8 @@ public sealed partial class OxydChemProcessorSystem : EntitySystem
         SubscribeLocalEvent<OxydChemProcessorComponent, EntRemovedFromContainerMessage>(OnContainerChanged);
         SubscribeLocalEvent<OxydChemProcessorComponent, OxydChemProcessorSetTargetMessage>(OnSetTarget);
         SubscribeLocalEvent<OxydChemProcessorComponent, OxydChemProcessorStartMessage>(OnStart);
+        SubscribeLocalEvent<OxydChemProcessorComponent, OxydChemProcessorSetDurationMessage>(OnSetDuration);
+        SubscribeLocalEvent<OxydChemProcessorComponent, OxydChemProcessorSetRunningMessage>(OnSetRunning);
         SubscribeLocalEvent<OxydChemProcessorComponent, OxydChemProcessorEjectMessage>(OnEject);
     }
 
@@ -148,6 +150,28 @@ public sealed partial class OxydChemProcessorSystem : EntitySystem
         PushState(uid, comp);
     }
 
+    /// <summary>Eris centrifuge: pick the spin-cycle duration (5/10/15/30/60 radios).</summary>
+    private void OnSetDuration(EntityUid uid, OxydChemProcessorComponent comp, OxydChemProcessorSetDurationMessage args)
+    {
+        if (comp.Mode != OxydChemProcessorMode.Centrifuge || comp.Working)
+            return;
+        comp.WorkDuration = Math.Clamp(args.Seconds, 1f, 60f);
+        PushState(uid, comp);
+    }
+
+    /// <summary>Eris electrolyzer On/Off links: On starts continuous processing until
+    /// Off is pressed (or nothing is left to decompose).</summary>
+    private void OnSetRunning(EntityUid uid, OxydChemProcessorComponent comp, OxydChemProcessorSetRunningMessage args)
+    {
+        if (comp.Mode != OxydChemProcessorMode.Electrolyzer)
+            return;
+        comp.Continuous = args.Running;
+        Dirty(uid, comp);
+        if (args.Running)
+            OnStart(uid, comp, new OxydChemProcessorStartMessage());
+        PushState(uid, comp);
+    }
+
     private void OnEject(EntityUid uid, OxydChemProcessorComponent comp, OxydChemProcessorEjectMessage args)
     {
         // Reject out-of-range indexes: EnsureContainer would happily create a phantom slot.
@@ -183,6 +207,29 @@ public sealed partial class OxydChemProcessorSystem : EntitySystem
                     RunElectrolyzer(uid, comp);
                     break;
             }
+
+            // Eris electrolyzer: while switched "On" keep cycling until the main beaker
+            // has no decomposable reagent left (or the separation beaker is gone/full).
+            if (comp.Continuous && comp.Mode == OxydChemProcessorMode.Electrolyzer &&
+                Slot(uid, OxydChemProcessorComponent.MainBeakerId).ContainedEntity is { } contMain &&
+                _solutions.TryGetSolution(contMain, "beaker", out _, out var contSol) &&
+                FindSepBeaker(uid, out _) != null)
+            {
+                var anyWork = contSol.Contents.Any(r => _prototypes.EnumeratePrototypes<ReactionPrototype>()
+                    .Any(rx => rx.Products.ContainsKey(r.Reagent.Prototype) &&
+                               rx.Reactants.Count(p => !p.Value.Catalyst) >= 2));
+                if (anyWork)
+                {
+                    comp.Working = true;
+                    _appearance.SetData(uid, OxydMachineVisuals.Working, true);
+                    comp.WorkEnd = _timing.CurTime + TimeSpan.FromSeconds(comp.WorkDuration);
+                }
+                else
+                    comp.Continuous = false;
+            }
+            else if (comp.Mode == OxydChemProcessorMode.Electrolyzer && !comp.Working)
+                comp.Continuous = false;
+
             Dirty(uid, comp);
             PushState(uid, comp);
         }
@@ -264,6 +311,8 @@ public sealed partial class OxydChemProcessorSystem : EntitySystem
         {
             Mode = comp.Mode,
             Working = comp.Working,
+            Duration = comp.WorkDuration,
+            Continuous = comp.Continuous,
         };
 
         if (Slot(uid, OxydChemProcessorComponent.MainBeakerId).ContainedEntity is { } main &&

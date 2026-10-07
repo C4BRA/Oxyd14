@@ -127,6 +127,14 @@ public sealed class OxydSleeperState : BoundUserInterfaceState
     public string OccupantName = string.Empty;
     public float OccupantHealth;
     public bool OccupantCritical;
+    /// <summary>Eris occupied view: per-group damage for the Brute/Burn/Respiratory/Toxin bars.</summary>
+    public float BruteLoss;
+    public float BurnLoss;
+    public float ToxinLoss;
+    public float OxyLoss;
+    /// <summary>Eris "Organ Health" row: 100 - worst organ damage fraction.</summary>
+    public float OrganHealth;
+    public bool Alive;
     /// <summary>(reagent id, display name, amount already in patient, units per dose, injectable now)</summary>
     public List<OxydSleeperChem> Chems = new();
     public float BeakerVolume;
@@ -298,6 +306,43 @@ public sealed class OxydMircEntry
     public string Description = string.Empty;
     /// <summary>Pre-formatted recipe lines, e.g. "20u Hydrogen + 10u Oxygen".</summary>
     public List<string> Recipes = new();
+
+    // Eris catalog entry spec block (catalog_entry_reagent.tmpl).
+    /// <summary>Reagent group shown as Eris "Type" (Add/Drug/Medicine...).</summary>
+    public string Type = string.Empty;
+    /// <summary>Physical phase at STP derived from melting/boiling points (Liquid/Solid/Gas).</summary>
+    public string Phase = string.Empty;
+    /// <summary>Substance color as #RRGGBB for the color swatch.</summary>
+    public string ColorHex = "#FFFFFF";
+    /// <summary>Bloodstream metabolism rate in u/s (Eris metabolism field).</summary>
+    public float Metabolism;
+    /// <summary>NSA contribution while metabolising (Eris nerve_system_accumulation). -1 = none.</summary>
+    public float Nsa = -1f;
+    /// <summary>Addiction threshold in units. -1 = non-addictive.</summary>
+    public float AddictionThreshold = -1f;
+    /// <summary>Addiction chance per metabolise. -1 = non-addictive.</summary>
+    public float AddictionChance = -1f;
+    /// <summary>Taste description (flavor name) or empty.</summary>
+    public string Taste = string.Empty;
+    /// <summary>Reactions this reagent takes part in as a reactant (Eris "Takes part in
+    /// reactions"); each links back to the produced catalog entry.</summary>
+    public List<OxydMircLink> UsedIn = new();
+}
+
+/// <summary>A catalog link: display text + the entry it jumps to (null = plain text).</summary>
+[Serializable, NetSerializable]
+public sealed class OxydMircLink
+{
+    public string Label = string.Empty;
+    public string? EntryId;
+}
+
+/// <summary>Eris cryo cell: On/Off toggle for the pod (stock SS14 pods are always-on
+/// once powered; the Eris cell is switched explicitly).</summary>
+[Serializable, NetSerializable]
+public sealed class OxydCryoPodPowerMessage : BoundUserInterfaceMessage
+{
+    public bool On;
 }
 
 // ---------------- Health scanner ----------------
@@ -320,6 +365,11 @@ public sealed class OxydScannerState : BoundUserInterfaceState
     public float BurnLoss;
     public float ToxinLoss;
     public float OxyLoss;
+    /// <summary>Eris readout: "Overall Status: alive/critical/deceased".</summary>
+    public bool Alive;
+    public bool Critical;
+    /// <summary>Body temperature in Kelvin for the °C/°F line.</summary>
+    public float Temperature;
     public float Pain;
     public float Nsa;
     public float BloodLevel;
@@ -359,6 +409,10 @@ public sealed class OxydChemProcessorState : BoundUserInterfaceState
 {
     public OxydChemProcessorMode Mode;
     public bool Working;
+    /// <summary>Eris centrifuge: selectable spin-cycle duration in seconds (5/10/15/30/60).</summary>
+    public float Duration;
+    /// <summary>Eris electrolyzer: "On" toggle keeps processing until switched off.</summary>
+    public bool Continuous;
     public bool HasMainBeaker;
     public List<OxydChemProcessorReagent> MainContents = new();
     /// <summary>Centrifuge only: up to 3 separation beakers.</summary>
@@ -394,6 +448,20 @@ public sealed class OxydChemProcessorSetTargetMessage : BoundUserInterfaceMessag
 [Serializable, NetSerializable]
 public sealed class OxydChemProcessorStartMessage : BoundUserInterfaceMessage
 {
+}
+
+/// <summary>Eris centrifuge: pick the spin-cycle duration (seconds).</summary>
+[Serializable, NetSerializable]
+public sealed class OxydChemProcessorSetDurationMessage : BoundUserInterfaceMessage
+{
+    public float Seconds;
+}
+
+/// <summary>Eris electrolyzer: switch the unit On (continuous processing) or Off.</summary>
+[Serializable, NetSerializable]
+public sealed class OxydChemProcessorSetRunningMessage : BoundUserInterfaceMessage
+{
+    public bool Running;
 }
 
 [Serializable, NetSerializable]

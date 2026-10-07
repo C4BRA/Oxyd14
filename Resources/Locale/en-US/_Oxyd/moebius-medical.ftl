@@ -382,3 +382,95 @@ oxyd-medical-autodoc-nothing = Nothing to do.
 ## MIRC
 oxyd-mirc-program-name = MIRC
 oxyd-mirc-no-recipe = No known synthesis.
+
+# Eris catalog flow (chemistry_catalog.tmpl)
+oxyd-mirc-splash-title = Moebius reagent catalog
+oxyd-mirc-splash-welcome = Welcome to Moebius Internal Reagent Database.
+oxyd-mirc-splash-browse = Browse catalog
+oxyd-mirc-search = Search
+oxyd-mirc-entry-type = Type:
+oxyd-mirc-entry-phase = Phase:
+oxyd-mirc-entry-color = Color:
+oxyd-mirc-entry-metabolism = Metabolism:
+oxyd-mirc-entry-nsa = NSA:
+oxyd-mirc-entry-addiction = Addiction:
+oxyd-mirc-entry-overdose = Overdose:
+oxyd-mirc-entry-taste = Taste:
+oxyd-mirc-entry-used-in = Takes part in reactions
+oxyd-mirc-entry-recipes = Synthesis reactions
+oxyd-mirc-back = Back
+oxyd-mirc-print = Print
+oxyd-mirc-col-name = Name
+oxyd-mirc-col-phase = Phase
+oxyd-mirc-col-type = Type
+
+## Eris machine UI restyle
+oxyd-sleeper-crit-health = Critical Health:
+oxyd-sleeper-organ-health = Organ Health:
+oxyd-sleeper-status-label = Status:
+oxyd-sleeper-status-alive = Conscious
+oxyd-sleeper-status-crit = Critical
+oxyd-sleeper-status-dead = Deceased
+oxyd-sleeper-bar-brute = Brute
+oxyd-sleeper-bar-burn = Burn
+oxyd-sleeper-bar-resp = Respiratory
+oxyd-sleeper-bar-toxin = Toxin
+oxyd-sleeper-dialysis-inactive = Dialysis inactive
+oxyd-sleeper-dialysis-active = Dialysis active
+oxyd-sleeper-eject-occupant = Eject occupant
+oxyd-sleeper-in-patient = Occupant: {$units} units
+oxyd-sleeper-inject-units = Inject {$units}
+oxyd-sleeper-beaker-free = {$units} units of free space remaining
+
+oxyd-processor-control = Control panel
+oxyd-processor-status = Status: {$status}
+oxyd-processor-status-idle = Idle
+oxyd-processor-status-working = Working
+oxyd-processor-start-spin = Start spin cycle
+oxyd-processor-sep-rating = Supported up to {$count} separation beakers. Separation rating is 1u per second.
+oxyd-processor-sep-beaker = Separation beaker
+oxyd-processor-main-beaker = Beaker
+oxyd-processor-on = On
+oxyd-processor-off = Off
+
+oxyd-cryo-status-title = Cryo Cell Status
+oxyd-cryo-cell-temp = Cell Temperature:
+oxyd-cryo-unconscious = Unconscious
+oxyd-cryo-conscious = Conscious
+oxyd-cryo-dead = DEAD
+oxyd-cryo-eject-beaker = Eject beaker
+oxyd-cryo-no-beaker = No beaker
+
+oxyd-dispenser-energy = Energy
+oxyd-dispenser-dispense = Dispense
+oxyd-dispenser-beaker-contents = Beaker Contents
+oxyd-dispenser-chemicals = Chemicals
+oxyd-dispenser-amount = {$units}u
+oxyd-dispenser-empty = empty
+
+oxyd-scanner-analyzing = Analyzing Results for {$name}:
+oxyd-scanner-overall = Overall Status: {$status}
+oxyd-scanner-status-alive = alive
+oxyd-scanner-status-crit = critical
+oxyd-scanner-status-dead = deceased
+oxyd-scanner-damage-specifics = Damage Specifics:
+oxyd-scanner-body-temp = Body Temperature: {$celsius}°C ({$fahrenheit}°F)
+oxyd-scanner-loc-damage = Localized Damage:
+oxyd-scanner-limbs-ok = Limbs are OK.
+oxyd-scanner-blood-level = Blood Level {$status}: {$pct}% {$volume}u
+oxyd-scanner-blood-normal = Normal
+oxyd-scanner-blood-low = Low
+oxyd-scanner-blood-crit = Critically Low
+oxyd-scanner-pulse = Subject's pulse: {$bpm} bpm
+oxyd-scanner-print = Print Report
+oxyd-scanner-clear = Clear data
+oxyd-scanner-key = Key:
+
+oxyd-medical-iv-verb-amount = Set IV transfer amount ({$amount}u)
+oxyd-medical-iv-amount-set = Transfer rate set to {$amount} units.
+oxyd-medical-iv-examine-tank = There is a {$tank} attached.
+oxyd-medical-iv-examine-no-tank = There is no tank.
+oxyd-medical-iv-examine-vessel = It's attached to {$vessel}.
+oxyd-medical-iv-examine-no-vessel = There is no vessel.
+oxyd-medical-iv-examine-mode-inject = It's set to inject mode, transferring {$amount}u per tick.
+oxyd-medical-iv-examine-mode-draw = It's set to draw mode, transferring {$amount}u per tick.

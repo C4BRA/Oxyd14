@@ -96,6 +96,26 @@ internal sealed class ErisLink : ContainerButton
         OnMouseExited += _ => ModulateSelfOverride = null;
     }
 
+    public string Text
+    {
+        get => _label.Text ?? string.Empty;
+        set => _label.Text = value;
+    }
+
+    /// <summary>Restore the normal blue pill look (after SetDisabledLook/SetSelectedLook).</summary>
+    public void SetEnabledLook(bool red = false)
+    {
+        Disabled = false;
+        StyleBoxOverride = new StyleBoxFlat(red ? ErisSurgeryColors.RedButtonBg : ErisSurgeryColors.LinkBg)
+        {
+            BorderColor = ErisSurgeryColors.LinkBorder,
+            BorderThickness = new Thickness(1),
+        };
+        StyleBoxOverride.SetContentMarginOverride(StyleBox.Margin.Vertical, 2);
+        StyleBoxOverride.SetContentMarginOverride(StyleBox.Margin.Horizontal, 6);
+        _label.FontColorOverride = Color.White;
+    }
+
     /// <summary>Render as a disabled Eris link (grey text, darker box, no click).</summary>
     public void SetDisabledLook()
     {
@@ -108,6 +128,34 @@ internal sealed class ErisLink : ContainerButton
         StyleBoxOverride.SetContentMarginOverride(StyleBox.Margin.Vertical, 2);
         StyleBoxOverride.SetContentMarginOverride(StyleBox.Margin.Horizontal, 6);
         _label.FontColorOverride = ErisSurgeryColors.LinkDisabledText;
+    }
+
+    /// <summary>Render as the lit member of a selected pair (Eris .selected link —
+    /// lighter blue box, white border text highlight).</summary>
+    public void SetSelectedLook()
+    {
+        StyleBoxOverride = new StyleBoxFlat(Color.FromHex("#5b7ea4"))
+        {
+            BorderColor = Color.FromHex("#a0c0e0"),
+            BorderThickness = new Thickness(1),
+        };
+        StyleBoxOverride.SetContentMarginOverride(StyleBox.Margin.Vertical, 2);
+        StyleBoxOverride.SetContentMarginOverride(StyleBox.Margin.Horizontal, 6);
+        _label.FontColorOverride = Color.White;
+    }
+
+    /// <summary>Render as the un-selected member of a pair (dim blue box).</summary>
+    public void SetUnselectedLook()
+    {
+        Disabled = false;
+        StyleBoxOverride = new StyleBoxFlat(Color.FromHex("#27354a"))
+        {
+            BorderColor = ErisSurgeryColors.LinkBorder,
+            BorderThickness = new Thickness(1),
+        };
+        StyleBoxOverride.SetContentMarginOverride(StyleBox.Margin.Vertical, 2);
+        StyleBoxOverride.SetContentMarginOverride(StyleBox.Margin.Horizontal, 6);
+        _label.FontColorOverride = Color.FromHex("#9db6cc");
     }
 }
 
@@ -155,4 +203,82 @@ internal sealed class ErisBar : Control
                 PixelPosition + new Vector2(1 + fillWidth, size.Y - 1)), _fill);
         }
     }
+}
+
+/// <summary>Eris .itemLabel: gold #e9c183 label cell used for spec/stat rows
+/// ("Critical Health:", "Type:", ...).</summary>
+internal sealed class ErisItemLabel : Label
+{
+    public ErisItemLabel(string text)
+    {
+        Text = text;
+        FontColorOverride = ErisSurgeryColors.ItemLabelText;
+    }
+}
+
+/// <summary>Muted secondary label (Eris .itemContent / helper.comment text).</summary>
+internal sealed class ErisSubLabel : Label
+{
+    public ErisSubLabel(string text)
+    {
+        Text = text;
+        FontColorOverride = ErisSurgeryColors.LabelText;
+    }
+}
+
+/// <summary>Eris .statusDisplay: dark inset box used for beaker contents and
+/// status text blocks ("No beaker loaded", cell status, entry spec blocks).</summary>
+internal sealed class ErisStatusBox : PanelContainer
+{
+    public ErisStatusBox()
+    {
+        PanelOverride = new StyleBoxFlat(new Color(0.08f, 0.08f, 0.08f, 0.9f))
+        {
+            BorderColor = ErisSurgeryColors.CardBorder,
+            BorderThickness = new Thickness(1),
+        };
+        PanelOverride.SetContentMarginOverride(StyleBox.Margin.All, 6);
+    }
+}
+
+/// <summary>Eris .candystripe row: alternating translucent-dark row background
+/// for list tables (index 0 = dark, index 1 = darker).</summary>
+internal static class ErisCandystripe
+{
+    public static PanelContainer Wrap(Control row, int index)
+    {
+        var panel = new PanelContainer
+        {
+            PanelOverride = new StyleBoxFlat(index % 2 == 0
+                ? new Color(0.10f, 0.10f, 0.10f, 0.85f)
+                : new Color(0.05f, 0.05f, 0.05f, 0.85f)),
+            HorizontalExpand = true,
+        };
+        panel.AddChild(row);
+        return panel;
+    }
+}
+
+/// <summary>Eris spec row: itemLabel cell (fixed width) + value cell.</summary>
+internal sealed class ErisSpecRow : BoxContainer
+{
+    private readonly BoxContainer _valueSlot;
+
+    public ErisSpecRow(string label, float labelWidth = 120f)
+    {
+        Orientation = LayoutOrientation.Horizontal;
+        SeparationOverride = 6;
+        var l = new ErisItemLabel(label);
+        l.SetWidth = labelWidth;
+        l.ClipText = true;
+        AddChild(l);
+        _valueSlot = new BoxContainer
+        {
+            Orientation = LayoutOrientation.Horizontal,
+            HorizontalExpand = true,
+        };
+        AddChild(_valueSlot);
+    }
+
+    public void AddValue(Control control) => _valueSlot.AddChild(control);
 }

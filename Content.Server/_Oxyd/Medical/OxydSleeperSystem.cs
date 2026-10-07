@@ -18,6 +18,7 @@ using Content.Shared.Verbs;
 using Robust.Server.Containers;
 using Robust.Server.GameObjects;
 using Robust.Shared.Containers;
+using Robust.Shared.Prototypes;
 
 namespace Content.Server._Oxyd.Medical;
 
@@ -35,6 +36,8 @@ public sealed partial class OxydSleeperSystem : EntitySystem
     [Dependency] private readonly MobStateSystem _mobs = default!;
     [Dependency] private readonly MobThresholdSystem _mobThreshold = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
+    [Dependency] private readonly IPrototypeManager _prototypes = default!;
+    [Dependency] private readonly OxydWoundSystem _wounds = default!;
 
     private float _refreshRemaining;
 
@@ -248,6 +251,7 @@ public sealed partial class OxydSleeperSystem : EntitySystem
             state.HasOccupant = true;
             state.OccupantName = Name(occ);
             state.OccupantCritical = _mobs.IsCritical(occ);
+            state.Alive = _mobs.IsAlive(occ);
             if (TryComp<DamageableComponent>(occ, out var dmg))
             {
                 var damage = _damage.GetTotalDamage((occ, dmg)).Float();
@@ -255,7 +259,23 @@ public sealed partial class OxydSleeperSystem : EntitySystem
                 state.OccupantHealth = crit > 0
                     ? Math.Clamp(100f - damage / crit * 100f, 0f, 100f)
                     : Math.Max(0f, 100f - damage);
+
+                // Eris occupied view: one displayBar per damage group.
+                var perGroup = _damage.GetDamagePerGroup((occ, dmg));
+                state.BruteLoss = perGroup.TryGetValue("Brute", out var brute) ? brute.Float() : 0f;
+                state.BurnLoss = perGroup.TryGetValue("Burn", out var burn) ? burn.Float() : 0f;
+                state.ToxinLoss = perGroup.TryGetValue("Toxin", out var toxin) ? toxin.Float() : 0f;
+                state.OxyLoss = perGroup.TryGetValue("Airloss", out var air) ? air.Float() : 0f;
             }
+
+            // Eris "Organ Health" row: worst organ damage as a percentage of healthy.
+            var organHealth = 100f;
+            foreach (var (_, _, surg) in _wounds.GetOrgans(occ))
+            {
+                organHealth = Math.Min(organHealth, Math.Max(0f,
+                    100f - surg.OrganDamage / OxydOrganSurgeryComponent.OrganMaxDamage * 100f));
+            }
+            state.OrganHealth = organHealth;
 
             var bloodSol = _solutions.TryGetSolution(occ, BloodstreamComponent.DefaultBloodSolutionName,
                 out _, out var sol) ? sol : null;

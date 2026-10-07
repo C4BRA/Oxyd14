@@ -310,6 +310,14 @@
   - type: Icon
     sprite: Oxyd/erisported/eris_cryo.rsi
     state: pod-off
+  # Eris cryo cell UI: Oxyd BUI reusing the stock message stream + the Eris
+  # On/Off toggle (OxydCryoPodPowerMessage). Stock pod keeps its stock window.
+  - type: UserInterface
+    interfaces:
+      enum.CryoPodUiKey.Key:
+        type: OxydCryoPodBoundUserInterface
+      enum.WiresUiKey.Key:
+        type: WiresBoundUserInterface
 
 # ---------------------------------------------------------------------------
 # Chem Dispenser 5000 (Eris chemical_dispenser): engine ReagentDispenser with
@@ -325,6 +333,13 @@
     sprite: Oxyd/erisported/eris_chemmachines.rsi
     state: dispenser
     snapCardinals: true
+  # Eris dispenser NanoUI: Oxyd BUI consuming the stock ReagentDispenser state.
+  - type: UserInterface
+    interfaces:
+      enum.ReagentDispenserUiKey.Key:
+        type: OxydReagentDispenserBoundUserInterface
+      enum.StorageUiKey.Key:
+        type: StorageBoundUserInterface
 
 # ---------------------------------------------------------------------------
 # ChemMaster 3000 (Eris chem_master): engine ChemMaster skinned with the Eris

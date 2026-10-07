@@ -23,6 +23,10 @@ public sealed class OxydChemProcessorBoundUserInterface : BoundUserInterface
         _window.TargetSet += (id, target) =>
             SendMessage(new OxydChemProcessorSetTargetMessage { Reagent = id, TargetBeaker = target });
         _window.StartRequested += () => SendMessage(new OxydChemProcessorStartMessage());
+        _window.DurationSet += seconds =>
+            SendMessage(new OxydChemProcessorSetDurationMessage { Seconds = seconds });
+        _window.RunningSet += running =>
+            SendMessage(new OxydChemProcessorSetRunningMessage { Running = running });
         _window.EjectRequested += index => SendMessage(new OxydChemProcessorEjectMessage { BeakerIndex = index });
         _window.OnClose += Close;
     }

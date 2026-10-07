@@ -2,14 +2,10 @@
                xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
                Title="{Loc 'oxyd-processor-window-title'}"
                MinSize="560 440"
-               SetSize="600 480">
-    <BoxContainer Orientation="Vertical" Margin="8" SeparationOverride="6">
-        <Label Name="ModeLabel"/>
-        <BoxContainer Name="MainContents" Orientation="Vertical" SeparationOverride="4"/>
-        <BoxContainer Name="SepBeakers" Orientation="Horizontal" SeparationOverride="8" VerticalExpand="True"/>
-        <BoxContainer Orientation="Horizontal" SeparationOverride="8">
-            <Button Name="StartButton" Text="{Loc 'oxyd-processor-start'}"/>
-            <Button Name="EjectMainButton" Text="{Loc 'oxyd-processor-eject-main'}"/>
-        </BoxContainer>
-    </BoxContainer>
+               SetSize="600 500">
+    <!-- Eris NanoUI dark skin: flat #272727 body, content built in code-behind. -->
+    <PanelContainer Name="Body" VerticalExpand="True" HorizontalExpand="True">
+        <BoxContainer Name="Content" Orientation="Vertical" Margin="8" SeparationOverride="6"
+                      VerticalExpand="True" HorizontalExpand="True"/>
+    </PanelContainer>
 </controls:FancyWindow>

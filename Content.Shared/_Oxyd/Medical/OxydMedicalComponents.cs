@@ -162,6 +162,11 @@ public sealed partial class OxydChemProcessorComponent : Component
     [DataField, AutoNetworkedField]
     public bool Working;
 
+    /// <summary>Eris electrolyzer: when on, restarts the work cycle automatically
+    /// while there is still a decomposable reagent in the main beaker.</summary>
+    [DataField, AutoNetworkedField]
+    public bool Continuous;
+
     [DataField]
     public float WorkDuration = 5f;
 
@@ -174,10 +179,13 @@ public sealed partial class OxydIvDripComponent : Component
 {
     public static readonly string BeakerContainerId = "oxyd_iv_beaker";
 
+    /// <summary>Eris "Set IV transfer amount" verb: cycles through these units-per-tick values.</summary>
+    public static readonly float[] TransferRates = { 1f, 3f, 5f, 8f, 10f };
+
     [DataField, AutoNetworkedField]
     public NetEntity? AttachedTo;
 
-    [DataField]
+    [DataField, AutoNetworkedField]
     public float TransferPerTick = 5f;
 
     [DataField]
