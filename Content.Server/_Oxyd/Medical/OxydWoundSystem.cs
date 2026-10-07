@@ -64,6 +64,25 @@ public sealed partial class OxydWoundSystem : EntitySystem
         return list;
     }
 
+    /// <summary>
+    /// Eris get_pulse(): dead - PULSE_NONE, critical - PULSE_THREADY, a heart organ
+    /// damaged past a fifth of its cap - irregular, otherwise PULSE_NORM.
+    /// </summary>
+    public OxydPulse ClassifyPulse(EntityUid body, bool critical, bool dead)
+    {
+        if (dead)
+            return OxydPulse.None;
+        if (critical)
+            return OxydPulse.Thready;
+        foreach (var (_, organ, surg) in GetOrgans(body))
+        {
+            if (organ.Category is { Id: "Heart" } &&
+                surg.OrganDamage >= OxydOrganSurgeryComponent.OrganMaxDamage * 0.2f)
+                return OxydPulse.Irregular;
+        }
+        return OxydPulse.Norm;
+    }
+
     private void OnBodyDamaged(EntityUid uid, BodyComponent comp, DamageChangedEvent args)
     {
         if (args.DamageDelta is not { } delta || !args.DamageIncreased || _mobs.IsDead(uid))

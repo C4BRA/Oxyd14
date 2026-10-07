@@ -11,11 +11,11 @@ namespace Content.Client._Oxyd.Medical.UI;
 /// Eris On/Off link pair. Bound in the OxydCryoPod proto's UserInterface map so the
 /// stock pod keeps its stock window.
 /// </summary>
-public sealed class OxydCryoPodBoundUserInterface : BoundUserInterface
+public sealed class OxydCryoCellBoundUserInterface : BoundUserInterface
 {
     private OxydCryoPodWindow? _window;
 
-    public OxydCryoPodBoundUserInterface(EntityUid owner, Enum uiKey) : base(owner, uiKey)
+    public OxydCryoCellBoundUserInterface(EntityUid owner, Enum uiKey) : base(owner, uiKey)
     {
     }
 

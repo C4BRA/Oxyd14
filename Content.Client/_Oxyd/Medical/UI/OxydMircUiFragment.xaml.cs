@@ -11,6 +11,7 @@ using Robust.Client.UserInterface.XAML;
 using static Robust.Client.UserInterface.Controls.BoxContainer;
 using Robust.Shared.IoC;
 using Robust.Shared.Maths;
+using Robust.Shared.Utility;
 
 namespace Content.Client._Oxyd.Medical.UI;
 
@@ -192,7 +193,10 @@ public sealed partial class OxydMircUiFragment : BoxContainer
         print.SetDisabledLook();
         print.ToolTip = Loc.GetString("oxyd-mirc-no-recipe");
         topRow.AddChild(print);
-        var back = new ErisLink(Loc.GetString("oxyd-mirc-back"));
+        var back = new ErisLink(Loc.GetString("oxyd-mirc-back"))
+        {
+            MinSize = new Vector2(48, 20),
+        };
         back.OnPressed += _ =>
         {
             _stage = Stage.List;
@@ -287,6 +291,7 @@ public sealed partial class OxydMircUiFragment : BoxContainer
             {
                 Orientation = LayoutOrientation.Vertical,
                 SeparationOverride = 3,
+                HorizontalExpand = true,
             };
             recipeBox.AddChild(recipeCol);
             recipeCol.AddChild(new ErisItemLabel(Loc.GetString("oxyd-mirc-entry-recipes")));
@@ -294,6 +299,24 @@ public sealed partial class OxydMircUiFragment : BoxContainer
                 recipeCol.AddChild(Wrapped(recipe, ErisSurgeryColors.Text));
             EntryContainer.AddChild(recipeBox);
         }
+
+        // Bottom "Back" row — same Eris link, bigger target (the PDA fragment
+        // swallows clicks on the tight top-right pill in some layouts).
+        var bottomRow = new BoxContainer
+        {
+            Orientation = LayoutOrientation.Horizontal,
+            Margin = new Thickness(0, 8, 0, 0),
+        };
+        bottomRow.AddChild(new Control { HorizontalExpand = true });
+        var backBottom = new ErisLink(Loc.GetString("oxyd-mirc-back"));
+        backBottom.MinSize = new Vector2(64, 20);
+        backBottom.OnPressed += _ =>
+        {
+            _stage = Stage.List;
+            Rebuild();
+        };
+        bottomRow.AddChild(backBottom);
+        EntryContainer.AddChild(bottomRow);
     }
 
     private static ErisSpecRow Spec(string label, string value)
@@ -309,7 +332,11 @@ public sealed partial class OxydMircUiFragment : BoxContainer
         {
             HorizontalExpand = true,
         };
-        label.SetMessage($"[color={color.ToHex()}]{text}[/color]");
+        var message = new FormattedMessage();
+        message.PushColor(color);
+        message.AddText(text);
+        message.Pop();
+        label.SetMessage(message);
         return label;
     }
 }

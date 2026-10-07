@@ -11,11 +11,11 @@ namespace Content.Client._Oxyd.Medical.UI;
 /// only change is the NanoUI look. Bound in the OxydChemDispenser proto's
 /// UserInterface map so stock dispensers keep their stock window.
 /// </summary>
-public sealed class OxydReagentDispenserBoundUserInterface : BoundUserInterface
+public sealed class OxydChemDispenserBoundUserInterface : BoundUserInterface
 {
     private OxydReagentDispenserWindow? _window;
 
-    public OxydReagentDispenserBoundUserInterface(EntityUid owner, Enum uiKey) : base(owner, uiKey)
+    public OxydChemDispenserBoundUserInterface(EntityUid owner, Enum uiKey) : base(owner, uiKey)
     {
     }
 
@@ -32,8 +32,6 @@ public sealed class OxydReagentDispenserBoundUserInterface : BoundUserInterface
             SendMessage(new ReagentDispenserDispenseReagentMessage(location));
         _window.OnEjectBeakerPressed += () =>
             SendMessage(new ItemSlotButtonPressedEvent(SharedReagentDispenser.OutputSlotName));
-        _window.OnClearBeakerPressed += () =>
-            SendMessage(new ReagentDispenserClearContainerSolutionMessage());
         _window.OnClose += Close;
     }
 

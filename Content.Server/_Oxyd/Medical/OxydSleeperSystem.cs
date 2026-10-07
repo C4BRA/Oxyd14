@@ -276,6 +276,7 @@ public sealed partial class OxydSleeperSystem : EntitySystem
                     100f - surg.OrganDamage / OxydOrganSurgeryComponent.OrganMaxDamage * 100f));
             }
             state.OrganHealth = organHealth;
+            state.Pulse = _wounds.ClassifyPulse(occ, state.OccupantCritical, !state.Alive);
 
             var bloodSol = _solutions.TryGetSolution(occ, BloodstreamComponent.DefaultBloodSolutionName,
                 out _, out var sol) ? sol : null;

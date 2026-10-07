@@ -138,6 +138,21 @@ public sealed partial class OxydScannerWindow : FancyWindow
             FontColorOverride = bloodColor,
         });
 
+        // Eris "Pulse : ..." line, colored by classification.
+        var (pulseKey, pulseColor) = state.Pulse switch
+        {
+            OxydPulse.None => ("oxyd-pulse-none", BruteRed),
+            OxydPulse.Thready => ("oxyd-pulse-thready", BurnOrange),
+            OxydPulse.Irregular => ("oxyd-pulse-irregular", BurnOrange),
+            _ => ("oxyd-pulse-norm", ToxGreen),
+        };
+        Content.AddChild(new Label
+        {
+            Text = Loc.GetString("oxyd-scanner-pulse-line",
+                ("pulse", Loc.GetString(pulseKey))),
+            FontColorOverride = pulseColor,
+        });
+
         // Port extras (no Eris equivalent but the data is real): pain + NSA load.
         if (state.Pain > 0)
         {

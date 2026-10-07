@@ -98,6 +98,8 @@ public sealed partial class OxydMedicalScannerSystem : EntitySystem
         if (TryComp<OxydNsaComponent>(patient, out var nsa))
             state.Nsa = nsa.Current;
 
+        state.Pulse = _wounds.ClassifyPulse(patient, state.Critical, !state.Alive);
+
         if (_solutions.TryGetSolution(patient, BloodstreamComponent.DefaultBloodSolutionName, out _, out var blood))
         {
             state.BloodLevel = blood.Volume.Float();

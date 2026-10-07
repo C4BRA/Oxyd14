@@ -27,7 +27,6 @@ public sealed partial class OxydReagentDispenserWindow : FancyWindow
     public event Action<ReagentDispenserDispenseAmount>? OnDispenseAmountPressed;
     public event Action<ItemStorageLocation>? OnDispenseReagentPressed;
     public event Action? OnEjectBeakerPressed;
-    public event Action? OnClearBeakerPressed;
 
     // Eris dispense amounts (subset of the stock enum).
     private static readonly ReagentDispenserDispenseAmount[] Amounts =

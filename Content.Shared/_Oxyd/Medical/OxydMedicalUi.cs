@@ -135,6 +135,8 @@ public sealed class OxydSleeperState : BoundUserInterfaceState
     /// <summary>Eris "Organ Health" row: 100 - worst organ damage fraction.</summary>
     public float OrganHealth;
     public bool Alive;
+    /// <summary>Eris "Pulse" stat row (victim.get_pulse classification).</summary>
+    public OxydPulse Pulse;
     /// <summary>(reagent id, display name, amount already in patient, units per dose, injectable now)</summary>
     public List<OxydSleeperChem> Chems = new();
     public float BeakerVolume;
@@ -345,6 +347,17 @@ public sealed class OxydCryoPodPowerMessage : BoundUserInterfaceMessage
     public bool On;
 }
 
+/// <summary>Eris get_pulse() classification (PULSE_NONE/THREADY/NORM/irregular):
+/// dead - none, critical - thready, damaged heart organ - irregular, else norm.</summary>
+[Serializable, NetSerializable]
+public enum OxydPulse
+{
+    None,
+    Thready,
+    Irregular,
+    Norm,
+}
+
 // ---------------- Health scanner ----------------
 // Ports Eris medical scanners producing an Eris-style readout (organs + wounds + vitals),
 // on top of the native analyser flow.
@@ -368,6 +381,8 @@ public sealed class OxydScannerState : BoundUserInterfaceState
     /// <summary>Eris readout: "Overall Status: alive/critical/deceased".</summary>
     public bool Alive;
     public bool Critical;
+    /// <summary>Eris readout: "Pulse : ..." line.</summary>
+    public OxydPulse Pulse;
     /// <summary>Body temperature in Kelvin for the °C/°F line.</summary>
     public float Temperature;
     public float Pain;

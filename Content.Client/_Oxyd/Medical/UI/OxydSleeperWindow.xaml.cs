@@ -83,6 +83,22 @@ public sealed partial class OxydSleeperWindow : FancyWindow
         });
         Content.AddChild(organRow);
 
+        // Eris "Pulse" stat row (get_pulse classification).
+        var pulseRow = new ErisSpecRow(Loc.GetString("oxyd-sleeper-pulse"));
+        var (pulseKey, pulseColor) = state.Pulse switch
+        {
+            OxydPulse.None => ("oxyd-pulse-none", ErisSurgeryColors.BadText),
+            OxydPulse.Thready => ("oxyd-pulse-thready", ErisSurgeryColors.BarAverage),
+            OxydPulse.Irregular => ("oxyd-pulse-irregular", ErisSurgeryColors.BarAverage),
+            _ => ("oxyd-pulse-norm", ErisSurgeryColors.GoodText),
+        };
+        pulseRow.AddValue(new Label
+        {
+            Text = Loc.GetString(pulseKey),
+            FontColorOverride = pulseColor,
+        });
+        Content.AddChild(pulseRow);
+
         // Damage displayBars in a 2x2 grid like the Eris row.
         var bars = new GridContainer { Columns = 2, HorizontalExpand = true, VSeparationOverride = 4 };
         AddBar(bars, Loc.GetString("oxyd-sleeper-bar-brute"), state.BruteLoss);

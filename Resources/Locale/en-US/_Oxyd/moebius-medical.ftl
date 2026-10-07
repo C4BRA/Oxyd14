@@ -404,6 +404,14 @@ oxyd-mirc-col-name = Name
 oxyd-mirc-col-phase = Phase
 oxyd-mirc-col-type = Type
 
+# Eris get_pulse() classification (sleeper stat row + scanner pulse line).
+oxyd-sleeper-pulse = Pulse:
+oxyd-pulse-none = No pulse
+oxyd-pulse-thready = Thready
+oxyd-pulse-irregular = Irregular
+oxyd-pulse-norm = Normal
+oxyd-scanner-pulse-line = Pulse : {$pulse}
+
 ## Eris machine UI restyle
 oxyd-sleeper-crit-health = Critical Health:
 oxyd-sleeper-organ-health = Organ Health:

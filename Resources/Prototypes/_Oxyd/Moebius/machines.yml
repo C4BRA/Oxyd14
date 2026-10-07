@@ -315,7 +315,7 @@
   - type: UserInterface
     interfaces:
       enum.CryoPodUiKey.Key:
-        type: OxydCryoPodBoundUserInterface
+        type: OxydCryoCellBoundUserInterface
       enum.WiresUiKey.Key:
         type: WiresBoundUserInterface
 
@@ -337,7 +337,7 @@
   - type: UserInterface
     interfaces:
       enum.ReagentDispenserUiKey.Key:
-        type: OxydReagentDispenserBoundUserInterface
+        type: OxydChemDispenserBoundUserInterface
       enum.StorageUiKey.Key:
         type: StorageBoundUserInterface
 
