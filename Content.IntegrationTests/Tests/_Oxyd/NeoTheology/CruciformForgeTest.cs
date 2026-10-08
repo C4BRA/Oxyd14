@@ -5,10 +5,10 @@ using Content.Server._Oxyd.NeoTheology.Machines;
 using Content.Server.Materials;
 using Content.Server.Power.Components;
 using Content.Shared._Oxyd.NeoTheology.Components;
+using Content.Shared.Lathe;
 using Content.Shared.Materials;
 using Content.Shared.Stacks;
 using Content.Shared._Oxyd.NeoTheology.Events;
-using Content.Shared.Research.Prototypes;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Prototypes;
@@ -16,8 +16,8 @@ using Robust.Shared.Prototypes;
 namespace Content.IntegrationTests.Tests._Oxyd.NeoTheology;
 
 /// <summary>
-/// P2.6: the cruciform forge banks the recipe materials (through its MaterialStorage) and produces
-/// a cruciform after WorkTime.
+/// P2.6: the cruciform forge banks the recipe materials (through its MaterialStorage) and prints
+/// a cruciform through its headless <see cref="LatheComponent"/> once the litany queues the recipe.
 /// </summary>
 [TestOf(typeof(CruciformForgeSystem))]
 public sealed class CruciformForgeTest : GameTest
@@ -27,7 +27,6 @@ public sealed class CruciformForgeTest : GameTest
     private static readonly EntProtoId BiomatterProto = "OxydNtBiomatter";
     private static readonly EntProtoId CruciformProto = "OxydNtCruciform";
     private static readonly EntProtoId ForgeProto = "OxydNtCruciformForge";
-    private static readonly EntProtoId HumanProto = "MobHuman";
 
     /// <summary>Where the forge sits relative to the test tile.</summary>
     private static readonly Vector2 ForgeOffset = new(3f, 0f);
@@ -40,25 +39,23 @@ public sealed class CruciformForgeTest : GameTest
     [SidedDependency(Side.Server)] private readonly IPrototypeManager _prototypes = default!;
 
     [Test]
-    public async Task StockedForgeStartsWorkAndSpendsTheRecipe()
+    public async Task StockedForgeStartsPrintAndSpendsTheRecipe()
     {
         var map = await Pair.CreateMachineTestMap();
 
         await Server.WaitAssertion(() =>
         {
-            var (forge, comp) = SpawnForge(map.GridCoords);
+            var (forge, _) = SpawnForge(map.GridCoords);
             InsertRecipe(forge, map.GridCoords);
 
-            Assert.That(comp.Ready, Is.False, "A forge that has not produced anything is not ready.");
-            Assert.That(comp.Working, Is.False, "A freshly stocked forge must not be working yet.");
-
-            Assert.That(_forge.TryProduce(forge, comp), Is.True,
+            Assert.That(_forge.TryProduce(forge), Is.True,
                 "A forge stocked with the full recipe must accept a produce run.");
 
+            var lathe = SComp<LatheComponent>(forge);
             Assert.Multiple(() =>
             {
-                Assert.That(comp.Working, Is.True, "The forge must be working once the run starts.");
-                Assert.That(comp.Ready, Is.False, "Nothing is ready to take while the run is in flight.");
+                Assert.That(lathe.CurrentRecipe?.Id, Is.EqualTo(CruciformProto.Id),
+                    "The lathe must be mid-print once the run starts.");
                 Assert.That(_material.GetMaterialAmount(forge, "Biomatter"), Is.EqualTo(0),
                     "The run must debit 10 biomatter.");
                 Assert.That(_material.GetMaterialAmount(forge, "Plasteel"), Is.EqualTo(0),
@@ -70,16 +67,14 @@ public sealed class CruciformForgeTest : GameTest
     }
 
     [Test]
-    public async Task FinishedRunLeavesACruciformOnTheTurf()
+    public async Task FinishedPrintLeavesACruciformOnTheTurf()
     {
         var map = await Pair.CreateMachineTestMap();
 
         EntityUid forge = default;
-        EntityUid user = default;
 
         await Server.WaitAssertion(() =>
         {
-            user = SSpawnAtPosition(HumanProto, map.GridCoords);
             (forge, _) = SpawnForge(map.GridCoords);
             InsertRecipe(forge, map.GridCoords);
 
@@ -90,20 +85,16 @@ public sealed class CruciformForgeTest : GameTest
 
         await Server.WaitAssertion(() =>
         {
-            var comp = SComp<CruciformForgeComponent>(forge);
+            var lathe = SComp<LatheComponent>(forge);
             var coords = SEntMan.GetComponent<TransformComponent>(forge).Coordinates;
 
             Assert.Multiple(() =>
             {
-                Assert.That(comp.Working, Is.False, "The run must be over after WorkTime.");
-                Assert.That(comp.Ready, Is.True, "A finished run must leave a cruciform to take.");
+                Assert.That(lathe.CurrentRecipe, Is.Null, "The print must be over after CompleteTime.");
+                Assert.That(lathe.Queue, Is.Empty, "Nothing may remain queued after the print.");
                 Assert.That(SEntMan.System<EntityLookupSystem>().GetEntitiesInRange<CruciformComponent>(coords, 1f),
                     Is.Not.Empty, "The forged cruciform must be lying on the forge's turf.");
             });
-
-            Assert.That(_forge.TryTakeProduct(forge, user), Is.True,
-                "The forged cruciform must enter the user's hand.");
-            Assert.That(comp.Ready, Is.False, "Taking the product must clear the ready state.");
         });
     }
 
@@ -114,17 +105,20 @@ public sealed class CruciformForgeTest : GameTest
 
         await Server.WaitAssertion(() =>
         {
-            var (forge, comp) = SpawnForge(map.GridCoords);
+            var (forge, _) = SpawnForge(map.GridCoords);
 
             Insert(forge, map.GridCoords, BiomatterProto, 10);
             Insert(forge, map.GridCoords, PlasteelProto, 5);
             // no gold
 
-            Assert.That(_forge.TryProduce(forge, comp), Is.False,
+            Assert.That(_forge.TryProduce(forge), Is.False,
                 "A forge missing one recipe material must refuse the run.");
+
+            var lathe = SComp<LatheComponent>(forge);
             Assert.Multiple(() =>
             {
-                Assert.That(comp.Working, Is.False, "A refused run must not start working.");
+                Assert.That(lathe.CurrentRecipe, Is.Null, "A refused run must not start printing.");
+                Assert.That(lathe.Queue, Is.Empty, "A refused run must not queue anything.");
                 Assert.That(_material.GetMaterialAmount(forge, "Biomatter"), Is.EqualTo(10),
                     "A refused run must not debit biomatter.");
                 Assert.That(_material.GetMaterialAmount(forge, "Plasteel"), Is.EqualTo(500),
@@ -146,6 +140,8 @@ public sealed class CruciformForgeTest : GameTest
             {
                 Assert.That(SEntMan.HasComponent<CruciformForgeComponent>(forge), Is.True,
                     "The forge machine must carry the forge component.");
+                Assert.That(SEntMan.HasComponent<LatheComponent>(forge), Is.True,
+                    "The forge machine must carry a lathe for production.");
                 Assert.That(SEntMan.HasComponent<MaterialStorageComponent>(forge), Is.True,
                     "The forge machine must take material storage.");
                 Assert.That(SEntMan.HasComponent<ApcPowerReceiverComponent>(forge), Is.True,
@@ -172,37 +168,30 @@ public sealed class CruciformForgeTest : GameTest
     }
 
     [Test]
-    public async Task ValidationDoesNotSpendAndPowerLossPausesWork()
+    public async Task ValidationDoesNotSpendAndPowerBlocksTheQueue()
     {
         var map = await Pair.CreateMachineTestMap();
         await Server.WaitAssertion(() =>
         {
-            var (forge, comp) = SpawnForge(map.GridCoords);
+            var (forge, _) = SpawnForge(map.GridCoords);
             InsertRecipe(forge, map.GridCoords);
             var receiver = SComp<ApcPowerReceiverComponent>(forge);
             var validation = new LitanyForgeProduceEvent(forge, false, true);
             SEntMan.EventBus.RaiseLocalEvent(forge, ref validation);
             Assert.That(validation.Handled, Is.True);
-            Assert.That(comp.Working, Is.False);
-            Assert.That(_material.GetMaterialAmount(forge, "Biomatter"), Is.EqualTo(10));
+            Assert.That(_material.GetMaterialAmount(forge, "Biomatter"), Is.EqualTo(10),
+                "A validate-only produce must not debit materials.");
+
             receiver.Powered = false;
-            Assert.That(_forge.TryProduce(forge), Is.False);
-            Assert.That(_material.GetMaterialAmount(forge, "Biomatter"), Is.EqualTo(10));
+            Assert.That(_forge.TryProduce(forge), Is.False,
+                "An unpowered forge must refuse the run.");
+            Assert.That(_material.GetMaterialAmount(forge, "Biomatter"), Is.EqualTo(10),
+                "A refused run must not debit materials.");
 
             receiver.Powered = true;
             Assert.That(_forge.TryProduce(forge), Is.True);
-            Assert.That(_forge.CanProduce(forge), Is.False, "A busy forge must refuse another job.");
-            var started = comp.StartedAt;
-            receiver.Powered = false;
-            _forge.Update(40);
-            Assert.That(comp.StartedAt, Is.EqualTo(started + TimeSpan.FromSeconds(40)));
-            Assert.That(comp.Working, Is.True);
-            receiver.Powered = true;
-            _forge.Update(0);
-            Assert.That(comp.Working, Is.True, "Restoring power must not finish paused work.");
-            comp.StartedAt = SGameTiming.CurTime - _prototypes.Index<LatheRecipePrototype>(comp.Recipe).CompleteTime;
-            _forge.Update(0);
-            Assert.That(comp.Ready, Is.True);
+            Assert.That(_forge.CanProduce(forge), Is.False,
+                "A busy forge must refuse another job.");
         });
     }
 

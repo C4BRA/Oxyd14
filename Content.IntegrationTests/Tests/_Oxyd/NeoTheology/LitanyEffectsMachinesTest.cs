@@ -14,6 +14,7 @@ using Content.Shared.Doors.Components;
 using Content.Shared.Doors.Systems;
 using Content.Shared.FixedPoint;
 using Content.Shared.Implants;
+using Content.Shared.Lathe;
 using Content.Shared.Power.Generator;
 using Content.Shared.Stacks;
 using Robust.Shared.GameObjects;
@@ -216,7 +217,8 @@ public sealed class LitanyEffectsMachinesTest : GameTest
             Bank(forge, origin, BiomatterProto, 10);
             Bank(forge, origin, PlasteelProto, 5);
             Bank(forge, origin, GoldProto, 2);
-            Assert.That(SComp<CruciformForgeComponent>(forge).Working, Is.False, "Setup: the forge must be idle.");
+            Assert.That(SComp<LatheComponent>(forge).CurrentRecipe, Is.Null,
+                "Setup: the forge's lathe must be idle.");
 
             var begin = _litany.TryBeginLitany(caster, MakeCruciform, LitanyCastOrigin.ManualSpeech);
             Assert.That(begin.Success, Is.True, begin.Reason?.Id ?? "MakeCruciform begin failed");
@@ -228,8 +230,9 @@ public sealed class LitanyEffectsMachinesTest : GameTest
         {
             Assert.Multiple(() =>
             {
-                Assert.That(SComp<CruciformForgeComponent>(forge).Working, Is.True,
-                    "The litany must start the forge's own run.");
+                Assert.That(SComp<LatheComponent>(forge).CurrentRecipe?.Id,
+                    Is.EqualTo("OxydNtCruciform"),
+                    "The litany must queue the cruciform recipe on the forge's lathe.");
                 Assert.That(_materialStorage.GetMaterialAmount(forge, "Biomatter"), Is.EqualTo(0),
                     "The started run must debit the recipe.");
             });

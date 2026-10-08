@@ -23,7 +23,6 @@ public sealed partial class BiomatterReservoirSystem : EntitySystem
     public bool TryTransfer(EntityUid from, EntityUid to)
     {
         if (from == to || TerminatingOrDeleted(from) || TerminatingOrDeleted(to) ||
-            EntityManager.IsQueuedForDeletion(from) || EntityManager.IsQueuedForDeletion(to) ||
             !HasComp<BiomatterReservoirComponent>(from) ||
             !TryComp<MaterialStorageComponent>(to, out var storage))
             return false;

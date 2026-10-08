@@ -5,11 +5,11 @@ using Robust.Shared.Prototypes;
 namespace Content.Shared._Oxyd.NeoTheology.Components;
 
 /// <summary>
-/// P2.6: a NeoTheology forge. It banks materials handed to it (in its own
-/// <see cref="MaterialStorageComponent"/>) and, once the <see cref="Recipe"/> is stocked,
-/// spends the recipe's <c>CompleteTime</c> turning them into its result entity.
+/// P2.6: a NeoTheology forge. Production itself rides <see cref="LatheComponent"/> — the forge
+/// banks materials in its <see cref="MaterialStorageComponent"/>, marks the machine as a litany
+/// target and names the <see cref="Recipe"/> the litany queues.
 /// </summary>
-[RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
+[RegisterComponent]
 public sealed partial class CruciformForgeComponent : Component
 {
     /// <summary>
@@ -18,17 +18,4 @@ public sealed partial class CruciformForgeComponent : Component
     /// </summary>
     [DataField]
     public ProtoId<LatheRecipePrototype> Recipe = "OxydNtCruciform";
-
-    /// <summary>Mirrored by the prototype's <c>ApcPowerReceiver</c> load; the passive receiver does the draining.</summary>
-    [DataField]
-    public float PowerCost = 250f;
-
-    [ViewVariables]
-    public bool Working;
-
-    [ViewVariables]
-    public TimeSpan? StartedAt;
-
-    [ViewVariables, AutoNetworkedField]
-    public bool Ready;
 }

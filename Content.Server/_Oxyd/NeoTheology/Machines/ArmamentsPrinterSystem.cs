@@ -40,21 +40,24 @@ public sealed partial class ArmamentsPrinterSystem : EntitySystem
         args.Handled = forwarded.Handled;
     }
 
-    /// <summary>The nearest operational printer on the eye's map. The shop UI lives on the printer.</summary>
+    /// <summary>How far from the eye a printer may sit and still host its shop.</summary>
+    private const float PrinterScanRadius = 25f;
+
+    /// <summary>The nearest operational printer near the eye. The shop UI lives on the printer.</summary>
+
     private EntityUid? FindOperationalPrinter(EntityUid eye)
     {
         var xform = Transform(eye);
         var origin = xform.WorldPosition;
-        var printers = new HashSet<Entity<ArmamentsPrinterComponent, TransformComponent>>();
-        _lookup.GetEntitiesOnMap<ArmamentsPrinterComponent, TransformComponent>(xform.MapID, printers);
         EntityUid? best = null;
         var bestDistance = float.MaxValue;
-        foreach (var (uid, _, printerXform) in printers)
+        foreach (var printer in _lookup.GetEntitiesInRange<ArmamentsPrinterComponent>(xform.Coordinates, PrinterScanRadius))
         {
+            var uid = printer.Owner;
             if (!_machines.IsOperational(uid))
                 continue;
 
-            var distance = (printerXform.WorldPosition - origin).LengthSquared();
+            var distance = (Transform(uid).WorldPosition - origin).LengthSquared();
             if (distance >= bestDistance)
                 continue;
 
