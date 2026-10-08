@@ -19,6 +19,10 @@ public sealed class EyeOfTheProtectorBoundUserInterface : BoundUserInterface
     {
         base.Open();
 
+        // Idempotent: a queued double-open would re-register this BUI's control and assert.
+        if (_window != null)
+            return;
+
         _window = this.CreateWindow<EyeOfTheProtectorWindow>();
         _window.OnClose += Close;
     }

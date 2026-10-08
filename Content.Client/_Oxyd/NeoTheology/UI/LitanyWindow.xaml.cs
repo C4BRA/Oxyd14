@@ -26,6 +26,7 @@ public sealed partial class LitanyWindow : FancyWindow
     private LitanyViewerEntry? _selectedEntry;
     private ProtoId<LitanyPrototype>? _selectedLitany;
     private LitanyCategory? _categoryFilter;
+    private bool _suppressCategorySelect;
     private LitanyBusyState? _busyState;
     private string? _choiceRequestId;
     private TimeSpan _choiceExpiresAt;
@@ -50,6 +51,9 @@ public sealed partial class LitanyWindow : FancyWindow
         SearchBar.OnTextChanged += _ => RefreshEntryList(preserveSelection: false);
         CategorySelector.OnItemSelected += args =>
         {
+            if (_suppressCategorySelect)
+                return;
+
             _categoryFilter = args.Id == AllCategoriesId
                 ? null
                 : (LitanyCategory?) (args.Id - 1);
@@ -221,6 +225,12 @@ public sealed partial class LitanyWindow : FancyWindow
         UpdateProgressPresentation();
         if (_selectedEntry is { } entry && TryGetLitany(entry, out var litany))
             UpdateCooldownLabel(entry, litany);
+        if (_choiceRequestId is not null)
+        {
+            UpdateChoiceExpiryLabel();
+            if (ChoiceExpired())
+                SubmitChoiceButton.Disabled = true;
+        }
     }
 
     /// <summary>
@@ -243,26 +253,41 @@ public sealed partial class LitanyWindow : FancyWindow
 
     private void RefreshCategories()
     {
-        CategorySelector.Clear();
-        CategorySelector.AddItem("All", AllCategoriesId);
-
-        if (_snapshot is null)
-            return;
-
-        var categories = new HashSet<LitanyCategory>();
-        foreach (var entry in _snapshot.Entries)
+        // Clear/TrySelectId re-fire OnItemSelected; suppress it so a snapshot
+        // refresh can't stomp the user's filter choice.
+        _suppressCategorySelect = true;
+        try
         {
-            if (TryGetLitany(entry, out var litany))
-                categories.Add(litany.Category);
+            CategorySelector.Clear();
+            CategorySelector.AddItem("All", AllCategoriesId);
+
+            if (_snapshot is null)
+                return;
+
+            var categories = new HashSet<LitanyCategory>();
+            foreach (var entry in _snapshot.Entries)
+            {
+                if (TryGetLitany(entry, out var litany))
+                    categories.Add(litany.Category);
+            }
+
+            foreach (var category in categories.OrderBy(category => (int) category))
+                CategorySelector.AddItem(category.ToString(), (int) category + 1);
+
+            if (_categoryFilter is { } filter && !CategorySelector.TrySelectId((int) filter + 1))
+            {
+                _categoryFilter = null;
+                CategorySelector.TrySelectId(AllCategoriesId);
+            }
+            else if (_categoryFilter is null)
+            {
+                CategorySelector.TrySelectId(AllCategoriesId);
+            }
         }
-
-        foreach (var category in categories.OrderBy(category => (int) category))
-            CategorySelector.AddItem(category.ToString(), (int) category + 1);
-
-        if (_categoryFilter is { } filter && !CategorySelector.TrySelectId((int) filter + 1))
-            _categoryFilter = null;
-        else if (_categoryFilter is null)
-            CategorySelector.TrySelectId(AllCategoriesId);
+        finally
+        {
+            _suppressCategorySelect = false;
+        }
     }
 
     private void RefreshEntryList(bool preserveSelection)
@@ -475,7 +500,7 @@ public sealed partial class LitanyWindow : FancyWindow
 
         if (hasChoiceRequest)
         {
-            ChoiceExpiryLabel.Text = $"Choice expires at: {_choiceExpiresAt.TotalSeconds:0.##} s";
+            UpdateChoiceExpiryLabel();
             PendingRequestLabel.Text = "Server request is active; its ID remains opaque.";
         }
         else
@@ -607,6 +632,14 @@ public sealed partial class LitanyWindow : FancyWindow
             return false;
 
         return snapshot.Holiness + HolinessTolerance >= litany.Cost;
+    }
+
+    private void UpdateChoiceExpiryLabel()
+    {
+        var remaining = _choiceExpiresAt - _gameTiming.CurTime;
+        ChoiceExpiryLabel.Text = remaining > TimeSpan.Zero
+            ? $"Choice expires in: {FormatDuration(remaining)}"
+            : "Choice expired.";
     }
 
     private bool ChoiceExpired()

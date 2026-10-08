@@ -1,6 +1,7 @@
 oxyd-litany-success = The litany takes hold.
 oxyd-litany-failed = The litany fails: { $reason }
 oxyd-litany-no-target = No valid target is available.
+oxyd-litany-stale-target = The chosen target is no longer valid.
 oxyd-litany-door-off = The door is off.
 oxyd-litany-no-hunger = Your hunger cannot receive this blessing.
 oxyd-litany-no-sanity = The target cannot receive a revelation.

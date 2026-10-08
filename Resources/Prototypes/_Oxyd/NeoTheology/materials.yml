@@ -8,6 +8,8 @@
   name: stack-biomatter
   icon: { sprite: /Textures/Objects/Materials/materials.rsi, state: monkeyhide }
   spawn: OxydNtBiomatterStack1
+  # Offerings consume up to 200 (offerings.yml); the cap must fit a single stack.
+  maxCount: 250
 
 - type: material
   id: Biomatter

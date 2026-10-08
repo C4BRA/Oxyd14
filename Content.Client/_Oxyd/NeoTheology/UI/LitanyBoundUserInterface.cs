@@ -20,6 +20,13 @@ public sealed class LitanyBoundUserInterface : BoundUserInterface
     protected override void Open()
     {
         base.Open();
+
+        // Open() must be idempotent: the engine's BUI queue can deliver the open
+        // twice for freshly spawned UI entities (nullspace prayer prompts), and a
+        // second CreateWindow would re-register this BUI's control and assert.
+        if (_window != null)
+            return;
+
         _window = this.CreateWindow<LitanyWindow>();
 
         _window.BeginLitany += OnBeginLitany;

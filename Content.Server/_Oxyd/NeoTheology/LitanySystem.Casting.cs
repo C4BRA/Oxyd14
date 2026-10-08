@@ -238,7 +238,9 @@ public sealed partial class LitanySystem
 
         if (!ValidateRecordedTargets(cast, litany))
         {
-            SendResultToActor(cast.Actor, LitanyActionResult.Fail("oxyd-litany-no-target", cast.RequestId));
+            // Distinct from "no-target": a target was recorded but went stale
+            // (died, left range, lost its cruciform) between choice and commit.
+            SendResultToActor(cast.Actor, LitanyActionResult.Fail("oxyd-litany-stale-target", cast.RequestId));
             ClearPending(cast, cancelled: true);
             return;
         }
@@ -765,7 +767,9 @@ public sealed partial class LitanySystem
                     Transform(actor).LocalPosition;
                 var along = Vector2.Dot(offset, direction);
                 var across = Math.Abs(offset.X * direction.Y - offset.Y * direction.X);
-                if (along < 0 || along > range || across > 0.5f ||
+                // across > 0.5 made the cone narrower than a diagonal tile (0.707),
+                // so a mob standing diagonally in front could never be reached.
+                if (along < 0 || along > range || across > 0.75f ||
                     !_examine.InRangeUnOccluded(actor, mob, range, predicate: null))
                     continue;
             }
