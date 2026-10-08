@@ -149,3 +149,4 @@ oxyd-armament-themis = Themis energy crossbow
 oxyd-armament-purger = Purger plasma cannon
 oxyd-eotp-threat = You feel an evil presence lurking in { $location }.
 oxyd-eotp-calm = You feel a wave of calm pass over you. The Angels are watching with their benevolent Eye.
+oxyd-litany-ceremony-started = The rite begins. Followers nearby may join by speaking its opening phrase.

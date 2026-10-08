@@ -196,7 +196,9 @@ public sealed partial class LitanyWindow : FancyWindow
 
         _resultRevision = result.Revision;
         _resultText = result.Success
-            ? Loc.GetString("oxyd-litany-success")
+            ? result.Reason is { } successReason
+                ? Loc.GetString(successReason)
+                : Loc.GetString("oxyd-litany-success")
             : result.Reason is { } reason
                 ? Loc.GetString("oxyd-litany-failed", ("reason", Loc.GetString(reason)))
                 : Loc.GetString("oxyd-litany-failed", ("reason", "Unknown reason"));
@@ -416,12 +418,12 @@ public sealed partial class LitanyWindow : FancyWindow
         {
             SelectedName.Text = "Select a litany";
             SelectedDescription.SetMessage(string.Empty);
-            PhraseLabel.Text = string.Empty;
+            PhraseLabel.SetMessage(string.Empty);
             CostLabel.Text = string.Empty;
             CooldownLabel.Text = string.Empty;
             CastDurationLabel.Text = string.Empty;
-            TargetLabel.Text = string.Empty;
-            AvailabilityLabel.Text = string.Empty;
+            TargetLabel.SetMessage(string.Empty);
+            AvailabilityLabel.SetMessage(string.Empty);
             BeginButton.Disabled = true;
             UpdateChoiceControls();
             return;
@@ -431,12 +433,12 @@ public sealed partial class LitanyWindow : FancyWindow
         {
             SelectedName.Text = entry.Litany.ToString();
             SelectedDescription.SetMessage(string.Empty);
-            PhraseLabel.Text = string.Empty;
+            PhraseLabel.SetMessage(string.Empty);
             CostLabel.Text = string.Empty;
             CooldownLabel.Text = string.Empty;
             CastDurationLabel.Text = string.Empty;
-            TargetLabel.Text = string.Empty;
-            AvailabilityLabel.Text = string.Empty;
+            TargetLabel.SetMessage(string.Empty);
+            AvailabilityLabel.SetMessage(string.Empty);
             BeginButton.Disabled = true;
             UpdateChoiceControls();
             return;
@@ -445,22 +447,22 @@ public sealed partial class LitanyWindow : FancyWindow
         SelectedName.Text = Loc.GetString(litany.Name);
         SelectedDescription.SetMessage(Loc.GetString(litany.Description));
         // Prototype-set values are read from the prototype, not duplicated over the wire.
-        PhraseLabel.Text = $"Phrase: {litany.Phrase}";
+        PhraseLabel.SetMessage(Loc.GetString("oxyd-litany-ui-phrase", ("phrase", litany.Phrase)));
         CostLabel.Text = Loc.GetString("oxyd-litany-ui-cost", ("cost", litany.Cost.ToString("0.##")));
         UpdateCooldownLabel(entry, litany);
-        CastDurationLabel.Text = $"Cast duration: {FormatDuration(litany.ExtraDelay)}";
-        TargetLabel.Text = $"Target mode: {litany.TargetMode}";
+        CastDurationLabel.Text = Loc.GetString("oxyd-litany-ui-extra-delay", ("duration", FormatDuration(litany.ExtraDelay)));
+        TargetLabel.SetMessage(Loc.GetString("oxyd-litany-ui-target", ("target", FormatTargetMode(litany.TargetMode))));
 
         if (entry.Available)
         {
-            AvailabilityLabel.Text = "Available";
+            AvailabilityLabel.SetMessage(Loc.GetString("oxyd-litany-ui-available"));
         }
         else
         {
             var reason = entry.UnavailableReason is { } reasonId
                 ? Loc.GetString(reasonId)
                 : "This litany is not available to the viewer.";
-            AvailabilityLabel.Text = Loc.GetString("oxyd-litany-ui-unavailable", ("reason", reason));
+            AvailabilityLabel.SetMessage(Loc.GetString("oxyd-litany-ui-unavailable", ("reason", reason)));
         }
 
         UpdateChoiceControls();
@@ -576,7 +578,7 @@ public sealed partial class LitanyWindow : FancyWindow
 
         if (_busyState is not null)
         {
-            StatusLabel.Text = $"{_busyState.Stage}: {_busyState.Litany}";
+            StatusLabel.Text = $"{FormatStage(_busyState.Stage)}: {GetBusyLitanyName(_busyState)}";
             return;
         }
 
@@ -613,8 +615,8 @@ public sealed partial class LitanyWindow : FancyWindow
         CastProgressBar.Value = Math.Clamp(fraction, 0f, 1f);
         var remaining = busy.EndsAt - _gameTiming.CurTime;
         CastProgressLabel.Text = remaining > TimeSpan.Zero
-            ? $"{busy.Stage}: {FormatDuration(remaining)} remaining"
-            : $"{busy.Stage}: completing";
+            ? $"{FormatStage(busy.Stage)}: {FormatDuration(remaining)} remaining"
+            : $"{FormatStage(busy.Stage)}: completing";
     }
 
     private bool CanBeginSelectedLitany()
@@ -742,6 +744,44 @@ public sealed partial class LitanyWindow : FancyWindow
     private static int CountUnicodeScalars(string value)
     {
         return value.EnumerateRunes().Count();
+    }
+
+    private string GetBusyLitanyName(LitanyBusyState busy)
+    {
+        return _prototypeManager.TryIndex(busy.Litany, out LitanyPrototype? litany) && litany != null
+            ? Loc.GetString(litany.Name)
+            : busy.Litany.ToString();
+    }
+
+    private static string FormatStage(LitanyCastStage stage)
+    {
+        return stage switch
+        {
+            LitanyCastStage.Choosing => Loc.GetString("oxyd-litany-stage-choosing"),
+            LitanyCastStage.Chanting => Loc.GetString("oxyd-litany-stage-chanting"),
+            LitanyCastStage.ExtraDelay => Loc.GetString("oxyd-litany-stage-focusing"),
+            LitanyCastStage.Committing => Loc.GetString("oxyd-litany-stage-completing"),
+            _ => stage.ToString(),
+        };
+    }
+
+    private static string FormatTargetMode(LitanyTargetMode mode)
+    {
+        return mode switch
+        {
+            LitanyTargetMode.Self => Loc.GetString("oxyd-litany-target-self"),
+            LitanyTargetMode.AdjacentLiving => Loc.GetString("oxyd-litany-target-adjacent-living"),
+            LitanyTargetMode.AdjacentFollower => Loc.GetString("oxyd-litany-target-adjacent-follower"),
+            LitanyTargetMode.VisibleFollower => Loc.GetString("oxyd-litany-target-visible-follower"),
+            LitanyTargetMode.StationFollower => Loc.GetString("oxyd-litany-target-station-follower"),
+            LitanyTargetMode.FrontMachine => Loc.GetString("oxyd-litany-target-front-machine"),
+            LitanyTargetMode.NearbyMachine => Loc.GetString("oxyd-litany-target-nearby-machine"),
+            LitanyTargetMode.VisibleArea => Loc.GetString("oxyd-litany-target-visible-area"),
+            LitanyTargetMode.FrontTile => Loc.GetString("oxyd-litany-target-front-tile"),
+            LitanyTargetMode.Ceremony => Loc.GetString("oxyd-litany-target-ceremony"),
+            LitanyTargetMode.GlobalFollower => Loc.GetString("oxyd-litany-target-global-follower"),
+            _ => Loc.GetString("oxyd-litany-target-none"),
+        };
     }
 
     private static string FormatDuration(TimeSpan duration)

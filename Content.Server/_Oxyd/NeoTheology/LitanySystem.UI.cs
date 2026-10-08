@@ -406,6 +406,13 @@ public sealed partial class LitanySystem
             {
                 reason = "oxyd-litany-denied-entitlement";
             }
+            else if (litany.TargetMode == LitanyTargetMode.Ceremony &&
+                HasComp<ActiveCeremonyComponent>(viewer))
+            {
+                // Leading a rite occupies the slot — surface it instead of
+                // letting the catalogue claim the litany is usable.
+                reason = "oxyd-litany-ceremony-busy";
+            }
             else if (TryComp<CruciformBearerComponent>(viewer, out var bearer) &&
                 !IsCooldownAvailable(viewer, bearer, litany, out var cooldown))
             {

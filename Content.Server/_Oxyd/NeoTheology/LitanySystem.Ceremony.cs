@@ -71,7 +71,10 @@ public sealed partial class LitanySystem
 
         ApplyCooldown(bearer, litany);
         cast.Committed = true;
-        SendResultToActor(cast.Actor, LitanyActionResult.Ok(cast.RequestId));
+        // Not the generic "takes hold" — the payload runs only when the rite
+        // completes, so the leader must be told the ceremony is awaiting phrases.
+        SendResultToActor(cast.Actor,
+            new LitanyActionResult(true, "oxyd-litany-ceremony-started", cast.RequestId));
         ClearPending(cast, cancelled: false);
 
         failure = null;
