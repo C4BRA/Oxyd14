@@ -24,3 +24,11 @@ Two live clients (PriestLeader + FollowerTwo) used to close remaining matrix row
 - Interactive choice-submit clicks (Choices populate after Begin within the countdown window) — partially verified; auto-expiry closes the window cleanly.
 - Resurrection positive path (soulreader → cloner → biomass → mind transfer) on this build — denied-gate path verified only.
 - DivineIntervention offering (200 OxydNtBiomatter near Eye) untested.
+
+## Pass 4 — remaining-open items (10-08)
+
+- **AttachmentOxydScope boot null** — RESOLVED. Zero proto errors at boot since the `newGuns.yml` Heat-indent fix (`417b55c166`); confirmed across two fresh boots.
+- **Resurrection positive path — VERIFIED end-to-end.** Soul snapshotted to cruciform (soulreader), corpse deleted, clone grown in pod (material 200→129), ejected to diagonal tile, `litany:implant` installed soul cruciform, Reincarnation (AdjacentLiving, diagonal front tile works) → `success=True` → "Session localhost@FollowerTwo transferred to entity 5349" → client log "Attaching local player to Tanner Mull (MobHumanOxyd)". Gotchas: resurrection reader must be within 1.5m of the cloner AND an *empty* reader on the front tile shadows the loaded one (targets list takes precedence).
+- **DivineIntervention 200-biomatter offering — VERIFIED.** Cast `success=True` vs eye; ~200 biomatter consumed from loose stacks within 7f (42→22 stacks).
+- **Click-through choice-submit — PARTIALLY FIXED.** Root cause #1 (server): `SendChoiceSnapshot`/`SendProgressToActor` only addressed `FindActorBook` and early-returned with no book held — speech casts never got the snapshot. Fixed: route to `cast.Prompt` first (commit `087c9d0f7a`). Verified live via probe: snapshot now sent to prompt BUI with 18 blueprint options. Root cause #2 (client, suspected): message still not applied — relaxed the stale-revision drop to same-request-only. **Still open**: snapshot appears dropped in client BUI routing/dispatch before reaching `UpdateChoiceSnapshot`; needs a client-side probe pass.
+- New debug tooling: `litany:implant` (eject cruciform from nearest reader ≤10m → ForceImplant).
