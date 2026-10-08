@@ -5,6 +5,9 @@ namespace Content.Shared._Oxyd.NeoTheology.Effects;
 /// <summary>Eris Reincarnation: transfer the saved soul into a matching, inactive implanted body.</summary>
 public sealed partial class LitanyReincarnationEffect : LitanyEffect
 {
+    // The rite revives the dead: corpses must reach the soul-transfer check.
+    public override bool AllowsDeadTarget => true;
+
     public override bool CanApply(LitanyEffectSystem system, LitanyEffectContext context, out LocId? failure)
     {
         failure = "oxyd-litany-soul-lost";

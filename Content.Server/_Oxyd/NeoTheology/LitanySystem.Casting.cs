@@ -7,6 +7,7 @@ using Content.Shared._Oxyd.NeoTheology.Effects;
 using Content.Shared._Oxyd.NeoTheology.Events;
 using Content.Shared._Oxyd.NeoTheology.Prototypes;
 using Content.Shared._Oxyd.NeoTheology.UI;
+using Content.Shared.Buckle.Components;
 using Content.Shared.Chat;
 using Content.Shared.DoAfter;
 using Content.Shared.Examine;
@@ -777,6 +778,25 @@ public sealed partial class LitanySystem
                 continue;
 
             results.Add(mob);
+        }
+
+        // Buckled mobs leave the physics lookup (ResetDynamics), so the entity
+        // range query above never sees them. Commitment/Uproot need the person
+        // strapped to the altar — enumerate straps and their occupants directly.
+        foreach (var (strap, strapComp) in _lookup.GetEntitiesInRange<StrapComponent>(Transform(actor).Coordinates, range))
+        {
+            foreach (var buckled in strapComp.BuckledEntities)
+            {
+                if (buckled == actor || !HasComp<MobStateComponent>(buckled) || results.Contains(buckled))
+                    continue;
+                if (_mobState.IsDead(buckled) && !allowDead)
+                    continue;
+                if (followersOnly && !_cruciform.IsActiveBearer(buckled))
+                    continue;
+                if (!IsOnTile(buckled, actor, ownTile) && !IsOnTile(buckled, actor, frontTile))
+                    continue;
+                results.Add(buckled);
+            }
         }
 
         return results;

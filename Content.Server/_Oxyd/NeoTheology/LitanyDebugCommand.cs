@@ -25,6 +25,7 @@ using Content.Shared.Mind;
 using Content.Shared.Mobs;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
+using Content.Shared.Stacks;
 using Content.Shared._Oxyd.NeoTheology;
 using Content.Shared._Oxyd.NeoTheology.Components;
 using Content.Shared._Oxyd.NeoTheology.Prototypes;
@@ -49,7 +50,7 @@ public sealed class LitanyCommand : ToolshedCommand
 {
     private static readonly EntProtoId OddityProto = "OxydNtOddity";
     private static readonly EntProtoId AltarProto = "OxydNtAltar";
-    private static readonly EntProtoId FoodProto = "FoodProducePumpkin";
+    private static readonly EntProtoId FoodProto = "FoodSpacemansTrumpet";
 
     private CruciformSystem? _cruciform;
     private LitanySystem? _litany;
@@ -61,6 +62,7 @@ public sealed class LitanyCommand : ToolshedCommand
     private SharedSubdermalImplantSystem? _implants;
     private ItemSlotsSystem? _slots;
     private MaterialStorageSystem? _materials;
+    private CruciformUpgradeSystem? _upgrades;
     private ChatSystem? _chat;
     private NeoTheologyMachineSystem? _machines;
     private CruciformReaderSystem? _readers;
@@ -134,7 +136,11 @@ public sealed class LitanyCommand : ToolshedCommand
         var coords = Transform(mob).Coordinates;
         foreach (var seat in _lookup.GetEntitiesInRange<StrapComponent>(coords, 5f))
         {
-            if (HasComp<NeoTheologyAltarComponent>(seat))
+            if (!HasComp<NeoTheologyAltarComponent>(seat))
+                continue;
+            // An occupied seat fails TryBuckle (StrapHasSpace) — keep scanning
+            // for a free altar, and only spawn a fresh one when none took it.
+            if (_buckle.TryBuckle(mob, mob, seat))
             {
                 altar = seat;
                 break;
@@ -142,16 +148,53 @@ public sealed class LitanyCommand : ToolshedCommand
         }
 
         if (!altar.IsValid())
-            altar = Spawn(AltarProto, coords);
-
-        if (!_buckle.TryBuckle(mob, mob, altar))
         {
-            return null;
+            altar = Spawn(AltarProto, coords);
+            if (!_buckle.TryBuckle(mob, mob, altar))
+                return null;
         }
 
         // The altar's Strap is already position:Down, which puts the mob down on buckle.
         // (Strap.Enabled must stay true — TryGetProcedureAltar rejects a disabled strap.)
         return altar;
+    }
+
+    /// <summary>Piped diagnostic: report buckle state + TryBuckle result per mob.</summary>
+    [CommandImplementation("buckleprobe")]
+    public void BuckleProbe(IInvocationContext ctx, [PipedArgument] IEnumerable<EntityUid> mobs)
+    {
+        _buckle ??= GetSys<SharedBuckleSystem>();
+        _lookup ??= GetSys<EntityLookupSystem>();
+        _xform ??= GetSys<SharedTransformSystem>();
+        foreach (var mob in mobs)
+        {
+            if (!HasComp<MobStateComponent>(mob))
+                continue;
+            var coords = Transform(mob).Coordinates;
+            ctx.WriteLine($"{mob} at {_xform!.GetMapCoordinates(mob).Position} buckled={TryComp<BuckleComponent>(mob, out var bc) && bc.BuckledTo is { } s}");
+            foreach (var seat in _lookup.GetEntitiesInRange<StrapComponent>(coords, 5f))
+            {
+                var pos = _xform.GetMapCoordinates(seat).Position;
+                var ok = _buckle.TryBuckle(mob, mob, seat);
+                ctx.WriteLine($"  seat {seat} altar={HasComp<NeoTheologyAltarComponent>(seat)} pos={pos} tryBuckle={ok}");
+                if (ok)
+                    break;
+            }
+        }
+    }
+
+    /// <summary>Unbuckle each piped entity from whatever it is strapped to.</summary>
+    [CommandImplementation("unbuckle")]
+    public void UnbucklePiped(IInvocationContext ctx, [PipedArgument] IEnumerable<EntityUid> mobs)
+    {
+        _buckle ??= GetSys<SharedBuckleSystem>();
+        foreach (var mob in mobs)
+        {
+            if (!TryComp<BuckleComponent>(mob, out var buckle) || buckle.BuckledTo is not { } seat)
+                continue;
+            _buckle.TryUnbuckle((mob, buckle), mob, popup: false);
+            ctx.WriteLine($"{mob}: unbuckled from {seat}");
+        }
     }
 
     /// <summary>Spawn an entity prototype on the tile the executing entity faces.</summary>
@@ -167,6 +210,23 @@ public sealed class LitanyCommand : ToolshedCommand
         var machine = Spawn(proto, new EntityCoordinates(xform.ParentUid, front));
         MakeOperational(machine);
         return machine;
+    }
+
+    /// <summary>Piped variant: spawn a machine on each piped mob's front tile.</summary>
+    [CommandImplementation("machine")]
+    public void MachinePiped(IInvocationContext ctx, [PipedArgument] IEnumerable<EntityUid> mobs, EntProtoId proto)
+    {
+        _xform ??= GetSys<SharedTransformSystem>();
+        foreach (var mob in mobs)
+        {
+            if (!HasComp<MobStateComponent>(mob))
+                continue;
+            var xform = Transform(mob);
+            var front = (xform.Coordinates.Position + xform.LocalRotation.ToVec()).Floored();
+            var machine = Spawn(proto, new EntityCoordinates(xform.ParentUid, front));
+            MakeOperational(machine);
+            ctx.WriteLine($"{mob}: machine {machine} {proto} at {front}");
+        }
     }
 
     /// <summary>Grant a litany set (e.g. OxydLitanyInquisitor) to the entity's cruciform.</summary>
@@ -488,7 +548,10 @@ public sealed class LitanyCommand : ToolshedCommand
     {
         _mobState ??= GetSys<MobStateSystem>();
         foreach (var mob in mobs)
-            _mobState.ChangeMobState(mob, MobState.Dead);
+        {
+            if (HasComp<MobStateComponent>(mob))
+                _mobState.ChangeMobState(mob, MobState.Dead);
+        }
     }
 
     /// <summary>Extract the mob's implanted cruciform and insert it into the nearest cruciform reader's slot.</summary>
@@ -722,6 +785,25 @@ public sealed class LitanyCommand : ToolshedCommand
         }
     }
 
+    /// <summary>Install a core-upgrade kit item (e.g. OxydNtObeyKit) into piped mobs' cruciforms — registers CoreUpgrades.</summary>
+    [CommandImplementation("upgrade")]
+    public void UpgradePiped(IInvocationContext ctx, [PipedArgument] IEnumerable<EntityUid> mobs, EntProtoId proto)
+    {
+        _upgrades ??= GetSys<CruciformUpgradeSystem>();
+        _cruciform ??= GetSys<CruciformSystem>();
+        foreach (var mob in mobs)
+        {
+            if (!_cruciform.TryGetCruciformEntity(mob, out var cruciform, out var comp))
+            {
+                ctx.WriteLine($"{mob}: no cruciform");
+                continue;
+            }
+
+            var item = Spawn(proto, Transform(mob).Coordinates);
+            ctx.WriteLine($"{mob}: installed={_upgrades.TryInstallCoreUpgrade(cruciform, comp, item, mob)}");
+        }
+    }
+
     /// <summary>Apply Blunt damage to piped entities (RepairDoor needs a damaged door).</summary>
     [CommandImplementation("damage")]
     public void DamagePiped(IInvocationContext ctx, [PipedArgument] IEnumerable<EntityUid> mobs, int amount = 50)
@@ -752,12 +834,29 @@ public sealed class LitanyCommand : ToolshedCommand
 
     /// <summary>Spawn an entity on the ground at the actor's feet (e.g. a biomatter stack).</summary>
     [CommandImplementation("stack")]
-    public EntityUid? Stack(IInvocationContext ctx, EntProtoId proto)
+    public EntityUid? Stack(IInvocationContext ctx, EntProtoId proto, int count = 0)
     {
         var uid = Self(ctx) ?? throw new InvalidOperationException("no executing entity");
         var item = Spawn(proto, Transform(uid).Coordinates);
+        if (count > 0 && TryComp<StackComponent>(item, out var stack))
+            GetSys<SharedStackSystem>().SetCount(item, count, stack);
         ctx.WriteLine($"stack {item} at {Transform(uid).Coordinates}");
         return item;
+    }
+
+    /// <summary>Piped variant: spawn an entity at each piped mob's feet, optionally setting stack count.</summary>
+    [CommandImplementation("stack")]
+    public void StackPiped(IInvocationContext ctx, [PipedArgument] IEnumerable<EntityUid> mobs, EntProtoId proto, int count = 0)
+    {
+        foreach (var mob in mobs)
+        {
+            if (!HasComp<MobStateComponent>(mob))
+                continue;
+            var item = Spawn(proto, Transform(mob).Coordinates);
+            if (count > 0 && TryComp<StackComponent>(item, out var stack))
+                GetSys<SharedStackSystem>().SetCount(item, count, stack);
+            ctx.WriteLine($"{mob}: stack {item} {proto} x{count}");
+        }
     }
 
     /// <summary>Walk the Resurrection checklist gate-by-gate for the faced cloner + nearest reader.</summary>
