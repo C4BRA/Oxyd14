@@ -117,15 +117,16 @@ public sealed class LitanyCommand : ToolshedCommand
 
     /// <summary>Grant a litany set (e.g. OxydLitanyInquisitor) to the entity's cruciform.</summary>
     [CommandImplementation("grant")]
-    public bool Grant(IInvocationContext ctx, ProtoId<LitanySetPrototype> set)
+    public bool Grant(IInvocationContext ctx, string set)
     {
         _cruciform ??= GetSys<CruciformSystem>();
         var uid = Self(ctx) ?? throw new InvalidOperationException("no executing entity");
         if (!_cruciform.TryGetCruciformEntity(uid, out var implant, out var comp))
             return false;
 
-        comp.UnlockedSets.Add(set);
-        comp.GrantedSets.Add(set);
+        var setId = new ProtoId<LitanySetPrototype>(set);
+        comp.UnlockedSets.Add(setId);
+        comp.GrantedSets.Add(setId);
         _cruciform.RecomputeProfile(implant, comp);
         EntityManager.Dirty(implant, comp);
         return true;
@@ -173,6 +174,15 @@ public sealed class LitanyCommand : ToolshedCommand
         }
 
         _litany.TestingClearCooldowns();
+    }
+
+    /// <summary>Grant a cruciform with a NeoTheology profile (e.g. OxydNtPreacher) to the entity.</summary>
+    [CommandImplementation("cruciform")]
+    public bool Cruciform(IInvocationContext ctx, string profile)
+    {
+        _cruciform ??= GetSys<CruciformSystem>();
+        var uid = Self(ctx) ?? throw new InvalidOperationException("no executing entity");
+        return _cruciform.GrantCruciform(uid, new ProtoId<NeoTheologyProfilePrototype>(profile));
     }
 
     /// <summary>Force the entity's cruciform active (Epiphany equivalent).</summary>
