@@ -52,7 +52,17 @@ public sealed class LitanyCommand : ToolshedCommand
 
     /// <summary>Force-unequip every clothing item on the target (Commitment needs a naked body).</summary>
     [CommandImplementation("undress")]
-    public void Undress([PipedArgument] EntityUid mob)
+    public void UndressSelf(IInvocationContext ctx)
+        => Undress(Self(ctx) ?? throw new InvalidOperationException("no executing entity"));
+
+    [CommandImplementation("undress")]
+    public void UndressPiped(IInvocationContext ctx, [PipedArgument] IEnumerable<EntityUid> mobs)
+    {
+        foreach (var mob in mobs)
+            Undress(mob);
+    }
+
+    private void Undress(EntityUid mob)
     {
         _inventory ??= GetSys<InventorySystem>();
         if (!TryComp<InventoryComponent>(mob, out _))
@@ -72,7 +82,17 @@ public sealed class LitanyCommand : ToolshedCommand
 
     /// <summary>Buckle the mob to the nearest NeoTheology altar (spawns one under the mob if none in 5 m).</summary>
     [CommandImplementation("buckle")]
-    public EntityUid? Buckle([PipedArgument] EntityUid mob)
+    public EntityUid? BuckleSelf(IInvocationContext ctx)
+        => Buckle(Self(ctx) ?? throw new InvalidOperationException("no executing entity"));
+
+    [CommandImplementation("buckle")]
+    public void BucklePiped(IInvocationContext ctx, [PipedArgument] IEnumerable<EntityUid> mobs)
+    {
+        foreach (var mob in mobs)
+            Buckle(mob);
+    }
+
+    private EntityUid? Buckle(EntityUid mob)
     {
         _buckle ??= GetSys<SharedBuckleSystem>();
         _lookup ??= GetSys<EntityLookupSystem>();
@@ -117,10 +137,19 @@ public sealed class LitanyCommand : ToolshedCommand
 
     /// <summary>Grant a litany set (e.g. OxydLitanyInquisitor) to the entity's cruciform.</summary>
     [CommandImplementation("grant")]
-    public bool Grant(IInvocationContext ctx, string set)
+    public bool GrantSelf(IInvocationContext ctx, string set)
+        => Grant(set, Self(ctx) ?? throw new InvalidOperationException("no executing entity"));
+
+    [CommandImplementation("grant")]
+    public void GrantPiped(IInvocationContext ctx, [PipedArgument] IEnumerable<EntityUid> mobs, string set)
+    {
+        foreach (var mob in mobs)
+            ctx.WriteLine($"{mob}: {Grant(set, mob)}");
+    }
+
+    private bool Grant(string set, EntityUid uid)
     {
         _cruciform ??= GetSys<CruciformSystem>();
-        var uid = Self(ctx) ?? throw new InvalidOperationException("no executing entity");
         if (!_cruciform.TryGetCruciformEntity(uid, out var implant, out var comp))
             return false;
 
@@ -134,10 +163,19 @@ public sealed class LitanyCommand : ToolshedCommand
 
     /// <summary>Set holiness directly on the entity's cruciform.</summary>
     [CommandImplementation("holiness")]
-    public bool Holiness(IInvocationContext ctx, double value)
+    public bool HolinessSelf(IInvocationContext ctx, double value)
+        => Holiness(value, Self(ctx) ?? throw new InvalidOperationException("no executing entity"));
+
+    [CommandImplementation("holiness")]
+    public void HolinessPiped(IInvocationContext ctx, [PipedArgument] IEnumerable<EntityUid> mobs, double value)
+    {
+        foreach (var mob in mobs)
+            ctx.WriteLine($"{mob}: {Holiness(value, mob)}");
+    }
+
+    private bool Holiness(double value, EntityUid uid)
     {
         _cruciform ??= GetSys<CruciformSystem>();
-        var uid = Self(ctx) ?? throw new InvalidOperationException("no executing entity");
         if (!_cruciform.TryGetCruciformEntity(uid, out var implant, out var comp))
             return false;
 
@@ -161,12 +199,30 @@ public sealed class LitanyCommand : ToolshedCommand
         return -1;
     }
 
-    /// <summary>Clear personal litany cooldowns on the entity and all global cooldowns.</summary>
-    [CommandImplementation("cooldowns")]
-    public void Cooldowns(IInvocationContext ctx)
+    /// <summary>Cast a litany by id as the executing entity (skips speech parsing; still runs the chant do-after and full target/choice pipeline). Optional name for named-selectTarget litanies.</summary>
+    [CommandImplementation("cast")]
+    public void Cast(IInvocationContext ctx, string litany, string? name = null)
     {
         _litany ??= GetSys<LitanySystem>();
-        var uid = Self(ctx);
+        var uid = Self(ctx) ?? throw new InvalidOperationException("no executing entity");
+        var res = _litany.TryBeginLitany(uid, new ProtoId<LitanyPrototype>(litany), LitanyCastOrigin.ManualSpeech, spokenName: name);
+        ctx.WriteLine($"cast {litany}: success={res.Success} reason={res.Reason} request={res.RequestId}");
+    }
+
+    /// <summary>Clear personal litany cooldowns on the entity and all global cooldowns.</summary>
+    [CommandImplementation("cooldowns")]
+    public void CooldownsSelf(IInvocationContext ctx) => Cooldowns(ctx, Self(ctx));
+
+    [CommandImplementation("cooldowns")]
+    public void CooldownsPiped(IInvocationContext ctx, [PipedArgument] IEnumerable<EntityUid> mobs)
+    {
+        foreach (var mob in mobs)
+            Cooldowns(ctx, mob);
+    }
+
+    private void Cooldowns(IInvocationContext ctx, EntityUid? uid)
+    {
+        _litany ??= GetSys<LitanySystem>();
         if (uid is { } self && TryComp<CruciformBearerComponent>(self, out var bearer))
         {
             bearer.PersonalCooldowns.Clear();
@@ -178,20 +234,36 @@ public sealed class LitanyCommand : ToolshedCommand
 
     /// <summary>Grant a cruciform with a NeoTheology profile (e.g. OxydNtPreacher) to the entity.</summary>
     [CommandImplementation("cruciform")]
-    public bool Cruciform(IInvocationContext ctx, string profile)
+    public bool CruciformSelf(IInvocationContext ctx, string profile)
+        => Cruciform(profile, Self(ctx) ?? throw new InvalidOperationException("no executing entity"));
+
+    [CommandImplementation("cruciform")]
+    public void CruciformPiped(IInvocationContext ctx, [PipedArgument] IEnumerable<EntityUid> mobs, string profile)
+    {
+        foreach (var mob in mobs)
+            ctx.WriteLine($"{mob}: {Cruciform(profile, mob)}");
+    }
+
+    private bool Cruciform(string profile, EntityUid uid)
     {
         _cruciform ??= GetSys<CruciformSystem>();
-        var uid = Self(ctx) ?? throw new InvalidOperationException("no executing entity");
         return _cruciform.GrantCruciform(uid, new ProtoId<NeoTheologyProfilePrototype>(profile));
     }
 
     /// <summary>Force the entity's cruciform active (Epiphany equivalent).</summary>
     [CommandImplementation("activate")]
-    public bool Activate(IInvocationContext ctx)
+    public bool ActivateSelf(IInvocationContext ctx)
     {
         _cruciform ??= GetSys<CruciformSystem>();
-        var uid = Self(ctx) ?? throw new InvalidOperationException("no executing entity");
-        return _cruciform.Activate(uid);
+        return _cruciform.Activate(Self(ctx) ?? throw new InvalidOperationException("no executing entity"));
+    }
+
+    [CommandImplementation("activate")]
+    public void ActivatePiped(IInvocationContext ctx, [PipedArgument] IEnumerable<EntityUid> mobs)
+    {
+        _cruciform ??= GetSys<CruciformSystem>();
+        foreach (var mob in mobs)
+            ctx.WriteLine($"{mob}: {_cruciform.Activate(mob)}");
     }
 
     /// <summary>
@@ -203,7 +275,16 @@ public sealed class LitanyCommand : ToolshedCommand
     /// full      — machines + miracle + cooldown reset.
     /// </summary>
     [CommandImplementation("setup")]
-    public void Setup(IInvocationContext ctx, string scenario, [PipedArgument] EntityUid? mob = null)
+    public void SetupSelf(IInvocationContext ctx, string scenario) => Setup(ctx, scenario, null);
+
+    [CommandImplementation("setup")]
+    public void SetupPiped(IInvocationContext ctx, [PipedArgument] IEnumerable<EntityUid> mobs, string scenario)
+    {
+        foreach (var mob in mobs)
+            Setup(ctx, scenario, mob);
+    }
+
+    private void Setup(IInvocationContext ctx, string scenario, EntityUid? mob)
     {
         switch (scenario.ToLowerInvariant())
         {
@@ -226,7 +307,7 @@ public sealed class LitanyCommand : ToolshedCommand
                 var protos = new[]
                 {
                     "OxydNtEyeOfTheProtector", "OxydNtCruciformForge", "OxydNtAltar",
-                    "OxydNtBioreactor", "OxydNtCruciformReader", "OxydNtCruciformCloner",
+                    "OxydNtBioreactor", "OxydNtCruciformReader", "OxydNtCloner",
                     "OxydNtArmamentsPrinter", "OxydNtHolyDoor",
                 };
                 var xform = Transform(uid);
@@ -263,7 +344,7 @@ public sealed class LitanyCommand : ToolshedCommand
             case "full":
                 Setup(ctx, "machines", mob);
                 Miracle(ctx, 5);
-                Cooldowns(ctx);
+                Cooldowns(ctx, Self(ctx));
                 break;
 
             default:
