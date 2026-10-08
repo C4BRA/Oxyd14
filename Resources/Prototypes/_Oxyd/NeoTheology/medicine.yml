@@ -13,7 +13,7 @@
       metabolismRate: 0.02
       effects:
       - !type:Analgesic
-        source: OxydNtAngelsBalm
+        effectProto: OxydAnalgesicAngelsBalm
         strength: 25
       - !type:HealthChange
         conditions:
@@ -44,7 +44,7 @@
       metabolismRate: 0.02
       effects:
       - !type:Analgesic
-        source: OxydNtDeusBlessing
+        effectProto: OxydAnalgesicDeusBlessing
         strength: 50
       - !type:HealthChange
         conditions:
@@ -99,7 +99,7 @@
       metabolismRate: 0.1
       effects:
       - !type:Analgesic
-        source: OxydNtHolyInaprovaline
+        effectProto: OxydAnalgesicHolyInaprovaline
         strength: 15
       - !type:ModifyBleed
         amount: -0.25

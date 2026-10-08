@@ -37,6 +37,6 @@ public sealed partial class LitanyEffectSystem
         return CanInjectMedicine(uid, dose.Volume) && _bloodstream.TryAddToBloodstream(uid, dose);
     }
 
-    public void RelievePain(EntityUid uid, string source, float strength, float seconds = 2f) =>
-        _pain.SuppressPain(uid, source, strength, seconds);
+    public void RelievePain(EntityUid uid, EntProtoId effectProto, float strength, float seconds = 2f) =>
+        _pain.SuppressPain(uid, effectProto, strength, seconds);
 }

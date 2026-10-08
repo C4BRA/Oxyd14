@@ -28,9 +28,11 @@ public sealed partial class LitanyAcceleratedGrowthEffect : LitanyEffect
     public override bool Apply(LitanyEffectSystem system, LitanyEffectContext context)
     {
         var handled = false;
+        var growth = new LitanyAcceleratedGrowthEvent(default, Multiplier, context.Litany.EffectDuration, false);
         foreach (var target in context.Targets)
         {
-            var growth = new LitanyAcceleratedGrowthEvent(target, Multiplier, context.Litany.EffectDuration, false);
+            growth.User = target;
+            growth.Handled = false;
             system.RaiseOn(target, ref growth);
             handled |= growth.Handled;
         }

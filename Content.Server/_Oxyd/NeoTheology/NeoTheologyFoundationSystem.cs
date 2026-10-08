@@ -219,7 +219,7 @@ public sealed partial class NeoTheologyFoundationSystem : EntitySystem
         args.Handled = true;
 
         _addiction.AdvanceRecovery(ent.Owner, 15);
-        _pain.SuppressPain(ent.Owner, "WordsOfPurging", 15, 2);
+        _pain.SuppressPain(ent.Owner, "OxydAnalgesicWordsOfPurging", 15, 2);
 
         _popup.PopupEntity(Loc.GetString("oxyd-litany-purging"), ent.Owner, ent.Owner);
     }

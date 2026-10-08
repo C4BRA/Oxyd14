@@ -3,17 +3,60 @@ using Content.Shared.Damage.Components;
 using Content.Shared.Damage.Systems;
 using Content.Shared.Movement.Systems;
 using Content.Shared.Rejuvenate;
+using Content.Shared.StatusEffectNew;
 using Robust.Shared.GameStates;
 using Robust.Shared.Network;
+using Robust.Shared.Prototypes;
 
 namespace Content.Shared._Oxyd.Medical;
 
-/// <summary>Uses existing damage for wound pain. Analgesics suppress pain without healing that damage.</summary>
+/// <summary>
+/// Uses existing damage for wound pain. Analgesics are real status effects
+/// (<see cref="AnalgesicComponent"/> on their own entities) that suppress pain without healing
+/// that damage; the status-effect system owns their durations and cleanup.
+/// </summary>
 public sealed partial class PainSystem : EntitySystem
 {
     [Dependency] private DamageableSystem _damage = default!;
     [Dependency] private MovementSpeedModifierSystem _movement = default!;
+    [Dependency] private StatusEffectsSystem _statusEffects = default!;
     [Dependency] private INetManager _net = default!;
+
+    public override void Initialize()
+    {
+        SubscribeLocalEvent<PainComponent, ComponentGetState>(OnGetState);
+        SubscribeLocalEvent<PainComponent, ComponentHandleState>(OnHandleState);
+        SubscribeLocalEvent<AnalgesicComponent, StatusEffectAppliedEvent>(OnAnalgesicApplied);
+        SubscribeLocalEvent<AnalgesicComponent, StatusEffectRemovedEvent>(OnAnalgesicRemoved);
+    }
+
+    private void OnGetState(Entity<PainComponent> ent, ref ComponentGetState args)
+    {
+        args.State = new PainComponentState(ent.Comp.CurrentPain, ent.Comp.TemporaryPain, ent.Comp.Numb);
+    }
+
+    private void OnHandleState(Entity<PainComponent> ent, ref ComponentHandleState args)
+    {
+        if (args.Current is not PainComponentState state)
+            return;
+
+        ent.Comp.CurrentPain = state.CurrentPain;
+        ent.Comp.TemporaryPain = state.TemporaryPain;
+        ent.Comp.Numb = state.Numb;
+        _movement.RefreshMovementSpeedModifiers(ent.Owner);
+    }
+
+    private void OnAnalgesicApplied(Entity<AnalgesicComponent> ent, ref StatusEffectAppliedEvent args)
+    {
+        if (TryComp<PainComponent>(args.Target, out var pain))
+            Refresh((args.Target, pain));
+    }
+
+    private void OnAnalgesicRemoved(Entity<AnalgesicComponent> ent, ref StatusEffectRemovedEvent args)
+    {
+        if (TryComp<PainComponent>(args.Target, out var pain))
+            Refresh((args.Target, pain));
+    }
 
     [SubscribeLocalEvent]
     private void OnMovement(EntityUid uid, PainComponent comp, RefreshMovementSpeedModifiersEvent args)
@@ -25,16 +68,11 @@ public sealed partial class PainSystem : EntitySystem
     }
 
     [SubscribeLocalEvent]
-    private void OnState(Entity<PainComponent> ent, ref AfterAutoHandleStateEvent args)
-    {
-        _movement.RefreshMovementSpeedModifiers(ent.Owner);
-    }
-
-    [SubscribeLocalEvent]
     private void OnRejuvenate(EntityUid uid, PainComponent comp, RejuvenateEvent args)
     {
+        // Analgesic status effects remove themselves on rejuvenate via
+        // RejuvenateRemovedStatusEffect; only the local accumulators need clearing.
         comp.TemporaryPain = 0;
-        comp.Analgesics.Clear();
         Refresh((uid, comp));
     }
 
@@ -47,15 +85,29 @@ public sealed partial class PainSystem : EntitySystem
         Refresh((uid, pain));
     }
 
-    public void SuppressPain(EntityUid uid, string source, float strength, float seconds)
+    /// <summary>
+    /// Applies or refreshes an analgesic status effect. Repeated doses of the same source refresh
+    /// its duration; different sources combine, as in Eris chemical effects.
+    /// </summary>
+    public void SuppressPain(EntityUid uid, EntProtoId effectProto, float strength, float seconds)
     {
         if (!float.IsFinite(strength) || !float.IsFinite(seconds) || strength <= 0 || seconds <= 0 ||
-            !TryComp<PainComponent>(uid, out var pain))
+            !HasComp<PainComponent>(uid))
             return;
 
-        // Repeated metabolism refreshes one source. Different analgesics combine, as in Eris chemical effects.
-        pain.Analgesics[source] = new AnalgesicDose { Strength = strength, Remaining = seconds };
-        Refresh((uid, pain));
+        if (!_statusEffects.TrySetStatusEffectDuration(uid, effectProto, out var effect,
+                TimeSpan.FromSeconds(seconds)))
+            return;
+
+        if (TryComp<AnalgesicComponent>(effect, out var analgesic))
+        {
+            analgesic.Strength = strength;
+            if (_net.IsServer)
+                Dirty(effect.Value, analgesic);
+        }
+
+        if (TryComp<PainComponent>(uid, out var pain))
+            Refresh((uid, pain));
     }
 
     public void SetNumb(EntityUid uid, bool numb)
@@ -69,19 +121,12 @@ public sealed partial class PainSystem : EntitySystem
 
     public override void Update(float frameTime)
     {
-        if (_net.IsClient)
-            return;
-
+        // Runs on both sides: temporary pain decay and the slowdown it causes are predicted,
+        // with the server's state overriding whatever the client computed.
         var query = EntityQueryEnumerator<PainComponent>();
         while (query.MoveNext(out var uid, out var pain))
         {
             pain.TemporaryPain = Math.Max(0, pain.TemporaryPain - pain.RecoveryPerSecond * frameTime);
-            foreach (var (source, dose) in pain.Analgesics.ToArray())
-            {
-                dose.Remaining -= frameTime;
-                if (dose.Remaining <= 0)
-                    pain.Analgesics.Remove(source);
-            }
 
             pain.UpdateRemaining -= frameTime;
             if (pain.UpdateRemaining > 0)
@@ -90,6 +135,15 @@ public sealed partial class PainSystem : EntitySystem
             pain.UpdateRemaining = 1f;
             Refresh((uid, pain));
         }
+    }
+
+    private float AnalgesicStrength(EntityUid uid)
+    {
+        var total = 0f;
+        if (_statusEffects.TryEffectsWithComp<AnalgesicComponent>(uid, out var effects))
+            total = effects.Sum(effect => effect.Comp1.Strength);
+
+        return total;
     }
 
     public void Refresh(Entity<PainComponent> ent)
@@ -106,12 +160,13 @@ public sealed partial class PainSystem : EntitySystem
 
         var total = ent.Comp.Numb ? 0 : Math.Max(0,
             woundPain + ent.Comp.TemporaryPain * ent.Comp.TemporaryPainMultiplier -
-            ent.Comp.Analgesics.Values.Sum(dose => dose.Strength));
+            AnalgesicStrength(ent.Owner));
         if (MathHelper.CloseTo(total, ent.Comp.CurrentPain))
             return;
 
         ent.Comp.CurrentPain = total;
-        Dirty(ent);
+        if (_net.IsServer)
+            Dirty(ent);
         _movement.RefreshMovementSpeedModifiers(ent.Owner);
     }
 }

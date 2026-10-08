@@ -24,6 +24,7 @@ using Content.Shared.Nutrition.Components;
 using Content.Shared.Nutrition.EntitySystems;
 using Content.Shared.Popups;
 using Content.Shared.Station;
+using Content.Shared.Whitelist;
 using Robust.Shared.Containers;
 using Robust.Shared.Map;
 using Robust.Shared.Prototypes;
@@ -63,6 +64,7 @@ public sealed partial class LitanyEffectSystem : EntitySystem, ILitanyEffectRais
     [Dependency] private readonly SharedSkillSystem _skill = default!;
     [Dependency] private readonly SharedStationSystem _stations = default!;
     [Dependency] private readonly SharedTransformSystem _xform = default!;
+    [Dependency] private readonly EntityWhitelistSystem _whitelist = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly Content.Shared.Power.EntitySystems.SharedPowerReceiverSystem _power = default!;
     [Dependency] private readonly SharedEntityEffectsSystem _entityEffects = default!;
@@ -660,6 +662,15 @@ public sealed partial class LitanyEffectSystem : EntitySystem, ILitanyEffectRais
         }
 
         return results;
+    }
+
+    /// <summary>
+    /// Wrapper so effects can test an optional bearer/entity whitelist without a direct dep.
+    /// A null whitelist accepts every entity.
+    /// </summary>
+    public bool IsWhitelisted(EntityWhitelist? whitelist, EntityUid uid)
+    {
+        return whitelist == null || _whitelist.IsValid(whitelist, uid);
     }
 
     public IEnumerable<EntityUid> EnumerateGlobalActiveFollowers(EntityUid actor)

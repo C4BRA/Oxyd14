@@ -1,12 +1,14 @@
 using Robust.Shared.GameStates;
+using Robust.Shared.Serialization;
 
 namespace Content.Shared._Oxyd.Medical;
 
 /// <summary>Tracks wound pain, temporary pain, and active analgesics. Pain does not add wounds.</summary>
-[RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
+[RegisterComponent, NetworkedComponent]
 public sealed partial class PainComponent : Component
 {
-    [DataField, AutoNetworkedField]
+    /// <summary>Recomputed pain level — the only value other systems read.</summary>
+    [DataField]
     public float CurrentPain;
 
     [DataField]
@@ -18,28 +20,35 @@ public sealed partial class PainComponent : Component
     [DataField]
     public float TemporaryPainMultiplier = 1.33f;
 
-    [DataField, AutoNetworkedField]
+    [DataField]
     public float SlowdownThreshold = 50f;
 
-    [DataField, AutoNetworkedField]
+    [DataField]
     public float SevereThreshold = 100f;
 
     [DataField]
     public bool Numb;
 
     [DataField]
-    public Dictionary<string, AnalgesicDose> Analgesics = new();
-
-    [DataField]
     public float UpdateRemaining;
 }
 
-[DataDefinition]
-public sealed partial class AnalgesicDose
+/// <summary>
+/// Hand-rolled partial state: only the dynamic fields travel on Dirty. The thresholds,
+/// multipliers and timers above are static prototype data the client already has, and the
+/// analgesic doses live on their own status-effect entities now.
+/// </summary>
+[Serializable, NetSerializable]
+public sealed class PainComponentState : ComponentState
 {
-    [DataField]
-    public float Strength;
+    public readonly float CurrentPain;
+    public readonly float TemporaryPain;
+    public readonly bool Numb;
 
-    [DataField]
-    public float Remaining;
+    public PainComponentState(float currentPain, float temporaryPain, bool numb)
+    {
+        CurrentPain = currentPain;
+        TemporaryPain = temporaryPain;
+        Numb = numb;
+    }
 }

@@ -31,6 +31,7 @@
   effectDuration: 20
   effects:
   - !type:LitanyHealEffect
+    analgesicEffect: OxydAnalgesicLitanyConvalescence
     painkillerStrength: 20
     damage:
       types:
@@ -57,6 +58,7 @@
   effectDuration: 20
   effects:
   - !type:LitanyHealEffect
+    analgesicEffect: OxydAnalgesicLitanySuccour
     painkillerStrength: 20
     damage:
       types:

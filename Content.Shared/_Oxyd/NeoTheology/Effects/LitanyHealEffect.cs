@@ -1,5 +1,6 @@
 using Content.Shared.Damage;
 using Content.Shared.FixedPoint;
+using Robust.Shared.Prototypes;
 
 namespace Content.Shared._Oxyd.NeoTheology.Effects;
 
@@ -16,6 +17,13 @@ public sealed partial class LitanyHealEffect : LitanyEffect
 
     [DataField]
     public float PainkillerStrength;
+
+    /// <summary>
+    /// The analgesic status effect this litany applies — one proto per litany so overlapping
+    /// rites keep their own durations instead of refreshing one shared dose.
+    /// </summary>
+    [DataField]
+    public EntProtoId? AnalgesicEffect;
 
     public override bool CanApply(
         LitanyEffectSystem system,
@@ -51,7 +59,8 @@ public sealed partial class LitanyHealEffect : LitanyEffect
             return false;
 
         var target = system.MedicalTarget(context);
-        system.RelievePain(target, context.Litany.ID, PainkillerStrength);
+        if (PainkillerStrength > 0 && AnalgesicEffect is { } analgesic)
+            system.RelievePain(target, analgesic, PainkillerStrength);
         foreach (var (type, value) in Damage.DamageDict)
         {
             if (value >= FixedPoint2.Zero)

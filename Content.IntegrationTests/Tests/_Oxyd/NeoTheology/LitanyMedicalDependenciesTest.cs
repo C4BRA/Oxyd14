@@ -24,6 +24,7 @@ using Content.Shared.Implants.Components;
 using Content.Shared._Oxyd.NeoTheology.Components;
 using Content.Shared.Movement.Systems;
 using Content.Shared.Nutrition.Components;
+using Content.Shared.StatusEffectNew;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Prototypes;
@@ -77,8 +78,8 @@ public sealed class LitanyMedicalDependenciesTest : GameTest
             var movement = new RefreshMovementSpeedModifiersEvent();
             SEntMan.EventBus.RaiseLocalEvent(patient, movement);
             Assert.That(movement.WalkSpeedModifier, Is.EqualTo(0.8f));
-            pain.SuppressPain(patient, "test", 25, 2);
-            pain.SuppressPain(patient, "test", 25, 2);
+            pain.SuppressPain(patient, "OxydAnalgesicWordsOfPurging", 25, 2);
+            pain.SuppressPain(patient, "OxydAnalgesicWordsOfPurging", 25, 2);
             Assert.That(SComp<PainComponent>(patient).CurrentPain, Is.EqualTo(41.5f).Within(0.01));
             Assert.That(SEntMan.System<DamageableSystem>().GetTotalDamage(patient).Float(), Is.Zero);
             SEntMan.System<SharedEntityEffectsSystem>().ApplyEffect(patient, new ModifyStatusEffect
@@ -93,7 +94,7 @@ public sealed class LitanyMedicalDependenciesTest : GameTest
         await Server.WaitAssertion(() =>
         {
             var state = SComp<PainComponent>(patient);
-            Assert.That(state.Analgesics, Is.Empty);
+            Assert.That(SEntMan.System<StatusEffectsSystem>().HasStatusEffect(patient, "OxydAnalgesicWordsOfPurging"), Is.False);
             Assert.That(state.TemporaryPain, Is.LessThan(50));
             Assert.That(state.CurrentPain, Is.GreaterThan(60));
             Assert.That(SEntMan.System<DamageableSystem>().GetTotalDamage(patient).Float(), Is.Zero);
@@ -123,7 +124,8 @@ public sealed class LitanyMedicalDependenciesTest : GameTest
             Assert.That(purge.Handled, Is.True);
             Assert.That(dependence.Progress, Is.Zero);
             Assert.That(BloodAmount(patient, "Nicotine"), Is.EqualTo(before));
-            Assert.That(SComp<PainComponent>(patient).Analgesics["WordsOfPurging"].Strength, Is.EqualTo(15));
+            Assert.That(SEntMan.System<StatusEffectsSystem>().TryGetStatusEffect(patient, "OxydAnalgesicWordsOfPurging", out var dose), Is.True);
+            Assert.That(SComp<AnalgesicComponent>(dose.Value).Strength, Is.EqualTo(15));
 
             var solutions = SEntMan.System<SharedSolutionContainerSystem>();
             Assert.That(solutions.TryGetSolution(patient, BloodstreamComponent.DefaultBloodSolutionName,

@@ -11,15 +11,16 @@ public sealed partial class AnalgesicEntityEffectSystem : EntityEffectSystem<Pai
 
     protected override void Effect(Entity<PainComponent> entity, ref EntityEffectEvent<Analgesic> args)
     {
-        _pain.SuppressPain(entity, args.Effect.Source, args.Effect.Strength * args.Scale, args.Effect.Duration);
+        _pain.SuppressPain(entity, args.Effect.EffectProto, args.Effect.Strength * args.Scale, args.Effect.Duration);
     }
 }
 
-/// <summary>Refreshes pain relief during normal reagent metabolism.</summary>
+/// <summary>Applies an analgesic status effect during normal reagent metabolism.</summary>
 public sealed partial class Analgesic : EntityEffectBase<Analgesic>
 {
+    /// <summary>The analgesic status-effect entity to apply or refresh — one proto per source.</summary>
     [DataField(required: true)]
-    public string Source = string.Empty;
+    public EntProtoId EffectProto = string.Empty;
 
     [DataField(required: true)]
     public float Strength;
