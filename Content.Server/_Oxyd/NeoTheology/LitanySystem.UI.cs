@@ -214,7 +214,10 @@ public sealed partial class LitanySystem
 
     private void SendChoiceSnapshot(PendingLitanyCast cast)
     {
-        if (FindActorBook(cast.Actor) is not { } book)
+        // Speech-origin casts get a nullspace prayer prompt instead of a held book;
+        // the snapshot must go to whichever BUI is actually open for the actor.
+        var ui = cast.Prompt is { } prompt ? prompt : FindActorBook(cast.Actor);
+        if (ui is not { } book)
             return;
 
         var options = new List<LitanyChoiceOption>();
@@ -304,7 +307,8 @@ public sealed partial class LitanySystem
 
     private void SendProgressToActor(PendingLitanyCast cast)
     {
-        if (FindActorBook(cast.Actor) is not { } book)
+        var ui = cast.Prompt is { } prompt ? prompt : FindActorBook(cast.Actor);
+        if (ui is not { } book)
             return;
 
         var revision = TryComp(cast.Actor, out CruciformBearerComponent? bearer) ? bearer.UiRevision : 0u;

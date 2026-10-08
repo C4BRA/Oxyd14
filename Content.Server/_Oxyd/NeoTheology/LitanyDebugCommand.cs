@@ -633,6 +633,43 @@ public sealed class LitanyCommand : ToolshedCommand
             ctx.WriteLine($"{mob}: cruciform {implant} moved into reader {reader}");
     }
 
+    /// <summary>Take the cruciform out of the nearest reader and implant it into the mob.</summary>
+    [CommandImplementation("implant")]
+    public void ImplantPiped(IInvocationContext ctx, [PipedArgument] IEnumerable<EntityUid> mobs)
+    {
+        _implants ??= GetSys<SharedSubdermalImplantSystem>();
+        _slots ??= GetSys<ItemSlotsSystem>();
+        _lookup ??= GetSys<EntityLookupSystem>();
+
+        foreach (var mob in mobs)
+        {
+            if (!HasComp<MobStateComponent>(mob))
+                continue;
+
+            EntityUid implant = EntityUid.Invalid;
+            foreach (var reader in _lookup.GetEntitiesInRange<CruciformReaderComponent>(Transform(mob).Coordinates, 10f))
+            {
+                if (!_slots.TryGetSlot(reader.Owner, "cruciform", out var slot) || !slot.HasItem)
+                    continue;
+                if (_slots.TryEject(reader.Owner, slot, null, out var ejected) && ejected is { } ej)
+                    implant = ej;
+                break;
+            }
+
+            if (!implant.IsValid())
+            {
+                ctx.WriteLine($"{mob}: no loaded cruciform in a reader within 10 m");
+                continue;
+            }
+
+            if (TryComp<SubdermalImplantComponent>(implant, out var imp))
+            {
+                _implants.ForceImplant(mob, (implant, imp));
+                ctx.WriteLine($"{mob}: implanted cruciform {implant}");
+            }
+        }
+    }
+
     /// <summary>Add Biomatter material to the nearest cloning pod (default +200).</summary>
     [CommandImplementation("biomass")]
     public void Biomass(IInvocationContext ctx, int amount = 200)

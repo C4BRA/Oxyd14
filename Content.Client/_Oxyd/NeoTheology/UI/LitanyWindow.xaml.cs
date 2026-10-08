@@ -139,7 +139,11 @@ public sealed partial class LitanyWindow : FancyWindow
     /// </summary>
     public void UpdateChoiceSnapshot(LitanyChoiceSnapshotMessage snapshot)
     {
-        if (_snapshot is not null && snapshot.Revision < _snapshot.Revision)
+        // The viewer-state revision bumps on every bearer Dirty (holiness regen
+        // included), so it can overtake a choice snapshot still in flight. Only
+        // reject stale revisions for the request we already accepted.
+        if (_snapshot is not null && snapshot.Revision < _snapshot.Revision
+            && string.Equals(_choiceRequestId, snapshot.RequestId, StringComparison.Ordinal))
             return;
 
         if (_busyState is not null && !string.Equals(_busyState.RequestId, snapshot.RequestId, StringComparison.Ordinal))
