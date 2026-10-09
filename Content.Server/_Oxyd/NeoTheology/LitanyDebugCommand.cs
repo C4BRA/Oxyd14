@@ -33,7 +33,9 @@ using Robust.Server.Player;
 using Robust.Shared.Containers;
 using Robust.Shared.Map;
 using Robust.Shared.Maths;
+using Robust.Shared.IoC;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Timing;
 using Robust.Shared.Toolshed;
 using Robust.Shared.Toolshed.Syntax;
 
@@ -180,6 +182,101 @@ public sealed class LitanyCommand : ToolshedCommand
                 if (ok)
                     break;
             }
+        }
+    }
+
+    /// <summary>Dump each piped mob's NeoTheology state: cruciform, activity, profile,
+    /// clearance, holiness pool, installed modules, unlocked/granted litany sets, and
+    /// any pending cast or ceremony.</summary>
+    [CommandImplementation("status")]
+    public void StatusPiped(IInvocationContext ctx, [PipedArgument] IEnumerable<EntityUid> mobs)
+    {
+        _cruciform ??= GetSys<CruciformSystem>();
+        foreach (var mob in mobs)
+        {
+            if (!HasComp<MobStateComponent>(mob))
+            {
+                ctx.WriteLine($"{mob}: not a mob, skipped");
+                continue;
+            }
+
+            if (!_cruciform.TryGetCruciformEntity(mob, out var implant, out var comp))
+            {
+                ctx.WriteLine($"{mob}: no cruciform");
+            }
+            else
+            {
+                var modules = comp.InstalledModules.Count == 0
+                    ? "-"
+                    : string.Join(", ", comp.InstalledModules);
+                var sets = comp.UnlockedSets.Count == 0
+                    ? "-"
+                    : string.Join(", ", comp.UnlockedSets);
+                var granted = comp.GrantedSets.Count == 0
+                    ? "-"
+                    : string.Join(", ", comp.GrantedSets);
+                ctx.WriteLine(
+                    $"{mob}: cruciform={implant} active={comp.Active} everActivated={comp.EverActivated} " +
+                    $"profile={comp.Profile} clearance={comp.Clearance} " +
+                    $"holiness={comp.Holiness:F1}/{comp.MaxHoliness:F1} regen={comp.RegenerationPerSecond:F3}/s " +
+                    $"modules=[{modules}] sets=[{sets}] granted=[{granted}] " +
+                    $"upgrades={comp.CoreUpgrades.Count} upgrade={(comp.Upgrade?.ToString() ?? "-")}");
+            }
+
+            if (TryComp<LitanyPendingCastComponent>(mob, out var pending))
+            {
+                ctx.WriteLine(
+                    $"{mob}: pending request={pending.Cast.RequestId} litany={pending.Cast.LitanyId} " +
+                    $"stage={pending.Cast.Stage} cleared={pending.Cast.Cleared} committed={pending.Cast.Committed} " +
+                    $"awaitChoice={pending.Cast.AwaitingChoice} targets={pending.Cast.Targets.Count} " +
+                    $"chant={pending.Cast.ChantEndsAt} choiceExpiry={pending.Cast.ChoiceExpiresAt}");
+            }
+
+            if (TryComp<ActiveCeremonyComponent>(mob, out var ceremony))
+            {
+                ctx.WriteLine(
+                    $"{mob}: ceremony={ceremony.Ritual} first={ceremony.First} " +
+                    $"phrasesLeft={ceremony.Phrases.Count} participants={ceremony.Participants.Count} range={ceremony.Range}");
+            }
+        }
+    }
+
+    /// <summary>Dump each piped entity's DoAfterComponent entries — index, delay, elapsed,
+    /// cancel/complete flags and event type — for diagnosing stuck cast do-afters.</summary>
+    [CommandImplementation("doafter")]
+    public void DoAfterPiped(IInvocationContext ctx, [PipedArgument] IEnumerable<EntityUid> mobs)
+    {
+        var now = IoCManager.Resolve<IGameTiming>().CurTime;
+        foreach (var mob in mobs)
+        {
+            if (!TryComp<Content.Shared.DoAfter.DoAfterComponent>(mob, out var comp))
+            {
+                ctx.WriteLine($"{mob}: no DoAfterComponent");
+                continue;
+            }
+
+            var active = HasComp<Content.Shared.DoAfter.ActiveDoAfterComponent>(mob);
+            ctx.WriteLine($"{mob}: active={active} doafters={comp.DoAfters.Count}");
+            foreach (var (idx, doAfter) in comp.DoAfters)
+            {
+                ctx.WriteLine(
+                    $"{mob}:  #{idx} delay={doAfter.Args.Delay.TotalSeconds:F2} elapsed={(now - doAfter.StartTime).TotalSeconds:F2} " +
+                    $"cancelled={(doAfter.CancelledTime != null)} completed={doAfter.Completed} " +
+                    $"ev={doAfter.Args.Event?.GetType().Name ?? "null"} start={doAfter.StartTime.TotalSeconds:F2}");
+            }
+        }
+    }
+
+    /// <summary>Mark each piped entity as a litany testing actor so <c>litany:cast</c>
+    /// passes the player-actor gate without a client possessing the mob. The marker
+    /// component is stripped automatically on round restart.</summary>
+    [CommandImplementation("actor")]
+    public void ActorPiped(IInvocationContext ctx, [PipedArgument] IEnumerable<EntityUid> mobs)
+    {
+        foreach (var mob in mobs)
+        {
+            EnsureComp<LitanyTestingActorComponent>(mob);
+            ctx.WriteLine($"{mob}: marked as litany testing actor");
         }
     }
 

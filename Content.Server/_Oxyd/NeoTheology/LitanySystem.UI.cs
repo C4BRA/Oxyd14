@@ -275,6 +275,23 @@ public sealed partial class LitanySystem
 
         // Actor-targeted only — never SetUiState with holiness/roles.
         _ui.ServerSendUiMessage(book, LitanyUiKey.Book, snapshot, actor);
+
+        // The nullspace prayer prompt replicates after the open message reaches the
+        // client, so a choice/progress send issued on the open tick is dropped
+        // silently. Re-send them alongside the (repeating) viewer snapshot — by the
+        // time one arrives, the prompt exists client-side. Idempotent on the client.
+        if (TryComp(actor, out LitanyPendingCastComponent? pending))
+        {
+            var cast = pending.Cast;
+            SendProgressToActor(cast);
+            if (cast.Stage == LitanyCastStage.Choosing &&
+                (cast.ChoiceTargets.Count > 0 ||
+                 cast.ChoiceDesignations.Count > 0 ||
+                 cast.ChoiceBlueprints.Count > 0))
+            {
+                SendChoiceSnapshot(cast);
+            }
+        }
     }
 
     private EntityUid? FindActorBook(EntityUid actor)
