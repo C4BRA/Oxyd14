@@ -275,3 +275,13 @@ public sealed partial class OxydBioprinterComponent : Component
     [DataField]
     public bool Working;
 }
+
+/// <summary>Eris appendix.dm: spontaneous appendicitis - inflamed counter ticks
+/// up while inside a body, escalating pain/vomit until the organ is removed
+/// or ruptures. Inflamed is a counter, not a boolean.</summary>
+[RegisterComponent]
+public sealed partial class OxydAppendixComponent : Component
+{
+    /// <summary>Seconds of inflammation elapsed (Eris inflamed counter, 1/lifetick).</summary>
+    public float Inflamed;
+}

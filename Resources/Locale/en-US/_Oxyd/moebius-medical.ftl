@@ -535,3 +535,9 @@ oxyd-sideeffect-itch-2 = You want to scratch your itch badly.
 oxyd-sideeffect-itch-3 = This itch makes it really hard to concentrate.
 oxyd-sideeffect-itch-emote = shivers slightly.
 oxyd-sideeffect-itch-cure = The itching stops...
+
+## Appendicitis (Eris)
+oxyd-appendix-sting = You feel a stinging pain in your abdomen!
+oxyd-appendix-wince = You wince painfully.
+oxyd-appendix-gag = You gag as you want to throw up, but there's nothing in your stomach!
+oxyd-appendix-rupture = Your abdomen is a world of pain!
