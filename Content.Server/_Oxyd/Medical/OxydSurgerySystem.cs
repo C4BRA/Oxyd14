@@ -194,9 +194,10 @@ public sealed partial class OxydSurgerySystem : EntitySystem
         if (cavity.Valid)
         {
             args.Handled = true;
-            // An organ item is a transplant (Eris attach_or_replace_organ), not a
-            // cavity implant — AttachOrgan still validates Incision/decay itself.
-            var step = HasComp<OrganComponent>(args.Used)
+            // An organ item or detached-limb shell is a transplant (Eris
+            // attach_or_replace_organ), not a cavity implant — AttachOrgan still
+            // validates Incision/decay itself.
+            var step = IsTransplantItem(args.Used)
                 ? OxydSurgeryStep.AttachOrgan
                 : OxydSurgeryStep.InsertItem;
             RunStep(args.User, uid, cavity.Uid, step, args.Used, null);
@@ -468,7 +469,7 @@ public sealed partial class OxydSurgerySystem : EntitySystem
         var surg = EnsureComp<OxydOrganSurgeryComponent>(organ);
         var tools = ToolFlagsOf(s.Tool);
         if (!AvailableSteps(tools, s.Tool, organComp, surg,
-                s.Tool is { } held && HasComp<OrganComponent>(held)).Contains(args.Step))
+                s.Tool is { } held && IsTransplantItem(held)).Contains(args.Step))
             return;
 
         RunStep(s.Surgeon, s.Patient, organ, args.Step, s.Tool,
@@ -750,10 +751,49 @@ public sealed partial class OxydSurgerySystem : EntitySystem
         return best;
     }
 
+    /// <summary>Organ item or a detached-limb shell carrying organs.</summary>
+    private bool IsTransplantItem(EntityUid item)
+        => HasComp<OrganComponent>(item) || HasComp<BodyComponent>(item);
+
     private bool TryAttach(EntityUid body, EntityUid? heldItem, EntityUid surgeon)
     {
         if (heldItem is not { } item)
             return false;
+
+        // Severed limb/head: the detached-body shell carries the limb's organs.
+        // Reversing DetachableOrganSystem.Detach — move each organ into the
+        // patient's body_organs, then the empty shell is consumed (Eris
+        // attach_organ restores the limb, it doesn't bag it in the torso).
+        if (TryComp<BodyComponent>(item, out _) &&
+            _container.TryGetContainer(item, BodyComponent.ContainerID, out var limbContainer) &&
+            _container.TryGetContainer(body, BodyComponent.ContainerID, out var patientContainer))
+        {
+            var containedAll = limbContainer.ContainedEntities;
+            if (containedAll.Count > 0 && containedAll.All(o =>
+                    CompOrNull<OxydOrganSurgeryComponent>(o) is { Decayed: true }))
+            {
+                _popup.PopupEntity(Loc.GetString("oxyd-surgery-organ-decayed"), surgeon, surgeon);
+                return false;
+            }
+
+            var moved = false;
+            foreach (var contained in containedAll.ToArray())
+            {
+                // Patient still has that part (Eris can_add_item unique tag) — skip.
+                if (TryComp<OrganComponent>(contained, out var containedOrgan) &&
+                    containedOrgan.Category is { } containedCategory &&
+                    FindOrgan(body, o => o.Organ.Category == containedCategory).Valid)
+                    continue;
+
+                if (_container.Insert(contained, patientContainer, force: true))
+                    moved = true;
+            }
+
+            if (moved && limbContainer.ContainedEntities.Count == 0)
+                QueueDel(item);
+
+            return moved;
+        }
 
         // Eris dismemberment parity: external organs (severed limbs) re-attach
         // through the same body container as internal organs.
@@ -837,7 +877,7 @@ public sealed partial class OxydSurgerySystem : EntitySystem
                 (OxydOrganSurgeryComponent.OrganMaxDamage - surg.OrganDamage) /
                 OxydOrganSurgeryComponent.OrganMaxDamage * 100f, 0f, 100f);
             var steps = AvailableSteps(state.HeldTools, s.Tool, organ, surg,
-                s.Tool is { } held && HasComp<OrganComponent>(held));
+                s.Tool is { } held && IsTransplantItem(held));
             var entry = new OxydSurgeryOrganEntry
             {
                 Organ = GetNetEntity(orgUid),
