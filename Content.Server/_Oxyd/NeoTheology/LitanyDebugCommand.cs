@@ -1017,9 +1017,14 @@ public sealed class LitanyCommand : ToolshedCommand
         }
     }
 
-    /// <summary>Install a core-upgrade kit item (e.g. OxydNtObeyKit) into piped mobs' cruciforms — registers CoreUpgrades.</summary>
+    /// <summary>
+    /// Install an upgrade item into piped mobs' cruciforms. Branches on component:
+    /// CruciformCoreUpgrade items (e.g. OxydNtPreacherAscensionKit) take the core-upgrade path,
+    /// CruciformUpgrade items (e.g. OxydNtUpgradeNaturesBlessing) take the single upgrade slot.
+    /// "clear" uninstalls the slotted upgrade instead.
+    /// </summary>
     [CommandImplementation("upgrade")]
-    public void UpgradePiped(IInvocationContext ctx, [PipedArgument] IEnumerable<EntityUid> mobs, EntProtoId proto)
+    public void UpgradePiped(IInvocationContext ctx, [PipedArgument] IEnumerable<EntityUid> mobs, string proto)
     {
         _upgrades ??= GetSys<CruciformUpgradeSystem>();
         _cruciform ??= GetSys<CruciformSystem>();
@@ -1031,8 +1036,19 @@ public sealed class LitanyCommand : ToolshedCommand
                 continue;
             }
 
-            var item = Spawn(proto, Transform(mob).Coordinates);
-            ctx.WriteLine($"{mob}: installed={_upgrades.TryInstallCoreUpgrade(cruciform, comp, item, mob)}");
+            if (proto == "clear")
+            {
+                ctx.WriteLine($"{mob}: uninstalled={_upgrades.TryUninstallUpgrade(cruciform, comp)}");
+                continue;
+            }
+
+            var item = Spawn(new EntProtoId(proto), Transform(mob).Coordinates);
+            if (HasComp<CruciformCoreUpgradeComponent>(item))
+                ctx.WriteLine($"{mob}: coreInstalled={_upgrades.TryInstallCoreUpgrade(cruciform, comp, item, mob)}");
+            else if (HasComp<CruciformUpgradeComponent>(item))
+                ctx.WriteLine($"{mob}: installed={_upgrades.TryInstallUpgrade(cruciform, comp, item)}");
+            else
+                ctx.WriteLine($"{mob}: {proto} has no upgrade component");
         }
     }
 

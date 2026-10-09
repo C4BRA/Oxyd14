@@ -135,3 +135,21 @@ entity-sync after a server restart — relaunching the client fixes it.
 **Tool notes:** `litany:cooldowns` CLEARS cooldowns (mutating, not a read). `litany:probe` throws on server console. `litany:status` now prints vitals (state/dmg/sanity/insight), `cds=[key=remain]`, tray weeds, eye observation/armament. `litany:weed`/`hostile` piped variants; `hydroponicsTray` spawns pre-anchored (skip re-anchor). Server sim-time runs ~0.4× wall-clock on this VM — all time-based assertions must compare against sim rates, not wall time.
 
 **Still open:** adjacent-living reagent litanies (WordsOfPurging/HandOfMercy), upgrades x7, 13 modules, edge cases (death mid-cast, disconnect mid-chant, dual-caster, scrying-during-death).
+
+## Pass 11 — Phase 5 sweep part 2 (srvin14/server3, 2026-10-09)
+
+**Modules** — all 11 core module protos install via `litany:module` (7 newly installed, Cloning correctly idempotent-false on repeat). Set-grant verified: Agrolyte/Custodian modules grant `OxydLitanyAgrolyte`/`OxydLitanyCustodian` sets (visible in `litany:status` sets list).
+
+**Upgrades — all 7 verified E2E** (`litany:upgrade` now branches on component type): `CruciformUpgrade` items (NaturesBlessing, FaithsShield, CleansingPresence, MartyrGift, WrathOfGod, SpeedOfTheChosen) each install into the single upgrade slot — second install correctly refused while occupied (`installed=False`), `litany:upgrade "clear"` uninstalls, swap succeeds. `CruciformCoreUpgrade` (PreacherAscensionKit) takes the core-upgrade path → `coreInstalled=True` → registers `OxydNtModulePriestConvert` in modules. Status shows `upgrades=N upgrade=<uid>`.
+
+**Reagent litanies — all 3 verified** (caster 5266 Agrolyte+Custodian, target 5341 adjacent): HandOfMercy → `OxydNtDeusBlessing=~15u`; AbsolutionOfWounds → `OxydNtHolyInaprovaline=~10 + OxydNtHolyDexalin=~10`; WordsOfPurging → success=True (beneficial reagents untouched — purges toxins only). `litany:reagents` dumps bloodstream+metabolites.
+
+**Edge cases:**
+- Death mid-cast: caster damaged to Dead mid-doAfter → cruciform `active=False`, holiness cost debited, no exceptions.
+- Entity deletion mid-chant (`delete` during doAfter): no exception, pending cast dies with entity — clean.
+- Dual-caster: two cruciform bearers cast ~1s apart → both `success=True` (rate limit is per-mob).
+- Scrying during death: dead caster denied `oxyd-litany-denied-no-implant` (deactivated cruciform gates it).
+
+**New deny-reasons catalogued:** `denied-npc` (mindless mob — needs `litany:actor`), `denied-rate-limit` (per-mob cast window — failed casts still consume it), `no-target` (AdjacentLiving requires target on own or FRONT tile — diagonal adjacency fails), `denied-no-implant` (deactivated/absent cruciform).
+
+**Tool lessons:** `litany:upgrade` takes proto ids for BOTH upgrade kinds; bare `clear` unquoted fails parse — quote it. `litany:hostile` spawns at FRONT tile which can land diagonal — `litany:face` the caster first for cardinal adjacency. `ent <anchor> | litany:hostile` needs a positioned entity (map-root EntId=0 entities throw invalid-coords); station airlocks work. `ent X | delete` exists and is silent.
