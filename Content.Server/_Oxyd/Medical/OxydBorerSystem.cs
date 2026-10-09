@@ -4,6 +4,7 @@ using Content.Shared._Oxyd.Medical;
 using Content.Shared._Oxyd.NeoTheology.Components;
 using Content.Shared.Body;
 using Content.Shared.Body.Components;
+using Content.Shared.Chat;
 using Content.Shared.Chemistry.Components;
 using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Containers;
@@ -36,7 +37,7 @@ namespace Content.Server._Oxyd.Medical;
 /// reproduction. Verbs instead of a BUI, mirroring the Eris verb lists:
 /// Infest / Paralyze Victim (standalone), Secrete / Reproduce / Release Host (in host).
 /// </summary>
-public sealed class OxydBorerSystem : EntitySystem
+public sealed partial class OxydBorerSystem : EntitySystem
 {
     [Dependency] private readonly ContainerSystem _container = default!;
     [Dependency] private readonly DoAfterSystem _doAfter = default!;
@@ -66,9 +67,14 @@ public sealed class OxydBorerSystem : EntitySystem
         SubscribeLocalEvent<OxydBorerComponent, OxydBorerReleaseDoAfterEvent>(OnReleaseDone);
         SubscribeLocalEvent<OxydBorerComponent, MobStateChangedEvent>(OnBorerStateChanged);
         SubscribeLocalEvent<OxydBorerComponent, ComponentShutdown>(OnBorerShutdown);
+        SubscribeLocalEvent<OxydBorerComponent, OxydBorerAssumeControlDoAfterEvent>(OnAssumeControlDone);
+        SubscribeLocalEvent<OxydBorerHostComponent, GetVerbsEvent<InnateVerb>>(AddControlVerbs);
         SubscribeLocalEvent<OxydBorerHostComponent, MobStateChangedEvent>(OnHostStateChanged);
         SubscribeLocalEvent<OxydBorerHostComponent, EntRemovedFromContainerMessage>(OnBorerRemoved);
         SubscribeLocalEvent<OxydBorerHostComponent, EntityTerminatingEvent>(OnHostTerminating);
+        SubscribeLocalEvent<OxydBorerCaptiveComponent, GetVerbsEvent<InnateVerb>>(AddCaptiveVerbs);
+        SubscribeLocalEvent<OxydBorerCaptiveComponent, OxydBorerResistDoAfterEvent>(OnResistDone);
+        SubscribeLocalEvent<OxydBorerCaptiveComponent, EntityTerminatingEvent>(OnCaptiveTerminating);
     }
 
     // ------------------------------------------------------------------
@@ -77,12 +83,26 @@ public sealed class OxydBorerSystem : EntitySystem
 
     private void AddTargetVerbs(EntityUid uid, BodyComponent comp, GetVerbsEvent<AlternativeVerb> args)
     {
-        // Only a living, free-roaming borer adjacent to the victim sees these.
-        if (!args.CanInteract ||
-            !TryComp<OxydBorerComponent>(args.User, out var borer) ||
-            borer.Host != null ||
-            _mobs.IsDead(args.User))
+        if (!args.CanInteract || _mobs.IsDead(args.User) || args.User == uid)
             return;
+
+        // A host whose borer is in control (its mind drives this body) gets the
+        // psychic verbs — Eris abilities_in_control (psychic_whisper / commune).
+        if (TryComp<OxydBorerHostComponent>(args.User, out var userHost) &&
+            userHost.Borer is { } driver &&
+            TryComp<OxydBorerComponent>(driver, out var driverComp) &&
+            driverComp.Controlling)
+        {
+            AddPsychicVerbs(args, driver, driverComp, uid);
+            return;
+        }
+
+        // Only a living, free-roaming borer adjacent to the victim sees these.
+        if (!TryComp<OxydBorerComponent>(args.User, out var borer) || borer.Host != null)
+            return;
+
+        // Eris standalone abilities also include commune/psychic whisper.
+        AddPsychicVerbs(args, args.User, borer, uid);
 
         var target = uid;
         args.Verbs.Add(new AlternativeVerb
@@ -105,12 +125,28 @@ public sealed class OxydBorerSystem : EntitySystem
 
     private void AddInHostVerbs(EntityUid uid, OxydBorerComponent comp, GetVerbsEvent<InnateVerb> args)
     {
-        if (!args.CanInteract ||
-            comp.Host is not { } host ||
-            _mobs.IsDead(uid))
+        if (args.User != uid || _mobs.IsDead(uid))
             return;
 
         var category = new VerbCategory(Loc.GetString("oxyd-borer-verb-category"), null);
+
+        // Standalone abilities (Eris abilities_standalone extras): Hide.
+        if (comp.Host == null)
+        {
+            args.Verbs.Add(new InnateVerb
+            {
+                Text = Loc.GetString(comp.Hidden ? "oxyd-borer-verb-unhide" : "oxyd-borer-verb-hide"),
+                Category = category,
+                Act = () => TryToggleHide(uid, comp),
+            });
+            return;
+        }
+
+        // In-control borers drive the host body; their verbs move to the host.
+        if (comp.Controlling)
+            return;
+
+        var host = comp.Host.Value;
 
         foreach (var reagent in comp.ProducedReagents)
         {
@@ -129,6 +165,48 @@ public sealed class OxydBorerSystem : EntitySystem
             Text = Loc.GetString("oxyd-borer-verb-reproduce"),
             Category = category,
             Act = () => TryReproduce(uid, comp, host),
+        });
+
+        args.Verbs.Add(new InnateVerb
+        {
+            Text = Loc.GetString("oxyd-borer-verb-assume-control"),
+            Category = category,
+            Act = () => TryStartAssumeControl(uid, comp, host),
+        });
+
+        args.Verbs.Add(new InnateVerb
+        {
+            Text = Loc.GetString("oxyd-borer-verb-read-mind"),
+            Category = category,
+            Act = () => TryReadMind(uid, comp, host),
+        });
+
+        args.Verbs.Add(new InnateVerb
+        {
+            Text = Loc.GetString("oxyd-borer-verb-write-mind"),
+            Category = category,
+            Act = () => TryWriteMind(uid, comp, host),
+        });
+
+        args.Verbs.Add(new InnateVerb
+        {
+            Text = Loc.GetString("oxyd-borer-verb-speak-to-host"),
+            Category = category,
+            Act = () => TrySpeakToHost(uid, comp, host),
+        });
+
+        args.Verbs.Add(new InnateVerb
+        {
+            Text = Loc.GetString("oxyd-borer-verb-say-host"),
+            Category = category,
+            Act = () => TryForceHostSpeech(uid, comp, host, InGameICChatType.Speak),
+        });
+
+        args.Verbs.Add(new InnateVerb
+        {
+            Text = Loc.GetString("oxyd-borer-verb-whisper-host"),
+            Category = category,
+            Act = () => TryForceHostSpeech(uid, comp, host, InGameICChatType.Whisper),
         });
 
         args.Verbs.Add(new InnateVerb
@@ -282,6 +360,93 @@ public sealed class OxydBorerSystem : EntitySystem
         _popup.PopupEntity(Loc.GetString("oxyd-borer-reproduce"), borer, borer);
     }
 
+    // ------------------------------------------------------------------
+    // Control-state verbs — on the HOST entity while the borer's mind drives it
+    // (Eris abilities_in_control: release_control / talk_host / spawn_larvae)
+    // ------------------------------------------------------------------
+
+    private void AddControlVerbs(EntityUid uid, OxydBorerHostComponent comp, GetVerbsEvent<InnateVerb> args)
+    {
+        if (args.User != uid ||
+            comp.Borer is not { } borer ||
+            !TryComp<OxydBorerComponent>(borer, out var borerComp) ||
+            !borerComp.Controlling)
+            return;
+
+        var category = new VerbCategory(Loc.GetString("oxyd-borer-verb-category"), null);
+
+        args.Verbs.Add(new InnateVerb
+        {
+            Text = Loc.GetString("oxyd-borer-verb-release-control"),
+            Category = category,
+            Act = () => TryReleaseControl(borer, borerComp, uid),
+        });
+
+        args.Verbs.Add(new InnateVerb
+        {
+            Text = Loc.GetString("oxyd-borer-verb-talk-captive"),
+            Category = category,
+            Act = () => TryTalkToCaptive(borer, borerComp, uid),
+        });
+
+        // Eris abilities_in_control also includes spawn_larvae (same reproduce).
+        args.Verbs.Add(new InnateVerb
+        {
+            Text = Loc.GetString("oxyd-borer-verb-reproduce"),
+            Category = category,
+            Act = () => TryReproduce(borer, borerComp, uid),
+        });
+    }
+
+    /// <summary>Captive brain verbs (Eris captive_brain say + process_resist).</summary>
+    private void AddCaptiveVerbs(EntityUid uid, OxydBorerCaptiveComponent comp, GetVerbsEvent<InnateVerb> args)
+    {
+        if (args.User != uid)
+            return;
+
+        var category = new VerbCategory(Loc.GetString("oxyd-borer-verb-category"), null);
+
+        args.Verbs.Add(new InnateVerb
+        {
+            Text = Loc.GetString("oxyd-borer-verb-captive-whisper"),
+            Category = category,
+            Act = () => TryCaptiveWhisper(uid, comp),
+        });
+
+        args.Verbs.Add(new InnateVerb
+        {
+            Text = Loc.GetString("oxyd-borer-verb-captive-resist"),
+            Category = category,
+            Act = () => TryStartResist(uid, comp),
+        });
+    }
+
+    /// <summary>Psychic Whisper + Commune on a victim — usable by a free borer or a
+    /// controlled host (Eris commune / psychic_whisper).</summary>
+    private void AddPsychicVerbs(GetVerbsEvent<AlternativeVerb> args, EntityUid borerEnt,
+        OxydBorerComponent borerComp, EntityUid victim)
+    {
+        var category = new VerbCategory(Loc.GetString("oxyd-borer-verb-category"), null);
+        var user = args.User;
+        var target = victim;
+
+        args.Verbs.Add(new AlternativeVerb
+        {
+            Text = Loc.GetString("oxyd-borer-verb-psychic-whisper"),
+            Category = category,
+            Act = () => TryPsychicWhisper(user, target),
+            Priority = -7,
+        });
+
+        args.Verbs.Add(new AlternativeVerb
+        {
+            Text = Loc.GetString("oxyd-borer-verb-commune"),
+            Category = category,
+            Act = () => TryCommune(borerEnt, user, target),
+            Priority = -8,
+        });
+    }
+
     private void TryStartRelease(EntityUid borer, OxydBorerComponent comp, EntityUid host)
     {
         if (comp.Host != host || _mobs.IsDead(borer))
@@ -324,6 +489,10 @@ public sealed class OxydBorerSystem : EntitySystem
     /// <summary>Ejects the borer onto the host's turf and clears both sides of the link.</summary>
     private void LeaveHost(EntityUid borer, OxydBorerComponent comp, EntityUid host)
     {
+        // Eris release_host(): detach control first so both minds go home.
+        if (comp.Controlling)
+            DetachControl(borer, comp, host);
+
         var coords = Transform(host).Coordinates;
         if (TryComp<OxydBorerHostComponent>(host, out var hostComp))
         {
@@ -382,26 +551,40 @@ public sealed class OxydBorerSystem : EntitySystem
 
     private void OnBorerStateChanged(EntityUid uid, OxydBorerComponent comp, MobStateChangedEvent args)
     {
-        // Eris death(): a dead borer falls out of its host.
+        // Eris death(): detach control, then a dead borer falls out of its host.
         if (args.NewMobState == MobState.Dead && comp.Host is { } host)
+        {
+            if (comp.Controlling)
+                DetachControl(uid, comp, host);
             LeaveHost(uid, comp, host);
+        }
     }
 
     private void OnBorerShutdown(EntityUid uid, OxydBorerComponent comp, ComponentShutdown args)
     {
-        if (comp.Host is { } host && TryComp<OxydBorerHostComponent>(host, out var hostComp))
+        if (comp.Host is { } host && comp.Controlling)
+            DetachControl(uid, comp, host);
+
+        if (comp.Host is { } h && TryComp<OxydBorerHostComponent>(h, out var hostComp))
         {
             hostComp.Borer = null;
-            RemCompDeferred<OxydBorerHostComponent>(host);
+            RemCompDeferred<OxydBorerHostComponent>(h);
         }
         comp.Host = null;
     }
 
     private void OnHostStateChanged(EntityUid uid, OxydBorerHostComponent comp, MobStateChangedEvent args)
     {
-        // Eris host_death(): the borer feels control stop; it stays inside the corpse.
+        // Eris host_death(): control stops instantly; the borer stays inside the corpse.
         if (args.NewMobState == MobState.Dead && comp.Borer is { } borer)
+        {
+            if (TryComp<OxydBorerComponent>(borer, out var borerComp) && borerComp.Controlling)
+            {
+                DetachControl(borer, borerComp, uid);
+                _popup.PopupEntity(Loc.GetString("oxyd-borer-control-stopped"), borer, borer, PopupType.LargeCaution);
+            }
             _popup.PopupEntity(Loc.GetString("oxyd-borer-host-died"), borer, borer, PopupType.LargeCaution);
+        }
     }
 
     /// <summary>Borer pulled out of the host container by anything other than LeaveHost
@@ -482,6 +665,13 @@ public sealed class OxydBorerSystem : EntitySystem
             _popup.PopupEntity(
                 Loc.GetString(docile ? "oxyd-borer-docile-on" : "oxyd-borer-docile-off"),
                 uid, uid);
+
+            // Eris process_host(): docile forced-release of a controlled host.
+            if (docile && comp.Controlling)
+            {
+                _popup.PopupEntity(Loc.GetString("oxyd-borer-docile-control"), host, host, PopupType.LargeCaution);
+                DetachControl(uid, comp, host);
+            }
         }
     }
 }

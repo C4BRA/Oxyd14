@@ -56,3 +56,16 @@
   - type: Tag
     tags:
     - CannotSuicide
+
+# The displaced host mind lives here while the borer drives the body
+# (Eris /mob/living/captive_brain inside the borer).
+- type: entity
+  id: OxydBorerCaptiveBrain
+  parent: BaseItem
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: OxydBorerCaptive
+  - type: Sprite
+    sprite: Mobs/Animals/headslug.rsi
+    state: slug_dead
+    drawdepth: SmallMobs

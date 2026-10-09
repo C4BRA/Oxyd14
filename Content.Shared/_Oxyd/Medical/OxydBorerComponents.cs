@@ -116,6 +116,113 @@ public sealed partial class OxydBorerComponent : Component
 
     [ViewVariables]
     public float UpdateRemaining;
+
+    // ------------------------------------------------------------------
+    // Assume control (Eris assume_control / detach / release_control)
+    // ------------------------------------------------------------------
+
+    /// <summary>Eris `controlling`: the borer's mind currently drives the host body.</summary>
+    [DataField, AutoNetworkedField]
+    public bool Controlling;
+
+    /// <summary>The captive-brain entity inside this borer holding the host's mind
+    /// while <see cref="Controlling"/> (Eris `host_brain`, a /mob/living/captive_brain
+    /// inside the borer).</summary>
+    [DataField, AutoNetworkedField]
+    public EntityUid? HostBrain;
+
+    /// <summary>Container inside the borer entity that holds the captive brain.</summary>
+    public const string CaptiveContainerId = "oxyd_borer_captive";
+
+    [ViewVariables]
+    public Container CaptiveContainer = default!;
+
+    /// <summary>Eris assume_control channel: 30 SECONDS + brainloss*5 (no brainloss stat here).</summary>
+    [DataField]
+    public TimeSpan AssumeControlDelay = TimeSpan.FromSeconds(30);
+
+    /// <summary>Prototype of the captive-brain entity spawned while controlling.</summary>
+    [DataField]
+    public EntProtoId CaptiveBrainPrototype = "OxydBorerCaptiveBrain";
+
+    /// <summary>Captive-mind resist channel bounds (Eris rand(25s, 30s)+brainloss).</summary>
+    [DataField]
+    public TimeSpan ResistMinDelay = TimeSpan.FromSeconds(25);
+
+    [DataField]
+    public TimeSpan ResistMaxDelay = TimeSpan.FromSeconds(30);
+
+    // ------------------------------------------------------------------
+    // Mind read/write side-effects (Eris read_mind/write_mind)
+    // ------------------------------------------------------------------
+
+    /// <summary>Eris read_mind: adjustBrainLoss(copied*4) — no stats to copy, flat cellular.</summary>
+    [DataField]
+    public float ReadMindDamage = 6f;
+
+    /// <summary>Eris write_mind: adjustBrainLoss(copied*2).</summary>
+    [DataField]
+    public float WriteMindDamage = 3f;
+
+    /// <summary>Jitter/confusion duration applied by Read/Write Mind.</summary>
+    [DataField]
+    public TimeSpan MindEffectDuration = TimeSpan.FromSeconds(10);
+
+    // ------------------------------------------------------------------
+    // Evolution (Eris borer_exp / borer_level / level_up)
+    // ------------------------------------------------------------------
+
+    [DataField, AutoNetworkedField]
+    public int BorerExp;
+
+    [DataField, AutoNetworkedField]
+    public int BorerLevel;
+
+    /// <summary>Reagent unlock lists per level (Eris level_up added_reagents, mapped to this
+    /// fork's ids). Indexed by evolution level; Level 5 psionic reagents have no Oxyd equivalent.</summary>
+    [DataField]
+    public List<ProtoId<ReagentPrototype>> Level1Reagents = new()
+        { "Inaprovaline", "Tricordrazine", "Synaptizine", "OxydMedImidazoline", "Hyronalin" };
+
+    [DataField]
+    public List<ProtoId<ReagentPrototype>> Level2Reagents = new()
+        { "OxydMedSpaceacillin", "OxydMedQuickclot", "OxydMedDetox", "OxydMedPurger", "Arithrazine" };
+
+    [DataField]
+    public List<ProtoId<ReagentPrototype>> Level3Reagents = new()
+        { "OxydMedMeralyne", "Dermaline", "DexalinPlus", "OxydMedOxycodone", "OxydMedRyetalyn" };
+
+    [DataField]
+    public List<ProtoId<ReagentPrototype>> Level4Reagents = new()
+        { "OxydMedPeridaxon", "OxydMedRezadone", "OxydMedOssisine", "OxydMedKyphotorin", "OxydMedAminazine" };
+
+    /// <summary>Exp awarded by Reproduce on a humanoid host (Eris borer_add_exp(25)).</summary>
+    [DataField]
+    public int ReproduceExp = 25;
+
+    [DataField]
+    public int ReadMindExp = 10;
+
+    [DataField]
+    public int WriteMindExp = 5;
+
+    /// <summary>Hide verb: toggles the borer's draw depth under floor objects (Eris hide()).</summary>
+    [DataField, AutoNetworkedField]
+    public bool Hidden;
+}
+
+/// <summary>The captive mind: an entity inside the borer's container holding the host's
+/// mind while the borer controls the host body (Eris /mob/living/captive_brain).</summary>
+[RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
+public sealed partial class OxydBorerCaptiveComponent : Component
+{
+    /// <summary>The host body this captive's mind belongs to.</summary>
+    [DataField, AutoNetworkedField]
+    public EntityUid? Host;
+
+    /// <summary>The borer entity this captive lives inside.</summary>
+    [DataField, AutoNetworkedField]
+    public EntityUid? Borer;
 }
 
 /// <summary>Marks a mob hosting a cortical borer; the borer entity lives in
@@ -141,4 +248,22 @@ public sealed partial class OxydBorerInfestDoAfterEvent : SimpleDoAfterEvent
 [Serializable, NetSerializable]
 public sealed partial class OxydBorerReleaseDoAfterEvent : SimpleDoAfterEvent
 {
+}
+
+[Serializable, NetSerializable]
+public sealed partial class OxydBorerAssumeControlDoAfterEvent : SimpleDoAfterEvent
+{
+}
+
+[Serializable, NetSerializable]
+public sealed partial class OxydBorerResistDoAfterEvent : SimpleDoAfterEvent
+{
+}
+
+/// <summary>Appearance data keys driven by <see cref="OxydBorerComponent"/>.</summary>
+[Serializable, NetSerializable]
+public enum OxydBorerVisuals : byte
+{
+    /// <summary>Hide verb toggled — draw under floor clutter.</summary>
+    Hidden,
 }

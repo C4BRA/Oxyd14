@@ -640,3 +640,73 @@ oxyd-borer-paralyze-victim = Your limbs twitch horribly, like a puppet's.
 oxyd-borer-paralyze-cooldown = Your toxin gland hasn't recharged yet.
 oxyd-borer-paralyze-cooldown-in = Your toxin gland needs {$seconds} more seconds to recharge.
 
+
+## Cortical borer — round 2 (assume control, comms, hide, evolution)
+ent-OxydBorerCaptiveBrain = captive mind
+    .desc = The displaced consciousness of a host body, held prisoner inside a cortical borer.
+
+oxyd-borer-verb-assume-control = Assume Control
+oxyd-borer-verb-release-control = Release Control
+oxyd-borer-verb-talk-captive = Talk to Captive
+oxyd-borer-verb-captive-whisper = Whisper to Host
+oxyd-borer-verb-captive-resist = Resist
+oxyd-borer-verb-psychic-whisper = Psychic Whisper
+oxyd-borer-verb-commune = Commune
+oxyd-borer-verb-read-mind = Read Mind
+oxyd-borer-verb-write-mind = Write Mind
+oxyd-borer-verb-speak-to-host = Speak to Host
+oxyd-borer-verb-say-host = Say as Host
+oxyd-borer-verb-whisper-host = Whisper as Host
+oxyd-borer-verb-hide = Hide
+oxyd-borer-verb-unhide = Stop Hiding
+
+oxyd-borer-control-start = You begin delicately adjusting your connection to the host brain. This will take some time...
+oxyd-borer-control-done = You plunge your probosci deep into the cortex of the host brain, interfacing directly with their nervous system.
+oxyd-borer-control-done-host = You feel a strange shifting sensation behind your eyes as another consciousness displaces yours.
+oxyd-borer-control-dead = You can't control a dead host.
+oxyd-borer-control-no-mind = You have no mind to drive a body with.
+oxyd-borer-control-stopped = You feel your control over your host suddenly stop.
+oxyd-borer-release-control = You withdraw your probosci, releasing control of the host body.
+oxyd-borer-release-control-captive = As though waking from a dream, you shake off the insidious mind control of the brain worm. Your thoughts are your own again.
+oxyd-borer-resist-start = You begin doggedly resisting the parasite's control (this will take approximately thirty seconds).
+oxyd-borer-resist-start-host = You feel the captive mind begin to resist your control.
+oxyd-borer-resist-done = With an immense exertion of will, you regain control of your body!
+oxyd-borer-resist-done-borer = You feel control of the host brain ripped from your grasp, and retract your probosci before the wild neural impulses can damage you.
+oxyd-borer-docile-control = You are feeling far too docile to continue controlling your host...
+oxyd-borer-no-mind = You need a mind to do that.
+oxyd-borer-no-captive = The captive mind is gone.
+
+oxyd-borer-dialog-speak-title = Speak to host
+oxyd-borer-dialog-speak-prompt = Words to drop into the host's mind
+oxyd-borer-dialog-say-host-title = Say as host
+oxyd-borer-dialog-whisper-host-title = Whisper as host
+oxyd-borer-dialog-say-host-prompt = Speech to force from the host
+oxyd-borer-dialog-psychic-title = Psychic whisper
+oxyd-borer-dialog-psychic-prompt = Message for their mind
+oxyd-borer-dialog-commune-title = Commune
+oxyd-borer-dialog-commune-prompt = Thoughts to project
+oxyd-borer-dialog-captive-title = Talk to captive
+oxyd-borer-dialog-captive-prompt = Message to your captive host
+oxyd-borer-dialog-whisper-title = Whisper
+oxyd-borer-dialog-whisper-prompt = Whisper to the body that was yours
+
+oxyd-borer-speak-self = You drop words into {$host}'s mind: "{$text}"
+oxyd-borer-speak-host = Your own thoughts speak: "{$text}"
+oxyd-borer-psychic-target = You hear a strange, alien voice in your head... {$text}
+oxyd-borer-psychic-self = You whispered to {$target}: "{$text}"
+oxyd-borer-commune-target = Like lead slabs crashing into the ocean, alien thoughts drop into your mind: {$text}
+oxyd-borer-commune-self = You communed to {$target}: "{$text}"
+oxyd-borer-commune-nosebleed = Your nose begins to bleed...
+oxyd-borer-captive-self = You say to your host: {$text}
+oxyd-borer-captive-echo = YOU say to yourself: {$text}
+oxyd-borer-whisper-self = You whisper silently, "{$text}"
+oxyd-borer-whisper-host = The captive mind whispers, "{$text}"
+
+oxyd-borer-read-self = You sift through the host's memories, extracting what you can.
+oxyd-borer-read-host = Your head spins, your memories thrown in disarray!
+oxyd-borer-write-self = You press fragments of your own mind into the host's.
+oxyd-borer-write-host = Your head spins as new information fills your mind!
+
+oxyd-borer-hide-on = You are now hiding under floor clutter.
+oxyd-borer-hide-off = You have stopped hiding.
+oxyd-borer-level-up = Congratulations! You've reached Evolution Level {$level} — new synthesis reagents and abilities are now available.
