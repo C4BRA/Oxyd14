@@ -17,12 +17,12 @@ namespace Content.Server._Oxyd.NeoTheology.Machines;
 /// </summary>
 public sealed partial class ArmamentsPrinterSystem : EntitySystem
 {
-    [Dependency] private readonly CruciformSystem _cruciform = default!;
-    [Dependency] private readonly NeoTheologyMachineSystem _machines = default!;
-    [Dependency] private readonly EyeOfTheProtectorSystem _eye = default!;
-    [Dependency] private readonly SharedTransformSystem _transform = default!;
-    [Dependency] private readonly EntityLookupSystem _lookup = default!;
-    [Dependency] private readonly UserInterfaceSystem _ui = default!;
+    [Dependency] private CruciformSystem _cruciform = default!;
+    [Dependency] private NeoTheologyMachineSystem _machines = default!;
+    [Dependency] private EyeOfTheProtectorSystem _eye = default!;
+    [Dependency] private SharedTransformSystem _transform = default!;
+    [Dependency] private EntityLookupSystem _lookup = default!;
+    [Dependency] private UserInterfaceSystem _ui = default!;
 
     /// <summary>
     /// OrderArmaments bridge (Eris <c>rituals/priest.dm:492-520</c>): the priest opens the shop
@@ -130,7 +130,7 @@ public sealed partial class ArmamentsPrinterSystem : EntitySystem
 
     private ArmamentsPrinterState BuildState(EntityUid printer)
     {
-        var entries = new List<ArmamentsPrinterEntry>();
+        var entries = new List<ArmamentEntry>();
 
         var points = 0;
         var maxPoints = 0;
@@ -146,8 +146,8 @@ public sealed partial class ArmamentsPrinterSystem : EntitySystem
 
         foreach (var armament in ProtoMan.EnumeratePrototypes<ArmamentPrototype>())
         {
-            var cost = eyeComp is not null ? GetCost(eyeComp, armament) : armament.GetCost(0);
-            entries.Add(new ArmamentsPrinterEntry(
+            var cost = eyeComp is not null ? _eye.GetCost(eyeComp, armament) : armament.GetCost(0);
+            entries.Add(new ArmamentEntry(
                 armament.ID,
                 Loc.GetString(armament.Name),
                 armament.Desc is { } desc ? Loc.GetString(desc) : string.Empty,
@@ -168,9 +168,6 @@ public sealed partial class ArmamentsPrinterSystem : EntitySystem
         if (!_machines.IsOperational(printer) || !TryComp<ArmamentsPrinterComponent>(printer, out var component))
             return false;
 
-        if (!ProtoMan.TryIndex<ArmamentPrototype>(armamentId, out var armament))
-            return false;
-
         // Eris is_neotheology_disciple: an active cruciform carrying a configured profile.
         if (!_cruciform.TryGetCruciform(user, out _, out var cruciform))
             return false;
@@ -186,37 +183,19 @@ public sealed partial class ArmamentsPrinterSystem : EntitySystem
         if (distance > component.Range)
             return false;
 
-        if (_eye.FindEye(printer) is not { } eye ||
-            !TryComp<EyeOfTheProtectorComponent>(eye, out var eyeComp))
+        if (_eye.FindEye(printer) is not { } eye)
             return false;
 
-        var cost = GetCost(eyeComp, armament);
-        if (!_eye.TrySpendArmaments(eye, cost))
+        if (!_eye.TryBuyArmament(eye, armamentId, out var bought) || bought is null)
             return false;
 
-        eyeComp.PurchaseCount[armamentId] = GetPurchaseCount(eyeComp, armamentId) + 1;
-
-        // Eris purchase_count is per armament: each product's first purchase raises the cap.
-        if (GetPurchaseCount(eyeComp, armamentId) == 1)
-            eyeComp.MaxArmamentsPoints += armament.MaxPointsIncrease;
-        eyeComp.FirstPurchaseMade = true;
-
-        SpawnAtPosition(armament.Path, printerXform.Coordinates);
+        SpawnAtPosition(bought.Path, printerXform.Coordinates);
         return true;
     }
 
+    /// <summary>Kept for callers pricing against the Eye's bank; the pricing itself lives there.</summary>
     public int GetCost(EyeOfTheProtectorComponent component, ArmamentPrototype armament)
     {
-        return armament.GetCost(GetDiscount(component, armament));
-    }
-
-    private int GetPurchaseCount(EyeOfTheProtectorComponent component, string armamentId)
-    {
-        return component.PurchaseCount.GetValueOrDefault(armamentId);
-    }
-
-    private int GetDiscount(EyeOfTheProtectorComponent component, ArmamentPrototype armament)
-    {
-        return armament.GetDiscount(GetPurchaseCount(component, armament.ID));
+        return _eye.GetCost(component, armament);
     }
 }

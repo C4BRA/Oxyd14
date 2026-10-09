@@ -41,6 +41,10 @@ public sealed partial class EyeOfTheProtectorComponent : Component
     [ViewVariables]
     public Dictionary<string, int> PurchaseCount = new();
 
+    /// <summary>Eris <c>get_dist(eotp.loc, H.loc) > 3</c>: how far a buyer may stand from the Eye.</summary>
+    [DataField]
+    public float PurchaseRange = 3f;
+
     [DataField]
     public float ObservationRadius = 20f;
 

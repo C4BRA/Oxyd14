@@ -13,6 +13,7 @@ using Content.Shared._Oxyd.Skills;
 using Content.Shared.StatusEffectNew;
 using Content.Shared.UserInterface;
 using Robust.Server.GameObjects;
+using Robust.Shared.GameObjects;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
@@ -27,17 +28,18 @@ namespace Content.Server._Oxyd.NeoTheology;
 /// </summary>
 public sealed partial class EyeOfTheProtectorSystem : EntitySystem
 {
-    [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly NeoTheologyMachineSystem _machines = default!;
-    [Dependency] private readonly StatusEffectsSystem _statusEffects = default!;
-    [Dependency] private readonly EntityLookupSystem _lookup = default!;
-    [Dependency] private readonly SanitySystem _sanity = default!;
-    [Dependency] private readonly SharedSkillSystem _skill = default!;
-    [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly UserInterfaceSystem _ui = default!;
-    [Dependency] private readonly CruciformSystem _cruciform = default!;
-    [Dependency] private readonly LitanyEffectSystem _effects = default!;
-    [Dependency] private readonly MobStateSystem _mobState = default!;
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private NeoTheologyMachineSystem _machines = default!;
+    [Dependency] private StatusEffectsSystem _statusEffects = default!;
+    [Dependency] private EntityLookupSystem _lookup = default!;
+    [Dependency] private SanitySystem _sanity = default!;
+    [Dependency] private SharedSkillSystem _skill = default!;
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private UserInterfaceSystem _ui = default!;
+    [Dependency] private CruciformSystem _cruciform = default!;
+    [Dependency] private LitanyEffectSystem _effects = default!;
+    [Dependency] private MobStateSystem _mobState = default!;
+    [Dependency] private SharedTransformSystem _transform = default!;
 
     [SubscribeLocalEvent]
     private void OnActivityChanged(ref CruciformActivityChangedEvent args)
@@ -73,7 +75,103 @@ public sealed partial class EyeOfTheProtectorSystem : EntitySystem
             ent.Comp.Observation,
             ent.Comp.ArmamentsPoints,
             ent.Comp.MaxArmamentsPoints,
-            cooldown));
+            cooldown,
+            BuildArmamentEntries(ent.Comp)));
+    }
+
+    /// <summary>
+    /// Eris <c>nano_ui_data</c>: every concrete armament priced for the Eye's own armory list.
+    /// </summary>
+    private List<ArmamentEntry> BuildArmamentEntries(EyeOfTheProtectorComponent comp)
+    {
+        var entries = new List<ArmamentEntry>();
+        foreach (var armament in ProtoMan.EnumeratePrototypes<ArmamentPrototype>())
+        {
+            var cost = GetCost(comp, armament);
+            entries.Add(new ArmamentEntry(
+                armament.ID,
+                Loc.GetString(armament.Name),
+                armament.Desc is { } desc ? Loc.GetString(desc) : string.Empty,
+                cost,
+                comp.ArmamentsPoints >= cost));
+        }
+        return entries;
+    }
+
+    /// <summary>Discounted price an armament sells for against this Eye's purchase history.</summary>
+    public int GetCost(EyeOfTheProtectorComponent component, ArmamentPrototype armament)
+    {
+        return armament.GetCost(GetDiscount(component, armament));
+    }
+
+    private int GetPurchaseCount(EyeOfTheProtectorComponent component, string armamentId)
+    {
+        return component.PurchaseCount.GetValueOrDefault(armamentId);
+    }
+
+    private int GetDiscount(EyeOfTheProtectorComponent component, ArmamentPrototype armament)
+    {
+        return armament.GetDiscount(GetPurchaseCount(component, armament.ID));
+    }
+
+    /// <summary>
+    /// Eris <c>datum/armament/purchase</c> minus the buyer gates: debit the Eye's bank, count the
+    /// purchase (raising the point ceiling on each product's first sale) and hand the armament
+    /// back so the caller can drop it on its own turf. Returns null when the bank or the id refuses.
+    /// </summary>
+    public bool TryBuyArmament(EntityUid eye, string armamentId, out ArmamentPrototype? armament)
+    {
+        armament = null;
+        if (!TryComp<EyeOfTheProtectorComponent>(eye, out var comp) ||
+            !ProtoMan.TryIndex(armamentId, out armament))
+            return false;
+
+        if (!TrySpendArmaments(eye, GetCost(comp, armament)))
+            return false;
+
+        comp.PurchaseCount[armamentId] = GetPurchaseCount(comp, armamentId) + 1;
+        if (GetPurchaseCount(comp, armamentId) == 1)
+            comp.MaxArmamentsPoints += armament.MaxPointsIncrease;
+        comp.FirstPurchaseMade = true;
+        Dirty(eye, comp);
+        return true;
+    }
+
+    /// <summary>
+    /// Eris <c>eopt.tmpl</c> purchase: the Eye's own armory. The buyer must be an in-range disciple;
+    /// the disk appears on the Eye's turf like every Eris armament purchase (<c>new path(get_turf(eotp))</c>).
+    /// </summary>
+    public bool TryPurchaseFromEye(EntityUid eye, EntityUid user, string armamentId)
+    {
+        if (!_machines.IsOperational(eye) || !TryComp<EyeOfTheProtectorComponent>(eye, out var comp))
+            return false;
+
+        // Eris is_neotheology_disciple: an active cruciform carrying a configured profile.
+        if (!_cruciform.TryGetCruciform(user, out _, out var cruciform))
+            return false;
+
+        if (_cruciform.GetRules() is not { } rules || !rules.Profiles.Contains(cruciform.Profile))
+            return false;
+
+        var eyeXform = Transform(eye);
+        if (eyeXform.MapID != Transform(user).MapID)
+            return false;
+
+        if ((_transform.GetWorldPosition(eyeXform) - _transform.GetWorldPosition(user)).Length() > comp.PurchaseRange)
+            return false;
+
+        if (!TryBuyArmament(eye, armamentId, out var armament) || armament is null)
+            return false;
+
+        SpawnAtPosition(armament.Path, eyeXform.Coordinates);
+        PushEyeState((eye, comp));
+        return true;
+    }
+
+    [SubscribeLocalEvent]
+    private void OnPurchaseMessage(EntityUid uid, EyeOfTheProtectorComponent component, PurchaseArmamentMessage args)
+    {
+        TryPurchaseFromEye(uid, args.Actor, args.ArmamentId);
     }
 
     private const float EyeUiRefresh = 1f;

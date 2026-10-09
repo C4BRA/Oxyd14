@@ -356,6 +356,79 @@ public sealed class EyeOfTheProtectorTest : GameTest
         });
     }
 
+    private static readonly ProtoId<ArmamentPrototype> ShopArmament = "OxydNtArmamentRitualBook";
+
+    [Test]
+    public async Task EyePurchaseDebitsBankAndSpawnsAtEye()
+    {
+        var map = await Pair.CreateTestMap();
+        EntityUid eye = default;
+        EntityUid buyer = default;
+        var armament = default(ArmamentPrototype);
+
+        await Server.WaitAssertion(() =>
+        {
+            eye = SSpawnAtPosition("OxydNtEyeOfTheProtector", map.GridCoords);
+            var comp = SComp<EyeOfTheProtectorComponent>(eye);
+            SComp<ApcPowerReceiverComponent>(eye).Powered = true;
+            buyer = ActiveBearer(map.GridCoords);
+            armament = SProtoMan.Index<ArmamentPrototype>(ShopArmament);
+            comp.ArmamentsPoints = armament.Cost + 10;
+            var maxBefore = comp.MaxArmamentsPoints;
+
+            Assert.That(_eye.TryPurchaseFromEye(eye, buyer, ShopArmament), Is.True,
+                "An in-range disciple with banked points must buy the armament.");
+            Assert.That(comp.ArmamentsPoints, Is.EqualTo(10), "The sale debits the Eye exactly its price.");
+            Assert.That(comp.PurchaseCount[ShopArmament], Is.EqualTo(1));
+            Assert.That(comp.MaxArmamentsPoints, Is.EqualTo(maxBefore + armament.MaxPointsIncrease),
+                "The product's first purchase raises the point ceiling.");
+            Assert.That(comp.Observation, Is.GreaterThanOrEqualTo(0f),
+                "Purchases must never touch the observation bank.");
+        });
+    }
+
+    [Test]
+    public async Task EyePurchaseRefusesNonDisciple()
+    {
+        var map = await Pair.CreateTestMap();
+
+        await Server.WaitAssertion(() =>
+        {
+            var eye = SSpawnAtPosition("OxydNtEyeOfTheProtector", map.GridCoords);
+            var comp = SComp<EyeOfTheProtectorComponent>(eye);
+            SComp<ApcPowerReceiverComponent>(eye).Powered = true;
+            var bystander = SSpawnAtPosition(HumanProto, map.GridCoords);
+            comp.ArmamentsPoints = 500;
+
+            Assert.That(_eye.TryPurchaseFromEye(eye, bystander, ShopArmament), Is.False,
+                "A body without an active configured cruciform must be refused.");
+            Assert.That(comp.ArmamentsPoints, Is.EqualTo(500));
+        });
+    }
+
+    [Test]
+    public async Task EyePurchaseRefusesOutOfRangeAndShortBank()
+    {
+        var map = await Pair.CreateTestMap();
+
+        await Server.WaitAssertion(() =>
+        {
+            var eye = SSpawnAtPosition("OxydNtEyeOfTheProtector", map.GridCoords);
+            var comp = SComp<EyeOfTheProtectorComponent>(eye);
+            SComp<ApcPowerReceiverComponent>(eye).Powered = true;
+            var farBuyer = ActiveBearer(map.GridCoords.Offset(new Vector2(comp.PurchaseRange + 5f, 0f)));
+            comp.ArmamentsPoints = 500;
+
+            Assert.That(_eye.TryPurchaseFromEye(eye, farBuyer, ShopArmament), Is.False,
+                "get_dist > PurchaseRange must refuse, matching Eris.");
+
+            var nearBuyer = ActiveBearer(map.GridCoords);
+            comp.ArmamentsPoints = SProtoMan.Index<ArmamentPrototype>(ShopArmament).MinCost - 1;
+            Assert.That(_eye.TryPurchaseFromEye(eye, nearBuyer, ShopArmament), Is.False,
+                "A bank below the floor price must refuse.");
+        });
+    }
+
     private EntityUid ActiveBearer(EntityCoordinates coords)
     {
         var body = SSpawnAtPosition(HumanProto, coords);

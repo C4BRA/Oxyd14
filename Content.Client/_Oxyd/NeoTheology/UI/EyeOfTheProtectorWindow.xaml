@@ -1,9 +1,9 @@
 <controls:FancyWindow xmlns="https://spacestation14.io"
                xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
                Title="{Loc 'oxyd-eotp-ui-title'}"
-               MinSize="300 120"
-               SetSize="340 150">
-    <!-- Eris NanoUI dark skin (eopt.tmpl): flat body, gold itemLabel field names. -->
+               MinSize="440 420"
+               SetSize="460 470">
+    <!-- Eris NanoUI dark skin (eopt.tmpl): flat body, gold itemLabel field names, armory list. -->
     <PanelContainer Name="Body" VerticalExpand="True" HorizontalExpand="True">
         <BoxContainer Orientation="Vertical" Margin="8" SeparationOverride="6">
             <BoxContainer Orientation="Horizontal" SeparationOverride="6">
@@ -18,6 +18,10 @@
                 <Label Name="MiracleFieldLabel" MinWidth="160" ClipText="True"/>
                 <Label Name="MiracleLabel" HorizontalExpand="True"/>
             </BoxContainer>
+            <ItemList Name="ArmamentList" VerticalExpand="True"/>
+            <RichTextLabel Name="DescriptionLabel" MinHeight="48"/>
+            <Label Name="StatusLabel"/>
+            <Button Name="PurchaseButton" Text="{Loc 'oxyd-armaments-printer-purchase'}" Disabled="True"/>
         </BoxContainer>
     </PanelContainer>
 </controls:FancyWindow>

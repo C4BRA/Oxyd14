@@ -4,8 +4,8 @@ using Robust.Client.UserInterface;
 namespace Content.Client._Oxyd.NeoTheology.UI;
 
 /// <summary>
-/// P3.7: the Eye's window is read-only — it renders whatever state the server pushed and forwards
-/// nothing back.
+/// P3.7: the Eye's window renders the pushed status snapshot plus the Eris <c>eopt.tmpl</c>
+/// armory list; a purchase forwards only the clicked armament id (the server revalidates it).
 /// </summary>
 public sealed class EyeOfTheProtectorBoundUserInterface : BoundUserInterface
 {
@@ -24,7 +24,13 @@ public sealed class EyeOfTheProtectorBoundUserInterface : BoundUserInterface
             return;
 
         _window = this.CreateWindow<EyeOfTheProtectorWindow>();
+        _window.Purchase += OnPurchase;
         _window.OnClose += Close;
+    }
+
+    private void OnPurchase(string armamentId)
+    {
+        SendMessage(new PurchaseArmamentMessage(armamentId));
     }
 
     protected override void UpdateState(BoundUserInterfaceState state)
@@ -39,6 +45,7 @@ public sealed class EyeOfTheProtectorBoundUserInterface : BoundUserInterface
     {
         if (disposing && _window is not null)
         {
+            _window.Purchase -= OnPurchase;
             _window.OnClose -= Close;
             _window.Dispose();
             _window = null;

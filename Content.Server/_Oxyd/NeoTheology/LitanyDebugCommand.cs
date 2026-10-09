@@ -58,6 +58,7 @@ public sealed class LitanyCommand : ToolshedCommand
 
     private CruciformSystem? _cruciform;
     private LitanySystem? _litany;
+    private EyeOfTheProtectorSystem? _eye;
     private SharedHandsSystem? _hands;
     private SharedBuckleSystem? _buckle;
     private InventorySystem? _inventory;
@@ -403,6 +404,21 @@ public sealed class LitanyCommand : ToolshedCommand
             eye.ArmamentsPoints = Math.Clamp(eye.ArmamentsPoints + amount, 0, eye.MaxArmamentsPoints);
             EntityManager.Dirty(uid, eye);
             return eye.ArmamentsPoints;
+        }
+
+        return -1;
+    }
+
+    /// <summary>Add observation to the first Eye of the Protector (default +200, clamps to bounds).</summary>
+    [CommandImplementation("obspoints")]
+    public float ObsPoints(IInvocationContext ctx, float amount = 200f)
+    {
+        _eye ??= GetSys<EyeOfTheProtectorSystem>();
+        var query = EntityManager.EntityQueryEnumerator<EyeOfTheProtectorComponent>();
+        while (query.MoveNext(out var uid, out var eye))
+        {
+            _eye.AddObservation(uid, amount);
+            return eye.Observation;
         }
 
         return -1;

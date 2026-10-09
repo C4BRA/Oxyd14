@@ -1,3 +1,4 @@
+using System.Linq;
 using Content.Client._Oxyd.UI;
 using Content.Client.UserInterface.Controls;
 using Content.Shared._Oxyd.NeoTheology.UI;
@@ -10,6 +11,11 @@ namespace Content.Client._Oxyd.NeoTheology.UI;
 [GenerateTypedNameReferences]
 public sealed partial class EyeOfTheProtectorWindow : FancyWindow
 {
+    private EyeOfTheProtectorState? _state;
+    private string? _selected;
+
+    public event Action<string>? Purchase;
+
     public EyeOfTheProtectorWindow()
     {
         RobustXamlLoader.Load(this);
@@ -21,10 +27,27 @@ public sealed partial class EyeOfTheProtectorWindow : FancyWindow
         ObservationFieldLabel.Text = Loc.GetString("oxyd-eotp-observation-field");
         ArmamentsFieldLabel.Text = Loc.GetString("oxyd-eotp-armaments-field");
         MiracleFieldLabel.Text = Loc.GetString("oxyd-eotp-miracle-field");
+
+        ArmamentList.OnItemSelected += args =>
+        {
+            _selected = ArmamentList[args.ItemIndex].Metadata as string;
+            UpdateDetails();
+        };
+        ArmamentList.OnItemDeselected += _ =>
+        {
+            _selected = null;
+            UpdateDetails();
+        };
+        PurchaseButton.OnPressed += _ =>
+        {
+            if (_selected is { } id)
+                Purchase?.Invoke(id);
+        };
     }
 
     public void UpdateState(EyeOfTheProtectorState state)
     {
+        _state = state;
         ObservationLabel.Text = ((int) state.Observation).ToString();
         ArmamentsLabel.Text = Loc.GetString("oxyd-eotp-armaments-value",
             ("points", state.ArmamentsPoints),
@@ -32,5 +55,28 @@ public sealed partial class EyeOfTheProtectorWindow : FancyWindow
         MiracleLabel.Text = state.MiracleCooldown <= System.TimeSpan.Zero
             ? Loc.GetString("oxyd-eotp-miracle-ready")
             : state.MiracleCooldown.ToString(@"mm\:ss");
+
+        ArmamentList.Clear();
+        foreach (var entry in state.Armaments)
+        {
+            var item = ArmamentList.AddItem($"{entry.Name} — {entry.Cost}", metadata: entry.Id);
+            item.Disabled = !entry.Affordable;
+            if (string.Equals(entry.Id, _selected, StringComparison.Ordinal))
+                item.Selected = true;
+        }
+
+        UpdateDetails();
+    }
+
+    private void UpdateDetails()
+    {
+        var entry = _state?.Armaments.FirstOrDefault(candidate =>
+            string.Equals(candidate.Id, _selected, StringComparison.Ordinal));
+
+        DescriptionLabel.SetMessage(entry?.Description ?? string.Empty);
+        StatusLabel.Text = entry is null || entry.Affordable
+            ? string.Empty
+            : Loc.GetString("oxyd-armaments-printer-too-expensive");
+        PurchaseButton.Disabled = entry is null || !entry.Affordable;
     }
 }
