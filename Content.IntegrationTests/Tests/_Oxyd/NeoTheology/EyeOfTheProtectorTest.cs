@@ -4,6 +4,7 @@ using Content.IntegrationTests.Fixtures;
 using Content.IntegrationTests.Fixtures.Attributes;
 using Content.Server._Oxyd.NeoTheology;
 using Content.Server._Oxyd.NeoTheology.Machines;
+using Content.Shared._Oxyd.NeoTheology;
 using Content.Shared._Oxyd.NeoTheology.Components;
 using Content.Shared.Implants;
 using Content.Server.Power.Components;
