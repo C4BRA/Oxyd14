@@ -58,6 +58,10 @@ public sealed partial class OxydOrganSurgeryComponent : Component
     [DataField, AutoNetworkedField]
     public bool Diagnosed;
 
+    /// <summary>Organ has rotted past viability after decaying outside a body (Eris ORGAN_DEAD). Blocks transplant.</summary>
+    [DataField, AutoNetworkedField]
+    public bool Decayed;
+
     /// <summary>Display cap for the health bar on an organ (Eris organ.max_damage ~ 60).</summary>
     public const float OrganMaxDamage = 60f;
 

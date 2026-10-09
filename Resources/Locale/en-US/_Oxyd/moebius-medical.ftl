@@ -482,3 +482,7 @@ oxyd-medical-iv-examine-vessel = It's attached to {$vessel}.
 oxyd-medical-iv-examine-no-vessel = There is no vessel.
 oxyd-medical-iv-examine-mode-inject = It's set to inject mode, transferring {$amount}u per tick.
 oxyd-medical-iv-examine-mode-draw = It's set to draw mode, transferring {$amount}u per tick.
+
+## Organ decay / transplant
+oxyd-organ-decayed = The decay has set in.
+oxyd-surgery-organ-decayed = This organ is too decayed to transplant.

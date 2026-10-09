@@ -42,6 +42,7 @@
         mask:
         - ItemMask
   - type: OxydStasisBag
+  - type: OxydOrganStasis
   - type: Pullable
   - type: Appearance
 
@@ -144,6 +145,7 @@
     sprite: Oxyd/erisported/eris_medkits.rsi
     heldPrefix: freezer
   - type: OxydOrganFreezer
+  - type: OxydOrganStasis
   - type: Storage
     maxItemSize: Normal
     grid:

@@ -227,6 +227,15 @@ public sealed partial class OxydOrganFreezerComponent : Component
 {
 }
 
+/// <summary>
+/// Marks a container/entity that suspends organ decay for organs stored inside
+/// (Eris is_in_stasis: organ_freezer, cryobag, smartfridge...).
+/// </summary>
+[RegisterComponent, NetworkedComponent]
+public sealed partial class OxydOrganStasisComponent : Component
+{
+}
+
 /// <summary>A reusable morgue tray marker.</summary>
 [RegisterComponent, NetworkedComponent]
 public sealed partial class OxydMorgueTrayComponent : Component

@@ -660,6 +660,11 @@ public sealed partial class OxydSurgerySystem : EntitySystem
                 break;
             case OxydSurgeryStep.AttachOrgan:
                 if (surg.Incision != OxydIncisionStage.Retracted) return true;
+                if (tool is { } heldOrgan && CompOrNull<OxydOrganSurgeryComponent>(heldOrgan) is { Decayed: true })
+                {
+                    _popup.PopupEntity(Loc.GetString("oxyd-surgery-organ-decayed"), surgeon, surgeon);
+                    return true;
+                }
                 if (!TryAttach(patient, tool)) return true;
                 break;
             case OxydSurgeryStep.FixOrgan:
