@@ -596,3 +596,47 @@ ent-OxydMoebiusMedVend = Moebius MediVend
     .desc = A Moebius Medical dispenser stocked with Eris-grade supplies.
 ent-OxydMedicalOperatingComputer = patient monitoring console
     .desc = A console displaying the vitals of the patient on the adjacent operating table.
+
+## Cortical borer (Eris)
+ent-OxydBorer = cortical borer
+    .desc = A worm-like parasite with a thick, slimy carapace. It feeds on a host's chemicals and can cure or cripple them on a whim.
+
+oxyd-borer-ghostrole-name = Cortical Borer
+oxyd-borer-ghostrole-description = A worm-like parasite. Find a host, burrow into their ear canal, and survive.
+oxyd-borer-ghostrole-rules = You are a parasite, not a killer. Burrow into a host to survive, secrete what you please into their bloodstream, and reproduce when you can. Sugar sedates you.
+
+oxyd-borer-verb-category = Borer
+oxyd-borer-verb-infest = Infest
+oxyd-borer-verb-paralyze = Paralyze Victim
+oxyd-borer-verb-secrete = Secrete {$reagent}
+oxyd-borer-verb-reproduce = Reproduce
+oxyd-borer-verb-release = Release Host
+
+oxyd-borer-infest-start = You slither up {$host} and start burrowing into their ear canal...
+oxyd-borer-infest-start-host = Something slimy wiggles in your ear!
+oxyd-borer-infest-implant = A nanofiber mesh protects {$host}'s brainstem. It takes time to work around.
+oxyd-borer-infest-protected = This one's head is sealed tight. You cannot find a way in.
+oxyd-borer-infest-occupied = This host is already occupied.
+oxyd-borer-infest-dead = A dead body would make a poor host.
+oxyd-borer-infest-done = You wiggle into {$host}'s ear canal and press against their brainstem. Comfortable.
+oxyd-borer-infest-done-host = A horrible, nauseating feeling trickles behind your eyes.
+
+oxyd-borer-not-enough-chems = You don't have enough chemicals stored up.
+oxyd-borer-docile = You are feeling too docile to do that.
+oxyd-borer-docile-on = Something sweet in the host's bloodstream makes you feel docile...
+oxyd-borer-docile-off = The sweet taste fades. You feel capable again.
+oxyd-borer-secreted = You secrete {$reagent} into the host's bloodstream ({$amount}u in blood).
+oxyd-borer-reproduce = You push a pulsing egg out through the host's mouth.
+oxyd-borer-reproduce-poor = You need at least {$cost} chemicals stored to reproduce.
+oxyd-borer-reproduce-host = Your stomach churns painfully and you retch something up.
+oxyd-borer-release-start = You begin sliding out of your host...
+oxyd-borer-release-start-host = Something stirs in your ear canal...
+oxyd-borer-release-done = You detach and drop from {$host} to the floor.
+oxyd-borer-release-done-host = Something slimy wiggles out of your ear and lands on the floor.
+oxyd-borer-host-died = Your host's life signs have flatlined. You are trapped unless you release.
+
+oxyd-borer-paralyze = You release a jolt of fear into {$victim}. Their limbs lock up.
+oxyd-borer-paralyze-victim = Your limbs twitch horribly, like a puppet's.
+oxyd-borer-paralyze-cooldown = Your toxin gland hasn't recharged yet.
+oxyd-borer-paralyze-cooldown-in = Your toxin gland needs {$seconds} more seconds to recharge.
+
