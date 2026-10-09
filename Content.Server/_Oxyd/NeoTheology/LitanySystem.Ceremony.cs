@@ -203,6 +203,7 @@ public sealed partial class LitanySystem
                     state.RighteousLife = Math.Min(100f, state.RighteousLife + 25f);
                     _cruciform.RecomputeProfile(implant, state);
                 }
+                Spawn(NeoTheologyPrototypes.CastGlowEffect, Transform(target).Coordinates);
                 _effects.DeliverSocialNotice(target, Loc.GetString("oxyd-litany-ceremony-success"));
             }
         }

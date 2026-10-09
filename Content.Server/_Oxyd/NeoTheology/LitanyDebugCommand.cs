@@ -28,6 +28,7 @@ using Content.Shared.Mobs;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.Stacks;
+using Content.Shared.Standing;
 using Content.Shared._Oxyd.NeoTheology;
 using Content.Shared._Oxyd.NeoTheology.Components;
 using Content.Shared._Oxyd.NeoTheology.Prototypes;
@@ -178,6 +179,15 @@ public sealed class LitanyCommand : ToolshedCommand
                 continue;
             var coords = Transform(mob).Coordinates;
             ctx.WriteLine($"{mob} at {_xform!.GetMapCoordinates(mob).Position} buckled={TryComp<BuckleComponent>(mob, out var bc) && bc.BuckledTo is { } s}");
+            if (bc?.BuckledTo is { } cur)
+            {
+                var standing = GetSys<StandingStateSystem>();
+                TryComp<StrapComponent>(cur, out var curStrap);
+                ctx.WriteLine(
+                    $"  posture: seat={cur} altar={HasComp<NeoTheologyAltarComponent>(cur)} " +
+                    $"strapEnabled={curStrap?.Enabled} strapPos={curStrap?.Position} " +
+                    $"isDown={standing.IsDown(mob)} inRange={_xform!.InRange(mob, cur, 0.5f)}");
+            }
             foreach (var seat in _lookup.GetEntitiesInRange<StrapComponent>(coords, 5f))
             {
                 var pos = _xform.GetMapCoordinates(seat).Position;

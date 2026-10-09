@@ -391,6 +391,9 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
             saved.SourceBody != body)
             return false;
 
+        // Epiphany: the first awakening gets the bell + flash; re-activations after a
+        // revive stay quiet.
+        var firstActivation = !component.EverActivated;
         component.EverActivated = true;
 
         _modules.TryInstall(cruciform, component, NeoTheologyPrototypes.BaseModule);
@@ -407,6 +410,10 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
         RecomputeProfile(cruciform, component);
         Dirty(cruciform, component);
         BumpRevision(body);
+
+        if (firstActivation)
+            Spawn(NeoTheologyPrototypes.EpiphanyFlashEffect, Transform(body).Coordinates);
+
         return true;
     }
 

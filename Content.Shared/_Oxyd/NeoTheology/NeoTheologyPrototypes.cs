@@ -53,6 +53,10 @@ public static class NeoTheologyPrototypes
     public static readonly ProtoId<StackPrototype> BiomatterStack = "Biomatter";
     public static readonly EntProtoId BiomatterEnt = "OxydNtBiomatter";
 
+    // Cast/ritual VFX (Resources/Prototypes/_Oxyd/NeoTheology/effects.yml)
+    public static readonly EntProtoId CastGlowEffect = "OxydNtCastGlow";
+    public static readonly EntProtoId EpiphanyFlashEffect = "OxydNtEpiphanyFlash";
+
     // Entities.
     public static readonly EntProtoId CruciformEnt = "OxydNtCruciform";
     public static readonly EntProtoId OddityEnt = "OxydNtOddity";

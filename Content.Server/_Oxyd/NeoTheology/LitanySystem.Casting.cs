@@ -289,6 +289,7 @@ public sealed partial class LitanySystem
 
         ApplyCooldown(bearer, litany);
         cast.Committed = true;
+        Spawn(NeoTheologyPrototypes.CastGlowEffect, Transform(cast.Actor).Coordinates);
         SendResultToActor(cast.Actor, LitanyActionResult.Ok(cast.RequestId));
 
         // Unimplemented available effects keep the historical no-op success stub.

@@ -156,6 +156,12 @@
   - type: Obelisk
   - type: ApcPowerReceiver
     powerLoad: 30
+  # Soft golden idle aura while powered (LitOnPowered ties it to APC power).
+  - type: PointLight
+    radius: 3.5
+    energy: 0.9
+    color: "#d9b26a"
+  - type: LitOnPowered
   - type: Appearance
   - type: Sprite
     sprite: Oxyd/NeoTheology/machinery.rsi

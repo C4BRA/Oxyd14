@@ -68,3 +68,53 @@ All three remaining open items from Pass 5 verified live. Two clients on one ser
 - Building while the server runs fails on dll file locks — `taskkill` the server first, relaunch after.
 
 **Remaining gaps:** none for these three items. Broader port coverage per the session evaluation (~90%): EOTP's Eris disk-purchase list is intentionally not ported (gear routes via printer/uplink); art licensing unresolved.
+
+## Pass 8 — Phase 2: Holiness HUD indicator (commit d99a7af564)
+
+- IC stat category now carries a `Holiness` spec row + displayBar next to Focus
+  Insight / Emote Menu / Character Info buttons. Verified live: bar reads
+  `80 / 80`; `litany:holiness 40` flipped it to `40 / 80` and regen walked it
+  back (46/80 observed mid-tick, then full). Row only exists while the local
+  player has a linked cruciform; hides when the link is gone.
+- Framework lesson: stat-panel content must be re-pushed via
+  `StatusPanelSystem.refreshContent(key)` after `AddToPanel`/`tryAdd` — the
+  helpers never refresh, and `StatContent` is only repopulated on tab-select.
+  Also, components arriving during initial entity sync fire `ComponentStartup`
+  BEFORE `LocalPlayerAttachedEvent`, so a lazy Update-time ensure is required
+  for join-with-cruciform.
+
+## Pass 9 — Phase 3: VFX/audio polish (2026-10-09, live)
+
+Effects are RT-native spawnable protos (`effects.yml`): `OxydNtCastGlow`
+(PointLight r2.5/e1.6 #e9c183, 4s, BibleHeal chime) spawned at the actor on cast
+commit and per-participant on ceremony completion; `OxydNtEpiphanyFlash`
+(PointLight r5/e3 #fff2c8, 6s, ChurchBell) spawned on `CruciformSystem.Activate`
+first activation only (`!EverActivated` — debug `litany:cruciform` grants set it
+directly and correctly do NOT flash); `OxydNtObelisk` gained PointLight r3.5/e0.9
+#d9b26a + `LitOnPowered` idle aura.
+
+**Verified live:**
+- Commitment → Epiphany flow end-to-end (twice, two fresh rounds): mob buckled
+  to altar + undressed → `cast OxydLitanyCommitment` success → dormant implant
+  (`active=False everActivated=False`) → `cast OxydLitanyEpiphany` success →
+  cruciform `active=True everActivated=True`, holiness 50/50, base+cloning
+  modules, 3 litany sets. First-activation flash path fires.
+- Epiphany flash renders: warm gold light visible around the altar-bound mob.
+- Obelisk aura renders: warm halo around spawned obelisk.
+- Cast glow: same proto pattern + verified spawn path; fires at commit.
+- Sounds attach via EmitSoundOnSpawn (server accepted; audio not verifiable
+  headless — ALSOFT null driver).
+
+**AdjacentLiving target rules (confirmed by probing):** target must be on the
+actor's own floored tile or the cardinal tile the actor faces (`IsOnTile` —
+no diagonal); buckled mobs are found via `StrapComponent.BuckledEntities`
+(separate from physics lookup); `litany:place` spawns at the NEAREST altar in
+5m, not the piped mob — use it only when placement doesn't matter.
+
+**Environment lessons:** `litany:machine`/`MakeOperational` REMOVES
+ApcPowerReceiver — `LitOnPowered` then never fires but light stays at its
+default `Enabled=true` (spawned obelisk glows). `tpto`/`tp`/`spawn` toolshed
+commands do not exist here — they silently no-op. `buckleprobe`'s TryBuckle
+per seat BUCKLES unbuckled mobs to the first free seat (mutating probe).
+Client occasionally wedges in an NRE loop in `EntAddComponent` during join
+entity-sync after a server restart — relaunching the client fixes it.
