@@ -486,6 +486,7 @@ oxyd-medical-iv-examine-mode-draw = It's set to draw mode, transferring {$amount
 ## Organ decay / transplant
 oxyd-organ-decayed = The decay has set in.
 oxyd-surgery-organ-decayed = This organ is too decayed to transplant.
+oxyd-surgery-organ-already-present = The patient already has {$organ}.
 
 ## Organ bioprinter
 oxyd-bioprinter-window-title = Organ Bioprinter

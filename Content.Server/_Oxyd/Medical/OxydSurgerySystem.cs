@@ -548,7 +548,10 @@ public sealed partial class OxydSurgerySystem : EntitySystem
         var tool = args.Tool == NetEntity.Invalid ? (EntityUid?) null : GetEntity(args.Tool);
         var toolComp = tool is { } t ? CompOrNull<OxydSurgeryToolComponent>(t) : null;
 
-        var quality = toolComp?.Quality ?? 60;
+        // The clicked item carries no quality when it isn't a surgical tool
+        // (e.g. a held organ) — Eris rolls the required tool's quality instead,
+        // so take the best surgical quality across the surgeon's hands.
+        var quality = toolComp?.Quality ?? BestHeldToolQuality(surgeon);
         var chance = Math.Clamp(quality - StepDifficulty(args.Step) - (args.SelfSurgery ? 20 : 0), 5, 95);
         var success = _random.Prob(chance / 100f);
 
@@ -680,7 +683,7 @@ public sealed partial class OxydSurgerySystem : EntitySystem
                     _popup.PopupEntity(Loc.GetString("oxyd-surgery-organ-decayed"), surgeon, surgeon);
                     return true;
                 }
-                if (!TryAttach(patient, tool)) return true;
+                if (!TryAttach(patient, tool, surgeon)) return true;
                 break;
             case OxydSurgeryStep.FixOrgan:
                 if (surg.OrganDamage <= 0) return true;
@@ -735,7 +738,19 @@ public sealed partial class OxydSurgerySystem : EntitySystem
         _transform.SetCoordinates(item, Transform(patient).Coordinates);
     }
 
-    private bool TryAttach(EntityUid body, EntityUid? heldItem)
+    /// <summary>Best OxydSurgeryTool quality in the surgeon's hands (60 bare).</summary>
+    private int BestHeldToolQuality(EntityUid surgeon)
+    {
+        var best = 60;
+        foreach (var held in _hands.EnumerateHeld(surgeon))
+        {
+            if (TryComp<OxydSurgeryToolComponent>(held, out var tool) && tool.Quality > best)
+                best = tool.Quality;
+        }
+        return best;
+    }
+
+    private bool TryAttach(EntityUid body, EntityUid? heldItem, EntityUid surgeon)
     {
         if (heldItem is not { } item)
             return false;
@@ -744,6 +759,15 @@ public sealed partial class OxydSurgerySystem : EntitySystem
         // through the same body container as internal organs.
         if (!TryComp<OrganComponent>(item, out var organ))
             return false;
+
+        // Eris can_add_item: one organ per unique tag — detach the old one first.
+        if (organ.Category is { } category &&
+            FindOrgan(body, o => o.Organ.Category == category).Valid)
+        {
+            _popup.PopupEntity(Loc.GetString("oxyd-surgery-organ-already-present",
+                ("organ", Name(item))), surgeon, surgeon);
+            return false;
+        }
 
         if (!_container.TryGetContainer(body, BodyComponent.ContainerID, out var container))
             return false;
@@ -972,7 +996,7 @@ public sealed partial class OxydSurgerySystem : EntitySystem
         OxydSurgeryStep.MendBone or OxydSurgeryStep.BreakBone => OxydSurgeryTool.BoneSetter,
         OxydSurgeryStep.FixBone => OxydSurgeryTool.BoneGel,
         OxydSurgeryStep.Amputate => OxydSurgeryTool.Saw,
-        OxydSurgeryStep.AttachOrgan => OxydSurgeryTool.FixOVein,
+        OxydSurgeryStep.AttachOrgan => OxydSurgeryTool.Cautery, // Eris: attach_organ needs QUALITY_CAUTERIZING
         OxydSurgeryStep.RoboOpen or OxydSurgeryStep.RoboClose => OxydSurgeryTool.Screwdriver,
         OxydSurgeryStep.RoboFixBrute => OxydSurgeryTool.Welder,
         OxydSurgeryStep.RoboFixBurn => OxydSurgeryTool.CableCoil,
@@ -1044,9 +1068,9 @@ public sealed partial class OxydSurgerySystem : EntitySystem
                     Add(OxydSurgeryStep.DetachOrgan);
                 if (external)
                     Add(OxydSurgeryStep.Amputate);
-                // Eris transplant / limb reattachment: the held organ item is the
-                // "tool" (Eris fixovein is optional flavour here), so offer it
-                // directly at any retracted site.
+                // Eris transplant / limb reattachment: the held organ is placed
+                // into the open site and a cauterizing tool seals it — offer the
+                // combined step at any retracted site when an organ is held.
                 if (heldOrgan)
                     steps.Add(OxydSurgeryStep.AttachOrgan);
                 break;
