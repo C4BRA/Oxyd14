@@ -118,3 +118,20 @@ commands do not exist here — they silently no-op. `buckleprobe`'s TryBuckle
 per seat BUCKLES unbuckled mobs to the first free seat (mutating probe).
 Client occasionally wedges in an NRE loop in `EntAddComponent` during join
 entity-sync after a server restart — relaunching the client fixes it.
+
+## Pass 10 — Phase 5 sweep (srvin11/12, 2026-10-08)
+
+**Sanctify objective flip — VERIFIED E2E.** Granted `OxydNtSanctifyObjective` via `litany:objective "sanctify"` (pinned grid=2 tile=(31,18)). Ran full 7-phrase ceremony: leader + 1 follower repeating each round (`correct=[5197]`→`participants=[5197]`). Final phrase → `CompleteCeremony` → tiles marked → `objective 5196 kind=Sanctify completed=True`.
+
+**Ceremony follower gate — mechanism documented (not a bug).** `OnSpeechAccepted` requires `IsPlayerActor(speaker)` — ActorComponent (real session) or `LitanyTestingActorComponent`. Mindless MobHuman speech is ignored → followers MUST be `litany:actor`-marked for headless tests. Eris parity (real bearers only). Earlier "ceremony vanished" = chant doAfter: `ActiveCeremonyComponent` is created at chant completion (~2s), not at cast commit.
+
+**Obelisk — all five branches verified:**
+- Hostile-damage: `MobAngryBee` (SimpleHostile) destroyed in <8s in aura with no other damage source. NOTE: `MobGorilla` is NOT hostile (SimpleNeutral only) — wrong test proto.
+- Weed-removal: tray `weeds=8/10` → `0/10` in aura.
+- Regen: `regen 0.333→0.667/s` (2× RegenMultiplier) while in view.
+- Sanity: `insight 0→20` (SanityPerSecond accrual; sanity capped at 100).
+- Cooldown-reduction: `cds=[OxydLitanyRelief]` drains ~2× faster in aura vs baseline (obelisk deleted control): -5s sim/~15s wall vs ~-1-2s baseline.
+
+**Tool notes:** `litany:cooldowns` CLEARS cooldowns (mutating, not a read). `litany:probe` throws on server console. `litany:status` now prints vitals (state/dmg/sanity/insight), `cds=[key=remain]`, tray weeds, eye observation/armament. `litany:weed`/`hostile` piped variants; `hydroponicsTray` spawns pre-anchored (skip re-anchor). Server sim-time runs ~0.4× wall-clock on this VM — all time-based assertions must compare against sim rates, not wall time.
+
+**Still open:** adjacent-living reagent litanies (WordsOfPurging/HandOfMercy), upgrades x7, 13 modules, edge cases (death mid-cast, disconnect mid-chant, dual-caster, scrying-during-death).

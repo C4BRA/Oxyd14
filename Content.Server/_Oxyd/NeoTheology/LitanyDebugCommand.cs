@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Numerics;
 using Content.Server.Administration;
 using Content.Server.Chat.Systems;
@@ -9,10 +10,16 @@ using Content.Shared.Administration;
 using Robust.Server.GameObjects;
 using Content.Shared.Buckle;
 using Content.Shared.Buckle.Components;
+using Content.Shared.Body.Components;
+using Content.Server._Oxyd.SanityInsightAndResting;
+using Content.Shared.Botany.Components;
+using Content.Shared.Botany.Systems;
+using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Chat;
 using Content.Shared.Cloning;
 using Content.Shared.Containers.ItemSlots;
 using Content.Shared.Damage;
+using Content.Shared.Damage.Components;
 using Content.Shared.Damage.Systems;
 using Content.Shared.FixedPoint;
 using Content.Shared.Ghost.Components;
@@ -74,6 +81,10 @@ public sealed class LitanyCommand : ToolshedCommand
     private CruciformReaderSystem? _readers;
     private SharedContainerSystem? _containers;
     private UserInterfaceSystem? _ui;
+    private SharedMindSystem? _minds;
+    private SharedSolutionContainerSystem? _solutions;
+    private PlantTraySystem? _tray;
+    private DamageableSystem? _damageable;
 
     private SharedTransformSystem? _xform;
     private EntityLookupSystem? _lookup;
@@ -208,11 +219,29 @@ public sealed class LitanyCommand : ToolshedCommand
         _cruciform ??= GetSys<CruciformSystem>();
         foreach (var mob in mobs)
         {
+            if (TryComp<PlantTrayComponent>(mob, out var tray))
+            {
+                ctx.WriteLine($"{mob}: tray weeds={tray.WeedLevel}/{tray.MaxWeedLevel}");
+                continue;
+            }
+            if (TryComp<EyeOfTheProtectorComponent>(mob, out var eyeComp))
+            {
+                ctx.WriteLine($"{mob}: eye observation={eyeComp.Observation:F1} armament={eyeComp.ArmamentsPoints}/{eyeComp.MaxArmamentsPoints}");
+                continue;
+            }
             if (!HasComp<MobStateComponent>(mob))
             {
                 ctx.WriteLine($"{mob}: not a mob, skipped");
                 continue;
             }
+
+            var vitals = $"{mob}: state={Comp<MobStateComponent>(mob).CurrentState}";
+            _damageable ??= GetSys<DamageableSystem>();
+            if (HasComp<DamageableComponent>(mob))
+                vitals += $" dmg={_damageable.GetTotalDamage(mob):F1}";
+            if (TryComp<SanityComponent>(mob, out var sanity))
+                vitals += $" sanity={sanity.Sanity:F1}/{sanity.MaxSanity:F0} insight={sanity.Insight:F1}";
+            ctx.WriteLine(vitals);
 
             if (!_cruciform.TryGetCruciformEntity(mob, out var implant, out var comp))
             {
@@ -251,6 +280,14 @@ public sealed class LitanyCommand : ToolshedCommand
                 ctx.WriteLine(
                     $"{mob}: ceremony={ceremony.Ritual} first={ceremony.First} " +
                     $"phrasesLeft={ceremony.Phrases.Count} participants={ceremony.Participants.Count} range={ceremony.Range}");
+            }
+
+            if (TryComp<CruciformBearerComponent>(mob, out var bearerComp))
+            {
+                var now = IoCManager.Resolve<IGameTiming>().CurTime;
+                var cds = string.Join(", ", bearerComp.PersonalCooldowns.Select(
+                    kv => $"{kv.Key}={Math.Max(0, (kv.Value - now).TotalSeconds):F0}s"));
+                ctx.WriteLine($"{mob}: cds=[{cds}]");
             }
         }
     }
@@ -673,6 +710,23 @@ public sealed class LitanyCommand : ToolshedCommand
         }
 
         ctx.WriteLine($"{mob}: no ceremony in range");
+    }
+
+    /// <summary>Dump every live ceremony: starter, ritual, phrase index, participants.</summary>
+    [CommandImplementation("ceremonies")]
+    public void Ceremonies(IInvocationContext ctx)
+    {
+        var query = EntityManager.EntityQueryEnumerator<ActiveCeremonyComponent, TransformComponent>();
+        var any = false;
+        while (query.MoveNext(out var starter, out var ceremony, out var xform))
+        {
+            any = true;
+            ctx.WriteLine($"{starter}: ritual={ceremony.Ritual} phrases={ceremony.Phrases.Count} first={ceremony.First} " +
+                          $"participants=[{string.Join(",", ceremony.Participants)}] correct=[{string.Join(",", ceremony.CorrectParticipants)}] " +
+                          $"range={ceremony.Range} pos={xform.WorldPosition}");
+        }
+        if (!any)
+            ctx.WriteLine("no active ceremonies");
     }
 
     /// <summary>Force the mob into the Dead state (Resurrection/Deprivation test setup).</summary>
@@ -1125,4 +1179,123 @@ public sealed class LitanyCommand : ToolshedCommand
             ctx.WriteLine($"{target}: open {activatable.Key} for {actor}: {_ui.TryOpenUi(target, activatable.Key, actor)}");
         }
     }
+
+    /// <summary>Dump bloodstream + metabolite solutions for piped mobs (reagent-litany verification).</summary>
+    [CommandImplementation("reagents")]
+    public void ReagentsPiped(IInvocationContext ctx, [PipedArgument] IEnumerable<EntityUid> mobs)
+    {
+        _solutions ??= GetSys<SharedSolutionContainerSystem>();
+        foreach (var mob in mobs)
+        {
+            if (!HasComp<BloodstreamComponent>(mob))
+            {
+                ctx.WriteLine($"{mob}: no bloodstream");
+                continue;
+            }
+            DumpSolution(ctx, mob, BloodstreamComponent.DefaultBloodSolutionName);
+            DumpSolution(ctx, mob, BloodstreamComponent.DefaultMetabolitesSolutionName);
+        }
+    }
+
+    private void DumpSolution(IInvocationContext ctx, EntityUid mob, string name)
+    {
+        if (!_solutions!.TryGetSolution(mob, name, out _, out var sol))
+        {
+            ctx.WriteLine($"{mob} {name}: <none>");
+            return;
+        }
+        ctx.WriteLine($"{mob} {name}: " +
+            (sol.Contents.Count == 0 ? "empty" : string.Join(", ", sol.Contents.Select(r => $"{r.Reagent}={r.Quantity}"))));
+    }
+
+    /// <summary>Spawn a weedy hydroponics tray at the mob's front tile (obelisk weed-removal check).</summary>
+    [CommandImplementation("weed")]
+    public void Weed(IInvocationContext ctx, float level = 8f)
+        => SpawnWeed(ctx, Self(ctx) ?? throw new InvalidOperationException("no executing entity"), level);
+
+    [CommandImplementation("weed")]
+    public void WeedPiped(IInvocationContext ctx, [PipedArgument] IEnumerable<EntityUid> mobs, float level = 8f)
+    {
+        foreach (var mob in mobs)
+            SpawnWeed(ctx, mob, level);
+    }
+
+    private void SpawnWeed(IInvocationContext ctx, EntityUid uid, float level)
+    {
+        var xform = Transform(uid);
+        _xform ??= GetSys<SharedTransformSystem>();
+        _tray ??= GetSys<PlantTraySystem>();
+        var front = (xform.Coordinates.Position + xform.LocalRotation.ToVec()).Floored();
+        var tray = Spawn("hydroponicsTray", new EntityCoordinates(xform.ParentUid, front));
+        if (!Transform(tray).Anchored)
+            _xform.AnchorEntity(tray);
+        var comp = Comp<PlantTrayComponent>(tray);
+        _tray.AdjustWeed((tray, comp), level);
+        ctx.WriteLine($"{tray}: weeds={comp.WeedLevel}/{comp.MaxWeedLevel} at {front}");
+    }
+
+    /// <summary>Spawn a hostile-faction mob at the mob's front tile (obelisk damage branch).</summary>
+    [CommandImplementation("hostile")]
+    public void Hostile(IInvocationContext ctx, EntProtoId proto = default)
+        => SpawnHostile(ctx, Self(ctx) ?? throw new InvalidOperationException("no executing entity"), proto);
+
+    [CommandImplementation("hostile")]
+    public void HostilePiped(IInvocationContext ctx, [PipedArgument] IEnumerable<EntityUid> mobs, EntProtoId proto = default)
+    {
+        foreach (var mob in mobs)
+            SpawnHostile(ctx, mob, proto);
+    }
+
+    private void SpawnHostile(IInvocationContext ctx, EntityUid uid, EntProtoId proto)
+    {
+        var xform = Transform(uid);
+        var front = (xform.Coordinates.Position + xform.LocalRotation.ToVec()).Floored();
+        var mob = Spawn(proto == default ? "MobGorilla" : proto, new EntityCoordinates(xform.ParentUid, front));
+        ctx.WriteLine($"{mob}: spawned {(proto == default ? "MobGorilla" : proto.Id)} at {front}");
+    }
+
+    /// <summary>
+    /// Dump NT objectives on piped mobs' minds; `objective "sanctify"` grants a Sanctify
+    /// objective pinned to the mob's current grid+tile so a Sanctify ceremony flips it.
+    /// </summary>
+    [CommandImplementation("objective")]
+    public void ObjectivePiped(IInvocationContext ctx, [PipedArgument] IEnumerable<EntityUid> mobs, string? kind = null)
+    {
+        _minds ??= GetSys<SharedMindSystem>();
+        foreach (var mob in mobs)
+        {
+            if (!_minds.TryGetMind(mob, out var mindId, out var mind))
+            {
+                ctx.WriteLine($"{mob}: no mind");
+                continue;
+            }
+            if (kind != null && Enum.TryParse<NeoTheologyObjectiveKind>(kind, true, out var parsed))
+            {
+                var proto = NeoTheologyPrototypes.SanctifyObjective;
+                if (parsed == NeoTheologyObjectiveKind.Convert) proto = NeoTheologyPrototypes.ConvertObjective;
+                else if (parsed == NeoTheologyObjectiveKind.Reveal) proto = NeoTheologyPrototypes.RevealObjective;
+                else if (parsed == NeoTheologyObjectiveKind.Destroy) proto = NeoTheologyPrototypes.DestroyObjective;
+                if (_minds.TryAddObjective(mindId, mind, proto) &&
+                    TryComp<NeoTheologyObjectiveComponent>(mind.Objectives[^1], out var added))
+                {
+                    var xform = Transform(mob);
+                    added.TargetGrid = xform.GridUid;
+                    added.TargetTile = (_xform ??= GetSys<SharedTransformSystem>())
+                        .WithEntityId(xform.Coordinates, xform.GridUid ?? xform.ParentUid).Position.Floored();
+                            ctx.WriteLine($"{mob}: granted {proto} -> grid={added.TargetGrid} tile={added.TargetTile}");
+                }
+                else
+                {
+                    ctx.WriteLine($"{mob}: TryAddObjective({proto}) failed");
+                }
+            }
+            foreach (var obj in mind.Objectives)
+            {
+                if (!TryComp<NeoTheologyObjectiveComponent>(obj, out var o))
+                    continue;
+                ctx.WriteLine($"{mob}: objective {obj} kind={o.Kind} completed={o.Completed} grid={o.TargetGrid} tile={o.TargetTile} proto={o.TargetPrototype} mind={o.TargetMind}");
+            }
+        }
+    }
 }
+
