@@ -453,7 +453,8 @@ public sealed partial class OxydSurgerySystem : EntitySystem
 
         var surg = EnsureComp<OxydOrganSurgeryComponent>(organ);
         var tools = ToolFlagsOf(s.Tool);
-        if (!AvailableSteps(tools, s.Tool, organComp, surg).Contains(args.Step))
+        if (!AvailableSteps(tools, s.Tool, organComp, surg,
+                s.Tool is { } held && HasComp<OrganComponent>(held)).Contains(args.Step))
             return;
 
         RunStep(s.Surgeon, s.Patient, organ, args.Step, s.Tool,
@@ -725,7 +726,9 @@ public sealed partial class OxydSurgerySystem : EntitySystem
         if (heldItem is not { } item)
             return false;
 
-        if (!TryComp<OrganComponent>(item, out var organ) || OxydWoundSystem.IsExternal(organ))
+        // Eris dismemberment parity: external organs (severed limbs) re-attach
+        // through the same body container as internal organs.
+        if (!TryComp<OrganComponent>(item, out var organ))
             return false;
 
         if (!_container.TryGetContainer(body, BodyComponent.ContainerID, out var container))
@@ -795,7 +798,8 @@ public sealed partial class OxydSurgerySystem : EntitySystem
             var efficiency = Math.Clamp(
                 (OxydOrganSurgeryComponent.OrganMaxDamage - surg.OrganDamage) /
                 OxydOrganSurgeryComponent.OrganMaxDamage * 100f, 0f, 100f);
-            var steps = AvailableSteps(state.HeldTools, s.Tool, organ, surg);
+            var steps = AvailableSteps(state.HeldTools, s.Tool, organ, surg,
+                s.Tool is { } held && HasComp<OrganComponent>(held));
             var entry = new OxydSurgeryOrganEntry
             {
                 Organ = GetNetEntity(orgUid),
@@ -963,7 +967,7 @@ public sealed partial class OxydSurgerySystem : EntitySystem
     };
 
     private static List<OxydSurgeryStep> AvailableSteps(OxydSurgeryTool tools, EntityUid? heldItem,
-        OrganComponent organ, OxydOrganSurgeryComponent surg)
+        OrganComponent organ, OxydOrganSurgeryComponent surg, bool heldOrgan = false)
     {
         var steps = new List<OxydSurgeryStep>();
         var external = OxydWoundSystem.IsExternal(organ);
@@ -1026,6 +1030,11 @@ public sealed partial class OxydSurgerySystem : EntitySystem
                     Add(OxydSurgeryStep.DetachOrgan);
                 if (external)
                     Add(OxydSurgeryStep.Amputate);
+                // Eris transplant / limb reattachment: the held organ item is the
+                // "tool" (Eris fixovein is optional flavour here), so offer it
+                // directly at any retracted site.
+                if (heldOrgan)
+                    steps.Add(OxydSurgeryStep.AttachOrgan);
                 break;
         }
 

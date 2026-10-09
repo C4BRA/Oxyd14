@@ -255,3 +255,23 @@ public sealed partial class OxydScannerItemComponent : Component
 public sealed partial class OxydScannerUiProxyComponent : Component
 {
 }
+
+/// <summary>Eris organ bioprinter: stores biomass, prints replacement organs.</summary>
+[RegisterComponent, NetworkedComponent]
+public sealed partial class OxydBioprinterComponent : Component
+{
+    /// <summary>Stored biomass (Eris stored_matter). Round-start preload mirrors Eris (200).</summary>
+    [DataField]
+    public int StoredMatter = 200;
+
+    [DataField]
+    public int MaxMatter = 300;
+
+    /// <summary>A blood sample was injected (Eris loaded_dna). Cosmetic parity flag.</summary>
+    [DataField]
+    public bool HasBloodSample;
+
+    /// <summary>Busy printing an organ.</summary>
+    [DataField]
+    public bool Working;
+}

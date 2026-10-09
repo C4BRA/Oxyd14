@@ -501,3 +501,38 @@ public enum OxydMachineVisualLayers : byte
     Base,
     Occupied,
 }
+
+// ---------------- Bioprinter (Eris machinery/bioprinter.dm) ----------------
+// Prints replacement internal organs from stored biomass; a blood sample
+// tags the print with donor data (kept as a flag - SS14 has no DNA system).
+
+[Serializable, NetSerializable]
+public enum OxydBioprinterUiKey : byte
+{
+    Key,
+}
+
+[Serializable, NetSerializable]
+public sealed class OxydBioprinterState : BoundUserInterfaceState
+{
+    public int StoredMatter;
+    public int MaxMatter;
+    public bool HasBloodSample;
+    public bool Working;
+    public List<OxydBioprinterProduct> Products = new();
+}
+
+[Serializable, NetSerializable]
+public sealed class OxydBioprinterProduct
+{
+    public string Id = string.Empty;
+    public string Name = string.Empty;
+    public int Cost;
+    public bool Affordable;
+}
+
+[Serializable, NetSerializable]
+public sealed class OxydBioprinterPrintMessage : BoundUserInterfaceMessage
+{
+    public string Product = string.Empty;
+}

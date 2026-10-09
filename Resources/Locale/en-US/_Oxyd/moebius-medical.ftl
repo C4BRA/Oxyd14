@@ -486,3 +486,22 @@ oxyd-medical-iv-examine-mode-draw = It's set to draw mode, transferring {$amount
 ## Organ decay / transplant
 oxyd-organ-decayed = The decay has set in.
 oxyd-surgery-organ-decayed = This organ is too decayed to transplant.
+
+## Organ bioprinter
+oxyd-bioprinter-window-title = Organ Bioprinter
+oxyd-bioprinter-matter = Stored biomass
+oxyd-bioprinter-sample-yes = Blood sample loaded.
+oxyd-bioprinter-sample-no = No blood sample loaded.
+oxyd-bioprinter-working = PRINTING ORGAN...
+oxyd-bioprinter-print = Print
+oxyd-bioprinter-printed = The bioprinter spits out a new organ.
+oxyd-bioprinter-no-matter = There is not enough matter in the printer.
+oxyd-bioprinter-biomass = The bioprinter processes the meat. Stored biomass: {$matter}
+oxyd-bioprinter-full = The biomass tank is full ({$max}).
+oxyd-bioprinter-sample-loaded = You inject the blood sample into the bioprinter.
+oxyd-bioprinter-organ-heart = Heart
+oxyd-bioprinter-organ-lungs = Lungs
+oxyd-bioprinter-organ-kidney = Kidney
+oxyd-bioprinter-organ-eyes = Eyes
+oxyd-bioprinter-organ-liver = Liver
+oxyd-bioprinter-organ-stomach = Stomach

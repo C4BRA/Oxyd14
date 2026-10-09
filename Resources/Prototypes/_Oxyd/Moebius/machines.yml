@@ -361,3 +361,41 @@
   - type: Icon
     sprite: Oxyd/erisported/eris_chemmachines.rsi
     state: mixer0
+
+# ---------------------------------------------------------------------------
+# Organ bioprinter (Eris machinery/bioprinter.dm): meat -> biomass, syringe
+# blood sample -> donor flag, prints internal organs for a biomass cost.
+# ---------------------------------------------------------------------------
+- type: entity
+  parent: [ BaseMachinePowered ]
+  id: OxydErisBioprinter
+  name: organ bioprinter
+  description: A machine that grows replacement organs.
+  components:
+  - type: Sprite
+    sprite: Oxyd/erisported/eris_bioprinter.rsi
+    layers:
+    - state: bioprinter
+      map: ["enum.OxydMachineVisualLayers.Base"]
+    - state: bioprinter_working
+      map: ["enum.OxydMachineVisualLayers.Occupied"]
+      visible: false
+  - type: OxydBioprinter
+  - type: ActivatableUI
+    key: enum.OxydBioprinterUiKey.Key
+  - type: ActivatableUIRequiresPower
+  - type: UserInterface
+    interfaces:
+      enum.OxydBioprinterUiKey.Key:
+        type: OxydBioprinterBoundUserInterface
+  - type: ApcPowerReceiver
+    powerLoad: 300
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.OxydMachineVisuals.Working:
+        enum.OxydMachineVisualLayers.Occupied:
+          True: { visible: true }
+          False: { visible: false }
+  - type: InteractionOutline
+  - type: Clickable
