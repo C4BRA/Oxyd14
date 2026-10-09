@@ -1,3 +1,4 @@
+using Content.Shared.DoAfter;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Serialization;
 
@@ -484,6 +485,48 @@ public sealed class OxydChemProcessorEjectMessage : BoundUserInterfaceMessage
 {
     /// <summary>-1 = main beaker, otherwise separation beaker index.</summary>
     public int BeakerIndex;
+}
+
+// ---------------- Autopsy scanner ----------------
+// Ports Eris autopsy.dm: a full-cadaver scan do_after ends in a printed paper report.
+
+[Serializable, NetSerializable]
+public sealed partial class OxydAutopsyDoAfterEvent : SimpleDoAfterEvent
+{
+}
+
+// ---------------- Operating computer ----------------
+// Ports Eris machinery/computer/Operating.dm: live vitals of the op-table patient.
+
+[Serializable, NetSerializable]
+public enum OxydOperatingComputerUiKey : byte
+{
+    Key,
+}
+
+[Serializable, NetSerializable]
+public sealed class OxydOperatingComputerState : BoundUserInterfaceState
+{
+    public bool HasPatient;
+    public string PatientName = string.Empty;
+    /// <summary>Alive & conscious (Eris "Stable"); critical reads as Non-Responsive.</summary>
+    public bool Alive;
+    public bool Critical;
+    /// <summary>Eris "Critical Health" percentage.</summary>
+    public float HealthPercent;
+    /// <summary>Eris "Organ Health" percentage (worst external organ).</summary>
+    public float OrganHealth;
+    public float BruteLoss;
+    public float BurnLoss;
+    public float ToxinLoss;
+    public float OxyLoss;
+    /// <summary>Patient has a readable bloodstream.</summary>
+    public bool HasBlood;
+    /// <summary>Blood volume as a percentage of the patient's max (BloodstreamSystem.GetBloodLevel).</summary>
+    public float BloodPercent;
+    public float BloodVolume;
+    /// <summary>Eris get_pulse classification.</summary>
+    public OxydPulse Pulse;
 }
 
 /// <summary>Visual-state keys for Moebius machine sprites (occupied pod, running autodoc/processor).</summary>

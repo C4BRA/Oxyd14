@@ -285,3 +285,36 @@ public sealed partial class OxydAppendixComponent : Component
     /// <summary>Seconds of inflammation elapsed (Eris inflamed counter, 1/lifetick).</summary>
     public float Inflamed;
 }
+
+/// <summary>Autopsy scanner (Eris objects/items/weapons/autopsy.dm): handheld item used
+/// on a cadaver; after a scan it prints a paper autopsy report with the body's wounds
+/// and bloodstream contents.</summary>
+[RegisterComponent]
+public sealed partial class OxydAutopsyScannerComponent : Component
+{
+    /// <summary>Seconds the post-mortem scan takes. Eris scans one limb at a time; the
+    /// SS14 report samples the whole body in a single pass.</summary>
+    [DataField]
+    public float ScanDelay = 4f;
+}
+
+/// <summary>Mass spectrometer (Eris devices/scanners/mass_scpectrometer.dm): handheld
+/// scanner that prints the reagent mix of a container or a patient's bloodstream.</summary>
+[RegisterComponent]
+public sealed partial class OxydMassSpectrometerComponent : Component
+{
+    /// <summary>Eris `details`: the advanced model also reports reagent amounts.</summary>
+    [DataField]
+    public bool Detailed;
+}
+
+/// <summary>Operating computer (Eris machinery/computer/Operating.dm): console showing the
+/// vitals of the patient buckled to the closest operating table.</summary>
+[RegisterComponent]
+public sealed partial class OxydOperatingComputerComponent : Component
+{
+    /// <summary>Search radius for the linked operating table. Eris checks the four cardinal
+    /// tiles; a short range also covers diagonal tables.</summary>
+    [DataField]
+    public float TableSearchRadius = 1.8f;
+}

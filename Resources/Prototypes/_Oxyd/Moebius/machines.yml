@@ -421,3 +421,61 @@
     - state: active
       map: ["enum.OxydMachineVisualLayers.Occupied"]
       visible: false
+
+# ---------------------------------------------------------------------------
+# Moebius medical vendor (Eris vending/medical "MiniPharma"): stocks the ported
+# Eris medical set.
+# ---------------------------------------------------------------------------
+- type: entity
+  parent: VendingMachineMedicalBase
+  id: OxydMoebiusMedVend
+  components:
+  - type: VendingMachine
+    pack: OxydMoebiusMedVendInventory
+  - type: VendingMachineVisuals
+    offState: off
+  - type: Sprite
+    layers:
+    - state: "off"
+      map: ["enum.VendingMachineVisualLayers.Base"]
+    - state: "off"
+      map: ["enum.VendingMachineVisualLayers.BaseUnshaded"]
+      shader: unshaded
+    - state: panel
+      map: ["enum.WiresVisualLayers.MaintenancePanel"]
+  - type: AccessReader
+    access: [["Medical"]]
+
+# ---------------------------------------------------------------------------
+# Operating computer (Eris machinery/computer/Operating.dm): console showing the
+# vitals of the patient buckled to the closest operating table.
+# ---------------------------------------------------------------------------
+- type: entity
+  parent: BaseComputerAiAccess
+  id: OxydMedicalOperatingComputer
+  components:
+  - type: OxydOperatingComputer
+  - type: Sprite
+    layers:
+    - map: ["computerLayerBody"]
+      state: computer
+    - map: ["computerLayerKeyboard"]
+      state: generic_keyboard
+    - map: ["computerLayerScreen"]
+      state: crew
+    - map: ["computerLayerKeys"]
+      state: med_key
+    - map: [ "enum.WiresVisualLayers.MaintenancePanel" ]
+      state: generic_panel_open
+  - type: PointLight
+    color: "#1f8c28"
+  - type: Computer
+  - type: ActivatableUI
+    key: enum.OxydOperatingComputerUiKey.Key
+  - type: UserInterface
+    interfaces:
+      enum.OxydOperatingComputerUiKey.Key:
+        type: OxydOpVitalsBoundUserInterface
+      enum.WiresUiKey.Key:
+        type: WiresBoundUserInterface
+  - type: AmbientMusicMarkerMedical
