@@ -65,6 +65,12 @@
   - type: Sprite
     sprite: Structures/Machines/biofabricator.rsi
     state: icon
+  - type: ActivatableUI
+    key: enum.BiogeneratorConsoleUiKey.Key
+  - type: UserInterface
+    interfaces:
+      enum.BiogeneratorConsoleUiKey.Key:
+        type: BiogeneratorConsoleBoundUserInterface
 
 - type: entity
   parent: [ BaseMachinePowered ]
@@ -79,6 +85,12 @@
   - type: Sprite
     sprite: Structures/Machines/gasrecycler.rsi
     state: icon
+  - type: ActivatableUI
+    key: enum.BioreactorConsoleUiKey.Key
+  - type: UserInterface
+    interfaces:
+      enum.BioreactorConsoleUiKey.Key:
+        type: BioreactorConsoleBoundUserInterface
 
 # P2.12: reader + cloner + biomass tank. Plan says the tank is a Solution; biomatter is a
 # MaterialPrototype in this port (P2.3), not a reagent, and P2.10a's rule is one store — so the tank

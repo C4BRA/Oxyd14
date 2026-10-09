@@ -93,6 +93,8 @@ public sealed partial class BioreactorSystem : EntitySystem
 
     public override void Update(float frameTime)
     {
+        UpdateConsoles(frameTime);
+
         var query = EntityQueryEnumerator<BioreactorComponent>();
 
         while (query.MoveNext(out var uid, out var reactor))

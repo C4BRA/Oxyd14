@@ -20,6 +20,7 @@ namespace Content.Server._Oxyd.NeoTheology.Machines;
 public sealed partial class BiogeneratorSystem : EntitySystem
 {
     [Dependency] private readonly GeneratorSystem _generator = default!;
+    [Dependency] private readonly NeoTheologyMachineSystem _machines = default!;
 
     /// <summary>
     /// Eris <c>power_biogen_awake</c>: switches the machine on or off. The generator carries a
@@ -49,6 +50,8 @@ public sealed partial class BiogeneratorSystem : EntitySystem
 
     public override void Update(float frameTime)
     {
+        UpdateConsoles(frameTime);
+
         // Fouling derates the stock generator's target power; everything else (burn rate,
         // supplier state, fuel exhaustion) is GeneratorSystem's own tick.
         var query = EntityQueryEnumerator<BiogeneratorComponent, FuelGeneratorComponent>();

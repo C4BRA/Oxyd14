@@ -6,6 +6,7 @@ using Content.Server._Oxyd.NeoTheology.Machines;
 using Content.Server.Materials;
 using Content.Server.Power.Components;
 using Content.Shared.Administration;
+using Robust.Server.GameObjects;
 using Content.Shared.Buckle;
 using Content.Shared.Buckle.Components;
 using Content.Shared.Chat;
@@ -20,6 +21,7 @@ using Content.Shared.Humanoid.Prototypes;
 using Content.Shared.Implants;
 using Content.Shared.Implants.Components;
 using Content.Shared.Inventory;
+using Content.Shared.UserInterface;
 using Content.Shared.Materials;
 using Content.Shared.Mind;
 using Content.Shared.Mobs;
@@ -69,6 +71,7 @@ public sealed class LitanyCommand : ToolshedCommand
     private NeoTheologyMachineSystem? _machines;
     private CruciformReaderSystem? _readers;
     private SharedContainerSystem? _containers;
+    private UserInterfaceSystem? _ui;
 
     private SharedTransformSystem? _xform;
     private EntityLookupSystem? _lookup;
@@ -1064,5 +1067,21 @@ public sealed class LitanyCommand : ToolshedCommand
             ctx.WriteLine($"  pod: active={HasComp<ActiveCloningPodComponent>(cloner)} body={pod.BodyContainer.ContainedEntity} material={_materials.GetMaterialAmount(cloner, pod.RequiredMaterial)}/{pod.RequiredMaterial}");
         }
         ctx.WriteLine($"  CanResurrect={readers.CanResurrect(cloner, reader)}");
+    }
+
+    /// <summary>Open a machine's ActivatableUI for the piped actor (BUI smoke tests).</summary>
+    [CommandImplementation("openui")]
+    public void OpenUiPiped(IInvocationContext ctx, [PipedArgument] IEnumerable<EntityUid> actors, EntityUid target)
+    {
+        _ui ??= GetSys<UserInterfaceSystem>();
+        if (!TryComp<ActivatableUIComponent>(target, out var activatable))
+        {
+            ctx.WriteLine($"{target}: no ActivatableUI");
+            return;
+        }
+        foreach (var actor in actors)
+        {
+            ctx.WriteLine($"{target}: open {activatable.Key} for {actor}: {_ui.TryOpenUi(target, activatable.Key, actor)}");
+        }
     }
 }

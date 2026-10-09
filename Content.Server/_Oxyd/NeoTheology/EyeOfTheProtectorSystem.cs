@@ -60,6 +60,11 @@ public sealed partial class EyeOfTheProtectorSystem : EntitySystem
     [SubscribeLocalEvent]
     private void OnUiOpened(Entity<EyeOfTheProtectorComponent> ent, ref AfterActivatableUIOpenEvent args)
     {
+        PushEyeState(ent);
+    }
+
+    private void PushEyeState(Entity<EyeOfTheProtectorComponent> ent)
+    {
         var cooldown = ent.Comp.NextMiracle - _timing.CurTime;
         if (cooldown < TimeSpan.Zero)
             cooldown = TimeSpan.Zero;
@@ -71,9 +76,26 @@ public sealed partial class EyeOfTheProtectorSystem : EntitySystem
             cooldown));
     }
 
+    private const float EyeUiRefresh = 1f;
+    private float _eyeUiAccum;
+
     public override void Update(float frameTime)
     {
         base.Update(frameTime);
+
+        // Re-push the read-only snapshot once a second while any Eye window is open — the
+        // open-time push can race the client's window creation and leave labels empty.
+        _eyeUiAccum += frameTime;
+        if (_eyeUiAccum >= EyeUiRefresh)
+        {
+            _eyeUiAccum = 0f;
+            var uiQuery = EntityQueryEnumerator<EyeOfTheProtectorComponent, UserInterfaceComponent>();
+            while (uiQuery.MoveNext(out var uid, out var comp, out var ui))
+            {
+                if (_ui.IsUiOpen((uid, ui), EyeOfTheProtectorUiKey.Key))
+                    PushEyeState((uid, comp));
+            }
+        }
 
         var now = _timing.CurTime;
         var query = EntityQueryEnumerator<EyeOfTheProtectorComponent>();

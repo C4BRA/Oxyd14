@@ -1,22 +1,25 @@
 <controls:FancyWindow xmlns="https://spacestation14.io"
                xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
+               xmlns:ui="clr-namespace:Content.Client._Oxyd.UI"
                Title="{Loc 'oxyd-litany-ui-title'}"
-               MinSize="900 560"
-               SetSize="900 560">
-    <BoxContainer Orientation="Vertical" Margin="8" SeparationOverride="6">
+               MinSize="740 500"
+               SetSize="800 560">
+    <!-- Eris NanoUI dark skin (ritual_book.tmpl): flat dark body, content styled in code-behind. -->
+    <PanelContainer Name="Body" VerticalExpand="True" HorizontalExpand="True">
+        <BoxContainer Orientation="Vertical" Margin="8" SeparationOverride="6">
         <BoxContainer Orientation="Vertical" SeparationOverride="2">
             <BoxContainer Orientation="Horizontal" SeparationOverride="12">
                 <Label Name="HolinessLabel" HorizontalExpand="True"/>
                 <Label Name="RegenerationLabel" HorizontalAlignment="Right"/>
             </BoxContainer>
-            <ProgressBar Name="HolinessBar" MinValue="0" MaxValue="1" HorizontalExpand="True"/>
+            <ui:ErisBar Name="HolinessBar" HorizontalExpand="True"/>
             <BoxContainer Orientation="Horizontal" SeparationOverride="12">
                 <Label Name="RankLabel" HorizontalExpand="True"/>
                 <Label Name="ClearanceLabel" HorizontalExpand="True"/>
             </BoxContainer>
             <Label Name="StatusLabel"/>
             <Label Name="CastProgressLabel"/>
-            <ProgressBar Name="CastProgressBar" MinValue="0" MaxValue="1" Visible="False" HorizontalExpand="True"/>
+            <ui:ErisBar Name="CastProgressBar" Visible="False" HorizontalExpand="True"/>
         </BoxContainer>
 
         <BoxContainer Orientation="Horizontal" SeparationOverride="6">
@@ -36,13 +39,13 @@
                               Orientation="Vertical"
                               HorizontalExpand="True"
                               VerticalExpand="True"
-                              SeparationOverride="2"/>
+                              SeparationOverride="1"/>
             </ScrollContainer>
 
             <BoxContainer Name="DetailsPanel"
                           Orientation="Vertical"
-                          MinWidth="430"
-                          MaxWidth="520"
+                          MinWidth="380"
+                          MaxWidth="500"
                           VerticalExpand="True"
                           SeparationOverride="4">
                 <!-- Details scroll so tall choice content can never push the
@@ -80,13 +83,13 @@
                                       Visible="False"/>
                             <Label Name="ChoiceExpiryLabel" Visible="False"/>
                             <BoxContainer Name="RecipeRow" Orientation="Horizontal" Visible="False">
-                                <Label Text="Recipe ID:" MinWidth="150"/>
+                                <Label Name="RecipeIdLabel" Text="Recipe ID:" MinWidth="150"/>
                                 <LineEdit Name="RecipeIdEdit"
                                           HorizontalExpand="True"
                                           PlaceHolder="Server-provided recipe ID"/>
                             </BoxContainer>
                             <BoxContainer Name="PlainTextRow" Orientation="Horizontal" Visible="False">
-                                <Label Text="Message:" MinWidth="150"/>
+                                <Label Name="PlainTextLabel" Text="Message:" MinWidth="150"/>
                                 <LineEdit Name="PlainTextEdit"
                                           HorizontalExpand="True"
                                           PlaceHolder="Up to 512 Unicode scalars"/>
@@ -98,17 +101,17 @@
                 </ScrollContainer>
 
                 <BoxContainer Orientation="Horizontal" SeparationOverride="4">
-                    <Button Name="BeginButton"
-                            Text="{Loc 'oxyd-litany-ui-begin'}"
-                            HorizontalExpand="True"/>
-                    <Button Name="SubmitChoiceButton"
-                            Text="Submit choice"
-                            Visible="False"
-                            HorizontalExpand="True"/>
-                    <Button Name="CancelButton"
-                            Text="{Loc 'oxyd-litany-ui-cancel'}"
-                            Visible="False"
-                            HorizontalExpand="True"/>
+                    <ui:ErisLink Name="BeginButton"
+                                 Text="{Loc 'oxyd-litany-ui-begin'}"
+                                 HorizontalExpand="True"/>
+                    <ui:ErisLink Name="SubmitChoiceButton"
+                                 Text="Submit choice"
+                                 Visible="False"
+                                 HorizontalExpand="True"/>
+                    <ui:ErisLink Name="CancelButton"
+                                 Text="{Loc 'oxyd-litany-ui-cancel'}"
+                                 Visible="False"
+                                 HorizontalExpand="True"/>
                 </BoxContainer>
             </BoxContainer>
         </BoxContainer>
@@ -117,5 +120,6 @@
                Text="No matching litanies."
                Visible="False"
                HorizontalAlignment="Center"/>
-    </BoxContainer>
+        </BoxContainer>
+    </PanelContainer>
 </controls:FancyWindow>
