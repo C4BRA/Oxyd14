@@ -106,7 +106,10 @@ public sealed class OxydBioprinterSystem : EntitySystem
 
         if (comp.StoredMatter < product.Cost)
         {
-            _popup.PopupEntity(Loc.GetString("oxyd-bioprinter-no-matter"), uid, PopupType.Small);
+            // At the actor, not the machine: a world popup on the printer sits
+            // under the open window where nobody sees it.
+            _popup.PopupEntity(Loc.GetString("oxyd-bioprinter-no-matter"),
+                args.Actor, args.Actor, PopupType.Small);
             return;
         }
 
