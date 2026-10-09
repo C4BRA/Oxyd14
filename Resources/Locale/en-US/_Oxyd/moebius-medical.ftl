@@ -505,3 +505,33 @@ oxyd-bioprinter-organ-kidney = Kidney
 oxyd-bioprinter-organ-eyes = Eyes
 oxyd-bioprinter-organ-liver = Liver
 oxyd-bioprinter-organ-stomach = Stomach
+
+## Resuscitator chem
+oxyd-reagent-resuscitator = resuscitator
+oxyd-reagent-resuscitator-desc = Incredibly rare cardiac stimulant.
+oxyd-resuscitate-twitch = {$name} twitches a bit as their heart restarts!
+entity-effect-guidebook-resuscitate =
+    { $chance ->
+        [1] Ravages the heart, restarting it on the recently deceased
+        *[other] ravage the heart, restarting it on the recently deceased
+    }.
+
+## Medical side effects (Eris custom_pain tiers)
+oxyd-sideeffect-headache-1 = You feel a light pain in your head.
+oxyd-sideeffect-headache-2 = You feel a throbbing pain in your head!
+oxyd-sideeffect-headache-3 = You feel an excruciating pain in your head!
+oxyd-sideeffect-headache-cure = Your head stops throbbing...
+oxyd-sideeffect-stomach-1 = You feel a bit light around the stomach.
+oxyd-sideeffect-stomach-2 = Your stomach hurts.
+oxyd-sideeffect-stomach-3 = You feel sick.
+oxyd-sideeffect-stomach-cure = Your stomach feels a little better now...
+oxyd-sideeffect-cramps-1 = The muscles in your body hurt a little.
+oxyd-sideeffect-cramps-2 = The muscles in your body cramp up painfully.
+oxyd-sideeffect-cramps-3 = There's pain all over your body.
+oxyd-sideeffect-cramps-emote = flinches as all the muscles in their body cramp up.
+oxyd-sideeffect-cramps-cure = The cramps let up...
+oxyd-sideeffect-itch-1 = You feel a slight itch.
+oxyd-sideeffect-itch-2 = You want to scratch your itch badly.
+oxyd-sideeffect-itch-3 = This itch makes it really hard to concentrate.
+oxyd-sideeffect-itch-emote = shivers slightly.
+oxyd-sideeffect-itch-cure = The itching stops...

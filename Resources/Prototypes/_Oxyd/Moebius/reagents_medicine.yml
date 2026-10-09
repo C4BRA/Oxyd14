@@ -702,3 +702,22 @@
       effects:
       - !type:Nsa
         value: 0.5
+
+# Eris resuscitator (reagents/other.dm): injectable-only cardiac stimulant.
+# Wrecks the heart each tick; revives the dead inside the 15-minute window if
+# heart + brain are viable and the body isn't mangled past the dead threshold.
+# No OD effect wired (Eris heart.die() is covered by the per-tick heart damage).
+- type: reagent
+  id: OxydChemResuscitator
+  name: oxyd-reagent-resuscitator
+  desc: oxyd-reagent-resuscitator-desc
+  group: Medicine
+  worksOnTheDead: true
+  physicalDesc: reagent-physical-desc-opaque
+  flavor: medicine
+  color: "#A0522D"
+  metabolisms:
+    Bloodstream:
+      metabolismRate: 1.0
+      effects:
+      - !type:Resuscitate

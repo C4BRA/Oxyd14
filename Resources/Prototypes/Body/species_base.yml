@@ -166,6 +166,7 @@
   save: false
   components:
   - type: Pain
+  - type: OxydSideEffects
   - type: Satiation
     satiations:
       Hunger:
