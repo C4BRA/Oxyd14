@@ -399,3 +399,25 @@
           False: { visible: false }
   - type: InteractionOutline
   - type: Clickable
+
+# ---------------------------------------------------------------------------
+# Excelsior autodoc (Eris excelsior variant): same machine, free surgery -
+# no billing slot, every operation costs 0.
+# ---------------------------------------------------------------------------
+- type: entity
+  parent: [ OxydMedicalAutodoc ]
+  id: OxydAutodocExcelsior
+  name: excelsior autodoc
+  description: A refurbished Moebius autodoc with the billing unit ripped out.
+  components:
+  - type: OxydAutodoc
+    scanCost: 0
+    opCosts: {}
+  - type: Sprite
+    sprite: Oxyd/erisported/eris_autodoc.rsi
+    layers:
+    - state: idle
+      map: ["enum.OxydMachineVisualLayers.Base"]
+    - state: active
+      map: ["enum.OxydMachineVisualLayers.Occupied"]
+      visible: false
