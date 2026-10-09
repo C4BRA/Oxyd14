@@ -194,7 +194,12 @@ public sealed partial class OxydSurgerySystem : EntitySystem
         if (cavity.Valid)
         {
             args.Handled = true;
-            RunStep(args.User, uid, cavity.Uid, OxydSurgeryStep.InsertItem, args.Used, null);
+            // An organ item is a transplant (Eris attach_or_replace_organ), not a
+            // cavity implant — AttachOrgan still validates Incision/decay itself.
+            var step = HasComp<OrganComponent>(args.Used)
+                ? OxydSurgeryStep.AttachOrgan
+                : OxydSurgeryStep.InsertItem;
+            RunStep(args.User, uid, cavity.Uid, step, args.Used, null);
             return;
         }
 

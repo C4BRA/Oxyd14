@@ -57,10 +57,13 @@ public sealed class OxydSideEffectsSystem : EntitySystem
                 var inst = comp.Active[i];
                 var proto = _prototypes.Index(inst.Effect);
                 var elapsed = (float) (now - inst.Start).TotalSeconds;
-                var percent = MathF.Sin(elapsed / 2f);
+                // Eris strength_percent = sin((life_tick - start)/2); a life tick
+                // is ~2s, so in seconds that's sin(elapsed/4).
+                var percent = MathF.Sin(elapsed / 4f);
 
-                // Effect slowly growing stronger, tick-based rate.
-                inst.Strength += 0.08f * frameTime * 15f;
+                // Effect slowly growing stronger: Eris +0.08 per life tick (~2s)
+                // = 0.04/s — one full strength cycle is minutes, not seconds.
+                inst.Strength += 0.08f * frameTime * 0.5f;
 
                 if (percent < 0.4f)
                     continue;
