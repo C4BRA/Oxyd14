@@ -69,7 +69,10 @@ public sealed partial class OxydOperatingComputerSystem : EntitySystem
             !TryComp<StrapComponent>(table, out var strap))
             return null;
 
-        return strap.BuckledEntities.FirstOrDefault(e => HasComp<MobStateComponent>(e));
+        // FirstOrDefault returns EntityUid.Invalid (not null) on an empty strap -
+        // is-{}-pattern treats it as a patient and Name() throws the server down.
+        var patient = strap.BuckledEntities.FirstOrDefault(e => HasComp<MobStateComponent>(e));
+        return patient.IsValid() ? patient : null;
     }
 
     private void PushState(EntityUid uid, OxydOperatingComputerComponent comp)

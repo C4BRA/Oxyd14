@@ -64,14 +64,12 @@ public sealed partial class OxydBioprinterWindow : FancyWindow
                 HorizontalExpand = true,
             };
             var btn = new ErisLink(Loc.GetString("oxyd-bioprinter-print"));
-            if (p.Affordable)
-            {
-                var id = p.Id;
-                btn.OnPressed += _ => PrintRequested?.Invoke(id);
-            }
-            else
+            var id = p.Id;
+            btn.OnPressed += _ => PrintRequested?.Invoke(id); // server guards + pops "not enough biomass"
+            if (!p.Affordable)
             {
                 btn.SetDisabledLook();
+                btn.Disabled = false; // look-only: click still reaches the server popup
             }
             row.AddChild(name);
             row.AddChild(btn);
