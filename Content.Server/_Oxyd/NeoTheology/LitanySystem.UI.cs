@@ -90,7 +90,7 @@ public sealed partial class LitanySystem
     }
 
     /// <summary>Designation labels and message text live on the server; the client only forwards tokens.</summary>
-    [Dependency] private readonly IPrototypeManager _prototypes = default!;
+    [Dependency] private IPrototypeManager _prototypes = default!;
 
     [SubscribeLocalEvent]
     private void OnBookUiOpened(Entity<LitanyBookComponent> book, ref BoundUIOpenedEvent args)

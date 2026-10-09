@@ -11,9 +11,9 @@ namespace Content.Shared._Oxyd.NeoTheology.Effects;
 
 public sealed partial class LitanyEffectSystem
 {
-    [Dependency] private readonly SharedSolutionContainerSystem _solutions = default!;
-    [Dependency] private readonly BloodstreamSystem _bloodstream = default!;
-    [Dependency] private readonly PainSystem _pain = default!;
+    [Dependency] private SharedSolutionContainerSystem _solutions = default!;
+    [Dependency] private BloodstreamSystem _bloodstream = default!;
+    [Dependency] private PainSystem _pain = default!;
 
     public bool RejectsHolyInfluence(EntityUid uid) => HasComp<AtheistMutationComponent>(uid);
 

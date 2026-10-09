@@ -33,10 +33,10 @@ public sealed partial class NtUplinkSystem : EntitySystem
     private static readonly ProtoId<CoreModulePrototype> UplinkModule = "OxydNtModuleUplink";
     private static readonly ProtoId<CurrencyPrototype> Telecrystal = "Telecrystal";
 
-    [Dependency] private readonly SharedMindSystem _mind = default!;
-    [Dependency] private readonly SharedPopupSystem _popup = default!;
-    [Dependency] private readonly StoreSystem _store = default!;
-    [Dependency] private readonly UserInterfaceSystem _ui = default!;
+    [Dependency] private SharedMindSystem _mind = default!;
+    [Dependency] private SharedPopupSystem _popup = default!;
+    [Dependency] private StoreSystem _store = default!;
+    [Dependency] private UserInterfaceSystem _ui = default!;
 
     /// <summary>The module install hook from <see cref="CoreModuleBehaviorSystem"/>.</summary>
     public void OnUplinkInstalled(EntityUid cruciform)

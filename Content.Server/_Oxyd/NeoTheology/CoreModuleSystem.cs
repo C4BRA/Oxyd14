@@ -11,8 +11,8 @@ namespace Content.Server._Oxyd.NeoTheology;
 /// </summary>
 public sealed partial class CoreModuleSystem : EntitySystem
 {
-    [Dependency] private readonly CruciformSystem _cruciform = default!;
-    [Dependency] private readonly IPrototypeManager _proto = default!;
+    [Dependency] private CruciformSystem _cruciform = default!;
+    [Dependency] private IPrototypeManager _proto = default!;
 
     public bool TryInstall(EntityUid cruciform, CruciformComponent comp, ProtoId<CoreModulePrototype> module)
     {

@@ -11,8 +11,8 @@ namespace Content.Shared._Oxyd.NeoTheology;
 /// </summary>
 public partial class SharedCruciformSystem : EntitySystem
 {
-    [Dependency] private readonly EntityLookupSystem _lookup = default!;
-    [Dependency] private readonly SharedTransformSystem _transform = default!;
+    [Dependency] private EntityLookupSystem _lookup = default!;
+    [Dependency] private SharedTransformSystem _transform = default!;
 
     public bool TryGetLinkedBearer(EntityUid body, EntityUid cruciform, out CruciformComponent component)
     {

@@ -5,8 +5,8 @@ namespace Content.Shared._Oxyd.Medical;
 /// <summary>Uses the native body relay and detachment APIs. It never deletes the detached organ or its children.</summary>
 public sealed partial class RoboticOrganSystem : EntitySystem
 {
-    [Dependency] private readonly BodySystem _body = default!;
-    [Dependency] private readonly DetachableOrganSystem _detachable = default!;
+    [Dependency] private BodySystem _body = default!;
+    [Dependency] private DetachableOrganSystem _detachable = default!;
 
     [SubscribeLocalEvent]
     private void OnCollect(Entity<RoboticOrganComponent> ent, ref BodyRelayedEvent<CollectRoboticOrgansEvent> args)

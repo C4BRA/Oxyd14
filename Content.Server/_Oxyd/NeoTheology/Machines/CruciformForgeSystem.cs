@@ -17,9 +17,9 @@ namespace Content.Server._Oxyd.NeoTheology.Machines;
 /// </summary>
 public sealed partial class CruciformForgeSystem : EntitySystem
 {
-    [Dependency] private readonly NeoTheologyMachineSystem _machines = default!;
-    [Dependency] private readonly LatheSystem _lathe = default!;
-    [Dependency] private readonly IPrototypeManager _prototypes = default!;
+    [Dependency] private NeoTheologyMachineSystem _machines = default!;
+    [Dependency] private LatheSystem _lathe = default!;
+    [Dependency] private IPrototypeManager _prototypes = default!;
 
     /// <summary>
     /// MakeCruciform bridge (Eris <c>rituals/machinery.dm:43-75</c>): the litany asks the forge to

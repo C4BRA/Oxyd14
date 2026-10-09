@@ -41,21 +41,21 @@ public sealed partial class CoreModuleBehaviorSystem : EntitySystem
     private static readonly ProtoId<CoreModulePrototype> CloningModule = "OxydNtModuleCloning";
     private static readonly ProtoId<CoreModulePrototype> UplinkModule = "OxydNtModuleUplink";
 
-    [Dependency] private readonly ISerializationManager _serialization = default!;
-    [Dependency] private readonly IPlayerManager _player = default!;
-    [Dependency] private readonly NtUplinkSystem _uplink = default!;
-    [Dependency] private readonly CruciformSystem _cruciform = default!;
-    [Dependency] private readonly NeoTheologyWorldSystem _world = default!;
-    [Dependency] private readonly SharedMindSystem _minds = default!;
-    [Dependency] private readonly MobStateSystem _mobState = default!;
-    [Dependency] private readonly CloningPodSystem _cloning = default!;
-    [Dependency] private readonly MetaDataSystem _metadata = default!;
-    [Dependency] private readonly HumanoidProfileSystem _profiles = default!;
-    [Dependency] private readonly SharedVisualBodySystem _visualBody = default!;
-    [Dependency] private readonly SharedSkillSystem _skills = default!;
-    [Dependency] private readonly BloodstreamSystem _bloodstream = default!;
-    [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly SharedRoleSystem _roles = default!;
+    [Dependency] private ISerializationManager _serialization = default!;
+    [Dependency] private IPlayerManager _player = default!;
+    [Dependency] private NtUplinkSystem _uplink = default!;
+    [Dependency] private CruciformSystem _cruciform = default!;
+    [Dependency] private NeoTheologyWorldSystem _world = default!;
+    [Dependency] private SharedMindSystem _minds = default!;
+    [Dependency] private MobStateSystem _mobState = default!;
+    [Dependency] private CloningPodSystem _cloning = default!;
+    [Dependency] private MetaDataSystem _metadata = default!;
+    [Dependency] private HumanoidProfileSystem _profiles = default!;
+    [Dependency] private SharedVisualBodySystem _visualBody = default!;
+    [Dependency] private SharedSkillSystem _skills = default!;
+    [Dependency] private BloodstreamSystem _bloodstream = default!;
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private SharedRoleSystem _roles = default!;
 
     [SubscribeLocalEvent]
     private void OnModuleInstalled(EntityUid cruciform, CruciformComponent comp, ref CoreModuleInstalledEvent args)

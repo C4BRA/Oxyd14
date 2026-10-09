@@ -13,7 +13,7 @@ namespace Content.Server._Oxyd.NeoTheology.Machines;
 /// </summary>
 public sealed partial class BiogeneratorSystem
 {
-    [Dependency] private readonly UserInterfaceSystem _ui = default!;
+    [Dependency] private UserInterfaceSystem _ui = default!;
 
     private const float ConsoleRefresh = 1f;
     private float _consoleAccum;

@@ -24,20 +24,20 @@ namespace Content.Server._Oxyd.NeoTheology;
 /// <summary>Source faction-item behavior, implemented with native interaction and DoAfter events.</summary>
 public sealed partial class NeoTheologyArtifactSystem : EntitySystem
 {
-    [Dependency] private readonly CruciformSystem _cruciform = default!;
-    [Dependency] private readonly EyeOfTheProtectorSystem _eye = default!;
-    [Dependency] private readonly NeoTheologyWorldSystem _world = default!;
-    [Dependency] private readonly SharedTransformSystem _transform = default!;
-    [Dependency] private readonly SharedContainerSystem _containers = default!;
-    [Dependency] private readonly SharedHandsSystem _hands = default!;
-    [Dependency] private readonly SharedDoAfterSystem _doAfter = default!;
-    [Dependency] private readonly EntityLookupSystem _lookup = default!;
-    [Dependency] private readonly ExamineSystemShared _examine = default!;
-    [Dependency] private readonly SharedStunSystem _stun = default!;
-    [Dependency] private readonly SharedSkillSystem _skills = default!;
-    [Dependency] private readonly MobStateSystem _mobState = default!;
-    [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly DamageableSystem _damage = default!;
+    [Dependency] private CruciformSystem _cruciform = default!;
+    [Dependency] private EyeOfTheProtectorSystem _eye = default!;
+    [Dependency] private NeoTheologyWorldSystem _world = default!;
+    [Dependency] private SharedTransformSystem _transform = default!;
+    [Dependency] private SharedContainerSystem _containers = default!;
+    [Dependency] private SharedHandsSystem _hands = default!;
+    [Dependency] private SharedDoAfterSystem _doAfter = default!;
+    [Dependency] private EntityLookupSystem _lookup = default!;
+    [Dependency] private ExamineSystemShared _examine = default!;
+    [Dependency] private SharedStunSystem _stun = default!;
+    [Dependency] private SharedSkillSystem _skills = default!;
+    [Dependency] private MobStateSystem _mobState = default!;
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private DamageableSystem _damage = default!;
 
     [SubscribeLocalEvent]
     private void OnSealUsed(Entity<NeoTheologySealComponent> ent, ref OddityUsedEvent args) =>

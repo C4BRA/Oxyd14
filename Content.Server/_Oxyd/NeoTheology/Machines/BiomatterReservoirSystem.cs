@@ -11,7 +11,7 @@ namespace Content.Server._Oxyd.NeoTheology.Machines;
 /// <summary>Native material storage replaces Eris liquid biomatter; transfers never destroy a balance.</summary>
 public sealed partial class BiomatterReservoirSystem : EntitySystem
 {
-    [Dependency] private readonly MaterialStorageSystem _materials = default!;
+    [Dependency] private MaterialStorageSystem _materials = default!;
 
     [SubscribeLocalEvent]
     private void OnPour(Entity<BiomatterReservoirComponent> ent, ref AfterInteractEvent args)

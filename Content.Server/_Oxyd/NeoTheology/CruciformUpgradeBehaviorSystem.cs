@@ -31,14 +31,14 @@ namespace Content.Server._Oxyd.NeoTheology;
 /// </summary>
 public sealed partial class CruciformUpgradeBehaviorSystem : EntitySystem
 {
-    [Dependency] private readonly CruciformSystem _cruciform = default!;
-    [Dependency] private readonly DamageableSystem _damageable = default!;
-    [Dependency] private readonly EntityLookupSystem _lookup = default!;
-    [Dependency] private readonly MobStateSystem _mobState = default!;
-    [Dependency] private readonly PlantTraySystem _plantTray = default!;
-    [Dependency] private readonly PlantHolderSystem _plantHolder = default!;
-    [Dependency] private readonly SharedTransformSystem _xform = default!;
-    [Dependency] private readonly IPrototypeManager _prototypes = default!;
+    [Dependency] private CruciformSystem _cruciform = default!;
+    [Dependency] private DamageableSystem _damageable = default!;
+    [Dependency] private EntityLookupSystem _lookup = default!;
+    [Dependency] private MobStateSystem _mobState = default!;
+    [Dependency] private PlantTraySystem _plantTray = default!;
+    [Dependency] private PlantHolderSystem _plantHolder = default!;
+    [Dependency] private SharedTransformSystem _xform = default!;
+    [Dependency] private IPrototypeManager _prototypes = default!;
 
     private static readonly ProtoId<DamageGroupPrototype> BruteGroup = "Brute";
     private static readonly ProtoId<DamageGroupPrototype> BurnGroup = "Burn";

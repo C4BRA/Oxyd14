@@ -21,12 +21,12 @@ namespace Content.Server._Oxyd.NeoTheology.Machines;
 /// </summary>
 public sealed partial class NeoTheologyDoorSystem : EntitySystem
 {
-    [Dependency] private readonly CruciformSystem _cruciform = default!;
-    [Dependency] private readonly DamageableSystem _damageable = default!;
-    [Dependency] private readonly SharedDoorSystem _doors = default!;
-    [Dependency] private readonly SharedHandsSystem _hands = default!;
-    [Dependency] private readonly EntityLookupSystem _lookup = default!;
-    [Dependency] private readonly SharedStackSystem _stack = default!;
+    [Dependency] private CruciformSystem _cruciform = default!;
+    [Dependency] private DamageableSystem _damageable = default!;
+    [Dependency] private SharedDoorSystem _doors = default!;
+    [Dependency] private SharedHandsSystem _hands = default!;
+    [Dependency] private EntityLookupSystem _lookup = default!;
+    [Dependency] private SharedStackSystem _stack = default!;
 
     /// <summary>Eris <c>REPAIR_DOOR_AMOUNT</c>: biomatter needed to repair one holy door.</summary>
     public const int RepairCost = 10;

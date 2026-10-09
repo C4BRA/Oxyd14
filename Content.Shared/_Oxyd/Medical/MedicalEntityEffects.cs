@@ -7,7 +7,7 @@ namespace Content.Shared._Oxyd.Medical;
 
 public sealed partial class AnalgesicEntityEffectSystem : EntityEffectSystem<PainComponent, Analgesic>
 {
-    [Dependency] private readonly PainSystem _pain = default!;
+    [Dependency] private PainSystem _pain = default!;
 
     protected override void Effect(Entity<PainComponent> entity, ref EntityEffectEvent<Analgesic> args)
     {

@@ -17,11 +17,11 @@ namespace Content.Server._Oxyd.NeoTheology.Machines;
 /// </summary>
 public sealed partial class AltarSystem : EntitySystem
 {
-    [Dependency] private readonly EntityLookupSystem _lookup = default!;
-    [Dependency] private readonly SharedStackSystem _stack = default!;
-    [Dependency] private readonly EyeOfTheProtectorSystem _eye = default!;
-    [Dependency] private readonly PaperSystem _paper = default!;
-    [Dependency] private readonly NeoTheologyMachineSystem _machines = default!;
+    [Dependency] private EntityLookupSystem _lookup = default!;
+    [Dependency] private SharedStackSystem _stack = default!;
+    [Dependency] private EyeOfTheProtectorSystem _eye = default!;
+    [Dependency] private PaperSystem _paper = default!;
+    [Dependency] private NeoTheologyMachineSystem _machines = default!;
 
     /// <summary>How far from the caster an altar still counts as theirs — the litany's own reach.</summary>
     private const float RitualReach = 1.5f;

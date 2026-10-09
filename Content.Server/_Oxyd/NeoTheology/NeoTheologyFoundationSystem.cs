@@ -37,23 +37,22 @@ namespace Content.Server._Oxyd.NeoTheology;
 /// </summary>
 public sealed partial class NeoTheologyFoundationSystem : EntitySystem
 {
-    [Dependency] private readonly CruciformSystem _cruciform = default!;
-    [Dependency] private readonly LitanyEffectSystem _effects = default!;
-    [Dependency] private readonly CruciformUpgradeSystem _upgrades = default!;
-    [Dependency] private readonly MobStateSystem _mobState = default!;
-    [Dependency] private readonly ExamineSystemShared _examine = default!;
-    [Dependency] private readonly DamageableSystem _damageable = default!;
-    [Dependency] private readonly EntityLookupSystem _lookup = default!;
-    [Dependency] private readonly NpcFactionSystem _factions = default!;
-    [Dependency] private readonly PlantGrowthSystem _plantGrowth = default!;
-    [Dependency] private readonly SharedPopupSystem _popup = default!;
-    [Dependency] private readonly AddictionSystem _addiction = default!;
-    [Dependency] private readonly PainSystem _pain = default!;
-    [Dependency] private readonly RoboticOrganSystem _roboticOrgans = default!;
-    [Dependency] private readonly SharedContainerSystem _containers = default!;
-    [Dependency] private readonly SharedProjectileSystem _projectiles = default!;
-    [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly IRobustRandom _random = default!;
+    [Dependency] private CruciformSystem _cruciform = default!;
+    [Dependency] private LitanyEffectSystem _effects = default!;
+    [Dependency] private CruciformUpgradeSystem _upgrades = default!;
+    [Dependency] private MobStateSystem _mobState = default!;
+    [Dependency] private ExamineSystemShared _examine = default!;
+    [Dependency] private DamageableSystem _damageable = default!;
+    [Dependency] private EntityLookupSystem _lookup = default!;
+    [Dependency] private NpcFactionSystem _factions = default!;
+    [Dependency] private PlantGrowthSystem _plantGrowth = default!;
+    [Dependency] private SharedPopupSystem _popup = default!;
+    [Dependency] private AddictionSystem _addiction = default!;
+    [Dependency] private PainSystem _pain = default!;
+    [Dependency] private RoboticOrganSystem _roboticOrgans = default!;
+    [Dependency] private SharedContainerSystem _containers = default!;
+    [Dependency] private SharedProjectileSystem _projectiles = default!;
+    [Dependency] private IRobustRandom _random = default!;
 
     /// <summary>Hostile fauna, matching the obelisk's set (the fork's simple-hostile marker).</summary>
     private static readonly FrozenSet<ProtoId<NpcFactionPrototype>> HostileFauna =

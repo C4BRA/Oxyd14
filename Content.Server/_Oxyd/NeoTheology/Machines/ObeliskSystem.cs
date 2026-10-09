@@ -17,17 +17,17 @@ namespace Content.Server._Oxyd.NeoTheology.Machines;
 /// <summary>Applies the obelisk aura to the visible targets from each view tick.</summary>
 public sealed partial class ObeliskSystem : EntitySystem
 {
-    [Dependency] private readonly CruciformSystem _cruciform = default!;
-    [Dependency] private readonly EyeOfTheProtectorSystem _eye = default!;
-    [Dependency] private readonly DamageableSystem _damageable = default!;
-    [Dependency] private readonly MobStateSystem _mobState = default!;
-    [Dependency] private readonly PlantTraySystem _tray = default!;
-    [Dependency] private readonly SanitySystem _sanity = default!;
-    [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly ViewCalcSystem _view = default!;
-    [Dependency] private readonly SharedTransformSystem _transform = default!;
-    [Dependency] private readonly NeoTheologyMachineSystem _machines = default!;
-    [Dependency] private readonly NpcFactionSystem _factions = default!;
+    [Dependency] private CruciformSystem _cruciform = default!;
+    [Dependency] private EyeOfTheProtectorSystem _eye = default!;
+    [Dependency] private DamageableSystem _damageable = default!;
+    [Dependency] private MobStateSystem _mobState = default!;
+    [Dependency] private PlantTraySystem _tray = default!;
+    [Dependency] private SanitySystem _sanity = default!;
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private ViewCalcSystem _view = default!;
+    [Dependency] private SharedTransformSystem _transform = default!;
+    [Dependency] private NeoTheologyMachineSystem _machines = default!;
+    [Dependency] private NpcFactionSystem _factions = default!;
 
     [SubscribeLocalEvent]
     private void OnInit(Entity<ObeliskComponent> ent, ref ComponentInit args)

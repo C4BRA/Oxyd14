@@ -18,7 +18,7 @@ public class ViewTickEvent : EntityEventArgs
 /// <see cref="MovementThreshold"/> tiles or the cached result is older than
 /// <see cref="StaleAfter"/>.
 /// </summary>
-public sealed class ViewCalcSystem : EntitySystem
+public sealed partial class ViewCalcSystem : EntitySystem
 {
     [Dependency] private RayCastSystem raycaster = default!;
     [Dependency] private TransformSystem transform = default!;

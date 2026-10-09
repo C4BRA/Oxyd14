@@ -14,7 +14,7 @@ namespace Content.Client;
 // this exists because i dont wanna bother with sheetlets.
 // also handles automatic scaling of the UI
 // Horrid , SPCR 2026
-public sealed class OxydStyler : UIController
+public sealed partial class OxydStyler : UIController
 {
     public const string DefaultTexture = "ErisStyleInit";
     public const string DigitalTexture = "ErisStyleDigitalInit";

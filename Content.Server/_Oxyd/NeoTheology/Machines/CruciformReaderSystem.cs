@@ -26,18 +26,18 @@ namespace Content.Server._Oxyd.NeoTheology.Machines;
 /// </summary>
 public sealed partial class CruciformReaderSystem : EntitySystem
 {
-    [Dependency] private readonly MaterialStorageSystem _materialStorage = default!;
-    [Dependency] private readonly CloningPodSystem _cloningPod = default!;
-    [Dependency] private readonly MobStateSystem _mobState = default!;
-    [Dependency] private readonly NeoTheologyMachineSystem _machines = default!;
-    [Dependency] private readonly SharedVisualBodySystem _visualBody = default!;
-    [Dependency] private readonly HumanoidProfileSystem _profile = default!;
-    [Dependency] private readonly MetaDataSystem _metadata = default!;
-    [Dependency] private readonly SharedContainerSystem _containers = default!;
-    [Dependency] private readonly IPlayerManager _players = default!;
+    [Dependency] private MaterialStorageSystem _materialStorage = default!;
+    [Dependency] private CloningPodSystem _cloningPod = default!;
+    [Dependency] private MobStateSystem _mobState = default!;
+    [Dependency] private NeoTheologyMachineSystem _machines = default!;
+    [Dependency] private SharedVisualBodySystem _visualBody = default!;
+    [Dependency] private HumanoidProfileSystem _profile = default!;
+    [Dependency] private MetaDataSystem _metadata = default!;
+    [Dependency] private SharedContainerSystem _containers = default!;
+    [Dependency] private IPlayerManager _players = default!;
     [Dependency] private DamageableSystem _damage = default!;
     [Dependency] private CruciformSystem _cruciform = default!;
-    [Dependency] private readonly CoreModuleBehaviorSystem _souls = default!;
+    [Dependency] private CoreModuleBehaviorSystem _souls = default!;
 
     [SubscribeLocalEvent]
     private void OnInserted(EntityUid uid, CruciformReaderComponent reader, EntInsertedIntoContainerMessage args)

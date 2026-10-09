@@ -21,11 +21,11 @@ public sealed partial class CruciformUpgradeSystem : EntitySystem
     /// <summary>Container inside the cruciform implant that holds the installed attachment.</summary>
     public const string UpgradeContainerId = "cruciform_upgrade";
 
-    [Dependency] private readonly CruciformSystem _cruciform = default!;
-    [Dependency] private readonly LitanyEffectSystem _effects = default!;
-    [Dependency] private readonly SharedContainerSystem _containers = default!;
-    [Dependency] private readonly MovementSpeedModifierSystem _movement = default!;
-    [Dependency] private readonly CoreModuleSystem _modules = default!;
+    [Dependency] private CruciformSystem _cruciform = default!;
+    [Dependency] private LitanyEffectSystem _effects = default!;
+    [Dependency] private SharedContainerSystem _containers = default!;
+    [Dependency] private MovementSpeedModifierSystem _movement = default!;
+    [Dependency] private CoreModuleSystem _modules = default!;
 
     [SubscribeLocalEvent]
     private void OnInstallCoreUpgrade(Entity<CruciformCoreUpgradeComponent> ent, ref AfterInteractEvent args)

@@ -19,7 +19,7 @@ namespace Content.Server._Oxyd.NeoTheology;
 /// </summary>
 public sealed partial class LitanySystem
 {
-    [Dependency] private readonly SharedStunSystem _stun = default!;
+    [Dependency] private SharedStunSystem _stun = default!;
 
     /// <summary>
     /// True when the litany is a ceremony that only a priest or inquisitor may start
@@ -338,7 +338,7 @@ public sealed partial class LitanySystem
         return TryComp(starter, out ceremony);
     }
 
-    [Dependency] private readonly NeoTheologyWorldSystem _world = default!;
+    [Dependency] private NeoTheologyWorldSystem _world = default!;
 
     [SubscribeLocalEvent]
     private void OnSanctifyArea(Entity<CruciformBearerComponent> ent, ref LitanySanctifyAreaEvent args)

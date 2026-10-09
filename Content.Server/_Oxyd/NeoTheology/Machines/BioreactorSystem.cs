@@ -36,14 +36,13 @@ public sealed partial class BioreactorSystem : EntitySystem
     private static readonly EntProtoId BiomatterProto = NeoTheologyPrototypes.BiomatterEnt;
     private static readonly ProtoId<MaterialPrototype> BiomatterMaterial = NeoTheologyPrototypes.BiomatterMaterial;
 
-    [Dependency] private readonly EntityLookupSystem _lookup = default!;
-    [Dependency] private readonly NeoTheologyMachineSystem _machines = default!;
-    [Dependency] private readonly SharedStackSystem _stack = default!;
-    [Dependency] private readonly MobStateSystem _mobState = default!;
-    [Dependency] private readonly SharedContainerSystem _containers = default!;
-    [Dependency] private readonly SharedHandsSystem _hands = default!;
-    [Dependency] private readonly SharedMapSystem _map = default!;
-    [Dependency] private readonly SharedTransformSystem _transform = default!;
+    [Dependency] private EntityLookupSystem _lookup = default!;
+    [Dependency] private NeoTheologyMachineSystem _machines = default!;
+    [Dependency] private SharedStackSystem _stack = default!;
+    [Dependency] private MobStateSystem _mobState = default!;
+    [Dependency] private SharedContainerSystem _containers = default!;
+    [Dependency] private SharedHandsSystem _hands = default!;
+    [Dependency] private SharedMapSystem _map = default!;
 
     /// <summary>
     /// BioreactorSolution bridge (Eris <c>rituals/machinery.dm:200-213</c>): the litany pumps the
@@ -231,7 +230,7 @@ public sealed partial class BioreactorSystem : EntitySystem
                 continue;
 
             // Bolted-down structures are what jam the door; loose crops get processed instead.
-            if (!HasComp<ProduceComponent>(ent) && TryComp<TransformComponent>(ent, out var xform) && xform.Anchored)
+            if (!HasComp<ProduceComponent>(ent) && Transform(ent).Anchored)
             {
                 return true;
             }

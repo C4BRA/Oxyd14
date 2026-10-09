@@ -34,12 +34,12 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
     [Dependency] private SharedContainerSystem _containers = default!;
     [Dependency] private MobStateSystem _mobStates = default!;
     [Dependency] private IGameTiming _timing = default!;
-    [Dependency] private readonly CoreModuleSystem _modules = default!;
-    [Dependency] private readonly SharedSubdermalImplantSystem _implants = default!;
-    [Dependency] private readonly MovementSpeedModifierSystem _movement = default!;
-    [Dependency] private readonly CoreModuleBehaviorSystem _souls = default!;
-    [Dependency] private readonly NeoTheologyWorldSystem _world = default!;
-    [Dependency] private readonly NeoTheologyFoundationSystem _foundation = default!;
+    [Dependency] private CoreModuleSystem _modules = default!;
+    [Dependency] private SharedSubdermalImplantSystem _implants = default!;
+    [Dependency] private MovementSpeedModifierSystem _movement = default!;
+    [Dependency] private CoreModuleBehaviorSystem _souls = default!;
+    [Dependency] private NeoTheologyWorldSystem _world = default!;
+    [Dependency] private NeoTheologyFoundationSystem _foundation = default!;
 
     /// <summary>
     /// Epiphany bridge: the shared litany effect cannot call this server system, so it

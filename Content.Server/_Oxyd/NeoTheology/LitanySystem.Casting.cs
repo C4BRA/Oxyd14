@@ -25,9 +25,9 @@ namespace Content.Server._Oxyd.NeoTheology;
 public sealed partial class LitanySystem
 {
     // P4.1 target resolution (TryResolveTargets).
-    [Dependency] private readonly EntityLookupSystem _lookup = default!;
-    [Dependency] private readonly ExamineSystemShared _examine = default!;
-    [Dependency] private readonly MobStateSystem _mobState = default!;
+    [Dependency] private EntityLookupSystem _lookup = default!;
+    [Dependency] private ExamineSystemShared _examine = default!;
+    [Dependency] private MobStateSystem _mobState = default!;
 
     private bool StartCastDoAfter(PendingLitanyCast cast, TimeSpan delay, bool requireBook)
     {

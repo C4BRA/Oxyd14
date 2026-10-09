@@ -15,7 +15,7 @@ namespace Content.Server._Oxyd.Medical;
 
 public sealed partial class AddictiveEntityEffectSystem : EntityEffectSystem<BloodstreamComponent, Addictive>
 {
-    [Dependency] private readonly AddictionSystem _addiction = default!;
+    [Dependency] private AddictionSystem _addiction = default!;
 
     protected override void Effect(Entity<BloodstreamComponent> entity, ref EntityEffectEvent<Addictive> args)
     {
@@ -26,12 +26,12 @@ public sealed partial class AddictiveEntityEffectSystem : EntityEffectSystem<Blo
 /// <summary>Tracks dependence through exposure, satisfaction, withdrawal, and recovery.</summary>
 public sealed partial class AddictionSystem : EntitySystem
 {
-    [Dependency] private readonly SharedSolutionContainerSystem _solutions = default!;
-    [Dependency] private readonly MobStateSystem _mobs = default!;
-    [Dependency] private readonly SanitySystem _sanity = default!;
-    [Dependency] private readonly SharedPopupSystem _popup = default!;
-    [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly IPrototypeManager _prototypes = default!;
+    [Dependency] private SharedSolutionContainerSystem _solutions = default!;
+    [Dependency] private MobStateSystem _mobs = default!;
+    [Dependency] private SanitySystem _sanity = default!;
+    [Dependency] private SharedPopupSystem _popup = default!;
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private IPrototypeManager _prototypes = default!;
 
     [SubscribeLocalEvent]
     private void OnRejuvenate(EntityUid uid, AddictionComponent comp, RejuvenateEvent args)

@@ -22,12 +22,12 @@ namespace Content.Server._Oxyd.NeoTheology;
 /// </summary>
 public sealed partial class NeoTheologyConstructionSystem : EntitySystem
 {
-    [Dependency] private readonly EntityLookupSystem _lookup = default!;
-    [Dependency] private readonly SharedCruciformSystem _cruciform = default!;
-    [Dependency] private readonly SharedPopupSystem _popup = default!;
-    [Dependency] private readonly SharedStackSystem _stack = default!;
-    [Dependency] private readonly IPrototypeManager _prototypes = default!;
-    [Dependency] private readonly SharedTransformSystem _xform = default!;
+    [Dependency] private EntityLookupSystem _lookup = default!;
+    [Dependency] private SharedCruciformSystem _cruciform = default!;
+    [Dependency] private SharedPopupSystem _popup = default!;
+    [Dependency] private SharedStackSystem _stack = default!;
+    [Dependency] private IPrototypeManager _prototypes = default!;
+    [Dependency] private SharedTransformSystem _xform = default!;
 
     /// <summary>Eris forbids a second Eye of the Protector in the area.</summary>
     private static readonly EntProtoId EyeOfTheProtector = "OxydNtEyeOfTheProtector";

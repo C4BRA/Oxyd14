@@ -19,8 +19,8 @@ namespace Content.Server._Oxyd.NeoTheology.Machines;
 /// </remarks>
 public sealed partial class BiogeneratorSystem : EntitySystem
 {
-    [Dependency] private readonly GeneratorSystem _generator = default!;
-    [Dependency] private readonly NeoTheologyMachineSystem _machines = default!;
+    [Dependency] private GeneratorSystem _generator = default!;
+    [Dependency] private NeoTheologyMachineSystem _machines = default!;
 
     /// <summary>
     /// Eris <c>power_biogen_awake</c>: switches the machine on or off. The generator carries a

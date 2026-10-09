@@ -35,17 +35,17 @@ public sealed partial class LitanySystem : EntitySystem
     /// <summary>Server limit for a Sending message, matching the client edit limit.</summary>
     public const int MaxChoicePlainTextLength = 512;
 
-    [Dependency] private readonly ActionBlockerSystem _actionBlocker = default!;
-    [Dependency] private readonly ChatSystem _chat = default!;
-    [Dependency] private readonly CruciformSystem _cruciform = default!;
-    [Dependency] private readonly LitanyEffectSystem _effects = default!;
-    [Dependency] private readonly LitanyPrototypeValidationSystem _catalog = default!;
-    [Dependency] private readonly SharedDoAfterSystem _doAfter = default!;
-    [Dependency] private readonly SharedHandsSystem _hands = default!;
+    [Dependency] private ActionBlockerSystem _actionBlocker = default!;
+    [Dependency] private ChatSystem _chat = default!;
+    [Dependency] private CruciformSystem _cruciform = default!;
+    [Dependency] private LitanyEffectSystem _effects = default!;
+    [Dependency] private LitanyPrototypeValidationSystem _catalog = default!;
+    [Dependency] private SharedDoAfterSystem _doAfter = default!;
+    [Dependency] private SharedHandsSystem _hands = default!;
     [Dependency] private SharedTransformSystem _xform = default!;
-    [Dependency] private readonly SharedUserInterfaceSystem _ui = default!;
-    [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly SanitySystem _sanity = default!;
+    [Dependency] private SharedUserInterfaceSystem _ui = default!;
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private SanitySystem _sanity = default!;
 
     private ulong _requestNonce;
 

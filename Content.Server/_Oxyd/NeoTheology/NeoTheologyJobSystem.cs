@@ -10,7 +10,7 @@ namespace Content.Server._Oxyd.NeoTheology;
 /// </summary>
 public sealed partial class NeoTheologyJobSystem : EntitySystem
 {
-    [Dependency] private readonly CruciformSystem _cruciform = default!;
+    [Dependency] private CruciformSystem _cruciform = default!;
 
     public override void Initialize()
     {

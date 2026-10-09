@@ -19,12 +19,12 @@ namespace Content.Server._Oxyd.NeoTheology;
 /// <summary>Native objectives consume conversion/revelation/sanctification/destruction, rather than orphaned signals.</summary>
 public sealed partial class NeoTheologyWorldSystem : EntitySystem
 {
-    [Dependency] private readonly CruciformSystem _cruciform = default!;
-    [Dependency] private readonly SharedMindSystem _minds = default!;
-    [Dependency] private readonly MobStateSystem _mobState = default!;
-    [Dependency] private readonly MetaDataSystem _metadata = default!;
-    [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly SharedTransformSystem _transform = default!;
+    [Dependency] private CruciformSystem _cruciform = default!;
+    [Dependency] private SharedMindSystem _minds = default!;
+    [Dependency] private MobStateSystem _mobState = default!;
+    [Dependency] private MetaDataSystem _metadata = default!;
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private SharedTransformSystem _transform = default!;
 
     private static readonly EntProtoId[] Objectives =
     {
