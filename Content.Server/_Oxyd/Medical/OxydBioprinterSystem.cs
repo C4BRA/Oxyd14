@@ -106,7 +106,7 @@ public sealed class OxydBioprinterSystem : EntitySystem
 
         if (comp.StoredMatter < product.Cost)
         {
-            _popup.PopupEntity(Loc.GetString("oxyd-bioprinter-no-matter"), uid, uid);
+            _popup.PopupEntity(Loc.GetString("oxyd-bioprinter-no-matter"), uid, PopupType.Small);
             return;
         }
 
@@ -117,7 +117,7 @@ public sealed class OxydBioprinterSystem : EntitySystem
         _appearance.SetData(uid, OxydMachineVisuals.Working, true);
 
         Spawn(product.Proto, Transform(uid).Coordinates);
-        _popup.PopupEntity(Loc.GetString("oxyd-bioprinter-printed"), uid, uid);
+        _popup.PopupEntity(Loc.GetString("oxyd-bioprinter-printed"), uid, PopupType.Small);
         PushState(uid, comp);
     }
 

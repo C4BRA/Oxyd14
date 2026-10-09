@@ -23,7 +23,7 @@ public sealed partial class OxydBioprinterWindow : FancyWindow
     private readonly Label _matterLabel = new();
     private readonly Label _sampleLabel = new();
     private readonly Label _workingLabel = new();
-    private readonly BoxContainer _products = new();
+    private readonly BoxContainer _products = new() { Orientation = LayoutOrientation.Vertical, SeparationOverride = 4 };
 
     public OxydBioprinterWindow()
     {

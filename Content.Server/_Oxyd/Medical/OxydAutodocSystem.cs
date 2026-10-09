@@ -122,7 +122,7 @@ public sealed partial class OxydAutodocSystem : EntitySystem
         var balance = GetBalance(uid);
         if (amount > balance)
         {
-            _popup.PopupEntity(Loc.GetString("oxyd-medical-autodoc-insufficient"), uid, uid);
+            _popup.PopupEntity(Loc.GetString("oxyd-medical-autodoc-insufficient"), uid, PopupType.Small);
             return false;
         }
 
@@ -225,7 +225,7 @@ public sealed partial class OxydAutodocSystem : EntitySystem
     {
         if (comp.Running)
         {
-            _popup.PopupEntity(Loc.GetString("oxyd-medical-autodoc-locked"), uid, uid);
+            _popup.PopupEntity(Loc.GetString("oxyd-medical-autodoc-locked"), uid, PopupType.Small);
             return;
         }
         if (BodySlot(uid).ContainedEntity is { } occ)
@@ -315,7 +315,7 @@ public sealed partial class OxydAutodocSystem : EntitySystem
     {
         if (cost <= 0)
         {
-            _popup.PopupEntity(Loc.GetString("oxyd-medical-autodoc-nothing"), uid, uid);
+            _popup.PopupEntity(Loc.GetString("oxyd-medical-autodoc-nothing"), uid, PopupType.Small);
             return;
         }
         if (!Charge(uid, comp, cost))
@@ -386,7 +386,7 @@ public sealed partial class OxydAutodocSystem : EntitySystem
             {
                 comp.Running = false;
                 _appearance.SetData(uid, OxydMachineVisuals.Working, false);
-                _popup.PopupEntity(Loc.GetString("oxyd-medical-autodoc-done"), uid, uid);
+                _popup.PopupEntity(Loc.GetString("oxyd-medical-autodoc-done"), uid, PopupType.Small);
                 Dirty(uid, comp);
                 PushState(uid, comp);
                 continue;

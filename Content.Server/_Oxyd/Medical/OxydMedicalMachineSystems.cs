@@ -10,6 +10,7 @@ using Content.Shared.Temperature.Components;
 using Robust.Shared.Prototypes;
 using Content.Shared.Body;
 using Content.Shared.Body.Components;
+using Content.Shared.Body.Systems;
 using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Damage;
 using Content.Shared.DragDrop;
@@ -40,6 +41,7 @@ public sealed partial class OxydMedicalScannerSystem : EntitySystem
     [Dependency] private readonly OxydNsaSystem _nsa = default!;
     [Dependency] private readonly SharedSolutionContainerSystem _solutions = default!;
     [Dependency] private readonly MobStateSystem _mobs = default!;
+    [Dependency] private readonly BloodstreamSystem _bloodstream = default!;
 
     private static readonly EntProtoId UiProxyProto = "OxydMedicalScannerUiProxy";
 
@@ -103,7 +105,9 @@ public sealed partial class OxydMedicalScannerSystem : EntitySystem
         if (_solutions.TryGetSolution(patient, BloodstreamComponent.DefaultBloodSolutionName, out _, out var blood))
         {
             state.BloodLevel = blood.Volume.Float();
-            state.BloodMax = blood.MaxVolume.Float();
+            // GetBloodLevel is 0..MaxVolumeModifier vs the real bloodstream max; the
+            // solution's own MaxVolume is just container capacity (reads ~50% full).
+            state.BloodMax = blood.Volume.Float() / MathF.Max(_bloodstream.GetBloodLevel(patient), 0.0001f);
         }
 
         foreach (var (orgUid, organ, surg) in _wounds.GetOrgans(patient))

@@ -102,7 +102,7 @@ public sealed partial class OxydResuscitateEntityEffectSystem : EntityEffectSyst
         }
 
         _mobState.ChangeMobState(uid, MobState.Critical);
-        _popup.PopupEntity(Loc.GetString("oxyd-resuscitate-twitch"), uid, uid);
+        _popup.PopupEntity(Loc.GetString("oxyd-resuscitate-twitch"), uid, PopupType.Medium);
 
         // Eris remove_self(60): the dose burns itself out on a successful revive.
         if (_solutions.TryGetSolution(uid, BloodstreamComponent.DefaultBloodSolutionName,
