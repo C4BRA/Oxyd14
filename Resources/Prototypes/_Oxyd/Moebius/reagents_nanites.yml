@@ -1,5 +1,7 @@
 # Eris nanite reagents (code/modules/reagents/reagents/nanites.dm). Nanites are stronger but
 # pricier than medicines; overdose and purge mechanics ride the shared effects.
+# R2 sweep adds the inert uncapped-nanites base (Eris "uncap nanites"; a programming substrate
+# made by overclocking capped nanites, so it has no own effects).
 
 - type: reagent
   id: OxydNanoArad
@@ -319,3 +321,18 @@
         amount: 0.5
       - !type:Nsa
         value: 1
+
+- type: reagent
+  id: OxydNanoUncapped
+  name: oxyd-reagent-uncapped-nanites
+  desc: oxyd-reagent-uncapped-nanites-desc
+  group: Nanites
+  physicalDesc: reagent-physical-desc-translucent
+  flavor: medicine
+  color: "#4a4a4a"
+  metabolisms:
+    Bloodstream:
+      metabolismRate: 0.01
+      effects:
+      - !type:Nsa
+        value: 0.5

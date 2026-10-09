@@ -3,6 +3,7 @@
 # oculine, hyronalin, arithrazine, ipecac, chloralhydrate, haloperidol, tramadol-free opioids —
 # those are reused, not duplicated. These are the Eris-unique entries.
 # P1 sweep adds kognim (InflictPain) and resuscitator (Resuscitate) from other.dm/medicine.dm.
+# R2 sweep adds the inert positive/negative paragenetic markers (Eris negativeling/positiveling).
 # "Poison" damage type is Eris toxin; "Cellular" covers organ/genetic mending.
 
 - type: reagent
@@ -739,3 +740,33 @@
       metabolismRate: 1.0
       effects:
       - !type:Resuscitate
+
+- type: reagent
+  id: OxydMedParageneticMarkersNegative
+  name: oxyd-reagent-paragenetic-markers-negative
+  desc: oxyd-reagent-paragenetic-markers-negative-desc
+  group: Medicine
+  physicalDesc: reagent-physical-desc-translucent
+  flavor: medicine
+  color: "#022000"
+  metabolisms:
+    Bloodstream:
+      metabolismRate: 0.01
+      effects:
+      - !type:Nsa
+        value: 0.5
+
+- type: reagent
+  id: OxydMedParageneticMarkersPositive
+  name: oxyd-reagent-paragenetic-markers-positive
+  desc: oxyd-reagent-paragenetic-markers-positive-desc
+  group: Medicine
+  physicalDesc: reagent-physical-desc-translucent
+  flavor: medicine
+  color: "#910000"
+  metabolisms:
+    Bloodstream:
+      metabolismRate: 0.01
+      effects:
+      - !type:Nsa
+        value: 0.5

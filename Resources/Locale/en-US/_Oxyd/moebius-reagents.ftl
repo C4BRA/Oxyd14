@@ -188,3 +188,13 @@ oxyd-reagent-xenomicrobes = xenomicrobes
 oxyd-reagent-xenomicrobes-desc = Microbes with an entirely alien cellular structure.
 oxyd-reagent-zombie-powder = zombie powder
 oxyd-reagent-zombie-powder-desc = A strong neurotoxin that puts the subject into a death-like state.
+
+## R2 sweep
+oxyd-reagent-uncapped-nanites = uncapped nanobots
+oxyd-reagent-uncapped-nanites-desc = Microscopic construction robots with safety overridden. Valuable, but useless without programming.
+oxyd-reagent-paragenetic-markers-negative = negative paragenetic marker
+oxyd-reagent-paragenetic-markers-negative-desc = A marker compound that turns positive when put in contact with morphogenic mutant blood.
+oxyd-reagent-paragenetic-markers-positive = positive paragenetic marker
+oxyd-reagent-paragenetic-markers-positive-desc = This marker compound has come in contact with morphogenic mutant blood.
+oxyd-reagent-oddity-tea = odd tea
+oxyd-reagent-oddity-tea-desc = Unusually refreshing tea with tiny golden bits floating in it.
