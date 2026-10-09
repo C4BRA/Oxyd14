@@ -296,3 +296,81 @@
     Iron: { amount: 2 }
   products:
     OxydStimProSurgeon: 4
+
+# P1 sweep. Resuscitator has no chem recipe in Eris (enricher oddity makes it); roach/spider
+# venoms (pararein, aranecolmin, diplopterum, seligitillin, starkellin, gewaltine, fuhrerole,
+# kaiseraurum, blattedin) plus biomatter/tar/xenomicrobes are harvested, not synthesized.
+
+- type: reaction
+  id: OxydKognim
+  reactants:
+    Radium: { amount: 1 }
+    OxydMedRyetalyn: { amount: 2 }
+    Synaptizine: { amount: 1 }
+  products:
+    OxydMedKognim: 2
+
+- type: reaction
+  id: OxydArectine
+  reactants:
+    Ethanol: { amount: 1 }
+    Dylovene: { amount: 1 }
+    WeldingFuel: { amount: 1 }
+  products:
+    OxydDrugArectine: 3
+
+- type: reaction
+  id: OxydAdrenaline
+  reactants:
+    Blood: { amount: 3 }
+    Dexalin: { amount: 1 }
+  products:
+    OxydStimAdrenaline: 4
+  minTemp: 373
+
+- type: reaction
+  id: OxydCyanide
+  reactants:
+    Toxin: { amount: 5 }
+    MindbreakerToxin: { amount: 3 }
+    OxydToxFuhrerole: { amount: 2 }
+  products:
+    OxydToxCyanide: 2
+  maxTemp: 33
+  minTemp: 10
+
+- type: reaction
+  id: OxydPlasticide
+  reactants:
+    Oil: { amount: 1 }
+    Ethanol: { amount: 1 }
+    Silicon: { amount: 1 }
+  products:
+    OxydToxPlasticide: 3
+  maxTemp: 270
+
+- type: reaction
+  id: OxydPotassiumChloride
+  reactants:
+    TableSalt: { amount: 1 }
+    Potassium: { amount: 1 }
+  products:
+    OxydToxPotassiumChloride: 2
+
+- type: reaction
+  id: OxydPotassiumChlorophoride
+  reactants:
+    OxydToxPotassiumChloride: { amount: 1 }
+    Plasma: { amount: 1 }
+    ChloralHydrate: { amount: 1 }
+  products:
+    OxydToxPotassiumChlorophoride: 4
+
+- type: reaction
+  id: OxydZombiePowder
+  reactants:
+    CarpoToxin: { amount: 5 }
+    ChloralHydrate: { amount: 5 }
+    Copper: { amount: 5 }
+  products:
+    OxydToxZombiePowder: 2

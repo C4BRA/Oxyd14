@@ -1,6 +1,7 @@
 # Eris combat stims (code/modules/reagents/reagents/stims.dm). Each stim grants a timed skill
 # buff to one stat and a debuff to others while it metabolises; overdose is toxin damage.
 # Buff magnitudes: ADEPT ≈ 3, EXPERT ≈ 5 (Eris 25/40 mapped to the _Oxyd skill scale).
+# P1 sweep adds adrenaline (Organic/Stimulator from other.dm: TGH buff + painkiller + tox).
 
 - type: reagent
   id: OxydStimMbr
@@ -439,3 +440,29 @@
         reagent: OxydStimMenace
         threshold: 8
         addictionChance: 0.5
+
+- type: reagent
+  id: OxydStimAdrenaline
+  name: oxyd-reagent-adrenaline
+  desc: oxyd-reagent-adrenaline-desc
+  group: Stims
+  physicalDesc: reagent-physical-desc-translucent
+  flavor: medicine
+  color: "#C8A5DC"
+  metabolisms:
+    Bloodstream:
+      metabolismRate: 0.02
+      effects:
+      - !type:Analgesic
+        source: OxydStimAdrenaline
+        strength: 15
+      - !type:Stim
+        stimId: adrenaline
+        skill: Tgh
+        amount: 3
+      - !type:HealthChange
+        damage:
+          types:
+            Poison: 1.5
+      - !type:Nsa
+        value: 2

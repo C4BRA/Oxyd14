@@ -2,6 +2,7 @@
 # bicaridine, kelotane, dylovene, dexalin(+,cryo), inaprovaline, tricordrazine, synaptizine,
 # oculine, hyronalin, arithrazine, ipecac, chloralhydrate, haloperidol, tramadol-free opioids —
 # those are reused, not duplicated. These are the Eris-unique entries.
+# P1 sweep adds kognim (InflictPain) and resuscitator (Resuscitate) from other.dm/medicine.dm.
 # "Poison" damage type is Eris toxin; "Cellular" covers organ/genetic mending.
 
 - type: reagent
@@ -702,6 +703,23 @@
       effects:
       - !type:Nsa
         value: 0.5
+
+- type: reagent
+  id: OxydMedKognim
+  name: oxyd-reagent-kognim
+  desc: oxyd-reagent-kognim-desc
+  group: Medicine
+  physicalDesc: reagent-physical-desc-nondescript
+  flavor: medicine
+  color: "#224422"
+  metabolisms:
+    Bloodstream:
+      metabolismRate: 0.02
+      effects:
+      - !type:InflictPain
+        amount: 4
+      - !type:Nsa
+        value: 1
 
 # Eris resuscitator (reagents/other.dm): injectable-only cardiac stimulant.
 # Wrecks the heart each tick; revives the dead inside the 15-minute window if

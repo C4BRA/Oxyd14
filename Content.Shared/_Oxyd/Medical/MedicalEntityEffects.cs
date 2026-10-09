@@ -73,3 +73,23 @@ public sealed partial class Resuscitate : EntityEffectBase<Resuscitate>
     public override string EntityEffectGuidebookText(IPrototypeManager prototype, IEntitySystemManager entSys) =>
         Loc.GetString("entity-effect-guidebook-resuscitate", ("chance", Probability));
 }
+
+/// <summary>Adds temporary pain while metabolised (Eris kognim halloss + pain()).</summary>
+public sealed partial class InflictPainEntityEffectSystem : EntityEffectSystem<PainComponent, InflictPain>
+{
+    [Dependency] private readonly PainSystem _pain = default!;
+
+    protected override void Effect(Entity<PainComponent> entity, ref EntityEffectEvent<InflictPain> args)
+    {
+        _pain.AddPain(entity, args.Effect.Amount * args.Scale);
+    }
+}
+
+public sealed partial class InflictPain : EntityEffectBase<InflictPain>
+{
+    [DataField(required: true)]
+    public float Amount;
+
+    public override string EntityEffectGuidebookText(IPrototypeManager prototype, IEntitySystemManager entSys) =>
+        Loc.GetString("oxyd-medical-effect-inflict-pain");
+}

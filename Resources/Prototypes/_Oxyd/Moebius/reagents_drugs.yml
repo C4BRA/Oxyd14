@@ -1,5 +1,6 @@
 # Eris recreational drugs and toxins used by Moebius (code/modules/reagents/reagents/drugs.dm).
 # Space drugs, nicotine and cryptobiolin exist natively — these are the Eris-unique entries.
+# P1 sweep adds arectine (Glow + Ignite overdose) from other.dm.
 
 - type: reagent
   id: OxydDrugSerotrotium
@@ -195,3 +196,29 @@
         reagent: OxydDrugSanguinumExtract
         threshold: 15
         addictionChance: 0.2
+
+- type: reagent
+  id: OxydDrugArectine
+  name: oxyd-reagent-arectine
+  desc: oxyd-reagent-arectine-desc
+  group: Drugs
+  physicalDesc: reagent-physical-desc-translucent
+  flavor: medicine
+  color: "#a6b85b"
+  metabolisms:
+    Bloodstream:
+      metabolismRate: 0.02
+      effects:
+      - !type:Glow
+        color: "#a6b85b"
+        radius: 2
+      - !type:Addictive
+        reagent: OxydDrugArectine
+        threshold: 25
+        addictionChance: 0.05
+      - !type:Ignite
+        conditions:
+        - !type:ReagentCondition
+          reagent: OxydDrugArectine
+          min: 25
+        probability: 0.1
