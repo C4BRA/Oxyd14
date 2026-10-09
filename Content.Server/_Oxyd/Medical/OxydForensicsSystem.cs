@@ -66,24 +66,31 @@ public sealed partial class OxydForensicsSystem : EntitySystem
         if (args.Handled || !args.CanReach || args.Target is not { } target)
             return;
 
-        if (!HasComp<MobStateComponent>(target) || !HasComp<DamageableComponent>(target))
-            return;
+        args.Handled = TryAutopsyScan(args.User, uid, target);
+    }
 
-        args.Handled = true;
+    /// <summary>Entry point for both AfterInteractEvent and the body InteractUsing path
+    /// (corpses: the mob's strip-UI click consumes AfterInteract, so OxydSurgerySystem's
+    /// BodyComponent handler routes here). Returns whether the click was handled.</summary>
+    public bool TryAutopsyScan(EntityUid user, Entity<OxydAutopsyScannerComponent> uid, EntityUid target)
+    {
+        if (!HasComp<MobStateComponent>(target) || !HasComp<DamageableComponent>(target))
+            return false;
 
         if (!_mobs.IsDead(target))
         {
-            _popup.PopupEntity(Loc.GetString("oxyd-autopsy-not-dead"), uid, args.User);
-            return;
+            _popup.PopupEntity(Loc.GetString("oxyd-autopsy-not-dead"), uid, user);
+            return true;
         }
 
-        _popup.PopupEntity(Loc.GetString("oxyd-autopsy-scan-start"), uid, args.User);
-        _doAfter.TryStartDoAfter(new DoAfterArgs(EntityManager, args.User, uid.Comp.ScanDelay,
+        _popup.PopupEntity(Loc.GetString("oxyd-autopsy-scan-start"), uid, user);
+        _doAfter.TryStartDoAfter(new DoAfterArgs(EntityManager, user, uid.Comp.ScanDelay,
                 new OxydAutopsyDoAfterEvent(), uid, target: target, used: uid)
         {
             NeedHand = true,
             BreakOnMove = true,
         });
+        return true;
     }
 
     private void OnAutopsyDoAfter(Entity<OxydAutopsyScannerComponent> uid, ref OxydAutopsyDoAfterEvent args)

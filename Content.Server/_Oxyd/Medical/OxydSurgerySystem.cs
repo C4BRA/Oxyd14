@@ -39,6 +39,7 @@ public sealed partial class OxydSurgerySystem : EntitySystem
     [Dependency] private readonly UserInterfaceSystem _ui = default!;
     [Dependency] private readonly DoAfterSystem _doAfter = default!;
     [Dependency] private readonly OxydWoundSystem _wounds = default!;
+    [Dependency] private readonly OxydForensicsSystem _forensics = default!;
     [Dependency] private readonly DetachableOrganSystem _detach = default!;
     [Dependency] private readonly SharedContainerSystem _container = default!;
     [Dependency] private readonly DamageableSystem _damage = default!;
@@ -128,6 +129,14 @@ public sealed partial class OxydSurgerySystem : EntitySystem
         {
             args.Handled = true;
             _medicalScanner.OpenScanUi(args.User, uid);
+            return;
+        }
+
+        // Autopsy scanner on a cadaver - AfterInteract loses to the mob's strip-UI
+        // click on corpses, so the body-side event is the reliable path.
+        if (TryComp<OxydAutopsyScannerComponent>(args.Used, out var autopsy))
+        {
+            args.Handled = _forensics.TryAutopsyScan(args.User, (args.Used, autopsy), uid);
             return;
         }
 
