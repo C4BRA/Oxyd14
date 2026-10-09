@@ -41,15 +41,15 @@ public sealed partial class OxydResuscitateEntityEffectSystem : EntityEffectSyst
     public override void Initialize()
     {
         base.Initialize();
-        SubscribeLocalEvent<MobStateComponent, MobStateChangedEvent>(OnMobStateChanged);
+        SubscribeAllEvent<MobStateChangedEvent>(OnMobStateChanged);
     }
 
-    private void OnMobStateChanged(Entity<MobStateComponent> ent, ref MobStateChangedEvent args)
+    private void OnMobStateChanged(MobStateChangedEvent args)
     {
         if (args.NewMobState == MobState.Dead)
-            _timeOfDeath[ent.Owner] = _timing.CurTime;
+            _timeOfDeath[args.Target] = _timing.CurTime;
         else
-            _timeOfDeath.Remove(ent.Owner);
+            _timeOfDeath.Remove(args.Target);
     }
 
     protected override void Effect(Entity<BloodstreamComponent> entity, ref EntityEffectEvent<Resuscitate> args)
