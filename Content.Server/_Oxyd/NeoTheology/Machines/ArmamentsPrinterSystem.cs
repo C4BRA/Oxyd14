@@ -93,6 +93,29 @@ public sealed partial class ArmamentsPrinterSystem : EntitySystem
         UpdateUi(uid);
     }
 
+    /// <summary>
+    /// NanoUI auto-refresh equivalent: the open-time state push races the client window and is
+    /// dropped, so re-push once a second while the interface stays open (points/debits stay live).
+    /// </summary>
+    private const float UiRefresh = 1f;
+    private float _uiAccum;
+
+    public override void Update(float frameTime)
+    {
+        base.Update(frameTime);
+        _uiAccum += frameTime;
+        if (_uiAccum < UiRefresh)
+            return;
+        _uiAccum = 0f;
+
+        var query = EntityQueryEnumerator<ArmamentsPrinterComponent, UserInterfaceComponent>();
+        while (query.MoveNext(out var uid, out _, out var ui))
+        {
+            if (_ui.IsUiOpen((uid, ui), ArmamentsPrinterUiKey.Key))
+                UpdateUi(uid);
+        }
+    }
+
     [SubscribeLocalEvent]
     private void OnPurchaseMessage(EntityUid uid, ArmamentsPrinterComponent component, PurchaseArmamentMessage args)
     {

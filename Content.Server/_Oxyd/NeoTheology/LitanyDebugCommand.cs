@@ -393,6 +393,21 @@ public sealed class LitanyCommand : ToolshedCommand
         return -1;
     }
 
+    /// <summary>Add armament points to the first Eye of the Protector (default +150, clamps to max).</summary>
+    [CommandImplementation("armpoints")]
+    public int ArmPoints(IInvocationContext ctx, int amount = 150)
+    {
+        var query = EntityManager.EntityQueryEnumerator<EyeOfTheProtectorComponent>();
+        while (query.MoveNext(out var uid, out var eye))
+        {
+            eye.ArmamentsPoints = Math.Clamp(eye.ArmamentsPoints + amount, 0, eye.MaxArmamentsPoints);
+            EntityManager.Dirty(uid, eye);
+            return eye.ArmamentsPoints;
+        }
+
+        return -1;
+    }
+
     /// <summary>Cast a litany by id as the executing entity (skips speech parsing; still runs the chant do-after and full target/choice pipeline). Optional name for named-selectTarget litanies.</summary>
     [CommandImplementation("cast")]
     public void Cast(IInvocationContext ctx, string litany, string? name = null)

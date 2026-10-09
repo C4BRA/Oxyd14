@@ -48,3 +48,23 @@ Two live clients (PriestLeader + FollowerTwo) used to close remaining matrix row
 **Environment findings (not port bugs):** autopause freeze above; `litany:place` at a disconnected session entity's coords puts mobs in a no-atmos spot → suffocation after sim resumes (anchor with `tpto <fixture> <mob>`); dead bearers present as `cannot-speak`/`no-implant`.
 
 **Still open:** Scrying caster-privacy (needs a connected client to observe), obelisk aura regen vs. baseline delta measurement, EOTP purchase flow end-to-end.
+
+## Pass 6 — 2026-10-09 (two-client verification: scrying privacy, obelisk delta, EOTP purchase)
+
+All three remaining open items from Pass 5 verified live. Two clients on one server: A = Dante Pavlov (5141, inquisitor cruciform) and B = Maximilian Smail (5197).
+
+- **Scrying remote view — VERIFIED.** `litany:cast OxydLitanyScrying "Human(Oxyd)"` committed `success=True`; caster's eye retargeted ~20 tiles to the target's room (paired screenshots: A's view rendered the same dark NPC room B occupies; B is visible inside it). Session expired ~30s; eye restored to caster.
+- **Scrying privacy — VERIFIED.** Client B standing inside the scried room saw no marker entity, no HUD indicator, and no chat notification while A was remotely viewing the same room. The scrying marker is an invisible null-proto entity used only as an eye anchor — nothing is replicated to bystanders. No gap.
+- **Obelisk aura regen delta — VERIFIED.** `litany:status` baseline `regen=0.417/s` → `litany:machine OxydNtObelisk` on the front tile → `regen=0.833/s` (2× `RegenMultiplier`, applied while in view) → obelisk deleted → back to `0.417/s`. Both application and removal proven.
+- **EOTP purchase E2E — VERIFIED after fixing one real port bug.** Path: `litany:machine OxydNtEyeOfTheProtector` + `litany:machine OxydNtArmamentsPrinter` → `litany:armpoints 150` → `litany:cruciform "OxydNtInquisitor"` → `litany:openui <printer>` → select "ritual book design disk — 100" → Print.
+  - **Bug found + fixed:** the printer's `ArmamentsPrinterState` pushed once on `AfterActivatableUIOpenEvent` and was dropped before the client window existed — the window rendered permanently empty on every open (deterministic, two opens both empty). Same race the other NT windows already had; fixed with the same 1s `IsUiOpen` re-push loop in `ArmamentsPrinterSystem.Update`. Window now populates: "Armament points: 150 / 150", cost-sorted list.
+  - **Purchase verified:** click-select (description row appears) → Print → points 150→50 (cost 100 spent), first-purchase `MaxArmamentsPoints` 150→175 (+25 `MaxPointsIncrease`), per-armament discount repriced cost 100→75, "Not enough armament points" affordability feedback, `OxydNtRitualBookDesignDisk` (5285) spawned at the printer's coords (31.5,18.5).
+- **New debug tool:** `litany:armpoints [amount]` — adds armament points to the first Eye (clamped to max); needed because points accrue only via released miracles otherwise.
+
+**Environment findings (not port bugs):**
+- Full Release build is red tree-wide on ~180 analyzer escalations (`RA0051` readonly `[Dependency]` fields, `RA0049` non-partial dep class, `RA0030`, `CS0414`) — pre-existing across `_Oxyd`; earlier "green" builds were incremental. Local testing builds pass with `-p:TreatWarningsAsErrors=false`. Worth a dedicated cleanup pass.
+- Client launch needs `ALSOFT_DRIVERS=null` (set in the desktop .bat files); without it OpenAL collides audio-source key 0 and crashes on startup.
+- `litany:cruciform` requires the profile quoted (`"OxydNtInquisitor"`); bare proto ids fail toolshed parsing as "Failed to execute toolshed command".
+- Building while the server runs fails on dll file locks — `taskkill` the server first, relaunch after.
+
+**Remaining gaps:** none for these three items. Broader port coverage per the session evaluation (~90%): EOTP's Eris disk-purchase list is intentionally not ported (gear routes via printer/uplink); art licensing unresolved.
