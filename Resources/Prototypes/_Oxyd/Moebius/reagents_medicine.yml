@@ -38,7 +38,7 @@
       metabolismRate: 0.03
       effects:
       - !type:Analgesic
-        effectProto: OxydMedParacetamol
+        effectProto: OxydAnalgesicParacetamol
         strength: 10
       - !type:Nsa
         value: 0.5
@@ -56,7 +56,7 @@
       metabolismRate: 0.03
       effects:
       - !type:Analgesic
-        effectProto: OxydMedTramadol
+        effectProto: OxydAnalgesicTramadol
         strength: 30
       - !type:Nsa
         value: 1
@@ -78,7 +78,7 @@
       metabolismRate: 0.02
       effects:
       - !type:Analgesic
-        effectProto: OxydMedOxycodone
+        effectProto: OxydAnalgesicOxycodone
         strength: 60
       - !type:Nsa
         value: 2
@@ -100,7 +100,7 @@
       metabolismRate: 0.03
       effects:
       - !type:Analgesic
-        effectProto: OxydMedDiclofenac
+        effectProto: OxydAnalgesicDiclofenac
         strength: 20
       - !type:Nsa
         value: 1

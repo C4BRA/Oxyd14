@@ -179,7 +179,7 @@
           types:
             Poison: 0.75
       - !type:Analgesic
-        effectProto: OxydToxAranecolmin
+        effectProto: OxydAnalgesicAranecolmin
         strength: 15
       - !type:Nsa
         value: 0.5

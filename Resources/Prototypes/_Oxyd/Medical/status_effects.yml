@@ -38,3 +38,38 @@
   parent: OxydAnalgesicBase
   id: OxydAnalgesicLitanySuccour
   name: succour
+
+- type: entity
+  parent: OxydAnalgesicBase
+  id: OxydAnalgesicParacetamol
+  name: paracetamol
+
+- type: entity
+  parent: OxydAnalgesicBase
+  id: OxydAnalgesicTramadol
+  name: tramadol
+
+- type: entity
+  parent: OxydAnalgesicBase
+  id: OxydAnalgesicOxycodone
+  name: oxycodone
+
+- type: entity
+  parent: OxydAnalgesicBase
+  id: OxydAnalgesicDiclofenac
+  name: diclofenac
+
+- type: entity
+  parent: OxydAnalgesicBase
+  id: OxydAnalgesicAranecolmin
+  name: aranecolmin
+
+- type: entity
+  parent: OxydAnalgesicBase
+  id: OxydAnalgesicTraumaControl
+  name: trauma control
+
+- type: entity
+  parent: OxydAnalgesicBase
+  id: OxydAnalgesicAdrenaline
+  name: adrenaline
