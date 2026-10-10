@@ -184,6 +184,7 @@ public abstract partial class SharedBuckleSystem
             args.Cancel();
     }
 
+    // OXYD: NeoTheology hand-of-mercy checks a strap link both ways.
     /// <summary>Checks both ends of a buckle link.</summary>
     public bool IsBuckledTo(EntityUid uid, EntityUid strap, BuckleComponent? component = null)
     {

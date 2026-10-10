@@ -55,19 +55,22 @@ public sealed partial class LitanySystem : EntitySystem
 
     /// <summary>
     /// Round-global litany state lives on a dedicated nullspace entity so nothing about
-    /// entities or rounds is stored on the system itself.
+    /// entities or rounds is stored on the system itself. The entity is (re)created at
+    /// round restart by <see cref="OnRoundCleanup"/>; this only re-derives it if missing.
     /// </summary>
     private LitanyGlobalStateComponent GlobalState
     {
         get
         {
             var query = EntityQueryEnumerator<LitanyGlobalStateComponent>();
-            if (query.MoveNext(out _, out var comp))
-                return comp;
-
-            var ent = Spawn(null, MapCoordinates.Nullspace);
-            return EnsureComp<LitanyGlobalStateComponent>(ent);
+            return query.MoveNext(out _, out var comp) ? comp : EnsureGlobalState();
         }
+    }
+
+    private LitanyGlobalStateComponent EnsureGlobalState()
+    {
+        var ent = Spawn(null, MapCoordinates.Nullspace);
+        return EnsureComp<LitanyGlobalStateComponent>(ent);
     }
 
     private Dictionary<string, TimeSpan> GlobalCooldowns => GlobalState.Cooldowns;

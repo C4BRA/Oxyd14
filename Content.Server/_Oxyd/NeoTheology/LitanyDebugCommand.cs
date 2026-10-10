@@ -66,24 +66,14 @@ public sealed class LitanyCommand : ToolshedCommand
 
     private CruciformSystem? _cruciform;
     private LitanySystem? _litany;
-    private EyeOfTheProtectorSystem? _eye;
     private SharedHandsSystem? _hands;
     private SharedBuckleSystem? _buckle;
     private InventorySystem? _inventory;
     private CoreModuleSystem? _modules;
-    private MobStateSystem? _mobState;
     private SharedSubdermalImplantSystem? _implants;
     private ItemSlotsSystem? _slots;
-    private MaterialStorageSystem? _materials;
-    private CruciformUpgradeSystem? _upgrades;
     private ChatSystem? _chat;
-    private NeoTheologyMachineSystem? _machines;
-    private CruciformReaderSystem? _readers;
     private SharedContainerSystem? _containers;
-    private UserInterfaceSystem? _ui;
-    private SharedMindSystem? _minds;
-    private SharedSolutionContainerSystem? _solutions;
-    private PlantTraySystem? _tray;
     private DamageableSystem? _damageable;
 
     private SharedTransformSystem? _xform;
@@ -177,38 +167,6 @@ public sealed class LitanyCommand : ToolshedCommand
         return altar;
     }
 
-    /// <summary>Piped diagnostic: report buckle state + TryBuckle result per mob.</summary>
-    [CommandImplementation("buckleprobe")]
-    public void BuckleProbe(IInvocationContext ctx, [PipedArgument] IEnumerable<EntityUid> mobs)
-    {
-        _buckle ??= GetSys<SharedBuckleSystem>();
-        _lookup ??= GetSys<EntityLookupSystem>();
-        _xform ??= GetSys<SharedTransformSystem>();
-        foreach (var mob in mobs)
-        {
-            if (!HasComp<MobStateComponent>(mob))
-                continue;
-            var coords = Transform(mob).Coordinates;
-            ctx.WriteLine($"{mob} at {_xform!.GetMapCoordinates(mob).Position} buckled={TryComp<BuckleComponent>(mob, out var bc) && bc.BuckledTo is { } s}");
-            if (bc?.BuckledTo is { } cur)
-            {
-                var standing = GetSys<StandingStateSystem>();
-                TryComp<StrapComponent>(cur, out var curStrap);
-                ctx.WriteLine(
-                    $"  posture: seat={cur} altar={HasComp<NeoTheologyAltarComponent>(cur)} " +
-                    $"strapEnabled={curStrap?.Enabled} strapPos={curStrap?.Position} " +
-                    $"isDown={standing.IsDown(mob)} inRange={_xform!.InRange(mob, cur, 0.5f)}");
-            }
-            foreach (var seat in _lookup.GetEntitiesInRange<StrapComponent>(coords, 5f))
-            {
-                var pos = _xform.GetMapCoordinates(seat).Position;
-                var ok = _buckle.TryBuckle(mob, mob, seat);
-                ctx.WriteLine($"  seat {seat} altar={HasComp<NeoTheologyAltarComponent>(seat)} pos={pos} tryBuckle={ok}");
-                if (ok)
-                    break;
-            }
-        }
-    }
 
     /// <summary>Dump each piped mob's NeoTheology state: cruciform, activity, profile,
     /// clearance, holiness pool, installed modules, unlocked/granted litany sets, and
@@ -292,44 +250,7 @@ public sealed class LitanyCommand : ToolshedCommand
         }
     }
 
-    /// <summary>Dump each piped entity's DoAfterComponent entries — index, delay, elapsed,
-    /// cancel/complete flags and event type — for diagnosing stuck cast do-afters.</summary>
-    [CommandImplementation("doafter")]
-    public void DoAfterPiped(IInvocationContext ctx, [PipedArgument] IEnumerable<EntityUid> mobs)
-    {
-        var now = IoCManager.Resolve<IGameTiming>().CurTime;
-        foreach (var mob in mobs)
-        {
-            if (!TryComp<Content.Shared.DoAfter.DoAfterComponent>(mob, out var comp))
-            {
-                ctx.WriteLine($"{mob}: no DoAfterComponent");
-                continue;
-            }
 
-            var active = HasComp<Content.Shared.DoAfter.ActiveDoAfterComponent>(mob);
-            ctx.WriteLine($"{mob}: active={active} doafters={comp.DoAfters.Count}");
-            foreach (var (idx, doAfter) in comp.DoAfters)
-            {
-                ctx.WriteLine(
-                    $"{mob}:  #{idx} delay={doAfter.Args.Delay.TotalSeconds:F2} elapsed={(now - doAfter.StartTime).TotalSeconds:F2} " +
-                    $"cancelled={(doAfter.CancelledTime != null)} completed={doAfter.Completed} " +
-                    $"ev={doAfter.Args.Event?.GetType().Name ?? "null"} start={doAfter.StartTime.TotalSeconds:F2}");
-            }
-        }
-    }
-
-    /// <summary>Mark each piped entity as a litany testing actor so <c>litany:cast</c>
-    /// passes the player-actor gate without a client possessing the mob. The marker
-    /// component is stripped automatically on round restart.</summary>
-    [CommandImplementation("actor")]
-    public void ActorPiped(IInvocationContext ctx, [PipedArgument] IEnumerable<EntityUid> mobs)
-    {
-        foreach (var mob in mobs)
-        {
-            EnsureComp<LitanyTestingActorComponent>(mob);
-            ctx.WriteLine($"{mob}: marked as litany testing actor");
-        }
-    }
 
     /// <summary>Unbuckle each piped entity from whatever it is strapped to.</summary>
     [CommandImplementation("unbuckle")]
@@ -345,49 +266,8 @@ public sealed class LitanyCommand : ToolshedCommand
         }
     }
 
-    /// <summary>Spawn an entity prototype on the tile the executing entity faces.</summary>
-    [CommandImplementation("machine")]
-    public EntityUid? Machine(IInvocationContext ctx, EntProtoId proto)
-    {
-        _xform ??= GetSys<SharedTransformSystem>();
-        var uid = Self(ctx) ?? throw new InvalidOperationException("no executing entity");
-        var xform = Transform(uid);
-        var front = (xform.Coordinates.Position + xform.LocalRotation.ToVec()).Floored();
-        // Spawn at the tile in the parent's local space. EntityCoordinates(uid, ...) would
-        // offset from the mob itself and double its position.
-        var machine = Spawn(proto, new EntityCoordinates(xform.ParentUid, front));
-        MakeOperational(machine);
-        return machine;
-    }
 
-    /// <summary>Piped variant: spawn a machine on each piped mob's front tile.</summary>
-    [CommandImplementation("machine")]
-    public void MachinePiped(IInvocationContext ctx, [PipedArgument] IEnumerable<EntityUid> mobs, EntProtoId proto)
-    {
-        _xform ??= GetSys<SharedTransformSystem>();
-        foreach (var mob in mobs)
-        {
-            if (!HasComp<MobStateComponent>(mob))
-                continue;
-            var xform = Transform(mob);
-            var front = (xform.Coordinates.Position + xform.LocalRotation.ToVec()).Floored();
-            var machine = Spawn(proto, new EntityCoordinates(xform.ParentUid, front));
-            MakeOperational(machine);
-            ctx.WriteLine($"{mob}: machine {machine} {proto} at {front}");
-        }
-    }
 
-    /// <summary>Grant a litany set (e.g. OxydLitanyInquisitor) to the entity's cruciform.</summary>
-    [CommandImplementation("grant")]
-    public bool GrantSelf(IInvocationContext ctx, string set)
-        => Grant(set, Self(ctx) ?? throw new InvalidOperationException("no executing entity"));
-
-    [CommandImplementation("grant")]
-    public void GrantPiped(IInvocationContext ctx, [PipedArgument] IEnumerable<EntityUid> mobs, string set)
-    {
-        foreach (var mob in mobs)
-            ctx.WriteLine($"{mob}: {Grant(set, mob)}");
-    }
 
     private bool Grant(string set, EntityUid uid)
     {
@@ -441,35 +321,7 @@ public sealed class LitanyCommand : ToolshedCommand
         return -1;
     }
 
-    /// <summary>Add armament points to the first Eye of the Protector (default +150, clamps to max).</summary>
-    [CommandImplementation("armpoints")]
-    public int ArmPoints(IInvocationContext ctx, int amount = 150)
-    {
-        var query = EntityManager.EntityQueryEnumerator<EyeOfTheProtectorComponent>();
-        while (query.MoveNext(out var uid, out var eye))
-        {
-            eye.ArmamentsPoints = Math.Clamp(eye.ArmamentsPoints + amount, 0, eye.MaxArmamentsPoints);
-            EntityManager.Dirty(uid, eye);
-            return eye.ArmamentsPoints;
-        }
 
-        return -1;
-    }
-
-    /// <summary>Add observation to the first Eye of the Protector (default +200, clamps to bounds).</summary>
-    [CommandImplementation("obspoints")]
-    public float ObsPoints(IInvocationContext ctx, float amount = 200f)
-    {
-        _eye ??= GetSys<EyeOfTheProtectorSystem>();
-        var query = EntityManager.EntityQueryEnumerator<EyeOfTheProtectorComponent>();
-        while (query.MoveNext(out var uid, out var eye))
-        {
-            _eye.AddObservation(uid, amount);
-            return eye.Observation;
-        }
-
-        return -1;
-    }
 
     /// <summary>Cast a litany by id as the executing entity (skips speech parsing; still runs the chant do-after and full target/choice pipeline). Optional name for named-selectTarget litanies.</summary>
     [CommandImplementation("cast")]
@@ -662,20 +514,6 @@ public sealed class LitanyCommand : ToolshedCommand
             ignoreActionBlocker: true);
     }
 
-    /// <summary>
-    /// Speak the correct next phrase of an active ceremony: the leader says Phrases[1],
-    /// a follower says Phrases[0]. Drive the whole rite by piping the mob through this.
-    /// </summary>
-    [CommandImplementation("step")]
-    public void StepSelf(IInvocationContext ctx)
-        => CeremonyStep(ctx, Self(ctx) ?? throw new InvalidOperationException("no executing entity"));
-
-    [CommandImplementation("step")]
-    public void StepPiped(IInvocationContext ctx, [PipedArgument] IEnumerable<EntityUid> mobs)
-    {
-        foreach (var mob in mobs)
-            CeremonyStep(ctx, mob);
-    }
 
     private void CeremonyStep(IInvocationContext ctx, EntityUid mob)
     {
@@ -712,55 +550,9 @@ public sealed class LitanyCommand : ToolshedCommand
         ctx.WriteLine($"{mob}: no ceremony in range");
     }
 
-    /// <summary>Dump every live ceremony: starter, ritual, phrase index, participants.</summary>
-    [CommandImplementation("ceremonies")]
-    public void Ceremonies(IInvocationContext ctx)
-    {
-        _xform ??= GetSys<SharedTransformSystem>();
-        var query = EntityManager.EntityQueryEnumerator<ActiveCeremonyComponent, TransformComponent>();
-        var any = false;
-        while (query.MoveNext(out var starter, out var ceremony, out var xform))
-        {
-            any = true;
-            ctx.WriteLine($"{starter}: ritual={ceremony.Ritual} phrases={ceremony.Phrases.Count} first={ceremony.First} " +
-                          $"participants=[{string.Join(",", ceremony.Participants)}] correct=[{string.Join(",", ceremony.CorrectParticipants)}] " +
-                          $"range={ceremony.Range} pos={_xform!.GetWorldPosition(xform)}");
-        }
-        if (!any)
-            ctx.WriteLine("no active ceremonies");
-    }
 
-    /// <summary>Force the mob into the Dead state (Resurrection/Deprivation test setup).</summary>
-    [CommandImplementation("kill")]
-    public void KillSelf(IInvocationContext ctx)
-    {
-        _mobState ??= GetSys<MobStateSystem>();
-        var uid = Self(ctx) ?? throw new InvalidOperationException("no executing entity");
-        _mobState.ChangeMobState(uid, MobState.Dead);
-    }
 
-    [CommandImplementation("kill")]
-    public void KillPiped(IInvocationContext ctx, [PipedArgument] IEnumerable<EntityUid> mobs)
-    {
-        _mobState ??= GetSys<MobStateSystem>();
-        foreach (var mob in mobs)
-        {
-            if (HasComp<MobStateComponent>(mob))
-                _mobState.ChangeMobState(mob, MobState.Dead);
-        }
-    }
 
-    /// <summary>Extract the mob's implanted cruciform and insert it into the nearest cruciform reader's slot.</summary>
-    [CommandImplementation("soulreader")]
-    public void SoulReaderSelf(IInvocationContext ctx)
-        => SoulReader(ctx, Self(ctx) ?? throw new InvalidOperationException("no executing entity"));
-
-    [CommandImplementation("soulreader")]
-    public void SoulReaderPiped(IInvocationContext ctx, [PipedArgument] IEnumerable<EntityUid> mobs)
-    {
-        foreach (var mob in mobs)
-            SoulReader(ctx, mob);
-    }
 
     private void SoulReader(IInvocationContext ctx, EntityUid mob)
     {
@@ -829,63 +621,7 @@ public sealed class LitanyCommand : ToolshedCommand
             ctx.WriteLine($"{mob}: cruciform {implant} moved into reader {reader}");
     }
 
-    /// <summary>Take the cruciform out of the nearest reader and implant it into the mob.</summary>
-    [CommandImplementation("implant")]
-    public void ImplantPiped(IInvocationContext ctx, [PipedArgument] IEnumerable<EntityUid> mobs)
-    {
-        _implants ??= GetSys<SharedSubdermalImplantSystem>();
-        _slots ??= GetSys<ItemSlotsSystem>();
-        _lookup ??= GetSys<EntityLookupSystem>();
 
-        foreach (var mob in mobs)
-        {
-            if (!HasComp<MobStateComponent>(mob))
-                continue;
-
-            EntityUid implant = EntityUid.Invalid;
-            foreach (var reader in _lookup.GetEntitiesInRange<CruciformReaderComponent>(Transform(mob).Coordinates, 10f))
-            {
-                if (!_slots.TryGetSlot(reader.Owner, "cruciform", out var slot) || !slot.HasItem)
-                    continue;
-                if (_slots.TryEject(reader.Owner, slot, null, out var ejected) && ejected is { } ej)
-                    implant = ej;
-                break;
-            }
-
-            if (!implant.IsValid())
-            {
-                ctx.WriteLine($"{mob}: no loaded cruciform in a reader within 10 m");
-                continue;
-            }
-
-            if (TryComp<SubdermalImplantComponent>(implant, out var imp))
-            {
-                _implants.ForceImplant(mob, (implant, imp));
-                ctx.WriteLine($"{mob}: implanted cruciform {implant}");
-            }
-        }
-    }
-
-    /// <summary>Add Biomatter material to the nearest cloning pod (default +200).</summary>
-    [CommandImplementation("biomass")]
-    public void Biomass(IInvocationContext ctx, int amount = 200)
-    {
-        _materials ??= GetSys<MaterialStorageSystem>();
-        _lookup ??= GetSys<EntityLookupSystem>();
-        var uid = Self(ctx) ?? throw new InvalidOperationException("no executing entity");
-
-        foreach (var cloner in _lookup.GetEntitiesInRange<CloningPodComponent>(Transform(uid).Coordinates, 10f))
-        {
-            if (_materials.TryChangeMaterialAmount(cloner, "Biomatter", amount))
-            {
-                var amount1 = _materials.GetMaterialAmount(cloner, "Biomatter");
-                ctx.WriteLine($"{cloner}: biomass {amount1}");
-                return;
-            }
-        }
-
-        ctx.WriteLine("litany: no cloning pod in range");
-    }
 
     /// <summary>
     /// Composite scenario setups for the litany test matrix:
@@ -993,326 +729,15 @@ public sealed class LitanyCommand : ToolshedCommand
             RemComp<ApcPowerReceiverComponent>(machine);
     }
 
-    /// <summary>Dump facing, front tile and machine candidates around the actor (FrontMachine debugging).</summary>
-    [CommandImplementation("probe")]
-    public void Probe(IInvocationContext ctx)
-    {
-        _lookup ??= GetSys<EntityLookupSystem>();
-        _xform ??= GetSys<SharedTransformSystem>();
-        var uid = Self(ctx) ?? throw new InvalidOperationException("no executing entity");
-        var xform = Transform(uid);
-        var pos = xform.Coordinates.Position;
-        var own = pos.Floored();
-        var front = (pos + xform.LocalRotation.ToVec()).Floored();
-        ctx.WriteLine($"probe {uid}: pos={pos} rotDeg={xform.LocalRotation.Degrees:F1} own={own} front={front} parent={xform.ParentUid} map={xform.MapID}");
-        foreach (var c in _lookup.GetEntitiesInRange(xform.Coordinates, 3f))
-        {
-            if (c == uid)
-                continue;
-            var cx = Transform(c);
-            var conv = _xform.WithEntityId(cx.Coordinates, xform.ParentUid).Position.Floored();
-            var tag = conv == front ? "FRONT" : conv == own ? "OWN" : "-";
-            var name = TryComp(c, out MetaDataComponent? md) ? md.EntityName : "?";
-            var proto = md?.EntityPrototype?.ID ?? "?";
-            ctx.WriteLine($"  {c} {name} proto={proto} local={cx.Coordinates.Position} convTile={conv} {tag} map={cx.MapID} parent={cx.ParentUid}");
-        }
-    }
 
-    /// <summary>
-    /// Install an upgrade item into piped mobs' cruciforms. Branches on component:
-    /// CruciformCoreUpgrade items (e.g. OxydNtPreacherAscensionKit) take the core-upgrade path,
-    /// CruciformUpgrade items (e.g. OxydNtUpgradeNaturesBlessing) take the single upgrade slot.
-    /// "clear" uninstalls the slotted upgrade instead.
-    /// </summary>
-    [CommandImplementation("upgrade")]
-    public void UpgradePiped(IInvocationContext ctx, [PipedArgument] IEnumerable<EntityUid> mobs, string proto)
-    {
-        _upgrades ??= GetSys<CruciformUpgradeSystem>();
-        _cruciform ??= GetSys<CruciformSystem>();
-        foreach (var mob in mobs)
-        {
-            if (!_cruciform.TryGetCruciformEntity(mob, out var cruciform, out var comp))
-            {
-                ctx.WriteLine($"{mob}: no cruciform");
-                continue;
-            }
 
-            if (proto == "clear")
-            {
-                ctx.WriteLine($"{mob}: uninstalled={_upgrades.TryUninstallUpgrade(cruciform, comp)}");
-                continue;
-            }
 
-            var item = Spawn(new EntProtoId(proto), Transform(mob).Coordinates);
-            if (HasComp<CruciformCoreUpgradeComponent>(item))
-                ctx.WriteLine($"{mob}: coreInstalled={_upgrades.TryInstallCoreUpgrade(cruciform, comp, item, mob)}");
-            else if (HasComp<CruciformUpgradeComponent>(item))
-                ctx.WriteLine($"{mob}: installed={_upgrades.TryInstallUpgrade(cruciform, comp, item)}");
-            else
-                ctx.WriteLine($"{mob}: {proto} has no upgrade component");
-        }
-    }
 
-    /// <summary>Apply Blunt damage to piped entities (RepairDoor needs a damaged door).</summary>
-    [CommandImplementation("damage")]
-    public void DamagePiped(IInvocationContext ctx, [PipedArgument] IEnumerable<EntityUid> mobs, int amount = 50)
-    {
-        var spec = new DamageSpecifier { DamageDict = { ["Blunt"] = FixedPoint2.New(amount) } };
-        var sys = GetSys<DamageableSystem>();
-        foreach (var mob in mobs)
-            ctx.WriteLine($"{mob}: damaged={sys.TryChangeDamage(mob, spec)}");
-    }
 
-    /// <summary>Add material units to the nearest MaterialStorage machine within 3 m (forge recipe).</summary>
-    [CommandImplementation("material")]
-    public void Material(IInvocationContext ctx, string material, int amount = 100)
-    {
-        _materials ??= GetSys<MaterialStorageSystem>();
-        _lookup ??= GetSys<EntityLookupSystem>();
-        var uid = Self(ctx) ?? throw new InvalidOperationException("no executing entity");
-        foreach (var machine in _lookup.GetEntitiesInRange<MaterialStorageComponent>(Transform(uid).Coordinates, 3f))
-        {
-            if (_materials.TryChangeMaterialAmount(machine, material, amount))
-            {
-                ctx.WriteLine($"{machine}: {material} {_materials.GetMaterialAmount(machine, material)}");
-                return;
-            }
-        }
-        ctx.WriteLine($"{uid}: no material storage accepting {material} within 3 m");
-    }
 
-    /// <summary>Spawn an entity on the ground at the actor's feet (e.g. a biomatter stack).</summary>
-    [CommandImplementation("stack")]
-    public EntityUid? Stack(IInvocationContext ctx, EntProtoId proto, int count = 0)
-    {
-        var uid = Self(ctx) ?? throw new InvalidOperationException("no executing entity");
-        var item = Spawn(proto, Transform(uid).Coordinates);
-        if (count > 0 && TryComp<StackComponent>(item, out var stack))
-            GetSys<SharedStackSystem>().SetCount((item, stack), count);
-        ctx.WriteLine($"stack {item} at {Transform(uid).Coordinates}");
-        return item;
-    }
 
-    /// <summary>Piped variant: spawn an entity at each piped mob's feet, optionally setting stack count.</summary>
-    [CommandImplementation("stack")]
-    public void StackPiped(IInvocationContext ctx, [PipedArgument] IEnumerable<EntityUid> mobs, EntProtoId proto, int count = 0)
-    {
-        foreach (var mob in mobs)
-        {
-            if (!HasComp<MobStateComponent>(mob))
-                continue;
-            var item = Spawn(proto, Transform(mob).Coordinates);
-            if (count > 0 && TryComp<StackComponent>(item, out var stack))
-                GetSys<SharedStackSystem>().SetCount((item, stack), count);
-            ctx.WriteLine($"{mob}: stack {item} {proto} x{count}");
-        }
-    }
 
-    /// <summary>Walk the Resurrection checklist gate-by-gate for the faced cloner + nearest reader.</summary>
-    [CommandImplementation("resdebug")]
-    public void ResDebug(IInvocationContext ctx)
-    {
-        _xform ??= GetSys<SharedTransformSystem>();
-        _lookup ??= GetSys<EntityLookupSystem>();
-        _machines ??= GetSys<NeoTheologyMachineSystem>();
-        _readers ??= GetSys<CruciformReaderSystem>();
-        _materials ??= GetSys<MaterialStorageSystem>();
-        _mobState ??= GetSys<MobStateSystem>();
 
-        var uid = Self(ctx) ?? throw new InvalidOperationException("no executing entity");
-        var xform = Transform(uid);
-        var front = (xform.Coordinates.Position + xform.LocalRotation.ToVec()).Floored();
-        ctx.WriteLine($"resdebug {uid}: own={xform.Coordinates.Position.Floored()} front={front}");
 
-        EntityUid cloner = EntityUid.Invalid;
-        foreach (var m in _lookup.GetEntitiesInRange<CruciformClonerComponent>(xform.Coordinates, 3f))
-        {
-            var mt = _xform.WithEntityId(Transform(m).Coordinates, xform.ParentUid).Position.Floored();
-            ctx.WriteLine($"  cloner {m} convTile={mt}{(mt == front ? " FRONT" : "")} anchored={Transform(m).Anchored} powered={TryComp<ApcPowerReceiverComponent>(m, out var apc) && apc.Powered} operational={_machines.IsOperational(m)}");
-            if (mt == front)
-                cloner = m;
-        }
-        if (!cloner.IsValid())
-        {
-            ctx.WriteLine("no cloner on front tile");
-            return;
-        }
-
-        var readers = GetSys<CruciformReaderSystem>();
-        EntityUid reader = EntityUid.Invalid;
-        var best = float.MaxValue;
-        foreach (var r in _lookup.GetEntitiesInRange<CruciformReaderComponent>(Transform(cloner).Coordinates, 3f))
-        {
-            var d = (_xform!.GetWorldPosition(r) - _xform!.GetWorldPosition(cloner)).LengthSquared();
-            var rc = TryComp<CruciformReaderComponent>(r, out var comp) ? comp : null;
-            ctx.WriteLine($"  reader {r} dist2={d:F2} operational={_machines.IsOperational(r)} implant={rc?.ReaderImplant}");
-            if (d < best) { best = d; reader = r; }
-        }
-        if (!reader.IsValid())
-        {
-            ctx.WriteLine("no reader within 3 m");
-            return;
-        }
-
-        if (_readers.TryReadSoul(reader, out var soul))
-        {
-            ctx.WriteLine($"  soul: profile={soul!.Profile?.Name ?? "null"} dna={(soul.Dna != null)} biomassCost={soul.BiomassCost} mindId={soul.MindId} prepared={soul.PreparedBody} name={soul.Name}");
-            if (soul.MindId is { } mindId)
-            {
-                if (TryComp<MindComponent>(mindId, out var mind))
-                {
-                    var players = IoCManager.Resolve<IPlayerManager>();
-                    var sess = mind.UserId is { } u && players.TryGetSessionById(u, out _);
-                    ctx.WriteLine($"  mind {mindId}: userId={mind.UserId} sessionOnline={sess} owned={mind.OwnedEntity} ownedDead={(mind.OwnedEntity is { } o && _mobState.IsDead(o))} ownedGhost={(mind.OwnedEntity is { } og && HasComp<GhostComponent>(og))}");
-                }
-                else ctx.WriteLine($"  mind {mindId}: no MindComponent");
-            }
-            ctx.WriteLine($"  species indexed={soul.Profile != null && IoCManager.Resolve<IPrototypeManager>().HasIndex<SpeciesPrototype>(soul.Profile.Species)}");
-        }
-        else
-        {
-            ctx.WriteLine("  TryReadSoul failed (reader not operational, no implant, or no snapshot)");
-        }
-
-        if (TryComp<CloningPodComponent>(cloner, out var pod))
-        {
-            ctx.WriteLine($"  pod: active={HasComp<ActiveCloningPodComponent>(cloner)} body={pod.BodyContainer.ContainedEntity} material={_materials.GetMaterialAmount(cloner, pod.RequiredMaterial)}/{pod.RequiredMaterial}");
-        }
-        ctx.WriteLine($"  CanResurrect={readers.CanResurrect(cloner, reader)}");
-    }
-
-    /// <summary>Open a machine's ActivatableUI for the piped actor (BUI smoke tests).</summary>
-    [CommandImplementation("openui")]
-    public void OpenUiPiped(IInvocationContext ctx, [PipedArgument] IEnumerable<EntityUid> actors, EntityUid target)
-    {
-        _ui ??= GetSys<UserInterfaceSystem>();
-        if (!TryComp<ActivatableUIComponent>(target, out var activatable))
-        {
-            ctx.WriteLine($"{target}: no ActivatableUI");
-            return;
-        }
-        foreach (var actor in actors)
-        {
-            ctx.WriteLine($"{target}: open {activatable.Key} for {actor}: {_ui.TryOpenUi(target, activatable.Key, actor)}");
-        }
-    }
-
-    /// <summary>Dump bloodstream + metabolite solutions for piped mobs (reagent-litany verification).</summary>
-    [CommandImplementation("reagents")]
-    public void ReagentsPiped(IInvocationContext ctx, [PipedArgument] IEnumerable<EntityUid> mobs)
-    {
-        _solutions ??= GetSys<SharedSolutionContainerSystem>();
-        foreach (var mob in mobs)
-        {
-            if (!HasComp<BloodstreamComponent>(mob))
-            {
-                ctx.WriteLine($"{mob}: no bloodstream");
-                continue;
-            }
-            DumpSolution(ctx, mob, BloodstreamComponent.DefaultBloodSolutionName);
-            DumpSolution(ctx, mob, BloodstreamComponent.DefaultMetabolitesSolutionName);
-        }
-    }
-
-    private void DumpSolution(IInvocationContext ctx, EntityUid mob, string name)
-    {
-        if (!_solutions!.TryGetSolution(mob, name, out _, out var sol))
-        {
-            ctx.WriteLine($"{mob} {name}: <none>");
-            return;
-        }
-        ctx.WriteLine($"{mob} {name}: " +
-            (sol.Contents.Count == 0 ? "empty" : string.Join(", ", sol.Contents.Select(r => $"{r.Reagent}={r.Quantity}"))));
-    }
-
-    /// <summary>Spawn a weedy hydroponics tray at the mob's front tile (obelisk weed-removal check).</summary>
-    [CommandImplementation("weed")]
-    public void Weed(IInvocationContext ctx, float level = 8f)
-        => SpawnWeed(ctx, Self(ctx) ?? throw new InvalidOperationException("no executing entity"), level);
-
-    [CommandImplementation("weed")]
-    public void WeedPiped(IInvocationContext ctx, [PipedArgument] IEnumerable<EntityUid> mobs, float level = 8f)
-    {
-        foreach (var mob in mobs)
-            SpawnWeed(ctx, mob, level);
-    }
-
-    private void SpawnWeed(IInvocationContext ctx, EntityUid uid, float level)
-    {
-        var xform = Transform(uid);
-        _xform ??= GetSys<SharedTransformSystem>();
-        _tray ??= GetSys<PlantTraySystem>();
-        var front = (xform.Coordinates.Position + xform.LocalRotation.ToVec()).Floored();
-        var tray = Spawn("hydroponicsTray", new EntityCoordinates(xform.ParentUid, front));
-        if (!Transform(tray).Anchored)
-            _xform.AnchorEntity(tray);
-        var comp = Comp<PlantTrayComponent>(tray);
-        _tray.AdjustWeed((tray, comp), level);
-        ctx.WriteLine($"{tray}: weeds={comp.WeedLevel}/{comp.MaxWeedLevel} at {front}");
-    }
-
-    /// <summary>Spawn a hostile-faction mob at the mob's front tile (obelisk damage branch).</summary>
-    [CommandImplementation("hostile")]
-    public void Hostile(IInvocationContext ctx, EntProtoId proto = default)
-        => SpawnHostile(ctx, Self(ctx) ?? throw new InvalidOperationException("no executing entity"), proto);
-
-    [CommandImplementation("hostile")]
-    public void HostilePiped(IInvocationContext ctx, [PipedArgument] IEnumerable<EntityUid> mobs, EntProtoId proto = default)
-    {
-        foreach (var mob in mobs)
-            SpawnHostile(ctx, mob, proto);
-    }
-
-    private void SpawnHostile(IInvocationContext ctx, EntityUid uid, EntProtoId proto)
-    {
-        var xform = Transform(uid);
-        var front = (xform.Coordinates.Position + xform.LocalRotation.ToVec()).Floored();
-        var mob = Spawn(proto == default ? "MobGorilla" : proto, new EntityCoordinates(xform.ParentUid, front));
-        ctx.WriteLine($"{mob}: spawned {(proto == default ? "MobGorilla" : proto.Id)} at {front}");
-    }
-
-    /// <summary>
-    /// Dump NT objectives on piped mobs' minds; `objective "sanctify"` grants a Sanctify
-    /// objective pinned to the mob's current grid+tile so a Sanctify ceremony flips it.
-    /// </summary>
-    [CommandImplementation("objective")]
-    public void ObjectivePiped(IInvocationContext ctx, [PipedArgument] IEnumerable<EntityUid> mobs, string? kind = null)
-    {
-        _minds ??= GetSys<SharedMindSystem>();
-        foreach (var mob in mobs)
-        {
-            if (!_minds.TryGetMind(mob, out var mindId, out var mind))
-            {
-                ctx.WriteLine($"{mob}: no mind");
-                continue;
-            }
-            if (kind != null && Enum.TryParse<NeoTheologyObjectiveKind>(kind, true, out var parsed))
-            {
-                var proto = NeoTheologyPrototypes.SanctifyObjective;
-                if (parsed == NeoTheologyObjectiveKind.Convert) proto = NeoTheologyPrototypes.ConvertObjective;
-                else if (parsed == NeoTheologyObjectiveKind.Reveal) proto = NeoTheologyPrototypes.RevealObjective;
-                else if (parsed == NeoTheologyObjectiveKind.Destroy) proto = NeoTheologyPrototypes.DestroyObjective;
-                if (_minds.TryAddObjective(mindId, mind, proto) &&
-                    TryComp<NeoTheologyObjectiveComponent>(mind.Objectives[^1], out var added))
-                {
-                    var xform = Transform(mob);
-                    added.TargetGrid = xform.GridUid;
-                    added.TargetTile = (_xform ??= GetSys<SharedTransformSystem>())
-                        .WithEntityId(xform.Coordinates, xform.GridUid ?? xform.ParentUid).Position.Floored();
-                            ctx.WriteLine($"{mob}: granted {proto} -> grid={added.TargetGrid} tile={added.TargetTile}");
-                }
-                else
-                {
-                    ctx.WriteLine($"{mob}: TryAddObjective({proto}) failed");
-                }
-            }
-            foreach (var obj in mind.Objectives)
-            {
-                if (!TryComp<NeoTheologyObjectiveComponent>(obj, out var o))
-                    continue;
-                ctx.WriteLine($"{mob}: objective {obj} kind={o.Kind} completed={o.Completed} grid={o.TargetGrid} tile={o.TargetTile} proto={o.TargetPrototype} mind={o.TargetMind}");
-            }
-        }
-    }
 }
 

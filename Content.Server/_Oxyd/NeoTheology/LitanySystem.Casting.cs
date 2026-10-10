@@ -578,6 +578,9 @@ public sealed partial class LitanySystem
         while (globals.MoveNext(out var ent, out _))
             QueueDel(ent);
 
+        // Recreate the round-global state for the next round rather than lazily on read.
+        EnsureGlobalState();
+
         var books = EntityQueryEnumerator<LitanyBookComponent>();
         while (books.MoveNext(out _, out var book))
             book.Viewers.Clear();

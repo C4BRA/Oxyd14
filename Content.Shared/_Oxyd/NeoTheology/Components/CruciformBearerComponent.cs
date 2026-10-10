@@ -16,8 +16,11 @@ public sealed partial class CruciformBearerComponent : Component
     [ViewVariables, AutoNetworkedField]
     public uint UiRevision;
 
-    /// <summary>Server-only personal cooldown deadlines, keyed by stable litany key.</summary>
-    [ViewVariables]
+    /// <summary>
+    /// Server-only personal cooldown deadlines, keyed by stable litany key. Mutated in
+    /// <c>ApplyCooldown</c> without Dirty — deliberately not networked.
+    /// </summary>
+    [NonSerialized, ViewVariables]
     public Dictionary<string, TimeSpan> PersonalCooldowns = new();
 
     /// <summary>Server-only request ID for the one pending cast/choice.</summary>

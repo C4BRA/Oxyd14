@@ -201,6 +201,7 @@ public sealed partial class GeneratorSystem : SharedGeneratorSystem
         Dirty(uid, generator);
     }
 
+    // OXYD: NeoTheology biogenerator holy-fuel tuning writes target power through this.
     /// <summary>
     /// Sets the generator's target power in watts, clamped to its configured range.
     /// <see cref="FuelGeneratorComponent"/> restricts writes to this system, so systems that

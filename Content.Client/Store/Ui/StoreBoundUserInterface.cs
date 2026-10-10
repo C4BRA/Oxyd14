@@ -30,10 +30,6 @@ public sealed class StoreBoundUserInterface : BoundUserInterface
     {
         base.Open();
 
-        // Idempotent: a queued double-open would re-register this BUI's control and assert.
-        if (_menu != null)
-            return;
-
         _menu = this.CreateWindow<StoreMenu>();
         if (_storeSystem.TryGetStore(Owner, out var store))
             _menu.Title = Loc.GetString(store.Value.Comp.Name);

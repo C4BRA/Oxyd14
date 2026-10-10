@@ -222,7 +222,7 @@ public sealed partial class NtUplinkSystem : EntitySystem
             return;
         }
 
-        _ui.OpenUi(storeUid, StoreUiKey.Key, body);
+        _ui.TryOpenUi(storeUid, StoreUiKey.Key, body);
         _store.UpdateUserInterface(body, storeUid, storeComp);
         args.Handled = true;
     }

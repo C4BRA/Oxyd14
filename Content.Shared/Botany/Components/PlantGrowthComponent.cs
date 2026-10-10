@@ -22,6 +22,7 @@ public sealed partial class PlantGrowthComponent : Component
     [DataField, AutoNetworkedField]
     public float NutrientConsumption = 0.75f;
 
+    // OXYD: NeoTheology Accelerated Growth.
     /// <summary>
     /// Multiplier on the aging rate. NeoTheology Accelerated Growth raises it above 1.
     /// </summary>

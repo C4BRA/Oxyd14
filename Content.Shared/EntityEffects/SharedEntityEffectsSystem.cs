@@ -109,7 +109,7 @@ public sealed partial class SharedEntityEffectsSystem : EntitySystem, IEntityEff
     /// <param name="effect">Effect we're applying</param>
     /// <param name="scale">Optional scale multiplier for the effect.</param>
     /// <param name="user">The entity causing the effect.</param>
-    /// <param name="raiser">The raiser that owns the effect data, when it is not this system.</param>
+    /// <param name="raiser">OXYD: the raiser that owns the effect data, when it is not this system.</param>
     /// <returns>True if all conditions pass!</returns>
     public bool TryApplyEffect(EntityUid target, EntityEffect effect, float scale = 1f, EntityUid? user = null,
         IEntityEffectRaiser? raiser = null)
@@ -137,7 +137,7 @@ public sealed partial class SharedEntityEffectsSystem : EntitySystem, IEntityEff
     /// <param name="effect">Effect we're applying</param>
     /// <param name="scale">Optional scale multiplier for the effect.</param>
     /// <param name="user">The entity causing the effect.</param>
-    /// <param name="raiser">The raiser that owns the effect data, when it is not this system.</param>
+    /// <param name="raiser">OXYD: the raiser that owns the effect data, when it is not this system.</param>
     public void ApplyEffect(EntityUid target, EntityEffect effect, float scale = 1f, EntityUid? user = null,
         IEntityEffectRaiser? raiser = null)
     {
