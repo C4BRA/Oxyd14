@@ -33,6 +33,7 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
 {
     [Dependency] private MobStateSystem _mobStates = default!;
     [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private EntityLookupSystem _lookup = default!;
     [Dependency] private CoreModuleSystem _modules = default!;
     [Dependency] private SharedSubdermalImplantSystem _implants = default!;
     [Dependency] private MovementSpeedModifierSystem _movement = default!;
@@ -118,19 +119,17 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
         var query = EntityQueryEnumerator<CruciformComponent, SubdermalImplantComponent>();
         while (query.MoveNext(out var cruciform, out var component, out var implant))
         {
-            if (!component.Active || implant.ImplantedEntity is not { } body)
+            // Holiness accrues lazily — settled by GetHoliness/TrySpend/Refund and the
+            // state transitions that change the rate — so the per-tick pass only keeps
+            // the elapsed-time anchor sane for bearers that cannot accrue and runs
+            // purity on its own schedule.
+            if (!component.Active || implant.ImplantedEntity is not { } body ||
+                !TryGetLinkedBearer(body, cruciform, out _) || _mobStates.IsDead(body))
             {
                 component.LastHolinessUpdate = _timing.CurTime;
                 continue;
             }
 
-            if (!TryGetLinkedBearer(body, cruciform, out _) || _mobStates.IsDead(body))
-            {
-                component.LastHolinessUpdate = _timing.CurTime;
-                continue;
-            }
-
-            AdvanceHoliness((cruciform, component), body);
             if (_timing.CurTime >= component.NextPurity && !HasComp<GodbloodMutationComponent>(body))
             {
                 component.NextPurity = _timing.CurTime + component.PurityInterval;
@@ -314,6 +313,41 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
         RecomputeRegeneration(component);
         Dirty(cruciform, component);
         BumpRevision(ent.Owner, ent.Comp);
+    }
+
+    /// <summary>
+    /// Cognition feeds <see cref="CruciformComponent.RegenerationPerSecond"/>: settle the
+    /// bearer's holiness then re-derive the stored rate when skills change.
+    /// </summary>
+    [SubscribeLocalEvent]
+    private void OnSkillsRecalculated(Entity<CruciformBearerComponent> ent, ref SkillsRecalculatedEvent args)
+    {
+        if (!TryGetCruciformEntity(ent.Owner, out var cruciform, out var component))
+            return;
+
+        AdvanceHoliness((cruciform, component), ent.Owner);
+        RecomputeRegeneration(component);
+        Dirty(cruciform, component);
+    }
+
+    /// <summary>
+    /// A follower's activation change can move it in or out of a channeler's roster, so any
+    /// channeling cruciforms in range re-derive their rate (kept as a range lookup, never a
+    /// station-wide query).
+    /// </summary>
+    [SubscribeLocalEvent]
+    private void OnActivityChangedRefreshRoster(ref CruciformActivityChangedEvent args)
+    {
+        if (args.Body is not { } body || GetRules()?.ChannelingFollowerRange is not > 0f)
+            return;
+
+        var range = GetRules()!.ChannelingFollowerRange;
+        foreach (var (_, comp) in _lookup.GetEntitiesInRange<CruciformComponent>(
+                     Transform(body).Coordinates, range))
+        {
+            if (comp is { Active: true, Channeling: true })
+                RecomputeRegeneration(comp);
+        }
     }
 
     [SubscribeLocalEvent]
@@ -684,15 +718,16 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
         if (elapsed <= TimeSpan.Zero || !ent.Comp.Active || _mobStates.IsDead(body))
             return ent.Comp.Holiness;
 
-        // Cognition, righteous life, and the faithful roster are live regeneration inputs.
-        RecomputeRegeneration(ent.Comp);
+        // RegenerationPerSecond is stored state recomputed by the transitions that change
+        // its inputs (RecomputeProfile, module/upgrade/profile/cognition/aura/follower
+        // changes); the settle path itself stays allocation-free and undirtied — the client
+        // extrapolates from the networked (Holiness, LastHolinessUpdate, RegenerationPerSecond).
         var seconds = elapsed.TotalSeconds;
         if (double.IsFinite(seconds) && seconds > 0)
             ent.Comp.Holiness = NeoTheologyHoliness.ClampResource(
                 ent.Comp.Holiness + ent.Comp.RegenerationPerSecond * seconds,
                 ent.Comp.MaxHoliness);
 
-        Dirty(ent);
         return ent.Comp.Holiness;
     }
 
@@ -788,13 +823,24 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
 
     private int CountEligibleChannelingFollowers(EntityUid source)
     {
+        var range = GetRules()?.ChannelingFollowerRange ?? 0f;
+        if (range <= 0f)
+            return 0;
+
         var count = 0;
-        var query = EntityQueryEnumerator<CruciformComponent, SubdermalImplantComponent>();
-        while (query.MoveNext(out var uid, out var component, out var implant))
+        foreach (var (uid, component) in _lookup.GetEntitiesInRange<CruciformComponent>(
+                     Transform(source).Coordinates, range))
         {
-            if (component.Active && implant.ImplantedEntity is { } body &&
-                !_mobStates.IsDead(body) && TryGetLinkedBearer(body, uid, out _))
-                count++;
+            if (!component.Active ||
+                !TryComp<SubdermalImplantComponent>(uid, out var implant) ||
+                implant.ImplantedEntity is not { } body ||
+                _mobStates.IsDead(body) ||
+                !TryGetLinkedBearer(body, uid, out _) ||
+                !ProtoMan.TryIndex(component.Profile, out NeoTheologyProfilePrototype? profile) ||
+                !profile.CountsAsChannelingFollower)
+                continue;
+
+            count++;
         }
 
         return count;
@@ -823,7 +869,22 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
         return false;
     }
 
+    /// <summary>Selected rules prototype, re-resolved when prototypes reload.</summary>
+    private NeoTheologyRulesPrototype? _rules;
+
     public NeoTheologyRulesPrototype? GetRules()
+    {
+        return _rules;
+    }
+
+    [SubscribeLocalEvent]
+    private void OnPrototypesReloaded(PrototypesReloadedEventArgs args)
+    {
+        if (args.WasModified<NeoTheologyRulesPrototype>())
+            _rules = ResolveRules();
+    }
+
+    private NeoTheologyRulesPrototype? ResolveRules()
     {
         NeoTheologyRulesPrototype? selected = null;
         foreach (var rules in ProtoMan.EnumeratePrototypes<NeoTheologyRulesPrototype>())
@@ -836,6 +897,12 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
         }
 
         return selected;
+    }
+
+    public override void Initialize()
+    {
+        base.Initialize();
+        _rules = ResolveRules();
     }
 
     public double GetDebitTolerance()

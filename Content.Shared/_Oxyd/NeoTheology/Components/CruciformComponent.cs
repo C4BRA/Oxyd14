@@ -98,7 +98,7 @@ public sealed partial class CruciformComponent : Component
     /// Simulation timestamp used to settle regeneration. It is re-anchored whenever
     /// activation or implantation state changes so detached time is never retroactive.
     /// </summary>
-    [DataField]
+    [DataField, AutoNetworkedField]
     public TimeSpan LastHolinessUpdate;
 
     [DataField] public TimeSpan PurityInterval = TimeSpan.FromSeconds(5);

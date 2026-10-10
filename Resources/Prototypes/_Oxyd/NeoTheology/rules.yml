@@ -10,5 +10,6 @@
   - OxydNtPreacher
   - OxydNtInquisitor
   debitTolerance: 0.000001
+  channelingFollowerRange: 7
   jobProfiles:
     Chaplain: OxydNtPreacher

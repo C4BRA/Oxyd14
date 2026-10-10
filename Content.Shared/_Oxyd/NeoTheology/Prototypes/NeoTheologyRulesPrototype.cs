@@ -28,4 +28,11 @@ public sealed partial class NeoTheologyRulesPrototype : IPrototype
     /// </summary>
     [DataField]
     public Dictionary<ProtoId<JobPrototype>, ProtoId<NeoTheologyProfilePrototype>> JobProfiles { get; private set; } = new();
+
+    /// <summary>
+    /// How far a channeling preacher's follower count reaches. Keeps the regeneration input a
+    /// range lookup instead of a station-wide cruciform query.
+    /// </summary>
+    [DataField]
+    public float ChannelingFollowerRange = 7f;
 }
