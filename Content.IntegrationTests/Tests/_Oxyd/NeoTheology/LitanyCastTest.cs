@@ -166,10 +166,8 @@ public sealed class LitanyCastTest : GameTest
             var phrase = _prototypes.Index(Relief).Phrase;
             var garbled = "S-s-semper invicta.";
 
-            var message = new MessageData(body, ChatTransmitRange.Normal, InGameICChatType.Speak,
-                phrase, [], [], new());
-            var spoke = new EntitySpokeEvent(body, garbled, null, null, message);
-            Assert.That(spoke.Data, Is.SameAs(message));
+            var spoke = new EntitySpokeEvent(body, garbled, null, null, phrase);
+            Assert.That(spoke.OriginalMessage, Is.EqualTo(phrase));
             _litany.TestingHandleSpeech(spoke);
 
             Assert.That(_litany.TestingPendingCount, Is.EqualTo(1));
