@@ -5,6 +5,15 @@ using Robust.Shared.Audio;
 
 namespace Content.Shared._Oxyd.Medical;
 
+/// <summary>Time at which the mob entered the Dead state (Eris timeofdeath). Added on death and
+/// removed on revive; a missing record is treated as "unknown -> allow" by the resuscitator.</summary>
+[RegisterComponent, AutoGenerateComponentPause]
+public sealed partial class OxydTimeOfDeathComponent : Component
+{
+    [AutoPausedField]
+    public TimeSpan DiedAt;
+}
+
 /// <summary>
 /// Nervous System Accumulation (Eris NSA). Reagents contribute load; exceeding the threshold
 /// inflicts toxin damage until the load subsides. Eris tracks contribution per reagent datum;
@@ -257,15 +266,8 @@ public sealed partial class OxydScannerItemComponent : Component
 {
 }
 
-/// <summary>Marker on the scanner's UI proxy entity.
-/// Referenced by the proxy prototype, so it lives in Shared.</summary>
-[RegisterComponent]
-public sealed partial class OxydScannerUiProxyComponent : Component
-{
-}
-
 /// <summary>Eris organ bioprinter: stores biomass, prints replacement organs.</summary>
-[RegisterComponent, NetworkedComponent]
+[RegisterComponent, NetworkedComponent, AutoGenerateComponentPause]
 public sealed partial class OxydBioprinterComponent : Component
 {
     /// <summary>Stored biomass (Eris stored_matter). Round-start preload mirrors Eris (200).</summary>
@@ -282,6 +284,10 @@ public sealed partial class OxydBioprinterComponent : Component
     /// <summary>Busy printing an organ.</summary>
     [DataField]
     public bool Working;
+
+    /// <summary>When the current print finishes (Eris working animation window).</summary>
+    [AutoPausedField]
+    public TimeSpan NextFinish;
 }
 
 /// <summary>Eris appendix.dm: spontaneous appendicitis - inflamed counter ticks

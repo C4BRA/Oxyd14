@@ -1,4 +1,6 @@
+using Content.Shared.Body;
 using Content.Shared.Chemistry.Reagent;
+using Content.Shared.Damage.Prototypes;
 using Content.Shared.EntityEffects;
 using Content.Shared.FixedPoint;
 using Robust.Shared.Prototypes;
@@ -71,6 +73,21 @@ public sealed partial class Resuscitate : EntityEffectBase<Resuscitate>
     [DataField]
     public float OxyLossCap = 20f;
 
+    /// <summary>Organ categories that must be present and viable to revive.</summary>
+    [DataField]
+    public ProtoId<OrganCategoryPrototype> HeartOrgan = "Heart";
+
+    [DataField]
+    public ProtoId<OrganCategoryPrototype> BrainOrgan = "Brain";
+
+    /// <summary>Damage type capped by <see cref="OxyLossCap"/>.</summary>
+    [DataField]
+    public ProtoId<DamageTypePrototype> OxyLossType = "Asphyxiation";
+
+    /// <summary>Reagent drained by <see cref="ReviveDrain"/> on a successful revive.</summary>
+    [DataField]
+    public ProtoId<ReagentPrototype> ResuscitatorReagent = "OxydChemResuscitator";
+
     public override string EntityEffectGuidebookText(IPrototypeManager prototype, IEntitySystemManager entSys) =>
         Loc.GetString("entity-effect-guidebook-resuscitate", ("chance", Probability));
 }
@@ -78,7 +95,7 @@ public sealed partial class Resuscitate : EntityEffectBase<Resuscitate>
 /// <summary>Adds temporary pain while metabolised (Eris kognim halloss + pain()).</summary>
 public sealed partial class InflictPainEntityEffectSystem : EntityEffectSystem<PainComponent, InflictPain>
 {
-    [Dependency] private readonly PainSystem _pain = default!;
+    [Dependency] private PainSystem _pain = default!;
 
     protected override void Effect(Entity<PainComponent> entity, ref EntityEffectEvent<InflictPain> args)
     {
