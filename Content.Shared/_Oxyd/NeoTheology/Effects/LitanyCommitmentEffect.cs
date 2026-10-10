@@ -1,5 +1,7 @@
 using Content.Shared.Damage;
 using Content.Shared.FixedPoint;
+using Content.Shared.Humanoid.Prototypes;
+using Robust.Shared.Prototypes;
 
 namespace Content.Shared._Oxyd.NeoTheology.Effects;
 
@@ -12,6 +14,10 @@ public sealed partial class LitanyCommitmentEffect : LitanyEffect
 {
     /// <summary>Eris deals five 5-Brute chest hits; ported as one 25-Blunt operation.</summary>
     public const int InstallDamage = 25;
+
+    /// <summary>§5.2 v1: only this species' humanoids may be committed. Null allows anyone.</summary>
+    [DataField]
+    public ProtoId<SpeciesPrototype>? RequiredSpecies;
 
     public override bool CanApply(
         LitanyEffectSystem system,
@@ -28,7 +34,7 @@ public sealed partial class LitanyCommitmentEffect : LitanyEffect
 
         // Eris install gate order: eligible victim, no existing cruciform, loose cruciform in
         // reach, living, empty implant. Non-humans are rejected before anything is consumed.
-        if (!system.IsEligibleHuman(target))
+        if (RequiredSpecies is { } species && !system.SpeciesMatches(target, species))
         {
             failure = "oxyd-litany-not-human";
             return false;

@@ -30,7 +30,7 @@ public sealed partial class LitanyEntreatyEffect : LitanyEffect
             if (!system.TryGetActiveCruciform(recipient, out var cruciform))
                 continue;
 
-            var always = LitanyEffectSystem.IsClergyProfile(cruciform.Profile);
+            var always = system.IsClergyProfile(cruciform.Profile);
             if (!always && !system.Prob(0.5f))
                 continue;
 

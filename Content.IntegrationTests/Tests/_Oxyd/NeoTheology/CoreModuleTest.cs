@@ -119,14 +119,14 @@ public sealed class CoreModuleTest : GameTest
             var implant = ImplantBody(map.GridCoords);
             var comp = SComp<CruciformComponent>(implant);
 
-            _cruciform.MakePriest(implant, comp);
+            _cruciform.MakeRank(implant, comp, NeoTheologyPrototypes.PreacherProfile);
             Assert.That(comp.Profile.Id, Is.EqualTo("OxydNtPreacher"));
             Assert.That(comp.InstalledModules, Does.Not.Contain(InquisitorModule),
                 "A preacher must not carry the inquisitor module.");
 
             var priestCount = comp.InstalledModules.Count;
 
-            _cruciform.MakeInquisitor(implant, comp);
+            _cruciform.MakeRank(implant, comp, NeoTheologyPrototypes.InquisitorProfile);
 
             Assert.That(comp.Profile.Id, Is.EqualTo("OxydNtInquisitor"));
             Assert.That(comp.InstalledModules, Does.Contain(InquisitorModule));

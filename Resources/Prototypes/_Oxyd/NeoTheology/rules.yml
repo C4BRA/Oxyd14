@@ -11,5 +11,13 @@
   - OxydNtInquisitor
   debitTolerance: 0.000001
   channelingFollowerRange: 7
+  defaultCruciformCapacity: 50
+  requiredClearance:
+    OxydNtCommon: Common
+    OxydNtClergy: Clergy
+  hostileFactions:
+  - Dragon
+  - SimpleHostile
+  - Xeno
   jobProfiles:
     Chaplain: OxydNtPreacher

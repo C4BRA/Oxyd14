@@ -185,7 +185,7 @@ public sealed class LitanyEffectsScryingTest : GameTest
         Assert.That(_cruciform.Activate(body), Is.True);
 
         var component = SComp<CruciformComponent>(implant!.Value);
-        _cruciform.MakeInquisitor(implant.Value, component);
+        _cruciform.MakeRank(implant.Value, component, NeoTheologyPrototypes.InquisitorProfile);
         component.Holiness = component.MaxHoliness;
         StabilizeNeeds(body);
         return body;

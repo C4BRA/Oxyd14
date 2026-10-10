@@ -46,9 +46,6 @@ public sealed partial class LitanyEffectSystem : EntitySystem, ILitanyEffectRais
     /// <summary>Eris cruciform sense view range; catalog range must match.</summary>
     public const float CruciformSenseRangeMeters = 7f;
 
-    private static readonly ProtoId<NeoTheologyProfilePrototype> PreacherProfile = "OxydNtPreacher";
-    private static readonly ProtoId<NeoTheologyProfilePrototype> InquisitorProfile = "OxydNtInquisitor";
-    private static readonly ProtoId<SpeciesPrototype> HumanSpecies = "Human";
 
     [Dependency] private SharedCruciformSystem _cruciform = default!;
     [Dependency] private SharedContainerSystem _containers = default!;
@@ -68,6 +65,7 @@ public sealed partial class LitanyEffectSystem : EntitySystem, ILitanyEffectRais
     [Dependency] private IRobustRandom _random = default!;
     [Dependency] private Content.Shared.Power.EntitySystems.SharedPowerReceiverSystem _power = default!;
     [Dependency] private SharedEntityEffectsSystem _entityEffects = default!;
+    [Dependency] private IPrototypeManager _prototypes = default!;
 
     private LitanyEffectContext _context;
     private bool _lastApplyResult = true;
@@ -452,13 +450,13 @@ public sealed partial class LitanyEffectSystem : EntitySystem, ILitanyEffectRais
     }
 
     /// <summary>
-    /// §5.2 v1 conversion restriction: only actual Human-species humanoids may be committed.
+    /// §5.2 v1 conversion restriction: the effect declares the required species as data.
     /// Everything else is rejected before anything is consumed and keeps its implant state
     /// untouched — no species-specific gibbings or limb surgery.
     /// </summary>
-    public bool IsEligibleHuman(EntityUid uid)
+    public bool SpeciesMatches(EntityUid uid, ProtoId<SpeciesPrototype> species)
     {
-        return TryComp<HumanoidProfileComponent>(uid, out var profile) && profile.Species == HumanSpecies;
+        return TryComp<HumanoidProfileComponent>(uid, out var profile) && profile.Species == species;
     }
 
     /// <summary>
@@ -601,9 +599,10 @@ public sealed partial class LitanyEffectSystem : EntitySystem, ILitanyEffectRais
         return item != EntityUid.Invalid;
     }
 
-    public static bool IsClergyProfile(ProtoId<NeoTheologyProfilePrototype> profile)
+    public bool IsClergyProfile(ProtoId<NeoTheologyProfilePrototype> profile)
     {
-        return profile == PreacherProfile || profile == InquisitorProfile;
+        return _prototypes.TryIndex(profile, out NeoTheologyProfilePrototype? proto) &&
+               proto.Clearance >= NeoTheologyClearance.Clergy;
     }
 
     public float GetSenseRange(LitanyPrototype litany)

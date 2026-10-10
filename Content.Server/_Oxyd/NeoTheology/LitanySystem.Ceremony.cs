@@ -21,6 +21,13 @@ public sealed partial class LitanySystem
 {
     [Dependency] private SharedStunSystem _stun = default!;
 
+    /// <summary>Profile data drives clergy gating — <see cref="NeoTheologyClearance.Clergy"/>, not a hard-coded profile list.</summary>
+    private bool IsClergy(CruciformComponent cruciform)
+    {
+        return _prototypes.TryIndex(cruciform.Profile, out NeoTheologyProfilePrototype? profile) &&
+               profile.Clearance >= NeoTheologyClearance.Clergy;
+    }
+
     /// <summary>
     /// True when the litany is a ceremony that only a priest or inquisitor may start
     /// (Eris <c>/datum/ritual/group/cruciform/high_ritual</c>).
@@ -54,7 +61,7 @@ public sealed partial class LitanySystem
         }
 
         if (!_cruciform.TryGetCruciform(cast.Actor, out _, out var cruciform) ||
-            (CeremonyRequiresClergy(litany) && !LitanyEffectSystem.IsClergyProfile(cruciform.Profile)))
+            (CeremonyRequiresClergy(litany) && !IsClergy(cruciform)))
         {
             failure = "oxyd-litany-ceremony-clergy";
             return false;

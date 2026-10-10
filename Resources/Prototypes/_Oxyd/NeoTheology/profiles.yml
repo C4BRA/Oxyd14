@@ -26,6 +26,7 @@
   regenerationMultiplier: 1
   startingModules: [OxydNtModuleBase, OxydNtModuleAcolyte]
   canChannel: false
+  isSpecialization: true
   countsAsChannelingFollower: true
 
 - type: oxydNeoTheologyProfile
@@ -38,6 +39,7 @@
   regenerationMultiplier: 1
   startingModules: [OxydNtModuleBase, OxydNtModuleAgrolyte]
   canChannel: false
+  isSpecialization: true
   countsAsChannelingFollower: true
 
 - type: oxydNeoTheologyProfile
@@ -50,6 +52,7 @@
   regenerationMultiplier: 1
   startingModules: [OxydNtModuleBase, OxydNtModuleCustodian]
   canChannel: false
+  isSpecialization: true
   countsAsChannelingFollower: true
 
 - type: oxydNeoTheologyProfile
@@ -64,6 +67,7 @@
   regenerationMultiplier: 1
   startingModules: [OxydNtModuleBase, OxydNtModuleAcolyte, OxydNtModulePriest, OxydNtModuleRedLight]
   canChannel: true
+  clearance: Clergy
   countsAsChannelingFollower: false
 
 - type: oxydNeoTheologyProfile
@@ -78,4 +82,5 @@
   regenerationMultiplier: 1
   startingModules: [OxydNtModuleBase, OxydNtModuleAcolyte, OxydNtModulePriest, OxydNtModuleInquisitor, OxydNtModuleUplink]
   canChannel: true
+  clearance: Clergy
   countsAsChannelingFollower: false

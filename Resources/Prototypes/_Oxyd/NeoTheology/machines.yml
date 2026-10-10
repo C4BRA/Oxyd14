@@ -15,6 +15,7 @@
   description: Prints cruciforms from biomatter, plasteel and gold.
   components:
   - type: CruciformForge
+  - type: LitanyMachine
   # Headless lathe: the litany queues the cruciform recipe and LatheSystem runs the print.
   # No ActivatableUI/LatheUiKey — the forge has no player-facing menu.
   - type: Lathe
@@ -41,6 +42,7 @@
   # with MaterialStorage as the fuel hopper. Biogenerator only marks the machine for the
   # litanies and derates output via Dirtiness.
   - type: Biogenerator
+  - type: LitanyMachine
   - type: FuelGenerator
     targetPower: 500000
     maxTargetPower: 500000
@@ -79,6 +81,7 @@
   description: Processes crops and dead organic bodies on its chamber tile into biomatter, preserving equipment and implants.
   components:
   - type: Bioreactor
+  - type: LitanyMachine
   - type: ApcPowerReceiver
     powerLoad: 150
   - type: Appearance
@@ -102,6 +105,7 @@
   description: Reads the soul a cruciform carries.
   components:
   - type: CruciformReader
+  - type: LitanyMachine
   - type: ItemSlots
     slots:
       cruciform:
@@ -124,6 +128,7 @@
   description: Grows a body for a soul read off a cruciform.
   components:
   - type: CruciformCloner
+  - type: LitanyMachine
   - type: CloningPod
     requiredMaterial: Biomatter
   - type: MaterialStorage
@@ -175,6 +180,7 @@
   description: Spends the faith's armament points to print gear for the faithful.
   components:
   - type: ArmamentsPrinter
+  - type: LitanyMachine
   - type: ApcPowerReceiver
     powerLoad: 100
   - type: Appearance
@@ -197,6 +203,7 @@
   description: Watches over the faithful, banking observation and armament points for their miracles.
   components:
   - type: EyeOfTheProtector
+  - type: LitanyMachine
   - type: ApcPowerReceiver
     # Eris idle is 30W; active draw is 2500W during a miracle, which is not modelled here.
     powerLoad: 30

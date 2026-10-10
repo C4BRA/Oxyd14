@@ -54,9 +54,6 @@ public sealed partial class NeoTheologyFoundationSystem : EntitySystem
     [Dependency] private SharedProjectileSystem _projectiles = default!;
     [Dependency] private IRobustRandom _random = default!;
 
-    /// <summary>Hostile fauna, matching the obelisk's set (the fork's simple-hostile marker).</summary>
-    private static readonly FrozenSet<ProtoId<NpcFactionPrototype>> HostileFauna =
-        new ProtoId<NpcFactionPrototype>[] { "Dragon", "SimpleHostile", "Xeno" }.ToFrozenSet();
 
     /// <summary>
     /// Eris Rejection: detach robotic limbs and expel foreign implants. Preserve the cruciform and natural organs.
@@ -187,7 +184,8 @@ public sealed partial class NeoTheologyFoundationSystem : EntitySystem
         {
             if (_mobState.IsDead(mob) || HasComp<HumanoidProfileComponent>(mob) || HasComp<CruciformBearerComponent>(mob))
                 continue;
-            if (!_factions.IsMemberOfAny((mob, faction), HostileFauna))
+            if (_cruciform.GetRules() is not { } rules ||
+                !_factions.IsMemberOfAny((mob, faction), rules.HostileFactions))
                 continue;
 
             found = true;

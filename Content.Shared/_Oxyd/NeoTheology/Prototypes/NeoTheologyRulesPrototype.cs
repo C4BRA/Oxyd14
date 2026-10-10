@@ -1,3 +1,5 @@
+using Content.Shared.Access;
+using Content.Shared.NPC.Prototypes;
 using Content.Shared.Roles;
 using Robust.Shared.Prototypes;
 
@@ -35,4 +37,24 @@ public sealed partial class NeoTheologyRulesPrototype : IPrototype
     /// </summary>
     [DataField]
     public float ChannelingFollowerRange = 7f;
+
+    /// <summary>Holiness capacity when a cruciform carries no configured profile.</summary>
+    [DataField]
+    public double DefaultCruciformCapacity = 50d;
+
+    /// <summary>
+    /// Access level → minimum clearance a bearer needs before the level is granted to their
+    /// access holder. Levels absent from the map require <see cref="NeoTheologyClearance.None"/>.
+    /// </summary>
+    [DataField]
+    public Dictionary<ProtoId<AccessLevelPrototype>, NeoTheologyClearance> RequiredClearance = new();
+
+    /// <summary>Fauna the reveal-adversaries litany flags as hostile (the fork's simple-hostile set).</summary>
+    [DataField]
+    public List<ProtoId<NpcFactionPrototype>> HostileFactions = new()
+    {
+        "Dragon",
+        "SimpleHostile",
+        "Xeno",
+    };
 }

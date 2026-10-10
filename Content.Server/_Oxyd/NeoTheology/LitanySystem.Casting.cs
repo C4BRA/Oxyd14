@@ -832,9 +832,9 @@ public sealed partial class LitanySystem
             return results;
 
         var range = proto.Range > 0 ? proto.Range : 1.5f;
-        foreach (var uid in _lookup.GetEntitiesInRange(Transform(actor).Coordinates, range))
+        foreach (var (uid, _) in _lookup.GetEntitiesInRange<LitanyMachineComponent>(Transform(actor).Coordinates, range))
         {
-            if (uid != actor && IsLitanyMachine(uid) && IsOnTile(uid, actor, frontTile))
+            if (uid != actor && IsOnTile(uid, actor, frontTile))
                 results.Add(uid);
         }
 
@@ -847,9 +847,9 @@ public sealed partial class LitanySystem
         var results = new List<EntityUid>();
         var actorXform = Transform(actor);
         var range = proto.Range > 0 ? proto.Range : 1.5f;
-        foreach (var uid in _lookup.GetEntitiesInRange(actorXform.Coordinates, range))
+        foreach (var (uid, _) in _lookup.GetEntitiesInRange<LitanyMachineComponent>(actorXform.Coordinates, range))
         {
-            if (uid == actor || !IsLitanyMachine(uid))
+            if (uid == actor)
                 continue;
             if (Transform(uid).MapID != actorXform.MapID)
                 continue;

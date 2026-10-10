@@ -278,7 +278,7 @@ public sealed class LitanyAuditRegressionTest : GameTest
         {
             body = Bearer(map.GridCoords);
             Assert.That(_cruciform.TryGetCruciform(body, out var implant, out var comp), Is.True);
-            _cruciform.MakeInquisitor(implant, comp);
+            _cruciform.MakeRank(implant, comp, NeoTheologyPrototypes.InquisitorProfile);
             Assert.That(_uplink.TryGetUplink(implant, out var uplink), Is.True);
             store = _uplink.GetOrCreateStore(body, implant, uplink!);
             _ui.OpenUi(store, StoreUiKey.Key, body);

@@ -68,6 +68,7 @@
     sprite: Structures/Furniture/Tables/generic.rsi
     state: full
   - type: NeoTheologyAltar
+  - type: LitanyMachine
   - type: Fixtures
     fixtures:
       fix1:
@@ -89,6 +90,7 @@
   description: A door secured by NeoTheology clearance.
   components:
   - type: NeoTheologyDoor
+  - type: LitanyMachine
     minimumClearance: Common
 
 - type: entity
@@ -97,6 +99,7 @@
   name: NeoTheology clergy door
   components:
   - type: NeoTheologyDoor
+  - type: LitanyMachine
     minimumClearance: Clergy
 
 - type: entity
@@ -105,6 +108,7 @@
   name: NeoTheology public door
   components:
   - type: NeoTheologyDoor
+  - type: LitanyMachine
     minimumClearance: None
 
 - type: entity

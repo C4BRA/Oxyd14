@@ -67,7 +67,7 @@ public sealed partial class CruciformUpgradeSystem : EntitySystem
             _modules.TryRemove(cruciform, comp, module);
             // Removing the ascension kit reverses its conversion, not the physical attachment.
             if (module == NeoTheologyPrototypes.PriestConvertModule)
-                _cruciform.MakeCommon(cruciform, comp);
+                _cruciform.MakeRank(cruciform, comp, NeoTheologyPrototypes.DiscipleProfile);
             comp.CoreUpgrades.Remove(module);
             QueueDel(item);
         }

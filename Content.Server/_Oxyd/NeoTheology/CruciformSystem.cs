@@ -361,8 +361,7 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
 
         foreach (var access in profile.AccessPrivileges)
         {
-            if ((access == NeoTheologyPrototypes.CommonAccess && component.Clearance < NeoTheologyClearance.Common) ||
-                (access == NeoTheologyPrototypes.ClergyAccess && component.Clearance < NeoTheologyClearance.Clergy))
+            if (!MeetsAccessClearance(access, component.Clearance))
                 continue;
             args.Tags.Add(access);
         }
@@ -374,8 +373,7 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
 
             foreach (var level in module.Access)
             {
-                if ((level == NeoTheologyPrototypes.CommonAccess && component.Clearance < NeoTheologyClearance.Common) ||
-                    (level == NeoTheologyPrototypes.ClergyAccess && component.Clearance < NeoTheologyClearance.Clergy))
+                if (!MeetsAccessClearance(level, component.Clearance))
                     continue;
                 args.Tags.Add(level);
             }
@@ -517,7 +515,6 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
 
         comp.EverActivated = true;
         comp.LastHolinessUpdate = _timing.CurTime;
-        comp.Channeling = profile == NeoTheologyPrototypes.PreacherProfile;
         MakeRank(implant, comp, profile);
         _modules.TryInstall(implant, comp, NeoTheologyPrototypes.CloningModule);
         _souls.WriteSnapshot(implant, comp);
@@ -602,10 +599,9 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
 
     public double GetRegenerationPerSecond(EntityUid body)
     {
-        if (!TryGetCruciformEntity(body, out _, out var component))
-            return 0;
-        RecomputeRegeneration(component);
-        return component.RegenerationPerSecond;
+        return TryGetCruciformEntity(body, out _, out var component)
+            ? component.RegenerationPerSecond
+            : 0;
     }
 
     /// <summary>
@@ -634,18 +630,10 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
         foreach (var module in next.StartingModules)
             _modules.TryInstall(cruciform, comp, module);
 
-        if (profile == NeoTheologyPrototypes.PreacherProfile || profile == NeoTheologyPrototypes.InquisitorProfile)
-        {
-            comp.Clearance = NeoTheologyClearance.Clergy;
-            if (specializations.Length > 0)
-            {
-                foreach (var module in SpecializationModules)
-                    _modules.TryRemove(cruciform, comp, module);
-                foreach (var module in specializations)
-                    _modules.TryInstall(cruciform, comp, module);
-            }
-        }
-        else if (profile == NeoTheologyPrototypes.DiscipleProfile)
+        comp.Channeling = next.CanChannel;
+        if (next.Clearance > comp.Clearance)
+            comp.Clearance = next.Clearance;
+        if (!next.IsSpecialization)
         {
             foreach (var module in specializations)
                 _modules.TryInstall(cruciform, comp, module);
@@ -660,44 +648,29 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
 
     private void MakeSpecialization(EntityUid cruciform, CruciformComponent comp, ProtoId<NeoTheologyProfilePrototype> profile)
     {
-        if (!TryGetConfiguredProfile(profile, GetRules(), out var next) ||
-            !next.StartingModules.Any(module => SpecializationModules.Contains(module)))
+        var rules = GetRules();
+        if (!TryGetConfiguredProfile(profile, rules, out var next) || !next.IsSpecialization)
             return;
 
         foreach (var module in SpecializationModules)
             _modules.TryRemove(cruciform, comp, module);
         foreach (var module in next.StartingModules.Where(module => SpecializationModules.Contains(module)))
             _modules.TryInstall(cruciform, comp, module);
-        if (!comp.InstalledModules.Contains(NeoTheologyPrototypes.PriestModule) && !comp.InstalledModules.Contains(NeoTheologyPrototypes.InquisitorModule))
+        if (!TryGetConfiguredProfile(comp.Profile, rules, out var current) ||
+            current.Clearance < NeoTheologyClearance.Clergy)
             comp.Profile = profile;
         RecomputeProfile(cruciform, comp);
         if (comp.ImplantedEntity is { } body)
             _world.AssignObjectives(body);
     }
 
-    public void MakeCommon(EntityUid c, CruciformComponent comp)
-        => MakeRank(c, comp, NeoTheologyPrototypes.DiscipleProfile);
-
-    public void MakePriest(EntityUid c, CruciformComponent comp)
+    private bool MeetsAccessClearance(ProtoId<AccessLevelPrototype> access, NeoTheologyClearance clearance)
     {
-        MakeRank(c, comp, NeoTheologyPrototypes.PreacherProfile);
-        comp.Clearance = NeoTheologyClearance.Clergy;
+        var rules = GetRules();
+        return rules == null ||
+               !rules.RequiredClearance.TryGetValue(access, out var required) ||
+               clearance >= required;
     }
-
-    public void MakeInquisitor(EntityUid c, CruciformComponent comp)
-    {
-        MakeRank(c, comp, NeoTheologyPrototypes.InquisitorProfile);
-        comp.Clearance = NeoTheologyClearance.Clergy;
-    }
-
-    public void MakeAcolyte(EntityUid c, CruciformComponent comp)
-        => MakeSpecialization(c, comp, NeoTheologyPrototypes.AcolyteProfile);
-
-    public void MakeCustodian(EntityUid c, CruciformComponent comp)
-        => MakeSpecialization(c, comp, NeoTheologyPrototypes.CustodianProfile);
-
-    public void MakeAgrolyte(EntityUid c, CruciformComponent comp)
-        => MakeSpecialization(c, comp, NeoTheologyPrototypes.AgrolyteProfile);
 
     /// <summary>Modules implied by a profile id. One table, no switch statements elsewhere.</summary>
     private static readonly ProtoId<CoreModulePrototype>[] SpecializationModules =
@@ -738,9 +711,10 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
     /// </summary>
     public void RecomputeProfile(EntityUid cruciform, CruciformComponent component)
     {
-        var hasProfile = TryGetConfiguredProfile(component.Profile, GetRules(), out var profile);
+        var rules = GetRules();
+        var hasProfile = TryGetConfiguredProfile(component.Profile, rules, out var profile);
 
-        var capacity = hasProfile ? profile.CruciformCapacity : 50d;
+        var capacity = hasProfile ? profile.CruciformCapacity : rules?.DefaultCruciformCapacity ?? 0;
 
         component.UnlockedSets.Clear();
 

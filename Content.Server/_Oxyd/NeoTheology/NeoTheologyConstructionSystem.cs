@@ -290,7 +290,8 @@ public sealed partial class NeoTheologyConstructionSystem : EntitySystem
     private bool IsClergy(EntityUid user)
     {
         return _cruciform.TryGetCruciform(user, out _, out var cruciform) &&
-               LitanyEffectSystem.IsClergyProfile(cruciform.Profile);
+               _prototypes.TryIndex(cruciform.Profile, out NeoTheologyProfilePrototype? profile) &&
+               profile.Clearance >= NeoTheologyClearance.Clergy;
     }
 
     /// <summary>

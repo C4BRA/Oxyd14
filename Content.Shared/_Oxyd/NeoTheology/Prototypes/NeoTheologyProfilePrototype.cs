@@ -39,4 +39,18 @@ public sealed partial class NeoTheologyProfilePrototype : IPrototype
     /// <summary>Whether this profile contributes to another channeler's follower count.</summary>
     [DataField]
     public bool CountsAsChannelingFollower { get; private set; }
+
+    /// <summary>
+    /// Clearance the cruciform grants on rank-in. Compared against the rules
+    /// <c>requiredClearance</c> map for access privileges.
+    /// </summary>
+    [DataField]
+    public NeoTheologyClearance Clearance { get; private set; } = NeoTheologyClearance.None;
+
+    /// <summary>
+    /// Specialization profiles (acolyte/custodian/agrolyte) layer onto a base rank instead
+    /// of replacing it — <c>MakeSpecialization</c> only accepts these.
+    /// </summary>
+    [DataField]
+    public bool IsSpecialization { get; private set; }
 }
