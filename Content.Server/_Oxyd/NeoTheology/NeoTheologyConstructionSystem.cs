@@ -187,7 +187,7 @@ public sealed partial class NeoTheologyConstructionSystem : EntitySystem
             var remaining = requirement.Stack is not null ? 1 : requirement.Amount;
             foreach (var uid in entities)
             {
-                if (used.Contains(uid) || TerminatingOrDeleted(uid) || EntityManager.IsQueuedForDeletion(uid))
+                if (used.Contains(uid) || TerminatingOrDeleted(uid))
                     continue;
 
                 StackComponent? stack = null;
@@ -266,7 +266,7 @@ public sealed partial class NeoTheologyConstructionSystem : EntitySystem
     {
         blueprint = default!;
         var prototypeId = MetaData(uid).EntityPrototype?.ID;
-        if (prototypeId is null || TerminatingOrDeleted(uid) || EntityManager.IsQueuedForDeletion(uid))
+        if (prototypeId is null || TerminatingOrDeleted(uid))
             return false;
 
         foreach (var proto in _prototypes.EnumeratePrototypes<NeoTheologyBlueprintPrototype>())
@@ -320,7 +320,7 @@ public sealed partial class NeoTheologyConstructionSystem : EntitySystem
         var results = new List<EntityUid>();
         foreach (var uid in _lookup.GetEntitiesInRange(Transform(user).Coordinates, ScanRadius))
         {
-            if (TerminatingOrDeleted(uid) || EntityManager.IsQueuedForDeletion(uid) ||
+            if (TerminatingOrDeleted(uid) ||
                 !TryComp(uid, out TransformComponent? xform))
                 continue;
 

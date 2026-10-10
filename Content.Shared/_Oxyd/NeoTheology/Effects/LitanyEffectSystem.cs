@@ -333,13 +333,17 @@ public sealed partial class LitanyEffectSystem : EntitySystem, ILitanyEffectRais
         return true;
     }
 
-    /// <summary>Adds a stacking skill change that times out after <see cref="LitanyBuffDuration"/>.</summary>
-    public void TryAddTimedSkill(EntityUid target, ProtoId<SkillPrototype> skill, int amount)
+    /// <summary>
+    /// Applies or refreshes one litany-keyed timed skill change. <paramref name="sourceId"/>
+    /// bounds stacking exactly like <see cref="TryApplySkillBuff"/>: recasting from the same
+    /// source refreshes the buff instead of piling on another.
+    /// </summary>
+    public void TryAddTimedSkill(EntityUid target, string sourceId, ProtoId<SkillPrototype> skill, int amount)
     {
         if (!CanReceiveSkillBuff(target) || !TryComp<MobSkillComponent>(target, out var skills))
             return;
 
-        _skill.AddBuff((target, skills), $"{skill}:{Guid.NewGuid()}", amount, skill, LitanyBuffDuration);
+        _skill.SetUniqueBuff((target, skills), sourceId, amount, skill, LitanyBuffDuration);
     }
 
     /// <summary>
@@ -678,7 +682,7 @@ public sealed partial class LitanyEffectSystem : EntitySystem, ILitanyEffectRais
         var query = EntityQueryEnumerator<CruciformBearerComponent, TransformComponent>();
         while (query.MoveNext(out var body, out _, out var xform))
             if (body != actor && xform.MapID != MapId.Nullspace &&
-                !TerminatingOrDeleted(body) && !EntityManager.IsQueuedForDeletion(body) &&
+                !TerminatingOrDeleted(body) &&
                 _cruciform.TryGetCruciform(body, out _, out _))
                 yield return body;
     }

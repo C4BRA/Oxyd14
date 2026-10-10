@@ -56,8 +56,9 @@ public sealed partial class LitanyDivineBlessingEffect : LitanyEffect
             var gain = system.RollInclusive(MinGain, MaxGain);
             oddity.giving[skill] = value + gain;
 
-            // Eris changeStat stacks. Each blessing adds its own timed penalty.
-            system.TryAddTimedSkill(context.User, skill, -Math.Max((gain + 1) / 2, 1));
+            // The blessing penalty rides the litany's unique key: recasting refreshes
+            // it instead of stacking without bound.
+            system.TryAddTimedSkill(context.User, context.Litany.ID, skill, -Math.Max((gain + 1) / 2, 1));
             blessed = true;
         }
 
