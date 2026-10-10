@@ -4,9 +4,11 @@ using Content.Shared.Damage.Systems;
 using Content.Shared.Movement.Systems;
 using Content.Shared.Rejuvenate;
 using Content.Shared.StatusEffectNew;
-using Robust.Shared.GameStates;
+using Content.Shared.Traits.Assorted;
 using Robust.Shared.Network;
+using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Timing;
 
 namespace Content.Shared._Oxyd.Medical;
 
@@ -21,29 +23,15 @@ public sealed partial class PainSystem : EntitySystem
     [Dependency] private MovementSpeedModifierSystem _movement = default!;
     [Dependency] private StatusEffectsSystem _statusEffects = default!;
     [Dependency] private INetManager _net = default!;
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private ISharedPlayerManager _player = default!;
 
     public override void Initialize()
     {
-        SubscribeLocalEvent<PainComponent, ComponentGetState>(OnGetState);
-        SubscribeLocalEvent<PainComponent, ComponentHandleState>(OnHandleState);
         SubscribeLocalEvent<AnalgesicComponent, StatusEffectAppliedEvent>(OnAnalgesicApplied);
         SubscribeLocalEvent<AnalgesicComponent, StatusEffectRemovedEvent>(OnAnalgesicRemoved);
-    }
-
-    private void OnGetState(Entity<PainComponent> ent, ref ComponentGetState args)
-    {
-        args.State = new PainComponentState(ent.Comp.CurrentPain, ent.Comp.TemporaryPain, ent.Comp.Numb);
-    }
-
-    private void OnHandleState(Entity<PainComponent> ent, ref ComponentHandleState args)
-    {
-        if (args.Current is not PainComponentState state)
-            return;
-
-        ent.Comp.CurrentPain = state.CurrentPain;
-        ent.Comp.TemporaryPain = state.TemporaryPain;
-        ent.Comp.Numb = state.Numb;
-        _movement.RefreshMovementSpeedModifiers(ent.Owner);
+        SubscribeLocalEvent<PainNumbnessStatusEffectComponent, StatusEffectAppliedEvent>(OnNumbnessApplied);
+        SubscribeLocalEvent<PainNumbnessStatusEffectComponent, StatusEffectRemovedEvent>(OnNumbnessRemoved);
     }
 
     private void OnAnalgesicApplied(Entity<AnalgesicComponent> ent, ref StatusEffectAppliedEvent args)
@@ -56,6 +44,16 @@ public sealed partial class PainSystem : EntitySystem
     {
         if (TryComp<PainComponent>(args.Target, out var pain))
             Refresh((args.Target, pain));
+    }
+
+    private void OnNumbnessApplied(Entity<PainNumbnessStatusEffectComponent> ent, ref StatusEffectAppliedEvent args)
+    {
+        SetNumb(args.Target, true);
+    }
+
+    private void OnNumbnessRemoved(Entity<PainNumbnessStatusEffectComponent> ent, ref StatusEffectRemovedEvent args)
+    {
+        SetNumb(args.Target, false);
     }
 
     [SubscribeLocalEvent]
@@ -102,8 +100,7 @@ public sealed partial class PainSystem : EntitySystem
         if (TryComp<AnalgesicComponent>(effect, out var analgesic))
         {
             analgesic.Strength = strength;
-            if (_net.IsServer)
-                Dirty(effect.Value, analgesic);
+            Dirty(effect.Value, analgesic);
         }
 
         if (TryComp<PainComponent>(uid, out var pain))
@@ -123,16 +120,24 @@ public sealed partial class PainSystem : EntitySystem
     {
         // Runs on both sides: temporary pain decay and the slowdown it causes are predicted,
         // with the server's state overriding whatever the client computed.
+        var client = _net.IsClient;
+        if (client && !_timing.IsFirstTimePredicted)
+            return;
+
+        var now = _timing.CurTime;
         var query = EntityQueryEnumerator<PainComponent>();
         while (query.MoveNext(out var uid, out var pain))
         {
-            pain.TemporaryPain = Math.Max(0, pain.TemporaryPain - pain.RecoveryPerSecond * frameTime);
-
-            pain.UpdateRemaining -= frameTime;
-            if (pain.UpdateRemaining > 0)
+            // The client only decays pain for its own predicted mob.
+            if (client && uid != _player.LocalEntity)
                 continue;
 
-            pain.UpdateRemaining = 1f;
+            pain.TemporaryPain = Math.Max(0, pain.TemporaryPain - pain.RecoveryPerSecond * frameTime);
+
+            if (now < pain.NextUpdate)
+                continue;
+
+            pain.NextUpdate = now + TimeSpan.FromSeconds(pain.UpdateInterval);
             Refresh((uid, pain));
         }
     }
@@ -151,9 +156,9 @@ public sealed partial class PainSystem : EntitySystem
         var woundPain = 0f;
         if (TryComp<DamageableComponent>(ent.Owner, out var damage))
         {
-            foreach (var (type, amount) in _damage.GetAllDamage((ent.Owner, damage)).DamageDict)
+            foreach (var (type, amount) in _damage.GetPositiveDamage((ent.Owner, damage)).DamageDict)
             {
-                if (type.Id is "Blunt" or "Slash" or "Piercing" or "Heat" or "Cold" or "Shock")
+                if (ent.Comp.WoundPainTypes.Contains(type))
                     woundPain += amount.Float();
             }
         }
@@ -165,8 +170,10 @@ public sealed partial class PainSystem : EntitySystem
             return;
 
         ent.Comp.CurrentPain = total;
-        if (_net.IsServer)
-            Dirty(ent);
+        DirtyFields(ent.Owner, ent.Comp, null,
+            nameof(PainComponent.CurrentPain),
+            nameof(PainComponent.TemporaryPain),
+            nameof(PainComponent.Numb));
         _movement.RefreshMovementSpeedModifiers(ent.Owner);
     }
 }

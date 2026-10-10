@@ -1,12 +1,9 @@
-using Content.Server.Body.Components;
-using Content.Shared._Oxyd.Medical;
 using Content.Shared.Body.Components;
+using Content.Shared._Oxyd.Medical;
 using Content.Shared.Chemistry.Components;
 using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Popups;
-using Content.Shared.Random.Helpers;
 using Robust.Shared.Prototypes;
-using Robust.Shared.Random;
 using Robust.Shared.Timing;
 
 namespace Content.Server._Oxyd.Medical;
@@ -18,33 +15,36 @@ namespace Content.Server._Oxyd.Medical;
 /// cycle; inside the strong half they either get cured, expire past
 /// strength 50, or pulse custom_pain-tiered messages every 45 ticks.
 /// </summary>
-public sealed class OxydSideEffectsSystem : EntitySystem
+public sealed partial class OxydSideEffectsSystem : EntitySystem
 {
-    [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly IPrototypeManager _prototypes = default!;
-    [Dependency] private readonly SharedSolutionContainerSystem _solutions = default!;
-    [Dependency] private readonly PainSystem _pain = default!;
-    [Dependency] private readonly SharedPopupSystem _popup = default!;
-    [Dependency] private readonly IRobustRandom _random = default!;
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private IPrototypeManager _prototypes = default!;
+    [Dependency] private SharedSolutionContainerSystem _solutions = default!;
+    [Dependency] private PainSystem _pain = default!;
+    [Dependency] private SharedPopupSystem _popup = default!;
 
     /// <summary>Eris life_tick % 15 manifest scan interval.</summary>
     private static readonly TimeSpan EvalInterval = TimeSpan.FromSeconds(15);
 
     /// <summary>Eris life_tick % 45 on_life pulse interval.</summary>
-    private const float PainPulseInterval = 45f;
-
-    private TimeSpan _nextEval;
+    private static readonly TimeSpan PainPulseInterval = TimeSpan.FromSeconds(45);
 
     public override void Update(float frameTime)
     {
         var now = _timing.CurTime;
-        var eval = now >= _nextEval;
-        if (eval)
-            _nextEval = now + EvalInterval;
 
         var query = EntityQueryEnumerator<OxydSideEffectsComponent, BloodstreamComponent>();
         while (query.MoveNext(out var uid, out var comp, out var _))
         {
+            var eval = now >= comp.NextUpdate;
+            if (eval)
+                comp.NextUpdate = now + EvalInterval;
+
+            // Idle-cheap: nothing to scan for and no active effects -> skip the
+            // bloodstream lookup entirely.
+            if (!eval && comp.Active.Count == 0)
+                continue;
+
             if (!_solutions.TryGetSolution(uid, BloodstreamComponent.DefaultBloodSolutionName,
                     out var solEnt, out var blood))
                 continue;
@@ -82,10 +82,9 @@ public sealed class OxydSideEffectsSystem : EntitySystem
                     continue;
                 }
 
-                comp.PainPulseAccumulator += frameTime;
-                if (comp.PainPulseAccumulator >= PainPulseInterval)
+                if (now >= inst.NextPulse)
                 {
-                    comp.PainPulseAccumulator = 0f;
+                    inst.NextPulse = now + PainPulseInterval;
                     Pulse(uid, proto, percent * inst.Strength);
                 }
             }
@@ -126,6 +125,7 @@ public sealed class OxydSideEffectsSystem : EntitySystem
                     Effect = proto.ID,
                     Strength = 0f,
                     Start = _timing.CurTime,
+                    NextPulse = _timing.CurTime + PainPulseInterval,
                 });
             }
         }

@@ -10,6 +10,7 @@ using Content.Shared.Popups;
 using Content.Shared.Rejuvenate;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
+using Robust.Shared.Timing;
 
 namespace Content.Server._Oxyd.Medical;
 
@@ -32,6 +33,7 @@ public sealed partial class AddictionSystem : EntitySystem
     [Dependency] private SharedPopupSystem _popup = default!;
     [Dependency] private IRobustRandom _random = default!;
     [Dependency] private IPrototypeManager _prototypes = default!;
+    [Dependency] private IGameTiming _timing = default!;
 
     [SubscribeLocalEvent]
     private void OnRejuvenate(EntityUid uid, AddictionComponent comp, RejuvenateEvent args)
@@ -55,7 +57,7 @@ public sealed partial class AddictionSystem : EntitySystem
 
         state.PeakDose = Content.Shared.FixedPoint.FixedPoint2.Max(state.PeakDose, quantity);
         if (state.Progress != null || quantity >= effect.Threshold || _random.Prob(effect.AddictionChance * scale))
-            state.Progress = -15;
+            state.Progress = comp.DependenceStart;
     }
 
     /// <summary>Advances all dependencies. This does not remove reagents or cause immediate withdrawal damage.</summary>
@@ -79,7 +81,7 @@ public sealed partial class AddictionSystem : EntitySystem
     {
         ent.Comp.Reagents.Remove(reagent);
         if (TryComp<SanityComponent>(ent, out var sanity))
-            _sanity.ApplySanityDelta((ent, sanity), SanitySource.Chemical, 15);
+            _sanity.ApplySanityDelta((ent, sanity), SanitySource.Chemical, ent.Comp.RecoverySanityDelta);
 
         _popup.PopupEntity(Loc.GetString("oxyd-medical-addiction-recovered",
             ("reagent", _prototypes.Index(reagent).LocalizedName)), ent, ent);
@@ -87,17 +89,17 @@ public sealed partial class AddictionSystem : EntitySystem
 
     public override void Update(float frameTime)
     {
+        var now = _timing.CurTime;
         var query = EntityQueryEnumerator<AddictionComponent>();
         while (query.MoveNext(out var uid, out var comp))
         {
             if (_mobs.IsDead(uid))
                 continue;
 
-            comp.UpdateRemaining -= frameTime;
-            if (comp.UpdateRemaining > 0)
+            if (now < comp.NextUpdate)
                 continue;
 
-            comp.UpdateRemaining = comp.UpdateInterval;
+            comp.NextUpdate = now + TimeSpan.FromSeconds(comp.UpdateInterval);
             foreach (var (reagent, state) in comp.Reagents.ToArray())
             {
                 // While the reagent is still in the bloodstream, the Addictive entity effect
@@ -115,13 +117,19 @@ public sealed partial class AddictionSystem : EntitySystem
                     continue;
                 }
 
-                if (state.Progress <= 0 || !_random.Prob(0.3f))
+                if (state.Progress <= 0 || !_random.Prob(comp.CravingChance))
                     continue;
 
                 _popup.PopupEntity(Loc.GetString("oxyd-medical-addiction-craving",
                     ("reagent", _prototypes.Index(reagent).LocalizedName)), uid, uid);
-                if (state.Progress > 30 && TryComp<SanityComponent>(uid, out var sanity))
-                    _sanity.ApplySanityDelta((uid, sanity), SanitySource.Chemical, state.Progress > 40 ? -10 : -5);
+                if (state.Progress > comp.CravingSanityThreshold &&
+                    TryComp<SanityComponent>(uid, out var sanity))
+                {
+                    _sanity.ApplySanityDelta((uid, sanity), SanitySource.Chemical,
+                        state.Progress > comp.CravingSevereThreshold
+                            ? comp.CravingSevereSanityDelta
+                            : comp.CravingSanityDelta);
+                }
             }
         }
     }

@@ -1,4 +1,3 @@
-using Content.Shared._Oxyd.Medical;
 using Content.Shared.Damage.Events;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Events;
@@ -10,7 +9,6 @@ namespace Content.Shared.Traits.Assorted;
 public sealed partial class PainNumbnessSystem : EntitySystem
 {
     [Dependency] private MobThresholdSystem _mobThresholdSystem = default!;
-    [Dependency] private PainSystem _pain = default!;
 
     public override void Initialize()
     {
@@ -22,7 +20,6 @@ public sealed partial class PainNumbnessSystem : EntitySystem
 
     private void OnEffectApplied(Entity<PainNumbnessStatusEffectComponent> ent, ref StatusEffectAppliedEvent args)
     {
-        _pain.SetNumb(args.Target, true);
         if (!HasComp<MobThresholdsComponent>(args.Target))
             return;
 
@@ -31,7 +28,6 @@ public sealed partial class PainNumbnessSystem : EntitySystem
 
     private void OnEffectRemoved(Entity<PainNumbnessStatusEffectComponent> ent, ref StatusEffectRemovedEvent args)
     {
-        _pain.SetNumb(args.Target, false);
         if (!HasComp<MobThresholdsComponent>(args.Target))
             return;
 

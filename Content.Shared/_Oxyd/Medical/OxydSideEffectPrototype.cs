@@ -1,4 +1,5 @@
 using Content.Shared.Chemistry.Reagent;
+using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
 
 namespace Content.Shared._Oxyd.Medical;
@@ -8,7 +9,7 @@ namespace Content.Shared._Oxyd.Medical;
 /// trigger reagent concentration is met and no cure reagent circulates, ramps
 /// in strength on a sine cycle, and hurts via tiered custom_pain messages.
 /// </summary>
-[Prototype("oxydSideEffect")]
+[Prototype]
 public sealed partial class OxydSideEffectPrototype : IPrototype
 {
     [IdDataField]
@@ -50,15 +51,19 @@ public sealed partial class OxydSideEffectInstance
 
     /// <summary>Game-time the manifestation (re)started - drives the sine cycle.</summary>
     public TimeSpan Start;
+
+    /// <summary>Game-time of this instance's next on_life pain pulse (Eris life_tick % 45).</summary>
+    public TimeSpan NextPulse;
 }
 
 /// <summary>Tracks active medical side effects (Eris human.side_effects).</summary>
-[RegisterComponent]
+[RegisterComponent, AutoGenerateComponentPause]
 public sealed partial class OxydSideEffectsComponent : Component
 {
     [DataField]
     public List<OxydSideEffectInstance> Active = new();
 
-    /// <summary>Accumulated seconds toward the next on_life pain pulse (Eris life_tick % 45).</summary>
-    public float PainPulseAccumulator;
+    /// <summary>Next game-time the manifest scan runs for this mob.</summary>
+    [AutoPausedField]
+    public TimeSpan NextUpdate;
 }

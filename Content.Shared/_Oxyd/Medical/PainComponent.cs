@@ -1,17 +1,19 @@
+using Content.Shared.Damage.Prototypes;
 using Robust.Shared.GameStates;
-using Robust.Shared.Serialization;
+using Robust.Shared.Prototypes;
 
 namespace Content.Shared._Oxyd.Medical;
 
 /// <summary>Tracks wound pain, temporary pain, and active analgesics. Pain does not add wounds.</summary>
-[RegisterComponent, NetworkedComponent]
+[RegisterComponent, NetworkedComponent, AutoGenerateComponentState(fieldDeltas: true),
+ AutoGenerateComponentPause]
 public sealed partial class PainComponent : Component
 {
     /// <summary>Recomputed pain level — the only value other systems read.</summary>
-    [DataField]
+    [DataField, AutoNetworkedField]
     public float CurrentPain;
 
-    [DataField]
+    [DataField, AutoNetworkedField]
     public float TemporaryPain;
 
     [DataField]
@@ -26,29 +28,20 @@ public sealed partial class PainComponent : Component
     [DataField]
     public float SevereThreshold = 100f;
 
+    /// <summary>Damage types that count toward wound pain (Eris halloss sources).</summary>
     [DataField]
+    public HashSet<ProtoId<DamageTypePrototype>> WoundPainTypes = new()
+    {
+        "Blunt", "Slash", "Piercing", "Heat", "Cold", "Shock",
+    };
+
+    [DataField, AutoNetworkedField]
     public bool Numb;
 
+    /// <summary>Seconds between pain recomputations.</summary>
     [DataField]
-    public float UpdateRemaining;
-}
+    public float UpdateInterval = 1f;
 
-/// <summary>
-/// Hand-rolled partial state: only the dynamic fields travel on Dirty. The thresholds,
-/// multipliers and timers above are static prototype data the client already has, and the
-/// analgesic doses live on their own status-effect entities now.
-/// </summary>
-[Serializable, NetSerializable]
-public sealed class PainComponentState : ComponentState
-{
-    public readonly float CurrentPain;
-    public readonly float TemporaryPain;
-    public readonly bool Numb;
-
-    public PainComponentState(float currentPain, float temporaryPain, bool numb)
-    {
-        CurrentPain = currentPain;
-        TemporaryPain = temporaryPain;
-        Numb = numb;
-    }
+    [AutoPausedField]
+    public TimeSpan NextUpdate;
 }
