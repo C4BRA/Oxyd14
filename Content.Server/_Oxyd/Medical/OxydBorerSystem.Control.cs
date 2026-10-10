@@ -7,6 +7,7 @@ using Content.Shared._Oxyd.Medical;
 using Content.Shared.Chat;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Prototypes;
+using Content.Shared.Database;
 using Content.Shared.DoAfter;
 using Content.Shared.Interaction;
 using Content.Shared.Jittering;
@@ -16,6 +17,7 @@ using Robust.Server.Player;
 using Robust.Shared.Containers;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Random;
+using Robust.Shared.Utility;
 
 namespace Content.Server._Oxyd.Medical;
 
