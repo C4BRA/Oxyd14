@@ -454,7 +454,7 @@
       metabolismRate: 0.02
       effects:
       - !type:Analgesic
-        source: OxydStimAdrenaline
+        effectProto: OxydStimAdrenaline
         strength: 15
       - !type:Stim
         stimId: adrenaline

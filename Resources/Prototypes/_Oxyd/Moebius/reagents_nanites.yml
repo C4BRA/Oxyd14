@@ -125,7 +125,7 @@
       metabolismRate: 0.02
       effects:
       - !type:Analgesic
-        source: OxydNanoTraumaControl
+        effectProto: OxydNanoTraumaControl
         strength: 40
       - !type:Nsa
         value: 2
