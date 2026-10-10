@@ -31,7 +31,6 @@ namespace Content.Server._Oxyd.NeoTheology;
 /// </summary>
 public sealed partial class CruciformSystem : SharedCruciformSystem
 {
-    [Dependency] private SharedContainerSystem _containers = default!;
     [Dependency] private MobStateSystem _mobStates = default!;
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private CoreModuleSystem _modules = default!;
@@ -179,7 +178,11 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
         if (component.Upgrade is { } upgrade && TryComp<CruciformUpgradeAuraComponent>(upgrade, out var aura))
         {
             var ticker = EnsureComp<ViewTickerComponent>(body);
-            ticker.range = Math.Max(ticker.range, aura.Radius);
+            ticker.auraRange = aura.Radius;
+        }
+        else if (TryComp<ViewTickerComponent>(body, out var existingTicker))
+        {
+            existingTicker.auraRange = 0f;
         }
 
         if (component.ImplantedEntity == body &&
@@ -198,10 +201,9 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
         var body = args.Implanted;
         if (HasAnotherCruciform(body, ent.Owner))
         {
-            // Defensive fallback if insert somehow bypassed OnInsertAttempt. Do not
-            // Remove synchronously here — that nests container mutations. Defer.
-            var rejected = ent.Owner;
-            Timer.Spawn(0, () => TryRemoveDuplicateDeferred(rejected));
+            // OnInsertAttempt already rejects the duplicate before insert completes.
+            // Reaching this still means the implant landed; leave it inert rather than
+            // nesting a container mutation inside the implanted event.
             return;
         }
 
@@ -467,7 +469,7 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
     /// </summary>
     public bool GrantCruciform(EntityUid body, ProtoId<NeoTheologyProfilePrototype> profile)
     {
-        if (TerminatingOrDeleted(body) || EntityManager.IsQueuedForDeletion(body) ||
+        if (TerminatingOrDeleted(body) ||
             _mobStates.IsDead(body) || HasComp<GodbloodMutationComponent>(body) ||
             TryComp<CruciformBearerComponent>(body, out _) ||
             !TryGetConfiguredProfile(profile, GetRules(), out _))
@@ -487,10 +489,17 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
         _souls.WriteSnapshot(implant, comp);
         SetActive(implant, comp, true);
 
+        // Parity with Activate(): run the module conversion and obey-kit activation.
+        // A fresh implant has neither, so both no-op today.
+        ApplyActivationModules(implant, comp);
+        _souls.ActivateObey(implant, comp);
+
         // Same semantics as Activate(): a freshly granted cruciform starts full.
         if (comp.Holiness <= GetDebitTolerance())
             comp.Holiness = comp.MaxHoliness;
 
+        Dirty(implant, comp);
+        BumpRevision(body);
         return true;
     }
 
@@ -812,23 +821,6 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
         }
 
         return false;
-    }
-
-    private void TryRemoveDuplicateDeferred(EntityUid rejected)
-    {
-        if (TerminatingOrDeleted(rejected))
-            return;
-        if (!TryComp<SubdermalImplantComponent>(rejected, out var implant) || implant.ImplantedEntity is not { } body)
-            return;
-        if (!TryComp<ImplantedComponent>(body, out var installed))
-            return;
-        if (!installed.ImplantContainer.ContainedEntities.Contains(rejected))
-            return;
-        if (!HasAnotherCruciform(body, rejected))
-            return;
-
-        // Recoverable rejection: container remove without ForceRemove (which deletes).
-        _containers.Remove(rejected, installed.ImplantContainer);
     }
 
     public NeoTheologyRulesPrototype? GetRules()
