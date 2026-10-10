@@ -2,6 +2,7 @@ using System.Linq;
 using Content.Shared.Physics;
 using Robust.Server.GameObjects;
 using Robust.Shared.Map;
+using Robust.Shared.Physics;
 using Robust.Shared.Physics.Systems;
 using Robust.Shared.Timing;
 
@@ -9,7 +10,7 @@ namespace Content.Server._Oxyd.Framework.ViewCalc;
 
 public class ViewTickEvent : EntityEventArgs
 {
-    public required HashSet<EntityUid> seen;
+    public required IReadOnlySet<EntityUid> seen;
 }
 
 /// <summary>
@@ -25,6 +26,22 @@ public sealed partial class ViewCalcSystem : EntitySystem
     [Dependency] private EntityLookupSystem entlook = default!;
     [Dependency] private IGameTiming timing = default!;
     private float passed;
+
+    /// <summary>Bumped whenever a view-relevant entity moves or is deleted, so
+    /// stationary tickers recalculate instead of serving a stale cached view.</summary>
+    private int _viewEpoch;
+
+    public override void Initialize()
+    {
+        SubscribeLocalEvent<ViewRelevantComponent, MoveEvent>(OnViewRelevantMoved);
+        SubscribeLocalEvent<ViewRelevantComponent, ComponentShutdown>(OnViewRelevantGone);
+    }
+
+    private void OnViewRelevantMoved(Entity<ViewRelevantComponent> ent, ref MoveEvent args)
+        => _viewEpoch++;
+
+    private void OnViewRelevantGone(Entity<ViewRelevantComponent> ent, ref ComponentShutdown args)
+        => _viewEpoch++;
 
     /// <summary>Squared movement distance (≈1.4 tiles) that forces a view recalculation.</summary>
     private const float MovementThresholdSquared = 2f;
@@ -52,7 +69,7 @@ public sealed partial class ViewCalcSystem : EntitySystem
             return keepers;
 
         HashSet<Entity<ViewRelevantComponent>> result = new();
-        entlook.GetEntitiesInRange(point, range, result);
+        entlook.GetEntitiesInRange(point, range, result, LookupFlags.Approximate);
         foreach (var ent in result)
         {
             if (InLineOfSight(point, ent.Owner, filter))
@@ -90,7 +107,8 @@ public sealed partial class ViewCalcSystem : EntitySystem
             // Raise every second, but only recalculate when the ticker moved or the
             // cached view went stale — line of sight raycasts are expensive.
             var position = transform.GetMapCoordinates(uid);
-            var stale = timing.CurTime - comp.lastTickTime >= StaleAfter;
+            var stale = timing.CurTime - comp.lastTickTime >= StaleAfter ||
+                comp.lastSeenEpoch != _viewEpoch;
             var moved = comp.lastTickPosition is not { } lastPosition ||
                 position.MapId != lastPosition.MapId ||
                 (position.Position - lastPosition.Position).LengthSquared() > MovementThresholdSquared;
@@ -98,7 +116,12 @@ public sealed partial class ViewCalcSystem : EntitySystem
             {
                 comp.lastTickTime = timing.CurTime;
                 comp.lastTickPosition = position;
-                comp.lastSeen = GetEntsInView(position, comp.range);
+                comp.lastSeenEpoch = _viewEpoch;
+                comp.lastSeen = GetEntsInView(position, Math.Max(comp.range, comp.auraRange));
+            }
+            else
+            {
+                comp.lastSeen.RemoveWhere(TerminatingOrDeleted);
             }
             RaiseLocalEvent(uid, new ViewTickEvent { seen = comp.lastSeen });
         }

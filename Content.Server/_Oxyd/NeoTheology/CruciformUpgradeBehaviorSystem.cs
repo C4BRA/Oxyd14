@@ -75,7 +75,7 @@ public sealed partial class CruciformUpgradeBehaviorSystem : EntitySystem
         TriggerMartyr(ent.Owner, cruciform, component, upgrade, martyr);
     }
 
-    private void ApplyAura(EntityUid body, CruciformUpgradeAuraComponent aura, HashSet<EntityUid> seen)
+    private void ApplyAura(EntityUid body, CruciformUpgradeAuraComponent aura, IReadOnlySet<EntityUid> seen)
     {
         if (aura.Radius <= 0)
             return;

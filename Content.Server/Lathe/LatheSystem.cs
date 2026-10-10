@@ -95,8 +95,6 @@ namespace Content.Server.Lathe
                         return;
                     if (!TryComp<DigitalDataHolderComponent>(ev.Entity, out var data))
                         return;
-                    // The disk's recipes widen which materials the storage accepts.
-                    _materialStorage.UpdateMaterialWhitelist(ent);
                     UpdateUserInterfaceState(ent, comp);
                 }
             }
@@ -113,8 +111,6 @@ namespace Content.Server.Lathe
                         return;
                     if (!TryComp<DigitalDataHolderComponent>(ev.Entity, out var data))
                         return;
-                    // Removing the disk narrows the whitelist back to built-in recipes.
-                    _materialStorage.UpdateMaterialWhitelist(ent);
                     UpdateUserInterfaceState(ent, comp);
                 }
             }

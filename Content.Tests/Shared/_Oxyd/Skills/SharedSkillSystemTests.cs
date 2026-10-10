@@ -111,7 +111,7 @@ public sealed class SharedSkillSystemTests : ContentUnitTest
     }
 
     [Test]
-    public void RemoveBuff_RecalculatesAfterMatchingEntryIsRemoved()
+    public void RemoveBuff_RemovesMatchingEntryWithoutRecalculating()
     {
         var entity = CreateSkillEntity();
         try
@@ -126,8 +126,12 @@ public sealed class SharedSkillSystemTests : ContentUnitTest
             {
                 Assert.That(entity.Comp.buffSources[SkillId]["first"], Is.Empty);
                 Assert.That(entity.Comp.buffSources[SkillId]["second"][0], Is.SameAs(second));
-                Assert.That(entity.Comp.skills[SkillId][1], Is.EqualTo(5));
+                // RemoveBuff is a raw removal: totals refresh on the next recalc.
+                Assert.That(entity.Comp.skills[SkillId][1], Is.EqualTo(8));
             }
+
+            _skillSystem.RecalculateBuffs(entity);
+            Assert.That(entity.Comp.skills[SkillId][1], Is.EqualTo(5));
         }
         finally
         {

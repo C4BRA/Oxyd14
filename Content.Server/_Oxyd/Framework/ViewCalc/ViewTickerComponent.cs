@@ -11,7 +11,13 @@ public sealed partial class ViewTickerComponent : Component
     [DataField]
     public float range = 8f;
 
+    /// <summary>Extra range contributed by auras; effective range is max(range, auraRange).</summary>
+    public float auraRange;
+
     public HashSet<EntityUid> lastSeen = new();
+
+    /// <summary>Value of the view epoch when <see cref="lastSeen"/> was computed.</summary>
+    public int lastSeenEpoch = -1;
 
     /// <summary>When the last view calculation ran for this ticker.</summary>
     public TimeSpan lastTickTime;

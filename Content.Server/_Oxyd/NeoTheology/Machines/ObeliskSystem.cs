@@ -80,7 +80,7 @@ public sealed partial class ObeliskSystem : EntitySystem
     }
 
     /// <summary>Runs one pulse. Direct callers request a fresh view; event handlers reuse the supplied view.</summary>
-    public void Tick(EntityUid uid, ObeliskComponent? obelisk = null, HashSet<EntityUid>? seen = null)
+    public void Tick(EntityUid uid, ObeliskComponent? obelisk = null, IReadOnlySet<EntityUid>? seen = null)
     {
         if (!Resolve(uid, ref obelisk))
             return;
