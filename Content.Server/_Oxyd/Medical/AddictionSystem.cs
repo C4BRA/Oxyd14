@@ -1,3 +1,4 @@
+using System.IO;
 using System.Linq;
 using Content.Server._Oxyd.SanityInsightAndResting;
 using Content.Shared._Oxyd.Medical;
@@ -17,6 +18,28 @@ namespace Content.Server._Oxyd.Medical;
 public sealed partial class AddictiveEntityEffectSystem : EntityEffectSystem<BloodstreamComponent, Addictive>
 {
     [Dependency] private AddictionSystem _addiction = default!;
+    [Dependency] private IPrototypeManager _prototypes = default!;
+
+    public override void Initialize()
+    {
+        base.Initialize();
+
+        // The Addictive effect restates its containing reagent's id; catch drift
+        // between the two at init rather than metabolizing the wrong reagent.
+        foreach (var reagent in _prototypes.EnumeratePrototypes<ReagentPrototype>())
+        {
+            if (reagent.Metabolisms is null)
+                continue;
+
+            foreach (var entry in reagent.Metabolisms.Metabolisms.Values)
+            foreach (var effect in entry.Effects)
+            {
+                if (effect is Addictive addictive && (string) addictive.Reagent != reagent.ID)
+                    throw new InvalidDataException(
+                        $"Addictive on {reagent.ID} declares reagent {addictive.Reagent}");
+            }
+        }
+    }
 
     protected override void Effect(Entity<BloodstreamComponent> entity, ref EntityEffectEvent<Addictive> args)
     {
