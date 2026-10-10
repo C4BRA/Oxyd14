@@ -247,13 +247,13 @@ public sealed partial class LitanyEffectSystem : EntitySystem, ILitanyEffectRais
         }
 
         var best = float.MaxValue;
-        var origin = Transform(cloner).WorldPosition;
+        var origin = _xform.GetWorldPosition(cloner);
         foreach (var (uid, _) in _lookup.GetEntitiesInRange<CruciformReaderComponent>(Transform(cloner).Coordinates, 1.5f))
         {
             if (!IsLitanyReader(uid))
                 continue;
 
-            var distance = (Transform(uid).WorldPosition - origin).LengthSquared();
+            var distance = (_xform.GetWorldPosition(uid) - origin).LengthSquared();
             if (distance >= best)
                 continue;
 

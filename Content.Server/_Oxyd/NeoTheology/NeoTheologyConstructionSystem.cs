@@ -257,7 +257,7 @@ public sealed partial class NeoTheologyConstructionSystem : EntitySystem
                 return;
 
             var chunk = Math.Min(remaining, stackProto.MaxCount ?? remaining);
-            _stack.SetCount(uid, chunk, stack);
+            _stack.SetCount((uid, stack), chunk);
             remaining -= chunk;
         }
     }

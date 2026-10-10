@@ -48,7 +48,7 @@ public sealed partial class ArmamentsPrinterSystem : EntitySystem
     private EntityUid? FindOperationalPrinter(EntityUid eye)
     {
         var xform = Transform(eye);
-        var origin = xform.WorldPosition;
+        var origin = _transform.GetWorldPosition(xform);
         EntityUid? best = null;
         var bestDistance = float.MaxValue;
         foreach (var printer in _lookup.GetEntitiesInRange<ArmamentsPrinterComponent>(xform.Coordinates, PrinterScanRadius))
@@ -57,7 +57,7 @@ public sealed partial class ArmamentsPrinterSystem : EntitySystem
             if (!_machines.IsOperational(uid))
                 continue;
 
-            var distance = (Transform(uid).WorldPosition - origin).LengthSquared();
+            var distance = (_transform.GetWorldPosition(uid) - origin).LengthSquared();
             if (distance >= bestDistance)
                 continue;
 

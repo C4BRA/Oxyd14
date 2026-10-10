@@ -131,7 +131,7 @@ public sealed partial class BioreactorSystem : EntitySystem
             return;
 
         var pile = Spawn(BiomatterProto, Transform(uid).Coordinates);
-        _stack.SetCount(pile, amount);
+        _stack.SetCount((pile, null), amount);
     }
 
     public bool TryProcessBody(EntityUid uid, EntityUid body, BioreactorComponent? reactor = null)
@@ -150,7 +150,7 @@ public sealed partial class BioreactorSystem : EntitySystem
                 : 1;
         QueueDel(body);
         var pile = Spawn(BiomatterProto, Transform(uid).Coordinates);
-        _stack.SetCount(pile, amount);
+        _stack.SetCount((pile, null), amount);
         return true;
     }
 

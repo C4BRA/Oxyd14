@@ -38,10 +38,9 @@ public sealed partial class CruciformUpgradeBehaviorSystem : EntitySystem
     [Dependency] private PlantTraySystem _plantTray = default!;
     [Dependency] private PlantHolderSystem _plantHolder = default!;
     [Dependency] private SharedTransformSystem _xform = default!;
-    [Dependency] private IPrototypeManager _prototypes = default!;
 
-    private static readonly ProtoId<DamageGroupPrototype> BruteGroup = "Brute";
-    private static readonly ProtoId<DamageGroupPrototype> BurnGroup = "Burn";
+    private const string BruteGroup = "Brute";
+    private const string BurnGroup = "Burn";
 
     /// <summary>Applies the aura to the visible targets from the bearer's view tick.</summary>
     [SubscribeLocalEvent]
@@ -93,14 +92,15 @@ public sealed partial class CruciformUpgradeBehaviorSystem : EntitySystem
             if (target != body && !_mobState.IsDead(target) && _cruciform.IsActiveBearer(target) &&
                 TryComp<DamageableComponent>(target, out var damageable))
             {
-                var groups = _damageable.GetDamagePerGroup((target, damageable));
-                var heal = new DamageSpecifier();
-                if (groups.GetValueOrDefault(BruteGroup) > aura.HealThreshold)
-                    AddGroupHeal(heal, damageable, BruteGroup, aura.BruteHealPerSecond);
-                if (groups.GetValueOrDefault(BurnGroup) > aura.HealThreshold)
-                    AddGroupHeal(heal, damageable, BurnGroup, aura.BurnHealPerSecond);
-                if (heal.DamageDict.Count > 0)
-                    _damageable.TryChangeDamage(target, heal);
+                // Heal each configured group only once its total passes the threshold,
+                // weighted across the damaged types in the group (engine HealDistributed).
+                var ent = (target, damageable);
+                if (aura.BruteHealPerSecond > 0 &&
+                    _damageable.GetPositiveDamage(ent, BruteGroup).GetTotal() > aura.HealThreshold)
+                    _damageable.HealDistributed(ent, FixedPoint2.New(-aura.BruteHealPerSecond), BruteGroup);
+                if (aura.BurnHealPerSecond > 0 &&
+                    _damageable.GetPositiveDamage(ent, BurnGroup).GetTotal() > aura.HealThreshold)
+                    _damageable.HealDistributed(ent, FixedPoint2.New(-aura.BurnHealPerSecond), BurnGroup);
             }
         }
 
@@ -136,41 +136,7 @@ public sealed partial class CruciformUpgradeBehaviorSystem : EntitySystem
         }
     }
 
-    /// <summary>
-    /// Spreads one group's healing rate across the damaged types in that group, so a
-    /// slash wound receives slash healing instead of blunt healing. The proportional
-    /// shares keep the configured total rate and never push a type below zero.
-    /// </summary>
-    private void AddGroupHeal(DamageSpecifier heal, DamageableComponent damageable,
-        ProtoId<DamageGroupPrototype> groupId, float totalHeal)
-    {
-        if (totalHeal <= 0 || !_prototypes.TryIndex(groupId, out DamageGroupPrototype? group))
-            return;
 
-        var damaged = _damageable.GetPositiveDamage(damageable);
-        var total = FixedPoint2.Zero;
-        foreach (var type in group.DamageTypes)
-        {
-            if (damaged.DamageDict.TryGetValue(type, out var value) && value > FixedPoint2.Zero)
-                total += value;
-        }
-
-        if (total <= FixedPoint2.Zero)
-            return;
-
-        var rate = FixedPoint2.New(totalHeal);
-        foreach (var type in group.DamageTypes)
-        {
-            if (!damaged.DamageDict.TryGetValue(type, out var value) || value <= FixedPoint2.Zero)
-                continue;
-
-            var share = rate * (value / total);
-            if (share > value)
-                share = value;
-
-            heal.DamageDict[type] = heal.DamageDict.GetValueOrDefault(type) - share;
-        }
-    }
 
     private void TriggerMartyr(EntityUid body, EntityUid cruciform, CruciformComponent component, EntityUid upgrade,
         CruciformUpgradeMartyrComponent martyr)

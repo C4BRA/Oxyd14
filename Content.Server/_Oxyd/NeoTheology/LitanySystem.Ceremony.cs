@@ -102,7 +102,7 @@ public sealed partial class LitanySystem
             {
                 if (!TryComp(speaker, out TransformComponent? speakerXform) ||
                     speakerXform.MapID != starterXform.MapID ||
-                    (speakerXform.WorldPosition - starterXform.WorldPosition).Length() > ceremony.Range)
+                    (_xform.GetWorldPosition(speakerXform) - _xform.GetWorldPosition(starterXform)).Length() > ceremony.Range)
                     continue;
 
                 if (!ceremony.First && !ceremony.Participants.Contains(speaker))
@@ -283,7 +283,7 @@ public sealed partial class LitanySystem
             if (!obelisk.Active || obeliskXform.MapID != xform.MapID)
                 continue;
 
-            var distance = (obeliskXform.WorldPosition - xform.WorldPosition).Length();
+            var distance = (_xform.GetWorldPosition(obeliskXform) - _xform.GetWorldPosition(xform)).Length();
             if (distance <= obelisk.Radius && distance <= 7f)
                 return true;
         }
@@ -397,7 +397,7 @@ public sealed partial class LitanySystem
             if (victim == args.User || victimXform.MapID != xform.MapID)
                 continue;
 
-            if ((victimXform.WorldPosition - xform.WorldPosition).Length() > args.Range)
+            if ((_xform.GetWorldPosition(victimXform) - _xform.GetWorldPosition(xform)).Length() > args.Range)
                 continue;
 
             if (!_examine.InRangeUnOccluded(args.User, victim, args.Range, predicate: null))

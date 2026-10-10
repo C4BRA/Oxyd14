@@ -39,7 +39,7 @@ public sealed partial class NeoTheologyDoorSystem : EntitySystem
     public override void Initialize()
     {
         base.Initialize();
-        SubscribeLocalEvent<NeoTheologyDoorComponent, DamageChangedEvent>(OnDamaged);
+        SubscribeLocalEvent<NeoTheologyDoorComponent, DamageDealtEvent>(OnDamaged);
         SubscribeLocalEvent<NeoTheologyDoorComponent, BeforeDoorOpenedEvent>(OnBeforeOpened);
     }
 
@@ -79,7 +79,7 @@ public sealed partial class NeoTheologyDoorSystem : EntitySystem
         return false;
     }
 
-    private void OnDamaged(EntityUid uid, NeoTheologyDoorComponent component, DamageChangedEvent args)
+    private void OnDamaged(EntityUid uid, NeoTheologyDoorComponent component, DamageDealtEvent args)
     {
         if (!_damageable.IsAtLeastTotalDamage(uid, NeoTheologyDoorComponent.BrokenAt))
             return;

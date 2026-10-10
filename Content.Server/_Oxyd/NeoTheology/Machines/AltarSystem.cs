@@ -167,7 +167,7 @@ public sealed partial class AltarSystem : EntitySystem
         foreach (var (item, amount) in plan)
         {
             if (TryComp<StackComponent>(item, out var stack))
-                _stack.SetCount(item, stack.Count - amount, stack);
+                _stack.SetCount((item, stack), stack.Count - amount);
             else
                 QueueDel(item);
 

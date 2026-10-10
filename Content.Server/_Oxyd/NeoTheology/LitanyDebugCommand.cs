@@ -238,7 +238,7 @@ public sealed class LitanyCommand : ToolshedCommand
             var vitals = $"{mob}: state={Comp<MobStateComponent>(mob).CurrentState}";
             _damageable ??= GetSys<DamageableSystem>();
             if (HasComp<DamageableComponent>(mob))
-                vitals += $" dmg={_damageable.GetTotalDamage(mob):F1}";
+                vitals += $" dmg={(TryComp<DamageableComponent>(mob, out var dmgComp) ? _damageable!.GetPositiveDamage((mob, dmgComp)).GetTotal() : FixedPoint2.Zero):F1}";
             if (TryComp<SanityComponent>(mob, out var sanity))
                 vitals += $" sanity={sanity.Sanity:F1}/{sanity.MaxSanity:F0} insight={sanity.Insight:F1}";
             ctx.WriteLine(vitals);
@@ -698,7 +698,7 @@ public sealed class LitanyCommand : ToolshedCommand
         while (query.MoveNext(out var starter, out var ceremony, out var starterXform))
         {
             if (myXform.MapID != starterXform.MapID ||
-                (myXform.WorldPosition - starterXform.WorldPosition).Length() > ceremony.Range)
+                (_xform!.GetWorldPosition(myXform) - _xform!.GetWorldPosition(starterXform)).Length() > ceremony.Range)
                 continue;
 
             if (!ceremony.First && !ceremony.Participants.Contains(mob))
@@ -716,6 +716,7 @@ public sealed class LitanyCommand : ToolshedCommand
     [CommandImplementation("ceremonies")]
     public void Ceremonies(IInvocationContext ctx)
     {
+        _xform ??= GetSys<SharedTransformSystem>();
         var query = EntityManager.EntityQueryEnumerator<ActiveCeremonyComponent, TransformComponent>();
         var any = false;
         while (query.MoveNext(out var starter, out var ceremony, out var xform))
@@ -723,7 +724,7 @@ public sealed class LitanyCommand : ToolshedCommand
             any = true;
             ctx.WriteLine($"{starter}: ritual={ceremony.Ritual} phrases={ceremony.Phrases.Count} first={ceremony.First} " +
                           $"participants=[{string.Join(",", ceremony.Participants)}] correct=[{string.Join(",", ceremony.CorrectParticipants)}] " +
-                          $"range={ceremony.Range} pos={xform.WorldPosition}");
+                          $"range={ceremony.Range} pos={_xform!.GetWorldPosition(xform)}");
         }
         if (!any)
             ctx.WriteLine("no active ceremonies");
@@ -1087,7 +1088,7 @@ public sealed class LitanyCommand : ToolshedCommand
         var uid = Self(ctx) ?? throw new InvalidOperationException("no executing entity");
         var item = Spawn(proto, Transform(uid).Coordinates);
         if (count > 0 && TryComp<StackComponent>(item, out var stack))
-            GetSys<SharedStackSystem>().SetCount(item, count, stack);
+            GetSys<SharedStackSystem>().SetCount((item, stack), count);
         ctx.WriteLine($"stack {item} at {Transform(uid).Coordinates}");
         return item;
     }
@@ -1102,7 +1103,7 @@ public sealed class LitanyCommand : ToolshedCommand
                 continue;
             var item = Spawn(proto, Transform(mob).Coordinates);
             if (count > 0 && TryComp<StackComponent>(item, out var stack))
-                GetSys<SharedStackSystem>().SetCount(item, count, stack);
+                GetSys<SharedStackSystem>().SetCount((item, stack), count);
             ctx.WriteLine($"{mob}: stack {item} {proto} x{count}");
         }
     }
@@ -1142,7 +1143,7 @@ public sealed class LitanyCommand : ToolshedCommand
         var best = float.MaxValue;
         foreach (var r in _lookup.GetEntitiesInRange<CruciformReaderComponent>(Transform(cloner).Coordinates, 3f))
         {
-            var d = (Transform(r).WorldPosition - Transform(cloner).WorldPosition).LengthSquared();
+            var d = (_xform!.GetWorldPosition(r) - _xform!.GetWorldPosition(cloner)).LengthSquared();
             var rc = TryComp<CruciformReaderComponent>(r, out var comp) ? comp : null;
             ctx.WriteLine($"  reader {r} dist2={d:F2} operational={_machines.IsOperational(r)} implant={rc?.ReaderImplant}");
             if (d < best) { best = d; reader = r; }
