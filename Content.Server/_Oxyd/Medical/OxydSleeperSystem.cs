@@ -258,18 +258,18 @@ public sealed partial class OxydSleeperSystem : EntitySystem
             state.Alive = _mobs.IsAlive(occ);
             if (TryComp<DamageableComponent>(occ, out var dmg))
             {
-                var damage = _damage.GetTotalDamage((occ, dmg)).Float();
+                var spec = _damage.GetPositiveDamage((occ, dmg));
+                var damage = spec.GetTotal().Float();
                 var crit = _mobThreshold.GetThresholdForState(occ, Content.Shared.Mobs.MobState.Critical).Float();
                 state.OccupantHealth = crit > 0
                     ? Math.Clamp(100f - damage / crit * 100f, 0f, 100f)
                     : Math.Max(0f, 100f - damage);
 
                 // Eris occupied view: one displayBar per damage group.
-                var perGroup = _damage.GetDamagePerGroup((occ, dmg));
-                state.BruteLoss = perGroup.TryGetValue("Brute", out var brute) ? brute.Float() : 0f;
-                state.BurnLoss = perGroup.TryGetValue("Burn", out var burn) ? burn.Float() : 0f;
-                state.ToxinLoss = perGroup.TryGetValue("Toxin", out var toxin) ? toxin.Float() : 0f;
-                state.OxyLoss = perGroup.TryGetValue("Airloss", out var air) ? air.Float() : 0f;
+                state.BruteLoss = OxydDamageTypes.Sum(spec, OxydDamageTypes.Brute);
+                state.BurnLoss = OxydDamageTypes.Sum(spec, OxydDamageTypes.Burn);
+                state.ToxinLoss = OxydDamageTypes.Sum(spec, OxydDamageTypes.Toxin);
+                state.OxyLoss = OxydDamageTypes.Sum(spec, OxydDamageTypes.Airloss);
             }
 
             // Eris "Organ Health" row: worst organ damage as a percentage of healthy.

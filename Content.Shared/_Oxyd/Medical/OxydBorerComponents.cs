@@ -1,4 +1,5 @@
 using Content.Shared.Chemistry.Reagent;
+using Content.Shared.Damage.Prototypes;
 using Content.Shared.DoAfter;
 using Robust.Shared.Containers;
 using Robust.Shared.GameStates;
@@ -40,6 +41,10 @@ public sealed partial class OxydBorerComponent : Component
     /// <summary>Brute healed per second while inside a host (Eris adjustBruteLoss(-1) per Life).</summary>
     [DataField]
     public float HostRegenBrutePerSecond = 1f;
+
+    /// <summary>Damage type the host regen heals (Eris adjustBruteLoss(-1) — Brute group).</summary>
+    [DataField]
+    public ProtoId<DamageTypePrototype> HostRegenDamageType = "Blunt";
 
     /// <summary>Current host the borer is nested inside.</summary>
     [DataField, AutoNetworkedField]
@@ -178,23 +183,26 @@ public sealed partial class OxydBorerComponent : Component
     [DataField, AutoNetworkedField]
     public int BorerLevel;
 
-    /// <summary>Reagent unlock lists per level (Eris level_up added_reagents, mapped to this
-    /// fork's ids). Indexed by evolution level; Level 5 psionic reagents have no Oxyd equivalent.</summary>
+    /// <summary>Evolution tiers (Eris BORER_EXP_LEVEL_* + level_up added_reagents /
+    /// max_chemicals bonus). Index 0 unlocks at borer level 1, and so on.
+    /// Level 5 psionic reagents have no Oxyd equivalent.</summary>
     [DataField]
-    public List<ProtoId<ReagentPrototype>> Level1Reagents = new()
-        { "Inaprovaline", "Tricordrazine", "Synaptizine", "OxydMedImidazoline", "Hyronalin" };
+    public List<BorerLevel> Levels = new()
+    {
+        new BorerLevel { Threshold = 20, ChemBonus = 10f,
+            Reagents = new() { "Inaprovaline", "Tricordrazine", "Synaptizine", "OxydMedImidazoline", "Hyronalin" } },
+        new BorerLevel { Threshold = 40, ChemBonus = 20f,
+            Reagents = new() { "OxydMedSpaceacillin", "OxydMedQuickclot", "OxydMedDetox", "OxydMedPurger", "Arithrazine" } },
+        new BorerLevel { Threshold = 80, ChemBonus = 30f,
+            Reagents = new() { "OxydMedMeralyne", "Dermaline", "DexalinPlus", "OxydMedOxycodone", "OxydMedRyetalyn" } },
+        new BorerLevel { Threshold = 160, ChemBonus = 40f,
+            Reagents = new() { "OxydMedPeridaxon", "OxydMedRezadone", "OxydMedOssisine", "OxydMedKyphotorin", "OxydMedAminazine" } },
+        new BorerLevel { Threshold = 320, ChemBonus = 50f },
+    };
 
+    /// <summary>Mind-attack damage type (Eris brainloss).</summary>
     [DataField]
-    public List<ProtoId<ReagentPrototype>> Level2Reagents = new()
-        { "OxydMedSpaceacillin", "OxydMedQuickclot", "OxydMedDetox", "OxydMedPurger", "Arithrazine" };
-
-    [DataField]
-    public List<ProtoId<ReagentPrototype>> Level3Reagents = new()
-        { "OxydMedMeralyne", "Dermaline", "DexalinPlus", "OxydMedOxycodone", "OxydMedRyetalyn" };
-
-    [DataField]
-    public List<ProtoId<ReagentPrototype>> Level4Reagents = new()
-        { "OxydMedPeridaxon", "OxydMedRezadone", "OxydMedOssisine", "OxydMedKyphotorin", "OxydMedAminazine" };
+    public ProtoId<DamageTypePrototype> CellularDamage = "Cellular";
 
     /// <summary>Exp awarded by Reproduce on a humanoid host (Eris borer_add_exp(25)).</summary>
     [DataField]
@@ -209,6 +217,23 @@ public sealed partial class OxydBorerComponent : Component
     /// <summary>Hide verb: toggles the borer's draw depth under floor objects (Eris hide()).</summary>
     [DataField, AutoNetworkedField]
     public bool Hidden;
+}
+
+/// <summary>One evolution tier of <see cref="OxydBorerComponent.Levels"/>.</summary>
+[DataDefinition]
+public sealed partial class BorerLevel
+{
+    /// <summary>BorerExp needed to reach this tier (Eris BORER_EXP_LEVEL_n).</summary>
+    [DataField]
+    public int Threshold;
+
+    /// <summary>Reagents unlocked on reaching this tier (Eris added_reagents).</summary>
+    [DataField]
+    public List<ProtoId<ReagentPrototype>> Reagents = new();
+
+    /// <summary>MaxChemicals bonus granted on reaching this tier (Eris max_chemicals += level*10).</summary>
+    [DataField]
+    public float ChemBonus;
 }
 
 /// <summary>The captive mind: an entity inside the borer's container holding the host's

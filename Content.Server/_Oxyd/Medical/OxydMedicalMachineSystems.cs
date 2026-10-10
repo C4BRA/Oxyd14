@@ -90,8 +90,8 @@ public sealed partial class OxydMedicalScannerSystem : EntitySystem
 
         if (TryComp<DamageableComponent>(patient, out var dmg))
         {
-            var spec = _damage.GetAllDamage((patient, dmg));
-            state.Health = _damage.GetTotalDamage((patient, dmg)).Float();
+            var spec = _damage.GetPositiveDamage((patient, dmg));
+            state.Health = spec.GetTotal().Float();
             state.BruteLoss = OxydDamageTypes.Sum(spec, OxydDamageTypes.Brute);
             state.BurnLoss = OxydDamageTypes.Sum(spec, OxydDamageTypes.Burn);
             state.ToxinLoss = OxydDamageTypes.Sum(spec, OxydDamageTypes.Toxin);

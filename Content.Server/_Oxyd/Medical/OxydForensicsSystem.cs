@@ -3,6 +3,8 @@ using System.Text;
 using Content.Server.Chat.Managers;
 using Content.Server.DoAfter;
 using Content.Shared._Oxyd.Medical;
+using Content.Shared.Administration.Logs;
+using Content.Shared.Database;
 using Content.Shared.Body.Components;
 using Content.Shared.Body.Systems;
 using Content.Shared.Chemistry.EntitySystems;
@@ -46,6 +48,7 @@ public sealed partial class OxydForensicsSystem : EntitySystem
     [Dependency] private IChatManager _chat = default!;
     [Dependency] private IPrototypeManager _prototypes = default!;
     [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private ISharedAdminLogManager _adminLogger = default!;
 
     private static readonly EntProtoId PaperProto = "Paper";
 
@@ -69,9 +72,8 @@ public sealed partial class OxydForensicsSystem : EntitySystem
         args.Handled = TryAutopsyScan(args.User, uid, target);
     }
 
-    /// <summary>Entry point for both AfterInteractEvent and the body InteractUsing path
-    /// (corpses: the mob's strip-UI click consumes AfterInteract, so OxydSurgerySystem's
-    /// BodyComponent handler routes here). Returns whether the click was handled.</summary>
+    /// <summary>Item-side autopsy entry point (Eris autopsy.dm). Returns whether the
+    /// click was handled.</summary>
     public bool TryAutopsyScan(EntityUid user, Entity<OxydAutopsyScannerComponent> uid, EntityUid target)
     {
         if (!HasComp<MobStateComponent>(target) || !HasComp<DamageableComponent>(target))
@@ -99,6 +101,8 @@ public sealed partial class OxydForensicsSystem : EntitySystem
             return;
 
         args.Handled = true;
+        _adminLogger.Add(LogType.Action, LogImpact.Low,
+            $"{ToPrettyString(args.User):user} performed an autopsy on {ToPrettyString(target):target}");
         PrintReport(uid, args.User, target);
     }
 
@@ -123,7 +127,7 @@ public sealed partial class OxydForensicsSystem : EntitySystem
         {
             sb.AppendLine(Loc.GetString("oxyd-autopsy-report-damage"));
             var any = false;
-            foreach (var (type, amount) in _damage.GetAllDamage((target, dmg)).DamageDict)
+            foreach (var (type, amount) in _damage.GetPositiveDamage((target, dmg)).DamageDict)
             {
                 if (amount <= 0)
                     continue;

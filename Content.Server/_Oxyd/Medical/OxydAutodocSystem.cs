@@ -58,7 +58,7 @@ public sealed partial class OxydAutodocSystem : EntitySystem
     {
         if (!TryComp<DamageableComponent>(patient, out var dmg))
             return 0f;
-        var spec = _damage.GetAllDamage((patient, dmg));
+        var spec = _damage.GetPositiveDamage((patient, dmg));
         return OxydDamageTypes.Sum(spec, types);
     }
 
@@ -396,6 +396,8 @@ public sealed partial class OxydAutodocSystem : EntitySystem
 
             comp.NextOpTime = now + TimeSpan.FromSeconds(comp.StepDuration);
             var op = note.Picked.First();
+            _adminLogger.Add(LogType.Action, LogImpact.Medium,
+                $"{ToPrettyString(uid):actor} autodoc applied {op} to {ToPrettyString(occupant):target} (dose {note.Picked.Count})");
             ProcessOp(uid, comp, occupant, note, op);
             PushState(uid, comp);
         }

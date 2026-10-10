@@ -86,14 +86,14 @@ public sealed partial class OxydResuscitateEntityEffectSystem : EntityEffectSyst
         // Critical only to die again on the next damage update.
         if (TryComp<DamageableComponent>(uid, out var dmg))
         {
-            var spec = _damage.GetAllDamage((uid, dmg));
+            var spec = _damage.GetPositiveDamage((uid, dmg));
             if (spec.DamageDict.TryGetValue(args.Effect.OxyLossType, out var oxy) &&
                 oxy.Float() > args.Effect.OxyLossCap)
             {
                 var heal = new DamageSpecifier();
                 heal.DamageDict[args.Effect.OxyLossType] = -(oxy.Float() - args.Effect.OxyLossCap);
                 _damage.TryChangeDamage(uid, heal);
-                spec = _damage.GetAllDamage((uid, dmg));
+                spec = _damage.GetPositiveDamage((uid, dmg));
             }
 
             if (_threshold.TryGetDeadThreshold(uid, out var deadThresh) &&

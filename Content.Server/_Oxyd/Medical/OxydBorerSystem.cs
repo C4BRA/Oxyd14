@@ -1,6 +1,8 @@
 using Content.Server.Body.Components;
 using Content.Server.DoAfter;
 using Content.Shared._Oxyd.Medical;
+using Content.Shared.Administration.Logs;
+using Content.Shared.Database;
 using Content.Shared._Oxyd.NeoTheology.Components;
 using Content.Shared.Body;
 using Content.Shared.Body.Components;
@@ -291,6 +293,8 @@ public sealed partial class OxydBorerSystem : EntitySystem
         Dirty(uid, comp);
         Dirty(host, hostComp);
 
+        _adminLogger.Add(LogType.Action, LogImpact.High,
+            $"{ToPrettyString(uid):user} infested {ToPrettyString(host):target}");
         _popup.PopupEntity(Loc.GetString("oxyd-borer-infest-done", ("host", host)), uid, uid);
         _popup.PopupEntity(Loc.GetString("oxyd-borer-infest-done-host"), host, host, PopupType.LargeCaution);
     }
@@ -325,6 +329,8 @@ public sealed partial class OxydBorerSystem : EntitySystem
 
         comp.Chemicals -= comp.SecreteCost;
         Dirty(borer, comp);
+        _adminLogger.Add(LogType.ForceFeed, LogImpact.Medium,
+            $"{ToPrettyString(borer):user} secreted {comp.SecreteAmount}u of {reagent} into {ToPrettyString(host):target}");
 
         var name = _proto.TryIndex(reagent, out var proto) ? proto.LocalizedName : reagent.Id;
         _popup.PopupEntity(Loc.GetString("oxyd-borer-secreted",
@@ -356,6 +362,8 @@ public sealed partial class OxydBorerSystem : EntitySystem
         // Eris: host heaves violently, expelling vomit and a wriggling young.
         _vomit.Vomit(host, force: true);
         Spawn(comp.ReproducePrototype, Transform(host).Coordinates);
+        _adminLogger.Add(LogType.Action, LogImpact.High,
+            $"{ToPrettyString(borer):user} reproduced inside {ToPrettyString(host):target}");
         _popup.PopupEntity(Loc.GetString("oxyd-borer-reproduce-host"), host, host, PopupType.LargeCaution);
         _popup.PopupEntity(Loc.GetString("oxyd-borer-reproduce"), borer, borer);
     }
@@ -537,6 +545,8 @@ public sealed partial class OxydBorerSystem : EntitySystem
         comp.Chemicals -= comp.ParalyzeCost;
         comp.LastParalyze = now;
         Dirty(borer, comp);
+        _adminLogger.Add(LogType.Action, LogImpact.High,
+            $"{ToPrettyString(borer):user} paralyzed {ToPrettyString(victim):target}");
 
         _stun.TryUpdateParalyzeDuration(victim, comp.ParalyzeDuration);
         _stun.TryKnockdown(victim, comp.ParalyzeDuration, force: true);
@@ -649,7 +659,7 @@ public sealed partial class OxydBorerSystem : EntitySystem
 
             // Regenerate while nested (Eris adjustBruteLoss(-1) per Life tick).
             _damage.TryChangeDamage(uid,
-                new DamageSpecifier(_proto.Index<DamageGroupPrototype>("Brute"), -comp.HostRegenBrutePerSecond),
+                new DamageSpecifier(_proto.Index(comp.HostRegenDamageType), -comp.HostRegenBrutePerSecond),
                 ignoreResistances: true);
 
             // Sugar in the host's bloodstream sedates the borer (docile) until it metabolizes away.

@@ -831,9 +831,8 @@ public sealed partial class OxydSurgerySystem : EntitySystem
         // Eris owner_oxyloss: airloss group drives the Oxygen bar on respiratory organs.
         if (TryComp<DamageableComponent>(patient, out var dmg))
         {
-            var spec = _damage.GetAllDamage((patient, dmg));
-            spec.TryGetDamageInGroup(_prototypes.Index<DamageGroupPrototype>("Airloss"), out var airloss);
-            state.OwnerOxyLoss = airloss.Float();
+            var spec = _damage.GetPositiveDamage((patient, dmg));
+            state.OwnerOxyLoss = OxydDamageTypes.Sum(spec, OxydDamageTypes.Airloss);
         }
 
         // Blood bars read the body's bloodstream (Eris organ.current_blood / max_blood_storage).

@@ -88,17 +88,17 @@ public sealed partial class OxydOperatingComputerSystem : EntitySystem
 
             if (TryComp<DamageableComponent>(patient, out var dmg))
             {
-                var damage = _damage.GetTotalDamage((patient, dmg)).Float();
+                var spec = _damage.GetPositiveDamage((patient, dmg));
+                var damage = spec.GetTotal().Float();
                 var crit = _mobThreshold.GetThresholdForState(patient, MobState.Critical).Float();
                 state.HealthPercent = crit > 0
                     ? Math.Clamp(100f - damage / crit * 100f, 0f, 100f)
                     : Math.Max(0f, 100f - damage);
 
-                var perGroup = _damage.GetDamagePerGroup((patient, dmg));
-                state.BruteLoss = perGroup.TryGetValue("Brute", out var brute) ? brute.Float() : 0f;
-                state.BurnLoss = perGroup.TryGetValue("Burn", out var burn) ? burn.Float() : 0f;
-                state.ToxinLoss = perGroup.TryGetValue("Toxin", out var toxin) ? toxin.Float() : 0f;
-                state.OxyLoss = perGroup.TryGetValue("Airloss", out var air) ? air.Float() : 0f;
+                state.BruteLoss = OxydDamageTypes.Sum(spec, OxydDamageTypes.Brute);
+                state.BurnLoss = OxydDamageTypes.Sum(spec, OxydDamageTypes.Burn);
+                state.ToxinLoss = OxydDamageTypes.Sum(spec, OxydDamageTypes.Toxin);
+                state.OxyLoss = OxydDamageTypes.Sum(spec, OxydDamageTypes.Airloss);
             }
 
             // Eris "Organ Health": worst external organ as a percentage of healthy.

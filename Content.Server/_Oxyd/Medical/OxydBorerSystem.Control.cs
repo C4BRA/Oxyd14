@@ -41,8 +41,6 @@ public sealed partial class OxydBorerSystem
     [Dependency] private SharedAppearanceSystem _appearance = default!;
     [Dependency] private ISharedAdminLogManager _adminLogger = default!;
 
-    /// <summary>Exp thresholds BORER_EXP_LEVEL_1..5.</summary>
-    private static readonly List<int> LevelThresholds = new() { 20, 40, 80, 160, 320 };
 
     // ------------------------------------------------------------------
     // Assume Control (Eris assume_control): 30s channel, then mind swap
@@ -323,6 +321,7 @@ public sealed partial class OxydBorerSystem
             {
                 if (TerminatingOrDeleted(borer) || TerminatingOrDeleted(user) ||
                     TerminatingOrDeleted(victim) || _mobs.IsDead(borer) ||
+                    !TryComp<OxydBorerComponent>(borer, out var comp) ||
                     !_transform.InRange(user, victim, SharedInteractionSystem.InteractionRange))
                     return;
                 var escaped = FormattedMessage.EscapeText(text);
@@ -330,7 +329,7 @@ public sealed partial class OxydBorerSystem
                 TellMind(borer, user, Loc.GetString("oxyd-borer-commune-self", ("text", escaped), ("target", victim)));
                 // Eris: H.drip_blood(1) — a trickle of blood from the nose.
                 _damage.TryChangeDamage(victim,
-                    new DamageSpecifier(_proto.Index<DamageTypePrototype>("Cellular"), 1f),
+                    new DamageSpecifier(_proto.Index(comp.CellularDamage), 1f),
                     ignoreResistances: true);
                 TellMind(borer, victim, Loc.GetString("oxyd-borer-commune-nosebleed"));
                 _adminLogger.Add(LogType.Chat, LogImpact.Medium,
@@ -395,7 +394,7 @@ public sealed partial class OxydBorerSystem
             return;
 
         _damage.TryChangeDamage(host,
-            new DamageSpecifier(_proto.Index<DamageTypePrototype>("Cellular"), comp.ReadMindDamage),
+            new DamageSpecifier(_proto.Index(comp.CellularDamage), comp.ReadMindDamage),
             ignoreResistances: true);
         _jitter.DoJitter(host, comp.MindEffectDuration, true);
 
@@ -410,7 +409,7 @@ public sealed partial class OxydBorerSystem
             return;
 
         _damage.TryChangeDamage(host,
-            new DamageSpecifier(_proto.Index<DamageTypePrototype>("Cellular"), comp.WriteMindDamage),
+            new DamageSpecifier(_proto.Index(comp.CellularDamage), comp.WriteMindDamage),
             ignoreResistances: true);
         _jitter.DoJitter(host, comp.MindEffectDuration, true);
 
@@ -447,26 +446,17 @@ public sealed partial class OxydBorerSystem
     {
         comp.BorerExp += amount;
         var level = comp.BorerLevel;
-        while (level < LevelThresholds.Count && comp.BorerExp >= LevelThresholds[level])
+        while (level < comp.Levels.Count && comp.BorerExp >= comp.Levels[level].Threshold)
             level++;
 
         if (level != comp.BorerLevel)
         {
-            for (var l = comp.BorerLevel + 1; l <= level; l++)
+            for (var l = comp.BorerLevel; l < level; l++)
             {
-                var unlocks = l switch
-                {
-                    1 => comp.Level1Reagents,
-                    2 => comp.Level2Reagents,
-                    3 => comp.Level3Reagents,
-                    4 => comp.Level4Reagents,
-                    _ => null,
-                };
-                if (unlocks != null)
-                    comp.ProducedReagents.AddRange(unlocks);
-
+                var tier = comp.Levels[l];
+                comp.ProducedReagents.AddRange(tier.Reagents);
                 // Eris level_up: max_chemicals += level*10; max_inhost = max*5.
-                comp.MaxChemicals += l * 10f;
+                comp.MaxChemicals += tier.ChemBonus;
             }
 
             comp.BorerLevel = level;
