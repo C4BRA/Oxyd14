@@ -394,7 +394,8 @@ public sealed partial class EyeOfTheProtectorSystem : EntitySystem
                 EntityUid? threat = null;
                 var threats = EntityQueryEnumerator<NeoTheologyThreatComponent>();
                 while (threats.MoveNext(out var target, out _))
-                    if (_mobState.IsAlive(target) && !TerminatingOrDeleted(target))
+                    if (_mobState.IsAlive(target) && !TerminatingOrDeleted(target) &&
+                        !EntityManager.IsQueuedForDeletion(target))
                     {
                         threat = target;
                         break;
@@ -470,7 +471,7 @@ public sealed partial class EyeOfTheProtectorSystem : EntitySystem
         var result = new List<(EntityUid, EntityUid)>();
         var query = EntityQueryEnumerator<CruciformBearerComponent>();
         while (query.MoveNext(out var body, out _))
-            if (!TerminatingOrDeleted(body) &&
+            if (!TerminatingOrDeleted(body) && !EntityManager.IsQueuedForDeletion(body) &&
                 _cruciform.TryGetCruciform(body, out var implant, out _))
                 result.Add((body, implant));
         return result;

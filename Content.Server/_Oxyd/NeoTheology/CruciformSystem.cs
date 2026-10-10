@@ -504,7 +504,7 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
         if (TerminatingOrDeleted(body) ||
             _mobStates.IsDead(body) || HasComp<GodbloodMutationComponent>(body) ||
             TryComp<CruciformBearerComponent>(body, out _) ||
-            !TryGetConfiguredProfile(profile, GetRules(), out _))
+            !TryGetConfiguredProfile(profile, GetRules(), out var grantedProfile))
             return false;
 
         if (_implants.AddImplant(body, NeoTheologyPrototypes.CruciformEnt) is not { } implant)
@@ -515,6 +515,9 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
 
         comp.EverActivated = true;
         comp.LastHolinessUpdate = _timing.CurTime;
+        // Channeling is a grant-time perk flag, not something rank changes re-derive:
+        // TrySetProfile must not toggle it (ceremony channeling bonus semantics).
+        comp.Channeling = grantedProfile.CanChannel;
         MakeRank(implant, comp, profile);
         _modules.TryInstall(implant, comp, NeoTheologyPrototypes.CloningModule);
         _souls.WriteSnapshot(implant, comp);
@@ -630,7 +633,6 @@ public sealed partial class CruciformSystem : SharedCruciformSystem
         foreach (var module in next.StartingModules)
             _modules.TryInstall(cruciform, comp, module);
 
-        comp.Channeling = next.CanChannel;
         if (next.Clearance > comp.Clearance)
             comp.Clearance = next.Clearance;
         if (!next.IsSpecialization)

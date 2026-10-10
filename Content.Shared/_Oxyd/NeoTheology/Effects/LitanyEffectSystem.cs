@@ -563,7 +563,7 @@ public sealed partial class LitanyEffectSystem : EntitySystem, ILitanyEffectRais
             !installed.ImplantContainer.Contains(cruciform))
             return false;
 
-        var dropCoordinates = Transform(body).Coordinates;
+        var dropCoordinates = Transform(body).Coordinates.Offset(Vector2.UnitX);
         if (!_containers.Remove(cruciform, installed.ImplantContainer, destination: dropCoordinates))
             return false;
 
@@ -690,7 +690,7 @@ public sealed partial class LitanyEffectSystem : EntitySystem, ILitanyEffectRais
         var query = EntityQueryEnumerator<CruciformBearerComponent, TransformComponent>();
         while (query.MoveNext(out var body, out _, out var xform))
             if (body != actor && xform.MapID != MapId.Nullspace &&
-                !TerminatingOrDeleted(body) &&
+                !TerminatingOrDeleted(body) && !EntityManager.IsQueuedForDeletion(body) &&
                 _cruciform.TryGetCruciform(body, out _, out _))
                 yield return body;
     }

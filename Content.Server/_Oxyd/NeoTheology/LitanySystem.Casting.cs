@@ -592,18 +592,18 @@ public sealed partial class LitanySystem
     /// <summary>Recheck eligibility without changing the chosen identity or adding recipients.</summary>
     private bool ValidateRecordedTargets(PendingLitanyCast cast, LitanyPrototype litany)
     {
-        if (TerminatingOrDeleted(cast.Actor) ||
+        if (TerminatingOrDeleted(cast.Actor) || EntityManager.IsQueuedForDeletion(cast.Actor) ||
             !TryResolveTargets(cast.Actor, litany, out var eligible, out _))
             return false;
 
         if (cast.HeldOddity is { } oddity &&
             (!_effects.TryGetHeldOddity(cast.Actor, out var held, out _) || held != oddity ||
-                TerminatingOrDeleted(oddity)))
+                TerminatingOrDeleted(oddity) || EntityManager.IsQueuedForDeletion(oddity)))
             return false;
 
         foreach (var target in cast.Targets)
         {
-            if (TerminatingOrDeleted(target) ||
+            if (TerminatingOrDeleted(target) || EntityManager.IsQueuedForDeletion(target) ||
                 !eligible.Contains(target))
                 return false;
 
@@ -752,6 +752,7 @@ public sealed partial class LitanySystem
         var range = proto.Range > 0 ? proto.Range : 1f;
         if (TryComp<PullerComponent>(actor, out var puller) && puller.Pulling is { } grabbed &&
             HasComp<HumanoidProfileComponent>(grabbed) && !TerminatingOrDeleted(grabbed) &&
+            !EntityManager.IsQueuedForDeletion(grabbed) &&
             (!_mobState.IsDead(grabbed) || allowDead) &&
             (!followersOnly || _cruciform.IsActiveBearer(grabbed)) &&
             _examine.InRangeUnOccluded(actor, grabbed, range, predicate: null))

@@ -55,7 +55,7 @@ public sealed partial class BiomatterReservoirSystem : EntitySystem
 
     public bool TryRelease(EntityUid uid)
     {
-        if (TerminatingOrDeleted(uid) ||
+        if (TerminatingOrDeleted(uid) || EntityManager.IsQueuedForDeletion(uid) ||
             !HasComp<BiomatterReservoirComponent>(uid))
             return false;
         var amount = _materials.GetMaterialAmount(uid, NeoTheologyPrototypes.BiomatterMaterial);

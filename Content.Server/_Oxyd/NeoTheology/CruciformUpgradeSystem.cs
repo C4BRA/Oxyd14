@@ -41,7 +41,7 @@ public sealed partial class CruciformUpgradeSystem : EntitySystem
 
     public bool TryInstallCoreUpgrade(EntityUid cruciform, CruciformComponent comp, EntityUid item, EntityUid? installer = null)
     {
-        if (TerminatingOrDeleted(item) ||
+        if (TerminatingOrDeleted(item) || EntityManager.IsQueuedForDeletion(item) ||
             !TryComp<CruciformCoreUpgradeComponent>(item, out var upgrade) ||
             comp.InstalledModules.Contains(upgrade.Module) || comp.CoreUpgrades.ContainsKey(upgrade.Module) ||
             !ProtoMan.HasIndex(upgrade.Module))

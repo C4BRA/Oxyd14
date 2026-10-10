@@ -104,7 +104,7 @@ public sealed partial class BioreactorSystem : EntitySystem
 
             foreach (var ent in ChamberContents(uid))
             {
-                if (ent == uid || TerminatingOrDeleted(ent))
+                if (ent == uid || TerminatingOrDeleted(ent) || EntityManager.IsQueuedForDeletion(ent))
                     continue;
 
                 if (HasComp<BloodstreamComponent>(ent))
@@ -137,7 +137,8 @@ public sealed partial class BioreactorSystem : EntitySystem
     public bool TryProcessBody(EntityUid uid, EntityUid body, BioreactorComponent? reactor = null)
     {
         if (!Resolve(uid, ref reactor) || !_machines.IsOperational(uid) || !reactor.ChamberClosed ||
-            reactor.ChamberBreached || !reactor.ChamberSolution || TerminatingOrDeleted(body) || !HasComp<BloodstreamComponent>(body) ||
+            reactor.ChamberBreached || !reactor.ChamberSolution || TerminatingOrDeleted(body) ||
+            EntityManager.IsQueuedForDeletion(body) || !HasComp<BloodstreamComponent>(body) ||
             !_mobState.IsDead(body) || !InChamber(uid, body))
             return false;
         // Queue before output: a second call cannot sell the same corpse twice.

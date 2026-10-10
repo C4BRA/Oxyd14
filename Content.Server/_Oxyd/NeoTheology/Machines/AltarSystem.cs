@@ -133,7 +133,7 @@ public sealed partial class AltarSystem : EntitySystem
             ? ItemsOnAltar(altar)
             : _lookup.GetEntitiesInRange<ItemComponent>(Transform(altar).Coordinates, 7f).Select(e => e.Owner);
         foreach (var item in items)
-            if (!TerminatingOrDeleted(item))
+            if (!TerminatingOrDeleted(item) && !EntityManager.IsQueuedForDeletion(item))
                 available[item] = TryComp<StackComponent>(item, out var stack) ? stack.Count : 1;
 
         // Plan the consumption without mutating anything, so a short requirement refuses cleanly.

@@ -96,6 +96,7 @@ public sealed partial class ScryingSystem : EntitySystem
         while (query.MoveNext(out var uid, out var session))
         {
             if (now >= session.EndsAt || TerminatingOrDeleted(session.Target) ||
+                EntityManager.IsQueuedForDeletion(session.Target) ||
                 session.Marker is not { } marker || TerminatingOrDeleted(marker))
                 RemCompDeferred<ScryingSessionComponent>(uid);
         }

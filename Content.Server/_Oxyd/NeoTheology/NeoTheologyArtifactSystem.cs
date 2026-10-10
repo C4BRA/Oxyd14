@@ -77,7 +77,7 @@ public sealed partial class NeoTheologyArtifactSystem : EntitySystem
     public bool TryDestroyArtifact(EntityUid sword, EntityUid user, EntityUid target)
     {
         if (!HasComp<SwordOfTruthComponent>(sword) || !_hands.IsHolding(user, sword) ||
-            target == sword || TerminatingOrDeleted(target) ||
+            target == sword || TerminatingOrDeleted(target) || EntityManager.IsQueuedForDeletion(target) ||
             !HasComp<NeoTheologyFactionItemComponent>(target) || !_examine.InRangeUnOccluded(user, target, 1.5f, predicate: null))
             return false;
         var prototype = MetaData(target).EntityPrototype?.ID;
@@ -151,7 +151,7 @@ public sealed partial class NeoTheologyArtifactSystem : EntitySystem
         while (query.MoveNext(out var implant, out var comp, out var soul))
         {
             if (!comp.EverActivated || comp.ImplantedEntity != null || !soul.HasSnapshot || soul.MindId == null ||
-                TerminatingOrDeleted(implant) ||
+                TerminatingOrDeleted(implant) || EntityManager.IsQueuedForDeletion(implant) ||
                 _containers.TryGetContainingContainer((implant, null, null), out _))
                 continue;
             _transform.SetCoordinates(implant, Transform(shelter).Coordinates);
