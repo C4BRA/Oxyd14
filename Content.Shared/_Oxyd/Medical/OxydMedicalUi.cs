@@ -112,6 +112,14 @@ public sealed class OxydSurgerySelectStepMessage : BoundUserInterfaceMessage
     }
 }
 
+/// <summary>Server -> a specific actor's surgery window (per-surgeon refresh on the
+/// patient-hosted BUI, since the shared UI state can't carry per-actor data).</summary>
+[Serializable, NetSerializable]
+public sealed class OxydSurgeryStateMessage : BoundUserInterfaceMessage
+{
+    public OxydSurgeryState State = default!;
+}
+
 // ---------------- Sleeper ----------------
 // Ports Eris machinery/Sleeper.dm: occupant pod that injects a limited chem menu.
 

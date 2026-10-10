@@ -257,26 +257,9 @@
   - type: Clickable
 
 # ---------------------------------------------------------------------------
-# UI proxy entities (nullspace hosts for surgery/scanner BUIs, since the
-# patient protos can't carry a UserInterface component).
+# Surgery and scanner BUIs are registered on the patient (BaseSpeciesMobOrganic
+# UserInterface component), opened by the surgeon/scanner user.
 # ---------------------------------------------------------------------------
-- type: entity
-  id: OxydMedicalSurgeryUiProxy
-  components:
-  - type: OxydSurgeryUiProxy
-  - type: UserInterface
-    interfaces:
-      enum.OxydSurgeryUiKey.Key:
-        type: OxydSurgeryBoundUserInterface
-
-- type: entity
-  id: OxydMedicalScannerUiProxy
-  components:
-  - type: OxydScannerUiProxy
-  - type: UserInterface
-    interfaces:
-      enum.OxydScannerUiKey.Key:
-        type: OxydScannerBoundUserInterface
 
 # ---------------------------------------------------------------------------
 # Cryo cell (Eris cryo.dm): piped cryo pod on the engine's CryoPod system,

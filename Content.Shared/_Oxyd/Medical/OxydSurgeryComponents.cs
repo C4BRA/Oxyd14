@@ -10,7 +10,7 @@ namespace Content.Shared._Oxyd.Medical;
 /// Surgical and wound state carried on an organ entity (one per <see cref="Content.Shared.Body.Components.OrganComponent"/>).
 /// Ports Eris modules/surgery + organs/external damage flags: incisions, fractures, clamped bleeders and embedded items.
 /// </summary>
-[RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
+[RegisterComponent, NetworkedComponent, AutoGenerateComponentState, AutoGenerateComponentPause]
 public sealed partial class OxydOrganSurgeryComponent : Component
 {
     /// <summary>Whether this organ is machined. Affects which surgical steps apply (Eris "robotic" organs).</summary>
@@ -61,6 +61,13 @@ public sealed partial class OxydOrganSurgeryComponent : Component
     /// <summary>Organ has rotted past viability after decaying outside a body (Eris ORGAN_DEAD). Blocks transplant.</summary>
     [DataField, AutoNetworkedField]
     public bool Decayed;
+
+    /// <summary>Step currently running on this organ (shown on its card while the do_after runs).</summary>
+    public OxydSurgeryStep? RunningStep;
+
+    /// <summary>Next decay evaluation while outside a body (Eris organ Process tick).</summary>
+    [AutoPausedField]
+    public TimeSpan NextDecay;
 
     /// <summary>Display cap for the health bar on an organ (Eris organ.max_damage ~ 60).</summary>
     public const float OrganMaxDamage = 60f;
@@ -119,11 +126,21 @@ public sealed partial class OxydSurgeryToolComponent : Component
     public int Quality = 80;
 }
 
-/// <summary>Marker on the nullspace proxy hosting the surgery BUI.
-/// Referenced by the proxy prototype, so it lives in Shared.</summary>
+/// <summary>Per-surgeon open surgery windows on a patient (the BUI lives on the patient,
+/// one session entry per surgeon that opened it).</summary>
 [RegisterComponent]
-public sealed partial class OxydSurgeryUiProxyComponent : Component
+public sealed partial class OxydSurgerySessionComponent : Component
 {
+    /// <summary>surgeon -> session state.</summary>
+    public Dictionary<EntityUid, OxydSurgerySession> Sessions = new();
+}
+
+public sealed class OxydSurgerySession
+{
+    /// <summary>Item the surgeon opened the window with (tool or implant candidate).</summary>
+    public EntityUid? Tool;
+
+    public bool SelfSurgery;
 }
 
 /// <summary>Surgical steps, mirroring Eris modules/surgery generic steps and organ repair steps.</summary>

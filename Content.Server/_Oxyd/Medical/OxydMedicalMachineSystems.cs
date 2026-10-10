@@ -1,4 +1,6 @@
+using Content.Server.DoAfter;
 using Content.Shared.Administration.Logs;
+using Content.Shared.Database;
 using Content.Shared.Damage.Components;
 using Content.Shared.Damage.Prototypes;
 using Content.Shared.Damage.Systems;
@@ -33,42 +35,44 @@ namespace Content.Server._Oxyd.Medical;
 
 /// <summary>
 /// Ports the Eris handheld health scanner readout (tools/medical scanners): an organ table with
-/// wounds, plus vitals, pain, NSA load and blood volume. The window is hosted on a proxy entity
-/// so the patient protos stay untouched.
+/// wounds, plus vitals, pain, NSA load and blood volume. The window is hosted on the patient.
 /// </summary>
 public sealed partial class OxydMedicalScannerSystem : EntitySystem
 {
-    [Dependency] private readonly DamageableSystem _damage = default!;
-    [Dependency] private readonly IPrototypeManager _prototypes = default!;
-    [Dependency] private readonly UserInterfaceSystem _ui = default!;
-    [Dependency] private readonly OxydWoundSystem _wounds = default!;
-    [Dependency] private readonly OxydNsaSystem _nsa = default!;
-    [Dependency] private readonly SharedSolutionContainerSystem _solutions = default!;
-    [Dependency] private readonly MobStateSystem _mobs = default!;
-    [Dependency] private readonly BloodstreamSystem _bloodstream = default!;
-
-    private static readonly EntProtoId UiProxyProto = "OxydMedicalScannerUiProxy";
+    [Dependency] private DamageableSystem _damage = default!;
+    [Dependency] private UserInterfaceSystem _ui = default!;
+    [Dependency] private OxydWoundSystem _wounds = default!;
+    [Dependency] private SharedSolutionContainerSystem _solutions = default!;
+    [Dependency] private MobStateSystem _mobs = default!;
+    [Dependency] private BloodstreamSystem _bloodstream = default!;
 
     public override void Initialize()
     {
-        SubscribeLocalEvent<OxydScannerUiProxyComponent, BoundUIClosedEvent>(OnUiClosed);
+        SubscribeLocalEvent<OxydScannerItemComponent, AfterInteractEvent>(OnScannerInteract);
     }
 
-    // InteractUsingEvent is raised on the patient; OxydSurgerySystem owns the BodyComponent
-    // subscription and calls here when the used item is a scanner.
+    private void OnScannerInteract(Entity<OxydScannerItemComponent> ent, ref AfterInteractEvent args)
+    {
+        if (args.Handled || args.Target is not { } patient || !HasComp<BodyComponent>(patient))
+            return;
+
+        args.Handled = true;
+        OpenScanUi(args.User, patient);
+    }
+
+    /// <summary>The BUI lives on the patient; each scan diagnoses every organ, unlocking
+    /// wound details in the surgery UI (Eris diagnosed flag).</summary>
     public void OpenScanUi(EntityUid user, EntityUid patient)
     {
-        // A scan diagnoses every organ, unlocking wound details in the surgery UI (Eris diagnosed flag).
         _wounds.DiagnoseAll(patient);
-        var proxy = Spawn(UiProxyProto, MapCoordinates.Nullspace);
-        _ui.SetUi(proxy, OxydScannerUiKey.Key, new InterfaceData("OxydScannerBoundUserInterface", 0f, false));
-        _ui.SetUiState(proxy, OxydScannerUiKey.Key, BuildState(patient));
-        _ui.OpenUi(proxy, OxydScannerUiKey.Key, user);
-    }
-
-    private void OnUiClosed(EntityUid proxy, OxydScannerUiProxyComponent comp, BoundUIClosedEvent args)
-    {
-        QueueDel(proxy);
+        EnsureComp<UserInterfaceComponent>(patient);
+        if (!_ui.HasUi(patient, OxydScannerUiKey.Key))
+        {
+            _ui.SetUi(patient, OxydScannerUiKey.Key,
+                new InterfaceData("OxydScannerBoundUserInterface", 0f, false));
+        }
+        _ui.SetUiState(patient, OxydScannerUiKey.Key, BuildState(patient));
+        _ui.OpenUi(patient, OxydScannerUiKey.Key, user);
     }
 
     private OxydScannerState BuildState(EntityUid patient)
@@ -88,14 +92,10 @@ public sealed partial class OxydMedicalScannerSystem : EntitySystem
         {
             var spec = _damage.GetAllDamage((patient, dmg));
             state.Health = _damage.GetTotalDamage((patient, dmg)).Float();
-            spec.TryGetDamageInGroup(_prototypes.Index<DamageGroupPrototype>("Brute"), out var brute);
-            spec.TryGetDamageInGroup(_prototypes.Index<DamageGroupPrototype>("Burn"), out var burn);
-            spec.TryGetDamageInGroup(_prototypes.Index<DamageGroupPrototype>("Toxin"), out var toxin);
-            spec.TryGetDamageInGroup(_prototypes.Index<DamageGroupPrototype>("Airloss"), out var airloss);
-            state.BruteLoss = brute.Float();
-            state.BurnLoss = burn.Float();
-            state.ToxinLoss = toxin.Float();
-            state.OxyLoss = airloss.Float();
+            state.BruteLoss = OxydDamageTypes.Sum(spec, OxydDamageTypes.Brute);
+            state.BurnLoss = OxydDamageTypes.Sum(spec, OxydDamageTypes.Burn);
+            state.ToxinLoss = OxydDamageTypes.Sum(spec, OxydDamageTypes.Toxin);
+            state.OxyLoss = OxydDamageTypes.Sum(spec, OxydDamageTypes.Airloss);
         }
 
         if (TryComp<PainComponent>(patient, out var pain))
@@ -150,13 +150,13 @@ public sealed partial class OxydMedicalScannerSystem : EntitySystem
 /// </summary>
 public sealed partial class OxydIvDripSystem : EntitySystem
 {
-    [Dependency] private readonly ContainerSystem _container = default!;
-    [Dependency] private readonly SharedSolutionContainerSystem _solutions = default!;
-    [Dependency] private readonly SharedPopupSystem _popup = default!;
-    [Dependency] private readonly SharedTransformSystem _transform = default!;
-    [Dependency] private readonly DoAfterSystem _doAfter = default!;
-    [Dependency] private readonly ISharedAdminLogManager _adminLogger = default!;
-    [Dependency] private readonly IGameTiming _timing = default!;
+    [Dependency] private ContainerSystem _container = default!;
+    [Dependency] private SharedSolutionContainerSystem _solutions = default!;
+    [Dependency] private SharedPopupSystem _popup = default!;
+    [Dependency] private SharedTransformSystem _transform = default!;
+    [Dependency] private DoAfterSystem _doAfter = default!;
+    [Dependency] private ISharedAdminLogManager _adminLogger = default!;
+    [Dependency] private IGameTiming _timing = default!;
 
     /// <summary>Max distance the drip can be from the patient before the line detaches.</summary>
     private const float IvRange = 1.5f;

@@ -1,6 +1,8 @@
 using System.Linq;
 using Content.Server.DoAfter;
 using Content.Shared._Oxyd.Medical;
+using Content.Shared.Administration.Logs;
+using Content.Shared.Database;
 using Content.Shared.Damage.Systems;
 using Content.Shared.Body;
 using Content.Shared.Body.Components;
@@ -8,8 +10,10 @@ using Content.Shared.Buckle.Components;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Prototypes;
 using Content.Shared.DoAfter;
+using Robust.Shared.GameObjects;
 using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Interaction;
+using Content.Shared.Item;
 using Content.Shared.Medical.Healing;
 using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Damage.Components;
@@ -36,44 +40,33 @@ namespace Content.Server._Oxyd.Medical;
 /// </summary>
 public sealed partial class OxydSurgerySystem : EntitySystem
 {
-    [Dependency] private readonly UserInterfaceSystem _ui = default!;
-    [Dependency] private readonly DoAfterSystem _doAfter = default!;
-    [Dependency] private readonly OxydWoundSystem _wounds = default!;
-    [Dependency] private readonly OxydForensicsSystem _forensics = default!;
-    [Dependency] private readonly DetachableOrganSystem _detach = default!;
-    [Dependency] private readonly SharedContainerSystem _container = default!;
-    [Dependency] private readonly DamageableSystem _damage = default!;
-    [Dependency] private readonly MobStateSystem _mobs = default!;
-    [Dependency] private readonly SharedPopupSystem _popup = default!;
-    [Dependency] private readonly SharedTransformSystem _transform = default!;
-    [Dependency] private readonly StandingStateSystem _standing = default!;
-    [Dependency] private readonly EntityLookupSystem _lookup = default!;
-    [Dependency] private readonly SharedStackSystem _stacks = default!;
-    [Dependency] private readonly TagSystem _tag = default!;
-    [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly OxydMedicalScannerSystem _medicalScanner = default!;
-    [Dependency] private readonly SharedHandsSystem _hands = default!;
-    [Dependency] private readonly SharedInteractionSystem _interaction = default!;
-    [Dependency] private readonly SharedSolutionContainerSystem _solutions = default!;
-    [Dependency] private readonly IPrototypeManager _prototypes = default!;
+    [Dependency] private UserInterfaceSystem _ui = default!;
+    [Dependency] private DoAfterSystem _doAfter = default!;
+    [Dependency] private OxydWoundSystem _wounds = default!;
+    [Dependency] private DetachableOrganSystem _detach = default!;
+    [Dependency] private SharedContainerSystem _container = default!;
+    [Dependency] private DamageableSystem _damage = default!;
+    [Dependency] private MobStateSystem _mobs = default!;
+    [Dependency] private SharedPopupSystem _popup = default!;
+    [Dependency] private SharedTransformSystem _transform = default!;
+    [Dependency] private StandingStateSystem _standing = default!;
+    [Dependency] private EntityLookupSystem _lookup = default!;
+    [Dependency] private SharedStackSystem _stacks = default!;
+    [Dependency] private TagSystem _tag = default!;
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private SharedHandsSystem _hands = default!;
+    [Dependency] private SharedSolutionContainerSystem _solutions = default!;
+    [Dependency] private IPrototypeManager _prototypes = default!;
+    [Dependency] private ISharedAdminLogManager _adminLogger = default!;
 
-    private static readonly EntProtoId UiProxyProto = "OxydMedicalSurgeryUiProxy";
     private const string ImplantContainerId = "oxyd-surgery-implants";
     private static readonly ProtoId<TagPrototype> CableCoilTag = "CableCoil";
 
-    /// <summary>proxy entity -> session state.</summary>
-    private readonly Dictionary<EntityUid, SurgerySession> _sessions = new();
-
-    /// <summary>organ -> step currently running on it (shown on its card while the do_after runs).</summary>
-    private readonly Dictionary<EntityUid, OxydSurgeryStep> _running = new();
-
-    private sealed class SurgerySession
+    /// <summary>Item sizes a retracted cavity accepts through the click path (Eris w_class check).</summary>
+    private static readonly HashSet<ProtoId<ItemSizePrototype>> ImplantableSizes = new()
     {
-        public EntityUid Surgeon;
-        public EntityUid Patient;
-        public EntityUid? Tool;
-        public bool SelfSurgery;
-    }
+        "Tiny", "Small",
+    };
 
     private record struct OrganEntry(EntityUid Uid, OrganComponent Organ, OxydOrganSurgeryComponent Surg)
     {
@@ -85,9 +78,8 @@ public sealed partial class OxydSurgerySystem : EntitySystem
         SubscribeLocalEvent<BodyComponent, InteractUsingEvent>(OnInteractUsing);
         SubscribeLocalEvent<BodyComponent, InteractHandEvent>(OnInteractHand);
         SubscribeLocalEvent<BodyComponent, OxydSurgeryDoAfterEvent>(OnPatientStepDone);
-        SubscribeLocalEvent<OxydSurgeryUiProxyComponent, OxydSurgerySelectStepMessage>(OnSelectStep);
-        SubscribeLocalEvent<OxydSurgeryUiProxyComponent, OxydSurgeryDoAfterEvent>(OnStepDone);
-        SubscribeLocalEvent<OxydSurgeryUiProxyComponent, BoundUIClosedEvent>(OnUiClosed);
+        SubscribeLocalEvent<OxydSurgerySessionComponent, OxydSurgerySelectStepMessage>(OnSelectStep);
+        SubscribeLocalEvent<OxydSurgerySessionComponent, BoundUIClosedEvent>(OnUiClosed);
         SubscribeLocalEvent<BodyComponent, GetVerbsEvent<InteractionVerb>>(OnGetSurgeryVerbs);
     }
 
@@ -119,26 +111,12 @@ public sealed partial class OxydSurgerySystem : EntitySystem
     }
 
     // Sole InteractUsingEvent subscriber on BodyComponent (the bus allows one per comp+event):
-    // dispatch by what's being used on the patient.
+    // dispatch by what's being used on the patient. Health/autopsy scanners route through
+    // their own item-side AfterInteractEvent handlers instead.
     private void OnInteractUsing(EntityUid uid, BodyComponent comp, InteractUsingEvent args)
     {
         if (args.Handled)
             return;
-
-        if (HasComp<OxydScannerItemComponent>(args.Used))
-        {
-            args.Handled = true;
-            _medicalScanner.OpenScanUi(args.User, uid);
-            return;
-        }
-
-        // Autopsy scanner on a cadaver - AfterInteract loses to the mob's strip-UI
-        // click on corpses, so the body-side event is the reliable path.
-        if (TryComp<OxydAutopsyScannerComponent>(args.Used, out var autopsy))
-        {
-            args.Handled = _forensics.TryAutopsyScan(args.User, (args.Used, autopsy), uid);
-            return;
-        }
 
         // Cable coil repairs robotic burns (Eris wires on robotic organs) and carries no
         // surgery component of its own.
@@ -188,15 +166,15 @@ public sealed partial class OxydSurgerySystem : EntitySystem
         if (!IsOperable(uid))
             return;
 
-        // Any other item goes into a retracted cavity (Eris insert_item accepts any /obj/item).
+        // A small item goes into a retracted cavity (Eris w_class check) — not IDs,
+        // guns or handcuffs. An organ item or detached-limb shell is a transplant
+        // (Eris attach_or_replace_organ), not a cavity implant — AttachOrgan still
+        // validates Incision/decay itself.
         var cavity = FindOrgan(uid, o =>
             o.Surg is { Incision: OxydIncisionStage.Retracted } && OxydWoundSystem.IsExternal(o.Organ));
-        if (cavity.Valid)
+        if (cavity.Valid && (IsTransplantItem(args.Used) || CanImplant(args.Used)))
         {
             args.Handled = true;
-            // An organ item or detached-limb shell is a transplant (Eris
-            // attach_or_replace_organ), not a cavity implant — AttachOrgan still
-            // validates Incision/decay itself.
             var step = IsTransplantItem(args.Used)
                 ? OxydSurgeryStep.AttachOrgan
                 : OxydSurgeryStep.InsertItem;
@@ -235,11 +213,15 @@ public sealed partial class OxydSurgerySystem : EntitySystem
             return true;
         // An operating table under the patient counts even without buckling (resting on it).
         var coords = Transform(patient).Coordinates;
-        return _lookup.GetEntitiesInRange(coords, 0.4f).Any(e => HasComp<OxydOperatingTableComponent>(e));
+        return _lookup.GetEntitiesInRange<OxydOperatingTableComponent>(coords, 0.4f).Any();
     }
 
     private static bool IsHealingKit(OxydSurgeryToolComponent tool) =>
         (tool.Tools & (OxydSurgeryTool.TraumaKit | OxydSurgeryTool.BurnKit)) != 0;
+
+    /// <summary>Only small items may be packed into a body cavity (Eris w_class check).</summary>
+    private bool CanImplant(EntityUid item) =>
+        TryComp<ItemComponent>(item, out var ic) && ImplantableSizes.Contains(ic.Size);
 
     private List<OrganEntry> GetOrganEntries(EntityUid body) =>
         _wounds.GetOrgans(body).Select(o => new OrganEntry(o.Uid, o.Organ, o.Surgery)).ToList();
@@ -425,10 +407,9 @@ public sealed partial class OxydSurgerySystem : EntitySystem
         _ => 10f,
     };
 
-    /// <summary>Starts a surgery step DoAfter. The completion event lands on the UI proxy
-    /// when a window is open (keeps it refreshed), otherwise on the patient.</summary>
+    /// <summary>Starts a surgery step DoAfter; the completion event lands on the patient.</summary>
     private void RunStep(EntityUid surgeon, EntityUid patient, EntityUid organ, OxydSurgeryStep step,
-        EntityUid? tool, OxydSurgeryToolComponent? toolComp, EntityUid? proxy = null)
+        EntityUid? tool, OxydSurgeryToolComponent? toolComp)
     {
         var speed = toolComp?.Speed ?? 1f;
         var ev = new OxydSurgeryDoAfterEvent(GetNetEntity(patient), GetNetEntity(organ), step,
@@ -438,7 +419,7 @@ public sealed partial class OxydSurgerySystem : EntitySystem
         };
 
         var doArgs = new DoAfterArgs(EntityManager, surgeon, TimeSpan.FromSeconds(StepDuration(step) * speed), ev,
-            proxy ?? patient, patient, tool)
+            patient, patient, tool)
         {
             BreakOnMove = true,
             MovementThreshold = 0.5f,
@@ -449,35 +430,34 @@ public sealed partial class OxydSurgerySystem : EntitySystem
 
         if (_doAfter.TryStartDoAfter(doArgs))
         {
-            _running[organ] = step;
+            var surg = EnsureComp<OxydOrganSurgeryComponent>(organ);
+            surg.RunningStep = step;
             Announce(surgeon, patient, "oxyd-medical-surgery-start", organ);
-            if (proxy is { } p)
-                PushState(p);
+            PushAllStates(patient);
         }
     }
 
-    // UI path.
-    private void OnSelectStep(EntityUid proxy, OxydSurgeryUiProxyComponent comp, OxydSurgerySelectStepMessage args)
+    // UI path. The message is raised on the patient hosting the BUI; the session is
+    // looked up by the actor who clicked.
+    private void OnSelectStep(EntityUid patient, OxydSurgerySessionComponent comp, OxydSurgerySelectStepMessage args)
     {
-        if (!_sessions.TryGetValue(proxy, out var s))
+        if (!comp.Sessions.TryGetValue(args.Actor, out var s))
             return;
 
         var organ = GetEntity(args.Organ);
-        if (!TryComp<OrganComponent>(organ, out var organComp) || organComp.Body != s.Patient)
+        if (!TryComp<OrganComponent>(organ, out var organComp) || organComp.Body != patient)
             return;
 
         var surg = EnsureComp<OxydOrganSurgeryComponent>(organ);
         var tools = ToolFlagsOf(s.Tool);
         if (!AvailableSteps(tools, s.Tool, organComp, surg,
-                s.Tool is { } held && IsTransplantItem(held)).Contains(args.Step))
+                s.Tool is { } held && IsTransplantItem(held),
+                s.Tool is { } h2 && CanImplant(h2)).Contains(args.Step))
             return;
 
-        RunStep(s.Surgeon, s.Patient, organ, args.Step, s.Tool,
-            s.Tool is { } t ? CompOrNull<OxydSurgeryToolComponent>(t) : null, proxy);
+        RunStep(args.Actor, patient, organ, args.Step, s.Tool,
+            s.Tool is { } t ? CompOrNull<OxydSurgeryToolComponent>(t) : null);
     }
-
-    private T? CompOrNull<T>(EntityUid uid) where T : Component =>
-        TryComp<T>(uid, out var c) ? c : null;
 
     private OxydSurgeryTool ToolFlagsOf(EntityUid? tool)
     {
@@ -489,52 +469,19 @@ public sealed partial class OxydSurgerySystem : EntitySystem
         return flags;
     }
 
-    // DoAfter landing on the proxy (UI-open steps).
-    private void OnStepDone(EntityUid proxy, OxydSurgeryUiProxyComponent comp, OxydSurgeryDoAfterEvent args)
-    {
-        _running.Remove(GetEntity(args.Organ));
-        if (args.Cancelled || !_sessions.TryGetValue(proxy, out var s))
-        {
-            PushState(proxy);
-            return;
-        }
-
-        CompleteStep(args, s.Surgeon, s.Patient);
-        PushState(proxy);
-    }
-
-    // DoAfter landing on the patient (direct-click steps).
+    // DoAfter landing on the patient.
     private void OnPatientStepDone(EntityUid uid, BodyComponent comp, OxydSurgeryDoAfterEvent args)
     {
-        _running.Remove(GetEntity(args.Organ));
+        var organ = GetEntity(args.Organ);
+        if (TryComp<OxydOrganSurgeryComponent>(organ, out var running))
+            running.RunningStep = null;
+
         if (!args.Cancelled)
             CompleteStep(args, args.User, uid);
 
-        // Refresh any surgery windows open on this patient so direct-click
-        // progress shows up without closing and reopening.
-        foreach (var (proxy, s) in _sessions)
-        {
-            if (s.Patient == uid)
-                PushState(proxy);
-        }
-    }
-
-    /// <summary>Eris ui_check: the window follows the surgeon's adjacency to the
-    /// patient — close it once they can no longer reach the table.</summary>
-    public override void Update(float frameTime)
-    {
-        base.Update(frameTime);
-        if (_sessions.Count == 0)
-            return;
-
-        foreach (var (proxy, s) in _sessions.ToList())
-        {
-            if (TerminatingOrDeleted(s.Surgeon) || TerminatingOrDeleted(s.Patient) ||
-                !_interaction.InRangeUnobstructed(s.Surgeon, s.Patient))
-            {
-                _ui.CloseUi(proxy, OxydSurgeryUiKey.Key, s.Surgeon);
-            }
-        }
+        // Refresh any surgery windows open on this patient so progress
+        // shows up without closing and reopening.
+        PushAllStates(uid);
     }
 
     /// <summary>Eris try_surgery_step: roll quality minus difficulty (plus self-surgery penalty),
@@ -662,18 +609,23 @@ public sealed partial class OxydSurgerySystem : EntitySystem
                 break;
             case OxydSurgeryStep.InsertItem:
                 if (tool is not { } item || surg.Incision != OxydIncisionStage.Retracted ||
-                    surg.EmbeddedItems.Count >= OxydOrganSurgeryComponent.ImplantCavityMax)
+                    surg.EmbeddedItems.Count >= OxydOrganSurgeryComponent.ImplantCavityMax ||
+                    !CanImplant(item))
                     return true;
                 var cavity = _container.EnsureContainer<Container>(organ, ImplantContainerId);
                 if (!_container.Insert(item, cavity))
                     return true;
                 surg.EmbeddedItems.Add(GetNetEntity(item));
+                _adminLogger.Add(LogType.Action, LogImpact.Medium,
+                    $"{ToPrettyString(surgeon):user} implanted {ToPrettyString(item)} into {ToPrettyString(patient):target}'s {Name(organ)} cavity");
                 break;
             case OxydSurgeryStep.Amputate:
             case OxydSurgeryStep.DetachOrgan:
                 if (!OxydWoundSystem.IsExternal(organComp) && surg.Incision != OxydIncisionStage.Retracted)
                     return true;
                 _detach.Detach(organ);
+                _adminLogger.Add(LogType.Action, LogImpact.High,
+                    $"{ToPrettyString(surgeon):user} removed {ToPrettyString(organ):target} from {ToPrettyString(patient):target} via {step}");
                 _damage.TryChangeDamage(patient,
                     new DamageSpecifier { DamageDict = { ["Slash"] = 25 } }, ignoreResistances: true);
                 break;
@@ -685,6 +637,8 @@ public sealed partial class OxydSurgerySystem : EntitySystem
                     return true;
                 }
                 if (!TryAttach(patient, tool, surgeon)) return true;
+                _adminLogger.Add(LogType.Action, LogImpact.Medium,
+                    $"{ToPrettyString(surgeon):user} attached {ToPrettyString(tool!.Value):target} to {ToPrettyString(patient):target}");
                 break;
             case OxydSurgeryStep.FixOrgan:
                 if (surg.OrganDamage <= 0) return true;
@@ -817,67 +771,89 @@ public sealed partial class OxydSurgerySystem : EntitySystem
 
     // ----- UI -----
 
+    /// <summary>The BUI lives on the patient; each surgeon that opens it gets a session
+    /// entry on the patient's OxydSurgerySessionComponent.</summary>
     private void OpenSurgeryUi(EntityUid surgeon, EntityUid patient, EntityUid? tool)
     {
-        var proxy = Spawn(UiProxyProto, MapCoordinates.Nullspace);
-        _sessions[proxy] = new SurgerySession
+        EnsureComp<UserInterfaceComponent>(patient);
+        if (!_ui.HasUi(patient, OxydSurgeryUiKey.Key))
         {
-            Surgeon = surgeon,
-            Patient = patient,
+            _ui.SetUi(patient, OxydSurgeryUiKey.Key,
+                new InterfaceData("OxydSurgeryBoundUserInterface", SharedInteractionSystem.InteractionRange));
+        }
+
+        var sessions = EnsureComp<OxydSurgerySessionComponent>(patient);
+        sessions.Sessions[surgeon] = new OxydSurgerySession
+        {
             Tool = tool,
             SelfSurgery = surgeon == patient,
         };
-        _ui.SetUi(proxy, OxydSurgeryUiKey.Key,
-            new InterfaceData("OxydSurgeryBoundUserInterface", 0f, false));
-        _ui.OpenUi(proxy, OxydSurgeryUiKey.Key, surgeon);
-        PushState(proxy);
+        _ui.OpenUi(patient, OxydSurgeryUiKey.Key, surgeon);
+        PushState(patient, surgeon);
     }
 
-    private void OnUiClosed(EntityUid proxy, OxydSurgeryUiProxyComponent comp, BoundUIClosedEvent args)
+    private void OnUiClosed(EntityUid patient, OxydSurgerySessionComponent comp, BoundUIClosedEvent args)
     {
-        _sessions.Remove(proxy);
-        QueueDel(proxy);
+        comp.Sessions.Remove(args.Actor);
+        if (comp.Sessions.Count == 0)
+            RemComp<OxydSurgerySessionComponent>(patient);
     }
 
-    private void PushState(EntityUid proxy)
+    /// <summary>Refresh every window currently open on this patient.</summary>
+    private void PushAllStates(EntityUid patient)
     {
-        if (!_sessions.TryGetValue(proxy, out var s))
+        if (!TryComp<OxydSurgerySessionComponent>(patient, out var comp))
+            return;
+
+        foreach (var surgeon in comp.Sessions.Keys.ToArray())
+            {
+            PushState(patient, surgeon);
+        }
+    }
+
+    /// <summary>Push the actor's state — via a per-actor message since the patient-hosted
+    /// BUI shares its UI state between every surgeon with a window open.</summary>
+    private void PushState(EntityUid patient, EntityUid surgeon)
+    {
+        if (!TryComp<OxydSurgerySessionComponent>(patient, out var comp) ||
+            !comp.Sessions.TryGetValue(surgeon, out var s))
             return;
 
         var state = new OxydSurgeryState
         {
-            PatientName = Name(s.Patient),
+            PatientName = Name(patient),
             HeldTools = ToolFlagsOf(s.Tool),
             HeldItemName = s.Tool is { } t ? Name(t) : string.Empty,
             SelfSurgery = s.SelfSurgery,
-            StandingOnly = !IsOperable(s.Patient),
+            StandingOnly = !IsOperable(patient),
         };
 
         // Eris owner_oxyloss: airloss group drives the Oxygen bar on respiratory organs.
-        if (TryComp<DamageableComponent>(s.Patient, out var dmg))
+        if (TryComp<DamageableComponent>(patient, out var dmg))
         {
-            var spec = _damage.GetAllDamage((s.Patient, dmg));
+            var spec = _damage.GetAllDamage((patient, dmg));
             spec.TryGetDamageInGroup(_prototypes.Index<DamageGroupPrototype>("Airloss"), out var airloss);
             state.OwnerOxyLoss = airloss.Float();
         }
 
         // Blood bars read the body's bloodstream (Eris organ.current_blood / max_blood_storage).
         float bloodLevel = 0f, bloodMax = 0f;
-        if (_solutions.TryGetSolution(s.Patient, BloodstreamComponent.DefaultBloodSolutionName,
+        if (_solutions.TryGetSolution(patient, BloodstreamComponent.DefaultBloodSolutionName,
                 out _, out var blood))
         {
             bloodLevel = blood.Volume.Float();
             bloodMax = blood.MaxVolume.Float();
         }
 
-        foreach (var (orgUid, organ, surg) in _wounds.GetOrgans(s.Patient))
+        foreach (var (orgUid, organ, surg) in _wounds.GetOrgans(patient))
         {
             var external = OxydWoundSystem.IsExternal(organ);
             var efficiency = Math.Clamp(
                 (OxydOrganSurgeryComponent.OrganMaxDamage - surg.OrganDamage) /
                 OxydOrganSurgeryComponent.OrganMaxDamage * 100f, 0f, 100f);
             var steps = AvailableSteps(state.HeldTools, s.Tool, organ, surg,
-                s.Tool is { } held && IsTransplantItem(held));
+                s.Tool is { } held && IsTransplantItem(held),
+                s.Tool is { } h2 && CanImplant(h2));
             var entry = new OxydSurgeryOrganEntry
             {
                 Organ = GetNetEntity(orgUid),
@@ -896,7 +872,7 @@ public sealed partial class OxydSurgerySystem : EntitySystem
                 MaxDamage = OxydOrganSurgeryComponent.OrganMaxDamage,
                 CavityMax = OxydOrganSurgeryComponent.ImplantCavityMax,
                 AvailableSteps = steps,
-                RunningStep = _running.TryGetValue(orgUid, out var running) ? running : null,
+                RunningStep = surg.RunningStep,
                 // Eris organ.is_open(): organic organs need a retracted incision, robotic an open panel.
                 Open = surg.Robotic ? surg.Incision != OxydIncisionStage.None
                                     : surg.Incision == OxydIncisionStage.Retracted,
@@ -928,7 +904,9 @@ public sealed partial class OxydSurgerySystem : EntitySystem
             state.Organs.Add(entry);
         }
 
-        _ui.SetUiState(proxy, OxydSurgeryUiKey.Key, state);
+        _ui.SetUiState(patient, OxydSurgeryUiKey.Key, state);
+        _ui.ServerSendUiMessage(patient, OxydSurgeryUiKey.Key,
+            new OxydSurgeryStateMessage { State = state }, surgeon);
     }
 
     /// <summary>Synthesises the internal view's wound cards from the organ's surgical state
@@ -1044,8 +1022,9 @@ public sealed partial class OxydSurgerySystem : EntitySystem
         _ => OxydSurgeryTool.None,
     };
 
-    private static List<OxydSurgeryStep> AvailableSteps(OxydSurgeryTool tools, EntityUid? heldItem,
-        OrganComponent organ, OxydOrganSurgeryComponent surg, bool heldOrgan = false)
+    private List<OxydSurgeryStep> AvailableSteps(OxydSurgeryTool tools, EntityUid? heldItem,
+        OrganComponent organ, OxydOrganSurgeryComponent surg, bool heldOrgan = false,
+        bool implantable = false)
     {
         var steps = new List<OxydSurgeryStep>();
         var external = OxydWoundSystem.IsExternal(organ);
@@ -1100,8 +1079,9 @@ public sealed partial class OxydSurgerySystem : EntitySystem
                     Add(OxydSurgeryStep.RemoveEmbedded);
                     Add(OxydSurgeryStep.RemoveItem);
                 }
-                // Cavity work accepts whatever non-surgical item is being held, until full.
-                if (external && heldItem != null && tools == OxydSurgeryTool.None &&
+                // Cavity work accepts an implantable non-surgical item, until full
+                // (Eris w_class check).
+                if (external && implantable && tools == OxydSurgeryTool.None &&
                     surg.EmbeddedItems.Count < OxydOrganSurgeryComponent.ImplantCavityMax)
                     steps.Add(OxydSurgeryStep.InsertItem);
                 if (!external)

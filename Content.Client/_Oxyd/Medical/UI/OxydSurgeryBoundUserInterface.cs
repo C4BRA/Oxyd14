@@ -3,7 +3,7 @@ using Robust.Client.UserInterface;
 
 namespace Content.Client._Oxyd.Medical.UI;
 
-/// <summary>Surgery UI host on a nullspace proxy (Eris surgery_organ nano UI port).</summary>
+/// <summary>Surgery UI hosted on the patient (Eris surgery_organ nano UI port).</summary>
 public sealed class OxydSurgeryBoundUserInterface : BoundUserInterface
 {
     private OxydSurgeryWindow? _window;
@@ -15,8 +15,6 @@ public sealed class OxydSurgeryBoundUserInterface : BoundUserInterface
     protected override void Open()
     {
         base.Open();
-        // The engine may queue Open() twice for proxy-spawned BUIs (state-apply +
-        // interface startup); a second CreateWindow would assert in RegisterControl.
         if (_window != null)
             return;
         _window = this.CreateWindow<OxydSurgeryWindow>();
@@ -27,6 +25,15 @@ public sealed class OxydSurgeryBoundUserInterface : BoundUserInterface
     private void OnStepSelected(NetEntity organ, OxydSurgeryStep step)
     {
         SendMessage(new OxydSurgerySelectStepMessage(organ, step));
+    }
+
+    // The BUI is shared between surgeons on the patient, so the server refreshes
+    // each open window with a per-actor message instead of a broadcast state.
+    protected override void ReceiveMessage(BoundUserInterfaceMessage message)
+    {
+        base.ReceiveMessage(message);
+        if (message is OxydSurgeryStateMessage surgery)
+            _window?.UpdateState(surgery.State);
     }
 
     protected override void UpdateState(BoundUserInterfaceState state)
