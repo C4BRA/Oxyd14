@@ -5,7 +5,6 @@
   phrase: "Semper invicta."
   category: Common
   grantedBy: [OxydLitanyCommon]
-  effect: Relief
   targetMode: Self
   range: 0
   cost: 20
@@ -27,7 +26,6 @@
   phrase: "Panem nostrum cotidianum da nobis hodie."
   category: Common
   grantedBy: [OxydLitanyCommon]
-  effect: SoulHunger
   targetMode: Self
   range: 0
   cost: 50
@@ -48,7 +46,6 @@
   phrase: "Deus meus ut quid dereliquisti me."
   category: Common
   grantedBy: [OxydLitanyCommon]
-  effect: Entreaty
   targetMode: GlobalFollower
   range: 0
   cost: 0
@@ -67,7 +64,6 @@
   phrase: "Ad tollendum zizania a corpore."
   category: Common
   grantedBy: [OxydLitanyCommon]
-  effect: Rejection
   targetMode: Self
   range: 0
   cost: 25
@@ -86,7 +82,6 @@
   phrase: "Et fumus tormentorum eorum ascendet in saecula saeculorum: nec habent requiem die ac nocte, qui adoraverunt bestiam, et imaginem ejus, et si quis acceperit caracterem nominis ejus."
   category: Common
   grantedBy: [OxydLitanyCommon]
-  effect: RevealAdversaries
   targetMode: Self
   range: 0
   cost: 35
@@ -104,7 +99,6 @@
   phrase: "Et si medio umbrae."
   category: Common
   grantedBy: [OxydLitanyCommon]
-  effect: CruciformSense
   targetMode: VisibleFollower
   range: 7
   cost: 20
@@ -122,8 +116,8 @@
   phrase: "Patris ostendere viam."
   category: Common
   grantedBy: [OxydLitanyCommon]
-  effect: Revelation
   targetMode: AdjacentLiving
+  targetShape: Cone
   range: 4
   cost: 10
   cooldownKey: OxydLitanyRevelation
@@ -140,7 +134,6 @@
   phrase: "Deum benedicite mihi voluntas in suum donum."
   category: Common
   grantedBy: [OxydLitanyCommon]
-  effect: InstallUpgrade
   targetMode: AdjacentFollower
   range: 1.5
   cost: 20
@@ -155,7 +148,6 @@
   phrase: "Deus meus ut quid habebant affectus."
   category: Common
   grantedBy: [OxydLitanyCommon]
-  effect: UninstallUpgrade
   targetMode: AdjacentFollower
   range: 1.5
   cost: 20
@@ -170,7 +162,6 @@
   phrase: "Vetus moritur et onus hoc levaverit."
   category: Common
   grantedBy: [OxydLitanyCommon]
-  effect: Reincarnation
   targetMode: AdjacentLiving
   range: 1.5
   cost: 0
@@ -185,7 +176,6 @@
   phrase: "Unde ipse Dominus dabit vobis signum."
   category: Common
   grantedBy: [OxydLitanyCommon]
-  effect: Commitment
   targetMode: AdjacentLiving
   range: 1.5
   cost: 0
@@ -200,7 +190,6 @@
   phrase: "Et revertatur pulvis in terram suam unde erat et spiritus redeat ad Deum qui dedit illum."
   category: Common
   grantedBy: [OxydLitanyCommon]
-  effect: Deprivation
   targetMode: AdjacentLiving
   range: 1.5
   cost: 0

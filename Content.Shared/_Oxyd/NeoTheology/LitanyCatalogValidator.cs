@@ -17,21 +17,23 @@ public static class LitanyCatalogValidator
     public const int ExpectedFoundationLitanyCount = 60;
     public const int ExpectedDependencyGatedLitanyCount = ExpectedLitanyCount - ExpectedFoundationLitanyCount;
 
-    private static readonly HashSet<LitanyEffectKind> IgnoreStutteringEffects =
+    /// <summary>
+    /// Litanies whose Eris chant tolerates stuttering. Every other litany must leave
+    /// <see cref="LitanyPrototype.IgnoreStuttering"/> unset.
+    /// </summary>
+    private static readonly HashSet<string> IgnoreStutteringLitanies =
     [
-        LitanyEffectKind.Relief,
-        LitanyEffectKind.Entreaty,
-        LitanyEffectKind.Rejection,
+        "OxydLitanyRelief",
+        "OxydLitanyEntreaty",
+        "OxydLitanyRejection",
     ];
 
     public static List<string> Validate(
         IPrototypeManager prototypes,
         ILocalizationManager localization,
-        IReadOnlySet<LitanyEffectKind>? runtimeHandlers = null,
         bool requireRuntimeHandlers = true)
     {
         var errors = new List<string>();
-        runtimeHandlers ??= LitanyHandlerCatalog.Implemented;
         var litanies = prototypes.EnumeratePrototypes<LitanyPrototype>().ToList();
         var sets = prototypes.EnumeratePrototypes<LitanySetPrototype>().ToDictionary(s => s.ID);
         var profiles = prototypes.EnumeratePrototypes<NeoTheologyProfilePrototype>().ToDictionary(p => p.ID);
@@ -40,7 +42,7 @@ public static class LitanyCatalogValidator
         if (litanies.Count != ExpectedLitanyCount)
             errors.Add($"Expected {ExpectedLitanyCount} litanies, found {litanies.Count}.");
 
-        ValidateCatalogPolicy(litanies, errors, runtimeHandlers, requireRuntimeHandlers);
+        ValidateCatalogPolicy(litanies, errors, requireRuntimeHandlers);
 
         if (rules.Count != 1)
             errors.Add($"Exactly one selected NeoTheology rules profile is required; found {rules.Count}.");
@@ -75,7 +77,6 @@ public static class LitanyCatalogValidator
                 localization,
                 phrases,
                 setMembership,
-                runtimeHandlers,
                 requireRuntimeHandlers,
                 errors);
         }
@@ -87,54 +88,22 @@ public static class LitanyCatalogValidator
     private static void ValidateCatalogPolicy(
         IReadOnlyCollection<LitanyPrototype> litanies,
         List<string> errors,
-        IReadOnlySet<LitanyEffectKind> runtimeHandlers,
         bool requireRuntimeHandlers)
     {
-        var foundationEffects = litanies
-            .Where(litany => litany.Dependency == NeoTheologyDependency.None)
-            .Select(litany => litany.Effect)
-            .ToHashSet();
-        var dependencyGatedCount = litanies.Count(litany => litany.Dependency != NeoTheologyDependency.None);
-        if (!foundationEffects.SetEquals(LitanyHandlerCatalog.Foundation))
-            errors.Add("Foundation litany entries do not match the declared foundation catalog.");
-        if (foundationEffects.Count != ExpectedFoundationLitanyCount)
-            errors.Add($"Expected {ExpectedFoundationLitanyCount} foundation litanies, found {foundationEffects.Count}.");
+        var foundationCount = litanies.Count(litany => litany.Dependency == NeoTheologyDependency.None);
+        var dependencyGatedCount = litanies.Count - foundationCount;
+        if (foundationCount != ExpectedFoundationLitanyCount)
+            errors.Add($"Expected {ExpectedFoundationLitanyCount} foundation litanies, found {foundationCount}.");
         if (dependencyGatedCount != ExpectedDependencyGatedLitanyCount)
             errors.Add($"Expected {ExpectedDependencyGatedLitanyCount} dependency-gated litanies, found {dependencyGatedCount}.");
 
-        var effectGroups = litanies.GroupBy(l => l.Effect).ToList();
-        foreach (var group in effectGroups.Where(group => group.Count() > 1))
+        // A litany "has a handler" by carrying at least one effect; there is no second
+        // registry to drift against.
+        if (requireRuntimeHandlers)
         {
-            var ids = string.Join(", ", group.Select(litany => litany.ID));
-            errors.Add($"Effect {group.Key} is represented by multiple litanies: {ids}.");
+            foreach (var litany in litanies.Where(litany => litany.IsAvailable && litany.Effects.Count == 0))
+                errors.Add($"Available litany {litany.ID} has no effects.");
         }
-
-        var representedEffects = effectGroups.Select(group => group.Key).ToHashSet();
-        foreach (var effect in Enum.GetValues<LitanyEffectKind>())
-        {
-            if (!representedEffects.Contains(effect))
-                errors.Add($"Catalog is missing a litany for effect {effect}.");
-        }
-
-        var availableEffects = litanies
-            .Where(litany => litany.IsAvailable)
-            .Select(litany => litany.Effect)
-            .ToHashSet();
-        foreach (var effect in availableEffects)
-        {
-            if (requireRuntimeHandlers)
-            {
-                if (!runtimeHandlers.Contains(effect))
-                    errors.Add($"Available effect {effect} has no registered runtime handler.");
-            }
-            else if (!LitanyHandlerCatalog.AllowsEnabledCatalogEntry(effect))
-            {
-                errors.Add($"Available effect {effect} is not registered in the catalog rollout policy.");
-            }
-        }
-
-        foreach (var effect in runtimeHandlers.Where(effect => !availableEffects.Contains(effect)))
-            errors.Add($"Runtime handler {effect} is registered while its catalog entry is unavailable.");
     }
 
     private static void ValidateRules(
@@ -234,27 +203,10 @@ public static class LitanyCatalogValidator
 
     public static List<string> ValidateMissingHandler(
         LitanyPrototype litany,
-        IReadOnlySet<LitanyEffectKind>? runtimeHandlers = null,
         bool requireRuntimeHandler = true)
     {
-        return ValidateMissingHandler(
-            litany.ID,
-            litany.Effect,
-            litany.IsAvailable,
-            runtimeHandlers,
-            requireRuntimeHandler);
-    }
-
-    public static List<string> ValidateMissingHandler(
-        string id,
-        LitanyEffectKind effect,
-        bool isAvailable,
-        IReadOnlySet<LitanyEffectKind>? runtimeHandlers = null,
-        bool requireRuntimeHandler = true)
-    {
-        runtimeHandlers ??= LitanyHandlerCatalog.Implemented;
-        if (isAvailable && requireRuntimeHandler && !runtimeHandlers.Contains(effect))
-            return new List<string> { $"{id} is enabled without a registered runtime handler for {effect}." };
+        if (litany.IsAvailable && requireRuntimeHandler && litany.Effects.Count == 0)
+            return new List<string> { $"{litany.ID} is enabled without any effects." };
 
         return new List<string>();
     }
@@ -264,14 +216,13 @@ public static class LitanyCatalogValidator
         ILocalizationManager localization,
         Dictionary<string, string> phrases,
         Dictionary<string, HashSet<string>> setMembership,
-        IReadOnlySet<LitanyEffectKind> runtimeHandlers,
         bool requireRuntimeHandlers,
         List<string> errors)
     {
         if (string.IsNullOrWhiteSpace(litany.ID))
             errors.Add("A litany has an empty prototype ID.");
-        else if (!string.Equals(litany.ID, $"OxydLitany{litany.Effect}", StringComparison.Ordinal))
-            errors.Add($"{litany.ID} does not match the canonical ID for effect {litany.Effect}.");
+        else if (!litany.ID.StartsWith("OxydLitany", StringComparison.Ordinal))
+            errors.Add($"{litany.ID} does not use the OxydLitany prefix.");
 
         if (string.IsNullOrWhiteSpace(litany.Phrase))
             errors.Add($"{litany.ID} has an empty phrase.");
@@ -364,7 +315,7 @@ public static class LitanyCatalogValidator
             errors.Add($"{litany.ID} has cooldown metadata without a positive duration.");
         }
 
-        if (litany.IgnoreStuttering != IgnoreStutteringEffects.Contains(litany.Effect))
+        if (litany.IgnoreStuttering != IgnoreStutteringLitanies.Contains(litany.ID))
             errors.Add($"{litany.ID} ignoreStuttering does not match the declared stutter exceptions.");
 
         if (litany.Enabled)
@@ -380,7 +331,7 @@ public static class LitanyCatalogValidator
                 errors.Add($"{litany.ID} is disabled without a localized unavailable reason.");
         }
 
-        errors.AddRange(ValidateMissingHandler(litany, runtimeHandlers, requireRuntimeHandlers));
+        errors.AddRange(ValidateMissingHandler(litany, requireRuntimeHandlers));
 
         if (litany.GrantedBy.Count == 0)
             errors.Add($"{litany.ID} is not granted by any litany set.");
@@ -446,29 +397,11 @@ public static class LitanyCatalogValidator
             }
         }
 
-        switch (litany.Effect)
-        {
-            case LitanyEffectKind.Relief:
-            case LitanyEffectKind.HandOfMercy:
-            case LitanyEffectKind.AbsolutionOfWounds:
-                if (!litany.Effects.OfType<LitanyInjectReagentsEffect>().Any())
-                    errors.Add($"{litany.ID} requires a LitanyInjectReagentsEffect.");
-                break;
-            case LitanyEffectKind.Convalescence:
-            case LitanyEffectKind.Succour:
-                if (!litany.Effects.OfType<LitanyHealEffect>().Any())
-                    errors.Add($"{litany.ID} requires a LitanyHealEffect.");
-                break;
-            case LitanyEffectKind.SoulHunger:
-                if (!litany.Effects.OfType<LitanySoulHungerEffect>().Any())
-                    errors.Add($"{litany.ID} requires a LitanySoulHungerEffect.");
-                break;
-            case LitanyEffectKind.GraceOfPerseverance:
-            case LitanyEffectKind.UpholdHolyWord:
-                if (!litany.Effects.OfType<LitanySkillEffect>().Any())
-                    errors.Add($"{litany.ID} requires a LitanySkillEffect.");
-                break;
-        }
+        // Special-case data fields must be backed by a matching effect.
+        if (litany.RequiresHeldOddity && !litany.Effects.OfType<LitanyDivineBlessingEffect>().Any())
+            errors.Add($"{litany.ID} sets requiresHeldOddity without a LitanyDivineBlessingEffect.");
+        if (litany.TargetShape == LitanyTargetShape.Cone && litany.Range <= 0)
+            errors.Add($"{litany.ID} sets targetShape Cone without a positive range.");
     }
 
     private static void ValidateReachableCosts(

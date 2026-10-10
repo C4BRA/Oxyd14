@@ -247,7 +247,7 @@ public sealed partial class LitanySystem
             return;
         }
 
-        var hasHandler = LitanyHandlerCatalog.HasHandler(litany.Effect);
+        var hasHandler = litany.Effects.Count > 0;
         if (hasHandler && !_effects.TryValidateEffects(cast.Actor, litany, out _, cast.Targets,
                 cast.SelectedTokens, cast.SelectedText, cast.Designation, cast.SelectedBlueprint))
         {
@@ -456,7 +456,7 @@ public sealed partial class LitanySystem
             return LitanyActionResult.Fail("oxyd-litany-no-target", requestId);
         }
 
-        if (LitanyHandlerCatalog.HasHandler(litany.Effect) &&
+        if (litany.Effects.Count > 0 &&
             !_effects.TryValidateEffects(cast.Actor, litany, out var effectFail, cast.Targets,
                 cast.SelectedTokens, cast.SelectedText, cast.Designation, cast.SelectedBlueprint))
         {
@@ -767,7 +767,7 @@ public sealed partial class LitanySystem
                 continue;
             if (followersOnly && !_cruciform.IsActiveBearer(mob))
                 continue;
-            if (proto.Effect == LitanyEffectKind.Revelation)
+            if (proto.TargetShape == LitanyTargetShape.Cone)
             {
                 var direction = Transform(actor).LocalRotation.ToVec();
                 var offset = _xform.WithEntityId(Transform(mob).Coordinates, Transform(actor).ParentUid).Position -

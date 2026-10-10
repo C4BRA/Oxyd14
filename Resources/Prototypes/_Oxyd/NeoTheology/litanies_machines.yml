@@ -5,7 +5,6 @@
   phrase: "Qui fuit, et crediderunt in me non morietur in aeternum."
   category: Machinery
   grantedBy: [OxydLitanyMachinery]
-  effect: Resurrection
   targetMode: FrontMachine
   range: 1.5
   cost: 0
@@ -20,7 +19,6 @@
   phrase: "Nos nostrae initium creatores."
   category: Machinery
   grantedBy: [OxydLitanyMachinery]
-  effect: MakeCruciform
   targetMode: FrontMachine
   range: 1.5
   cost: 0
@@ -35,7 +33,6 @@
   phrase: "Inlaqueatus."
   category: Machinery
   grantedBy: [OxydLitanyMachinery]
-  effect: ActivateDoor
   targetMode: FrontMachine
   range: 1.5
   cost: 0
@@ -50,7 +47,6 @@
   phrase: "Redde quod periit."
   category: Machinery
   grantedBy: [OxydLitanyMachinery]
-  effect: RepairDoor
   targetMode: FrontMachine
   range: 1.5
   cost: 0
@@ -66,7 +62,6 @@
   phrase: "Dixitque Deus: Fiat lux. Et facta est lux. Et lux in tenebris lucet, et renebrae eam non comprehenderunt."
   category: Machinery
   grantedBy: [OxydLitanyMachinery]
-  effect: PowerBiogenerator
   targetMode: FrontMachine
   range: 4
   cost: 0
@@ -81,7 +76,6 @@
   phrase: "Nihil igitur fieri de nihilo posse putandum est."
   category: Machinery
   grantedBy: [OxydLitanyMachinery]
-  effect: BioreactorSolution
   targetMode: FrontMachine
   range: 4
   cost: 0
@@ -96,7 +90,6 @@
   phrase: "Constituit quoque ianitores in portis domus Domini ut non ingrederetur eam inmundus in omni."
   category: Machinery
   grantedBy: [OxydLitanyMachinery]
-  effect: BioreactorChamber
   targetMode: FrontMachine
   range: 4
   cost: 0

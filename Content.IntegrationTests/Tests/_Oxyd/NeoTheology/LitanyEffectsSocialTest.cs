@@ -42,68 +42,68 @@ public sealed class LitanyEffectsSocialTest : SocialNoticeGameTest
     private static readonly ProtoId<NeoTheologyProfilePrototype> Preacher = "OxydNtPreacher";
     private static readonly ProtoId<NeoTheologyProfilePrototype> Inquisitor = "OxydNtInquisitor";
 
-    private static readonly LitanyEffectKind[] PacketCImplemented =
+    private static readonly string[] PacketCImplemented =
     [
-        LitanyEffectKind.Relief,
-        LitanyEffectKind.SoulHunger,
-        LitanyEffectKind.Entreaty,
-        LitanyEffectKind.CruciformSense,
-        LitanyEffectKind.ActivateDoor,
-        LitanyEffectKind.HandOfMercy,
-        LitanyEffectKind.AbsolutionOfWounds,
-        LitanyEffectKind.Convalescence,
-        LitanyEffectKind.Succour,
-        LitanyEffectKind.GraceOfPerseverance,
-        LitanyEffectKind.UpholdHolyWord,
-        LitanyEffectKind.Revelation,
-        LitanyEffectKind.Epiphany,
-        LitanyEffectKind.DivineBlessing,
-        LitanyEffectKind.Commitment,
-        LitanyEffectKind.Deprivation,
-        LitanyEffectKind.Confirmation,
-        LitanyEffectKind.Adoption,
-        LitanyEffectKind.Ordination,
-        LitanyEffectKind.Omission,
-        LitanyEffectKind.Excommunication,
-        LitanyEffectKind.InstallUpgrade,
-        LitanyEffectKind.UninstallUpgrade,
-        LitanyEffectKind.Reincarnation,
-        LitanyEffectKind.Resurrection,
-        LitanyEffectKind.MakeCruciform,
-        LitanyEffectKind.RepairDoor,
-        LitanyEffectKind.PowerBiogenerator,
-        LitanyEffectKind.BioreactorSolution,
-        LitanyEffectKind.BioreactorChamber,
-        LitanyEffectKind.Scrying,
-        LitanyEffectKind.DivineIntervention,
-        LitanyEffectKind.HolyGuidance,
-        LitanyEffectKind.OrderArmaments,
-        LitanyEffectKind.Initiation,
-        LitanyEffectKind.Sending,
-        LitanyEffectKind.BaptismalRecord,
-        LitanyEffectKind.AcceleratedGrowth,
-        LitanyEffectKind.Rejection,
-        LitanyEffectKind.RevealAdversaries,
-        LitanyEffectKind.WordsOfPurging,
-        LitanyEffectKind.Atonement,
-        LitanyEffectKind.Penance,
-        LitanyEffectKind.Asacris,
-        LitanyEffectKind.DivineGuidance,
-        LitanyEffectKind.Manifestation,
-        LitanyEffectKind.Uproot,
-        LitanyEffectKind.Knowledge,
-        LitanyEffectKind.Bounty,
-        LitanyEffectKind.PoundingWhisper,
-        LitanyEffectKind.RevelationOfSecrets,
-        LitanyEffectKind.LispOfVitae,
-        LitanyEffectKind.CantoOfCourage,
-        LitanyEffectKind.ChantOfObservance,
-        LitanyEffectKind.ReclamationOfEndurance,
-        LitanyEffectKind.Sanctify,
-        LitanyEffectKind.Crusade,
-        LitanyEffectKind.EternalBrotherhood,
-        LitanyEffectKind.CallToBattle,
-        LitanyEffectKind.SearingRevelation,
+        "OxydLitanyRelief",
+        "OxydLitanySoulHunger",
+        "OxydLitanyEntreaty",
+        "OxydLitanyCruciformSense",
+        "OxydLitanyActivateDoor",
+        "OxydLitanyHandOfMercy",
+        "OxydLitanyAbsolutionOfWounds",
+        "OxydLitanyConvalescence",
+        "OxydLitanySuccour",
+        "OxydLitanyGraceOfPerseverance",
+        "OxydLitanyUpholdHolyWord",
+        "OxydLitanyRevelation",
+        "OxydLitanyEpiphany",
+        "OxydLitanyDivineBlessing",
+        "OxydLitanyCommitment",
+        "OxydLitanyDeprivation",
+        "OxydLitanyConfirmation",
+        "OxydLitanyAdoption",
+        "OxydLitanyOrdination",
+        "OxydLitanyOmission",
+        "OxydLitanyExcommunication",
+        "OxydLitanyInstallUpgrade",
+        "OxydLitanyUninstallUpgrade",
+        "OxydLitanyReincarnation",
+        "OxydLitanyResurrection",
+        "OxydLitanyMakeCruciform",
+        "OxydLitanyRepairDoor",
+        "OxydLitanyPowerBiogenerator",
+        "OxydLitanyBioreactorSolution",
+        "OxydLitanyBioreactorChamber",
+        "OxydLitanyScrying",
+        "OxydLitanyDivineIntervention",
+        "OxydLitanyHolyGuidance",
+        "OxydLitanyOrderArmaments",
+        "OxydLitanyInitiation",
+        "OxydLitanySending",
+        "OxydLitanyBaptismalRecord",
+        "OxydLitanyAcceleratedGrowth",
+        "OxydLitanyRejection",
+        "OxydLitanyRevealAdversaries",
+        "OxydLitanyWordsOfPurging",
+        "OxydLitanyAtonement",
+        "OxydLitanyPenance",
+        "OxydLitanyAsacris",
+        "OxydLitanyDivineGuidance",
+        "OxydLitanyManifestation",
+        "OxydLitanyUproot",
+        "OxydLitanyKnowledge",
+        "OxydLitanyBounty",
+        "OxydLitanyPoundingWhisper",
+        "OxydLitanyRevelationOfSecrets",
+        "OxydLitanyLispOfVitae",
+        "OxydLitanyCantoOfCourage",
+        "OxydLitanyChantOfObservance",
+        "OxydLitanyReclamationOfEndurance",
+        "OxydLitanySanctify",
+        "OxydLitanyCrusade",
+        "OxydLitanyEternalBrotherhood",
+        "OxydLitanyCallToBattle",
+        "OxydLitanySearingRevelation",
     ];
 
     /// <summary>Fixed seed for independent 50% Entreaty rolls (CE uses IRobustRandom.Prob).</summary>
@@ -519,21 +519,15 @@ public sealed class LitanyEffectsSocialTest : SocialNoticeGameTest
         {
             _litany.TestingClearAvailabilityOverrides();
 
-            // Fail-closed handler gate: Implemented must be exactly the enabled catalog effects.
+            // Fail-closed handler gate: an available litany "has a handler" by carrying
+            // at least one effect — there is no second registry to drift against.
+            var implementedIds = _prototypes.EnumeratePrototypes<LitanyPrototype>()
+                .Where(l => l.Effects.Count > 0)
+                .Select(l => l.ID);
             Assert.That(
-                LitanyHandlerCatalog.Implemented,
+                implementedIds,
                 Is.EquivalentTo(PacketCImplemented),
-                "LitanyHandlerCatalog.Implemented must be exactly the enabled catalog effects.");
-
-            foreach (var effect in LitanyHandlerCatalog.Foundation)
-            {
-                if (PacketCImplemented.Contains(effect))
-                    continue;
-                Assert.That(LitanyHandlerCatalog.HasHandler(effect), Is.False,
-                    $"Foundation effect {effect} must remain unimplemented / fail-closed.");
-                Assert.That(LitanyHandlerCatalog.AllowsEnabledCatalogEntry(effect), Is.False,
-                    $"Foundation effect {effect} must not allow enabled catalog entries yet.");
-            }
+                "Litanies with effects must be exactly the implemented catalog.");
 
             var available = _prototypes.EnumeratePrototypes<LitanyPrototype>()
                 .Where(l => l.IsAvailable)
@@ -588,7 +582,7 @@ public sealed class LitanyEffectsSocialTest : SocialNoticeGameTest
     {
         var proto = _prototypes.Index(Entreaty);
         Assert.That(proto.Cost, Is.EqualTo(0));
-        Assert.That(proto.Effect, Is.EqualTo(LitanyEffectKind.Entreaty));
+        Assert.That(proto.ID, Is.EqualTo("OxydLitanyEntreaty"));
         Assert.That(proto.TargetMode, Is.EqualTo(LitanyTargetMode.GlobalFollower));
         Assert.That(proto.IgnoreStuttering, Is.True);
         Assert.That(proto.CooldownKey, Is.EqualTo(Entreaty.Id));
@@ -600,7 +594,7 @@ public sealed class LitanyEffectsSocialTest : SocialNoticeGameTest
     {
         var proto = _prototypes.Index(CruciformSense);
         Assert.That(proto.Cost, Is.EqualTo(20));
-        Assert.That(proto.Effect, Is.EqualTo(LitanyEffectKind.CruciformSense));
+        Assert.That(proto.ID, Is.EqualTo("OxydLitanyCruciformSense"));
         Assert.That(proto.TargetMode, Is.EqualTo(LitanyTargetMode.VisibleFollower));
         Assert.That(proto.Range, Is.EqualTo(7f).Within(0.01f));
         Assert.That(proto.CooldownKey, Is.EqualTo(CruciformSense.Id));

@@ -61,7 +61,7 @@ public sealed partial class LitanyPrototypeValidationSystem : EntitySystem
     {
         return CatalogReady &&
                litany.IsAvailable &&
-               LitanyHandlerCatalog.Implemented.Contains(litany.Effect);
+               litany.Effects.Count > 0;
     }
 
     public IEnumerable<LitanyPrototype> EnumerateCatalog()

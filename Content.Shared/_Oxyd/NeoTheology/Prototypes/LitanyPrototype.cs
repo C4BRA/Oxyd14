@@ -36,10 +36,21 @@ public sealed partial class LitanyPrototype : IPrototype
     public List<ProtoId<LitanySetPrototype>> GrantedBy { get; private set; } = new();
 
     [DataField(required: true)]
-    public LitanyEffectKind Effect { get; private set; }
-
-    [DataField(required: true)]
     public LitanyTargetMode TargetMode { get; private set; }
+
+    /// <summary>
+    /// Overrides the target-resolution geometry (Eris Revelation resolves a forward ray
+    /// instead of the faced tile).
+    /// </summary>
+    [DataField]
+    public LitanyTargetShape TargetShape { get; private set; }
+
+    /// <summary>
+    /// Begin records the caster's held oddity on the pending cast so the effect can consume
+    /// it (Eris DivineBlessing).
+    /// </summary>
+    [DataField]
+    public bool RequiresHeldOddity { get; private set; }
 
     [DataField]
     public float Range { get; private set; }

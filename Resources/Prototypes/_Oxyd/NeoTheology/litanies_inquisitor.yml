@@ -5,7 +5,6 @@
   phrase: "Mihi vindicta [Target human]."
   category: Inquisitor
   grantedBy: [OxydLitanyInquisitor]
-  effect: Penance
   targetMode: VisibleFollower
   selectTarget: true
   range: 7
@@ -21,7 +20,6 @@
   phrase: "Dominus autem dirigat corda vestra in caritate Dei et patientia Christi."
   category: Inquisitor
   grantedBy: [OxydLitanyInquisitor]
-  effect: Convalescence
   targetMode: Self
   range: 0
   cost: 25
@@ -47,7 +45,6 @@
   phrase: "Venite ad me, omnes qui laboratis, et onerati estis et ego reficiam vos."
   category: Inquisitor
   grantedBy: [OxydLitanyInquisitor]
-  effect: Succour
   targetMode: AdjacentFollower
   range: 1.5
   cost: 35
@@ -74,7 +71,6 @@
   phrase: "Ecce ego ad te et ad caelum. Scio omnes absconditis tuis. Vos can abscondere, tu es coram me: nudus."
   category: Inquisitor
   grantedBy: [OxydLitanyInquisitor]
-  effect: Scrying
   targetMode: GlobalFollower
   range: 0
   cost: 100
@@ -91,7 +87,6 @@
   phrase: "Audit, me audit vocationem. Ego nuntius vobis."
   category: Inquisitor
   grantedBy: [OxydLitanyInquisitor]
-  effect: Sending
   targetMode: GlobalFollower
   range: 0
   cost: 30
@@ -108,7 +103,6 @@
   phrase: "Habe fiduciam in Domino ex toto corde tuo et ne innitaris prudentiae tuae, in omnibus viis tuis cogita illum et ipse diriget gressus tuos."
   category: Inquisitor
   grantedBy: [OxydLitanyInquisitor]
-  effect: Initiation
   targetMode: AdjacentFollower
   range: 1.5
   cost: 100
@@ -123,7 +117,6 @@
   phrase: "Cor sapientis quaerit doctrinam, et os stultorum pascetur inperitia."
   category: Inquisitor
   grantedBy: [OxydLitanyInquisitor]
-  effect: Knowledge
   targetMode: Self
   range: 0
   cost: 0
@@ -138,7 +131,6 @@
   phrase: "Supra Domini, bona de te peto. Audi me, et libera vocationem ad me munera tua."
   category: Inquisitor
   grantedBy: [OxydLitanyInquisitor]
-  effect: Bounty
   targetMode: Self
   range: 0
   cost: 20
@@ -153,7 +145,6 @@
   phrase: "Ita multi unum corpus sumus in Christo singuli autem alter alterius membra."
   category: Crusader
   grantedBy: [OxydLitanyCrusader]
-  effect: EternalBrotherhood
   targetMode: Self
   range: 0
   cost: 0
@@ -168,7 +159,6 @@
   phrase: "Si exieritis ad bellum de terra vestra contra hostes qui dimicant adversum vos clangetis ululantibus tubis et erit recordatio vestri coram Domino Deo vestro ut eruamini de manibus inimicorum vestrorum."
   category: Crusader
   grantedBy: [OxydLitanyCrusader]
-  effect: CallToBattle
   targetMode: Self
   range: 0
   cost: 0
@@ -187,7 +177,6 @@
   phrase: "Per fidem enim ambulamus et non per speciem."
   category: Crusader
   grantedBy: [OxydLitanyCrusader]
-  effect: SearingRevelation
   targetMode: Self
   range: 0
   cost: 0

@@ -269,7 +269,7 @@ public sealed partial class LitanySystem : EntitySystem
         if (litany.Cost > 0 && !NeoTheologyHoliness.CanAfford(holiness, litany.Cost, _cruciform.GetDebitTolerance()))
             return LitanyActionResult.Fail("oxyd-litany-no-cost");
 
-        if (LitanyHandlerCatalog.HasHandler(litany.Effect) &&
+        if (litany.Effects.Count > 0 &&
             !_effects.TryValidateEffects(actor, litany, out var effectFail, resolvedTargets))
             return LitanyActionResult.Fail(effectFail ?? "oxyd-litany-no-effect");
 
@@ -323,7 +323,7 @@ public sealed partial class LitanySystem : EntitySystem
             cast.ChoiceAllowsPlainText = litany.AllowPlainText;
         }
 
-        if (litany.Effect == LitanyEffectKind.DivineBlessing &&
+        if (litany.RequiresHeldOddity &&
             _effects.TryGetHeldOddity(actor, out var heldOddity, out _))
             cast.HeldOddity = heldOddity;
 

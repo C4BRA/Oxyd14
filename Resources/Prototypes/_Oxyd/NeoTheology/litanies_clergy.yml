@@ -5,7 +5,6 @@
   phrase: "Plantae crescere in divinum lumen tua."
   category: Agrolyte
   grantedBy: [OxydLitanyAgrolyte]
-  effect: AcceleratedGrowth
   targetMode: Self
   range: 0
   cost: 10
@@ -24,7 +23,6 @@
   phrase: "Non est verus dolor."
   category: Agrolyte
   grantedBy: [OxydLitanyAgrolyte]
-  effect: HandOfMercy
   targetMode: AdjacentLiving
   range: 1.5
   cost: 5
@@ -43,7 +41,6 @@
   phrase: "Surge et ambula."
   category: Agrolyte
   grantedBy: [OxydLitanyAgrolyte]
-  effect: AbsolutionOfWounds
   targetMode: AdjacentLiving
   range: 1.5
   cost: 10
@@ -61,7 +58,6 @@
   phrase: "Purificati a peccatis et in remissionem peccatorum."
   category: Custodian
   grantedBy: [OxydLitanyCustodian]
-  effect: WordsOfPurging
   targetMode: AdjacentLiving
   range: 1.5
   cost: 5
@@ -76,7 +72,6 @@
   phrase: "In nomine Patris et Filii et Spiritus sancti."
   category: Acolyte
   grantedBy: [OxydLitanyAcolyte]
-  effect: Epiphany
   targetMode: AdjacentLiving
   range: 1.5
   cost: 0
@@ -93,7 +88,6 @@
   phrase: "A caelo usque ad centrum."
   category: Acolyte
   grantedBy: [OxydLitanyAcolyte]
-  effect: Asacris
   # Eris rituals/priest.dm:73-91 targets the front/grabbed victim
   # (`get_implant_from_victim`), so the litany strips another bearer's upgrades.
   targetMode: AdjacentFollower
@@ -110,7 +104,6 @@
   phrase: "Domine petra mea et robur meum et salvator meus Deus meus fortis meus sperabo in eo scutum meum et cornu salutis meae susceptor meus."
   category: Priest
   grantedBy: [OxydLitanyPriest]
-  effect: GraceOfPerseverance
   targetMode: VisibleArea
   range: 7
   cost: 30
@@ -133,7 +126,6 @@
   phrase: "In Deo laudabo verbum in Domino praedicabo sermonem in Deo speravi non timebo quid faciat homo mihi."
   category: Priest
   grantedBy: [OxydLitanyPriest]
-  effect: UpholdHolyWord
   targetMode: VisibleArea
   range: 7
   cost: 30
@@ -156,7 +148,6 @@
   phrase: "Piaculo sit [Target human]!"
   category: Priest
   grantedBy: [OxydLitanyPriest]
-  effect: Atonement
   targetMode: VisibleFollower
   selectTarget: true
   range: 7
@@ -173,7 +164,6 @@
   phrase: "Memento nomina..."
   category: Priest
   grantedBy: [OxydLitanyPriest]
-  effect: BaptismalRecord
   targetMode: FrontMachine
   range: 1.5
   cost: 30
@@ -188,7 +178,6 @@
   phrase: "Auxilium instaurarent domum tuam."
   category: Priest
   grantedBy: [OxydLitanyPriest]
-  effect: DivineIntervention
   targetMode: FrontMachine
   range: 1.5
   cost: 15
@@ -204,7 +193,6 @@
   phrase: "Domine deus, lux via."
   category: Priest
   grantedBy: [OxydLitanyPriest]
-  effect: HolyGuidance
   targetMode: FrontMachine
   range: 1.5
   cost: 15
@@ -220,7 +208,7 @@
   phrase: "Corpus Deus."
   category: Priest
   grantedBy: [OxydLitanyPriest]
-  effect: DivineBlessing
+  requiresHeldOddity: true
   targetMode: Self
   range: 0
   cost: 30
@@ -235,7 +223,6 @@
   phrase: "Misericordia et veritas non te deserant circumda eas gutturi tuo et describe in tabulis cordis tui..."
   category: Priest
   grantedBy: [OxydLitanyPriest]
-  effect: Confirmation
   targetMode: AdjacentFollower
   range: 1.5
   cost: 80
@@ -254,7 +241,6 @@
   phrase: "Dervans semitas iustitiae et vias sanctorum custodiens."
   category: Priest
   grantedBy: [OxydLitanyPriest]
-  effect: Adoption
   # Eris Adoption only raises an existing implant's clearance; the plan makes it "baptize a
   # non-believer", so the target must be able to be the first cruciform's bearer.
   targetMode: AdjacentLiving
@@ -271,7 +257,6 @@
   phrase: "Gloriam sapientes possidebunt stultorum exaltatio ignominia."
   category: Priest
   grantedBy: [OxydLitanyPriest]
-  effect: Ordination
   targetMode: AdjacentFollower
   range: 1.5
   cost: 15
@@ -286,7 +271,6 @@
   phrase: "Via impiorum tenebrosa nesciunt ubi corruant."
   category: Priest
   grantedBy: [OxydLitanyPriest]
-  effect: Omission
   targetMode: AdjacentFollower
   range: 1.5
   cost: 30
@@ -301,7 +285,6 @@
   phrase: "Excommunicatio [Target human]!"
   category: Priest
   grantedBy: [OxydLitanyPriest]
-  effect: Excommunication
   targetMode: GlobalFollower
   selectTarget: true
   range: 0
@@ -320,7 +303,6 @@
   phrase: "Et qui non habet, vendat tunicam suam et emat gladium."
   category: Priest
   grantedBy: [OxydLitanyPriest]
-  effect: OrderArmaments
   targetMode: FrontMachine
   range: 1.5
   cost: 20
@@ -335,7 +317,6 @@
   phrase: "Dirige me in veritate tua, et doce me, quia tu es Deus salvator meus, et te sustinui tota die."
   category: Acolyte
   grantedBy: [OxydLitanyAcolyte]
-  effect: DivineGuidance
   targetMode: FrontTile
   range: 1.5
   cost: 0
@@ -351,7 +332,6 @@
   phrase: "Omnia autem quae arguuntur a lumine manifestantur omne enim quod manifestatur lumen est."
   category: Acolyte
   grantedBy: [OxydLitanyAcolyte]
-  effect: Manifestation
   targetMode: FrontTile
   range: 1.5
   cost: 40
@@ -368,7 +348,6 @@
   phrase: "Dominus dedit, Dominus abstulit."
   category: Acolyte
   grantedBy: [OxydLitanyAcolyte]
-  effect: Uproot
   targetMode: FrontTile
   range: 1.5
   cost: 40
@@ -384,7 +363,6 @@
   phrase: "Omnia haec tractavi in corde meo ut curiose intellegerem sunt iusti atque sapientes et opera eorum in manu Dei et tamen nescit homo utrum amore an odio dignus sit."
   category: Group
   grantedBy: [OxydLitanyGroup]
-  effect: PoundingWhisper
   targetMode: Ceremony
   range: 7
   cost: 0
@@ -415,7 +393,6 @@
   phrase: "Dedit quoque Deus sapientiam Salomoni et prudentiam multam nimis et latitudinem cordis quasi harenam quae est in litore maris."
   category: Group
   grantedBy: [OxydLitanyGroup]
-  effect: RevelationOfSecrets
   targetMode: Ceremony
   range: 7
   cost: 0
@@ -443,7 +420,6 @@
   phrase: "Convocatis autem duodecim apostolis dedit illis virtutem et potestatem super omnia daemonia et ut languores curarent."
   category: Group
   grantedBy: [OxydLitanyGroup]
-  effect: LispOfVitae
   targetMode: Ceremony
   range: 7
   cost: 0
@@ -471,7 +447,6 @@
   phrase: "Audi Israhel tu transgredieris hodie Iordanem ut possideas nationes maximas et fortiores te civitates ingentes et ad caelum usque muratas."
   category: Group
   grantedBy: [OxydLitanyGroup]
-  effect: CantoOfCourage
   targetMode: Ceremony
   range: 7
   cost: 0
@@ -499,7 +474,6 @@
   phrase: "Vigilia exemplum imitari debemus."
   category: Group
   grantedBy: [OxydLitanyGroup]
-  effect: ChantOfObservance
   targetMode: Ceremony
   range: 7
   cost: 0
@@ -527,7 +501,6 @@
   phrase: "In finem psalmus David."
   category: Group
   grantedBy: [OxydLitanyGroup]
-  effect: ReclamationOfEndurance
   targetMode: Ceremony
   range: 7
   cost: 0
@@ -556,7 +529,6 @@
   phrase: "Benedicite loco isto."
   category: Group
   grantedBy: [OxydLitanyGroup]
-  effect: Sanctify
   targetMode: Ceremony
   range: 7
   cost: 0
@@ -582,7 +554,6 @@
   phrase: "Locutus est Dominus ad Mosen dicens."
   category: Group
   grantedBy: [OxydLitanyGroup]
-  effect: Crusade
   targetMode: Ceremony
   range: 7
   cost: 0
