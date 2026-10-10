@@ -13,10 +13,10 @@ using Robust.Shared.Input;
 
 namespace Content.Client._Oxyd.UI;
 
-public sealed partial class QuickInventoryStorage : Container
+public sealed class QuickInventoryStorage : Container
 {
     [Dependency] private IEntityManager entityManager = default!;
-    private OxydStyler styler = default!;
+    private UIStyler styler = default!;
     public Entity<StorageComponent> storage = new Entity<StorageComponent>();
     public Dictionary<EntityUid, SpriteView> existing = new ();
     public List<EntityUid> contained = new List<EntityUid>();
@@ -26,7 +26,7 @@ public sealed partial class QuickInventoryStorage : Container
     public QuickInventoryStorage()
     {
         IoCManager.InjectDependencies(this);
-        styler = IoCManager.Resolve<IUserInterfaceManager>().GetUIController<OxydStyler>();
+        styler = IoCManager.Resolve<IUserInterfaceManager>().GetUIController<UIStyler>();
         containerRender = new SpriteView(storage.Owner, entityManager) {Scale = new Vector2(2f)};
         AddChild(containerRender);
     }
@@ -118,7 +118,7 @@ public sealed partial class QuickInventoryStorage : Container
 
             }
         }
-        var finalBox = new UIBox2(0f, 0f, Math.Max((bc/2+bc%2 ) * 32f + styler.sideTextWidth * 2, 64f+styler.sideTextWidth*2), 64);
+        var finalBox = new UIBox2(0f, 0f, Math.Max((bc/2+bc%2 ) * 32f + styler.sideTextWidth * 2, 64f), 64);
         containerRender.Arrange(finalBox);
         return finalBox.BottomRight;
     }

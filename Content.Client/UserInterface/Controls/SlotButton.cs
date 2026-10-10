@@ -12,7 +12,7 @@ namespace Content.Client.UserInterface.Controls
             FullButtonTexturePath = slotData.FullTextureName;
             Blocked = slotData.Blocked;
             Highlight = slotData.Highlighted;
-            StorageTexturePath = "Slots/backstore";
+            StorageTexturePath = "Slots/back";
             SlotName = slotData.SlotName;
         }
     }

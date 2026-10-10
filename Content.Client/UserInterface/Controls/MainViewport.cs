@@ -76,6 +76,8 @@ namespace Content.Client.UserInterface.Controls
                 AlwaysRender = true,
                 RenderScaleMode = ScalingViewportRenderScaleMode.CeilInt,
                 MouseFilter = MouseFilterMode.Stop,
+                RectDrawClipMargin = 0,
+                RectClipContent = false,
             };
 
             AddChild(Viewport);
