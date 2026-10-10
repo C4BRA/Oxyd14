@@ -176,7 +176,7 @@ public sealed partial class OxydChemProcessorComponent : Component
 }
 
 /// <summary>IV drip (Eris machinery/iv_drip.dm): transfers blood between patient and attached beaker/bloodpack.</summary>
-[RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
+[RegisterComponent, NetworkedComponent, AutoGenerateComponentState, AutoGenerateComponentPause]
 public sealed partial class OxydIvDripComponent : Component
 {
     public static readonly string BeakerContainerId = "oxyd_iv_beaker";
