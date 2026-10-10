@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Collections.Generic;
 using System.Numerics;
 using Content.IntegrationTests.Fixtures;
 using Content.IntegrationTests.Fixtures.Attributes;
@@ -129,7 +130,7 @@ public sealed class LitanyAuditRegressionTest : GameTest
                 _damage.TryChangeDamage(target, new DamageSpecifier { DamageDict = { ["Slash"] = 60 } });
             SEntMan.System<PlantTraySystem>().AdjustWeed((tray, SComp<PlantTrayComponent>(tray)), 10);
 
-            SEntMan.EventBus.RaiseLocalEvent(bearer, new ViewTickEvent { seen = [visible, outside] });
+            SEntMan.EventBus.RaiseLocalEvent(bearer, new ViewTickEvent { seen = new HashSet<EntityUid> { visible, outside } });
             Assert.That(_damage.GetTotalDamage(visible).Float(), Is.LessThan(60));
             Assert.That(_damage.GetTotalDamage(hidden).Float(), Is.EqualTo(60));
             Assert.That(_damage.GetTotalDamage(outside).Float(), Is.EqualTo(60));

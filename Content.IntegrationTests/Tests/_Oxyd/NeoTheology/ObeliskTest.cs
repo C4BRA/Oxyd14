@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Numerics;
 using Content.IntegrationTests.Fixtures;
 using Content.IntegrationTests.Fixtures.Attributes;
@@ -225,13 +226,13 @@ public sealed class ObeliskTest : GameTest
             var tray = SSpawnAtPosition("HydroponicsTrayEmpty", map.GridCoords);
             SEntMan.System<PlantTraySystem>().AdjustWeed((tray, SComp<PlantTrayComponent>(tray)), 10);
 
-            SEntMan.EventBus.RaiseLocalEvent(obelisk, new ViewTickEvent { seen = [body, visible, tray] });
+            SEntMan.EventBus.RaiseLocalEvent(obelisk, new ViewTickEvent { seen = new HashSet<EntityUid> { body, visible, tray } });
             Assert.That(DamageOf(visible), Is.GreaterThan(0));
             Assert.That(DamageOf(hidden), Is.Zero);
             Assert.That(SComp<PlantTrayComponent>(tray).WeedLevel, Is.Zero);
             Assert.That(_cruciform.GetRegenerationPerSecond(body), Is.EqualTo(normal * 2));
 
-            SEntMan.EventBus.RaiseLocalEvent(obelisk, new ViewTickEvent { seen = [] });
+            SEntMan.EventBus.RaiseLocalEvent(obelisk, new ViewTickEvent { seen = new HashSet<EntityUid>() });
             Assert.That(SComp<ObeliskComponent>(obelisk).Active, Is.False);
             Assert.That(_cruciform.GetRegenerationPerSecond(body), Is.EqualTo(normal));
         });
