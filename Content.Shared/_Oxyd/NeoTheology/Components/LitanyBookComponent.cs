@@ -15,4 +15,22 @@ public sealed partial class LitanyBookComponent : Component
     /// viewer snapshots and to revoke pending book casts on close/drop. Never networked.
     /// </summary>
     public readonly HashSet<EntityUid> Viewers = new();
+
+    /// <summary>
+    /// Last sent snapshot signature per viewer — snapshots push only when it changes.
+    /// </summary>
+    public readonly Dictionary<EntityUid, LitanyViewerSignature> LastSent = new();
 }
+
+/// <summary>
+/// Cheap digest of what the viewer snapshot would contain. The book re-sends a
+/// snapshot only when any of these values change — the client extrapolates holiness
+/// and cooldown countdowns between pushes.
+/// </summary>
+public readonly record struct LitanyViewerSignature(
+    uint Revision,
+    int HolinessBucket,
+    int CooldownCount,
+    int CooldownNextEnd,
+    int BusyStage,
+    string? BusyRequestId);

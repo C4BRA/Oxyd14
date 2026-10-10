@@ -558,8 +558,6 @@ public sealed partial class LitanySystem
     [SubscribeLocalEvent]
     private void OnRoundCleanup(RoundRestartCleanupEvent ev)
     {
-        _nextViewerRefresh = default;
-
         var pendingCasts = EntityQueryEnumerator<LitanyPendingCastComponent>();
         while (pendingCasts.MoveNext(out var actor, out _))
             RemCompDeferred<LitanyPendingCastComponent>(actor);

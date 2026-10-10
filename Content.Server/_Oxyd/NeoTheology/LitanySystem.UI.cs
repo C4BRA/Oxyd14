@@ -17,23 +17,65 @@ public sealed partial class LitanySystem
     private static readonly EntProtoId PrayerPromptProto = "OxydNtBible";
 
     private uint _publicCatalogRevision = 1;
-    private TimeSpan _nextViewerRefresh;
 
     private void RefreshOpenViewers()
     {
-        if (_timing.CurTime < _nextViewerRefresh)
-            return;
-        _nextViewerRefresh = _timing.CurTime + TimeSpan.FromSeconds(1);
-
         var books = EntityQueryEnumerator<LitanyBookComponent>();
         while (books.MoveNext(out var book, out var bookComp))
         {
             foreach (var actor in bookComp.Viewers.ToArray())
             {
-                if (!TerminatingOrDeleted(actor))
-                    SendViewerSnapshot(book, actor);
+                if (TerminatingOrDeleted(actor))
+                    continue;
+                var signature = ComputeViewerSignature(actor);
+                if (bookComp.LastSent.TryGetValue(actor, out var last) && last == signature)
+                    continue;
+                SendViewerSnapshot(book, actor);
             }
         }
+    }
+
+    private LitanyViewerSignature ComputeViewerSignature(EntityUid actor)
+    {
+        var revision = 0u;
+        var holinessBucket = 0;
+        var cooldownCount = 0;
+        var cooldownNextEnd = 0;
+        var busyStage = -1;
+        string? busyRequestId = null;
+
+        if (TryComp(actor, out CruciformBearerComponent? bearer))
+        {
+            revision = bearer.UiRevision;
+            holinessBucket = (int) Math.Floor(_cruciform.GetHoliness(actor));
+
+            var now = _timing.CurTime;
+            var nextEnd = TimeSpan.MaxValue;
+            foreach (var (_, expiry) in bearer.PersonalCooldowns)
+            {
+                if (expiry <= now)
+                    continue;
+                cooldownCount++;
+                if (expiry < nextEnd)
+                    nextEnd = expiry;
+            }
+            if (nextEnd != TimeSpan.MaxValue)
+                cooldownNextEnd = (int) Math.Ceiling((nextEnd - now).TotalSeconds);
+        }
+
+        if (TryComp(actor, out LitanyPendingCastComponent? pending))
+        {
+            busyStage = (int) pending.Cast.Stage;
+            busyRequestId = pending.Cast.RequestId;
+        }
+
+        return new LitanyViewerSignature(
+            revision,
+            holinessBucket,
+            cooldownCount,
+            cooldownNextEnd,
+            busyStage,
+            busyRequestId);
     }
 
     public int TestingSnapshotSendCount { get; private set; }
@@ -269,6 +311,9 @@ public sealed partial class LitanySystem
 
     private void SendViewerSnapshot(EntityUid book, EntityUid actor)
     {
+        if (TryComp(book, out LitanyBookComponent? bookComp))
+            bookComp.LastSent[actor] = ComputeViewerSignature(actor);
+
         var snapshot = BuildViewerSnapshot(actor);
         EnsureComp<LitanyTestingSnapshotComponent>(actor).Last = snapshot;
         TestingSnapshotSendCount++;
@@ -470,7 +515,10 @@ public sealed partial class LitanySystem
     private void ClearViewerState(EntityUid book, EntityUid actor)
     {
         if (TryComp(book, out LitanyBookComponent? bookComp))
+        {
             bookComp.Viewers.Remove(actor);
+            bookComp.LastSent.Remove(actor);
+        }
 
         RemComp<LitanyTestingSnapshotComponent>(actor);
 
