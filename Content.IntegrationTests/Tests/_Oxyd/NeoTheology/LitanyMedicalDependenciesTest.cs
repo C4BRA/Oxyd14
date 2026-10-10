@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Numerics;
 using Content.IntegrationTests.Fixtures;
@@ -136,7 +137,7 @@ public sealed class LitanyMedicalDependenciesTest : GameTest
                     solutions.RemoveReagent(blood.Value, content.Reagent, content.Quantity);
             }
             addiction.UpdateInterval = 0.1f;
-            addiction.UpdateRemaining = 0.1f;
+            addiction.NextUpdate = TimeSpan.FromSeconds(0.1);
             dependence.Progress = 49;
         });
         await RunSeconds(0.2f);

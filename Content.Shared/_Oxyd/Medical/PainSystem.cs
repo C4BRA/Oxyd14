@@ -30,8 +30,6 @@ public sealed partial class PainSystem : EntitySystem
     {
         SubscribeLocalEvent<AnalgesicComponent, StatusEffectAppliedEvent>(OnAnalgesicApplied);
         SubscribeLocalEvent<AnalgesicComponent, StatusEffectRemovedEvent>(OnAnalgesicRemoved);
-        SubscribeLocalEvent<PainNumbnessStatusEffectComponent, StatusEffectAppliedEvent>(OnNumbnessApplied);
-        SubscribeLocalEvent<PainNumbnessStatusEffectComponent, StatusEffectRemovedEvent>(OnNumbnessRemoved);
     }
 
     private void OnAnalgesicApplied(Entity<AnalgesicComponent> ent, ref StatusEffectAppliedEvent args)
@@ -44,16 +42,6 @@ public sealed partial class PainSystem : EntitySystem
     {
         if (TryComp<PainComponent>(args.Target, out var pain))
             Refresh((args.Target, pain));
-    }
-
-    private void OnNumbnessApplied(Entity<PainNumbnessStatusEffectComponent> ent, ref StatusEffectAppliedEvent args)
-    {
-        SetNumb(args.Target, true);
-    }
-
-    private void OnNumbnessRemoved(Entity<PainNumbnessStatusEffectComponent> ent, ref StatusEffectRemovedEvent args)
-    {
-        SetNumb(args.Target, false);
     }
 
     [SubscribeLocalEvent]
