@@ -518,10 +518,7 @@ public sealed partial class LitanySystem
         cast.AwaitingBookSpeech = false;
         cast.DoAfterId = null;
         if (cast.Prompt is { } prompt && !TerminatingOrDeleted(prompt))
-        {
             _ui.CloseUi(prompt, LitanyUiKey.Book);
-            QueueDel(prompt);
-        }
 
         // Every terminal path sends idle state only after it removes the pending cast.
         if (!TerminatingOrDeleted(cast.Actor))

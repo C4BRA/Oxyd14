@@ -13,9 +13,6 @@ namespace Content.Server._Oxyd.NeoTheology;
 
 public sealed partial class LitanySystem
 {
-    /// <summary>The nullspace proxy entity spawned for spoken-prayer choice prompts.</summary>
-    private static readonly EntProtoId PrayerPromptProto = "OxydNtBible";
-
     private uint _publicCatalogRevision = 1;
 
     private void RefreshOpenViewers()
@@ -247,11 +244,11 @@ public sealed partial class LitanySystem
     /// </summary>
     private void OpenPrayerPrompt(PendingLitanyCast cast)
     {
-        // Reuse the existing private choice UI. The nullspace proxy is never a held book.
-        var prompt = Spawn(PrayerPromptProto, MapCoordinates.Nullspace);
-        cast.Prompt = prompt;
-        _ui.SetUi(prompt, LitanyUiKey.Book, new InterfaceData("LitanyBoundUserInterface", 0f, false));
-        _ui.OpenUi(prompt, LitanyUiKey.Book, cast.Actor);
+        // The spoken-prayer choice UI lives on the caster's cruciform entity — a real
+        // entity inside the actor — rather than a nullspace proxy.
+        cast.Prompt = cast.Cruciform;
+        _ui.SetUi(cast.Cruciform, LitanyUiKey.Book, new InterfaceData("LitanyBoundUserInterface", 0f, false));
+        _ui.OpenUi(cast.Cruciform, LitanyUiKey.Book, cast.Actor);
     }
 
     private void SendChoiceSnapshot(PendingLitanyCast cast)
@@ -321,10 +318,10 @@ public sealed partial class LitanySystem
         // Actor-targeted only — never SetUiState with holiness/roles.
         _ui.ServerSendUiMessage(book, LitanyUiKey.Book, snapshot, actor);
 
-        // The nullspace prayer prompt replicates after the open message reaches the
-        // client, so a choice/progress send issued on the open tick is dropped
-        // silently. Re-send them alongside the (repeating) viewer snapshot — by the
-        // time one arrives, the prompt exists client-side. Idempotent on the client.
+        // A prompt opened on the open tick may not exist client-side yet, so
+        // choice/progress sends issued then are dropped silently. Re-send them alongside
+        // the (repeating) viewer snapshot — by the time one arrives, the prompt exists
+        // client-side. Idempotent on the client.
         if (TryComp(actor, out LitanyPendingCastComponent? pending))
         {
             var cast = pending.Cast;

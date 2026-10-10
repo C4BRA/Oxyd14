@@ -20,13 +20,14 @@ namespace Content.Server._Oxyd.NeoTheology;
 /// <summary>
 /// Eris <c>datum/core_module/cruciform/uplink</c> (modules.dm:30-53) and the two inquisitor
 /// litanies that use it: Knowledge reads the telecrystal balance, Bounty opens the store
-/// (rituals/inquisitor.dm:291-327). The store entity lives in nullspace and its telecrystals
-/// are held on the cruciform, so the balance survives a module swap.
+/// (rituals/inquisitor.dm:291-327). The store BUI lives on the cruciform itself and its
+/// telecrystals are held there, so the balance survives a module swap.
 /// </summary>
 public sealed partial class NtUplinkSystem : EntitySystem
 {
     /// <summary>
-    /// Spawnable store preset with the uplink catalog and the NeoTheology category.
+    /// Store preset prototype copied onto the cruciform on first uplink use: the uplink
+    /// catalog plus the NeoTheology category.
     /// </summary>
     public static readonly EntProtoId UplinkStore = "OxydNtUplink";
 
@@ -35,6 +36,7 @@ public sealed partial class NtUplinkSystem : EntitySystem
 
     [Dependency] private SharedMindSystem _mind = default!;
     [Dependency] private SharedPopupSystem _popup = default!;
+    [Dependency] private IPrototypeManager _prototypes = default!;
     [Dependency] private StoreSystem _store = default!;
     [Dependency] private UserInterfaceSystem _ui = default!;
 
@@ -90,26 +92,32 @@ public sealed partial class NtUplinkSystem : EntitySystem
         return true;
     }
 
-    /// <summary>Creates the hidden uplink on first use and restores the banked telecrystals.</summary>
+    /// <summary>
+    /// Hosts the hidden uplink store on the cruciform itself — a real entity inside the
+    /// bearer — copying the <c>OxydNtUplink</c> preset onto it on first use and restoring
+    /// the banked telecrystals.
+    /// </summary>
     public EntityUid GetOrCreateStore(EntityUid body, EntityUid cruciform, NtUplinkComponent uplink)
     {
         if (uplink.Store is { } existing && !TerminatingOrDeleted(existing) && HasComp<StoreComponent>(existing))
             return existing;
 
-        var storeUid = Spawn(UplinkStore, MapCoordinates.Nullspace);
-        var storeComp = EnsureComp<StoreComponent>(storeUid);
-        // The hidden uplink is in nullspace, so the default 2 m interaction range would fail the
-        // BUI range check. The uplink lives inside the bearer, so range checks do not apply; the
-        // BUI subscriber check still limits every message to the interface's actor.
-        _ui.SetUi(storeUid, StoreUiKey.Key, new InterfaceData("StoreBoundUserInterface", 0f, false));
+        var storeComp = EnsureComp<StoreComponent>(cruciform);
+        if (_prototypes.Index(UplinkStore).TryGetComponent<StoreComponent>(out var preset, EntityManager.ComponentFactory))
+        {
+            storeComp.Name = preset.Name;
+            storeComp.Categories = new HashSet<ProtoId<StoreCategoryPrototype>>(preset.Categories);
+            storeComp.CurrencyWhitelist = new HashSet<ProtoId<CurrencyPrototype>>(preset.CurrencyWhitelist);
+        }
+        _ui.SetUi(cruciform, StoreUiKey.Key, new InterfaceData("StoreBoundUserInterface", 0f, false));
 
         if (_mind.TryGetMind(body, out var mindId, out _))
             storeComp.AccountOwner = mindId;
 
         storeComp.Balance.Clear();
-        _store.TryAddCurrency(new() { { Telecrystal, uplink.StoredTelecrystals } }, storeUid, storeComp);
-        uplink.Store = storeUid;
-        return storeUid;
+        _store.TryAddCurrency(new() { { Telecrystal, uplink.StoredTelecrystals } }, cruciform, storeComp);
+        uplink.Store = cruciform;
+        return cruciform;
     }
 
     [SubscribeLocalEvent]
@@ -142,8 +150,6 @@ public sealed partial class NtUplinkSystem : EntitySystem
     [SubscribeLocalEvent]
     private void OnStoreMessageAttempt(Entity<StoreComponent> ent, ref BoundUserInterfaceMessageAttempt args)
     {
-        if (MetaData(ent.Owner).EntityPrototype?.ID != UplinkStore.Id)
-            return;
         var valid = TryComp<CruciformBearerComponent>(args.Actor, out var bearer) &&
             bearer.Cruciform is { } implant && TryGetUplink(implant, out var uplink) && uplink.Store == ent.Owner &&
             _mind.TryGetMind(args.Actor, out var mind, out _) && ent.Comp.AccountOwner == mind;
