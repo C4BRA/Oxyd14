@@ -10,6 +10,7 @@ using Content.Shared.Chat;
 using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Implants;
 using Content.Shared.Radio;
+using Content.Shared.Speech.Components;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Prototypes;
@@ -106,6 +107,38 @@ public sealed class LitanyCastTest : GameTest
             body = PrepareCaster(map.GridCoords);
             var book = SSpawnAtPosition(BibleProto, map.GridCoords);
             Assert.That(_hands.TryPickup(body, book), Is.True);
+            holinessBefore = _cruciform.GetHoliness(body);
+            var revision = SComp<CruciformBearerComponent>(body).UiRevision;
+            var result = _litany.TryBeginLitany(
+                body, Relief, LitanyCastOrigin.Book, book: book, expectedRevision: revision);
+            Assert.That(result.Success, Is.True, result.Reason?.Id ?? "begin failed");
+            Assert.That(_litany.TestingPendingCount, Is.EqualTo(1));
+        });
+
+        await AdvancePastCast();
+
+        await Server.WaitAssertion(() =>
+        {
+            Assert.That(_litany.TestingPendingCount, Is.EqualTo(0));
+            Assert.That(_cruciform.GetHoliness(body), Is.EqualTo(holinessBefore - 20).Within(0.01));
+        });
+    }
+
+    [Test]
+    public async Task BookSpeech_WithAccent_CommitsOnce()
+    {
+        var map = await Pair.CreateTestMap();
+        EntityUid body = default;
+        double holinessBefore = 0;
+
+        await Server.WaitAssertion(() =>
+        {
+            body = PrepareCaster(map.GridCoords);
+            var book = SSpawnAtPosition(BibleProto, map.GridCoords);
+            Assert.That(_hands.TryPickup(body, book), Is.True);
+            // B8: the book chant must match the pre-accent original so any speech
+            // accent cannot silently cancel the cast.
+            SEntMan.AddComponent<BackwardsAccentComponent>(body);
             holinessBefore = _cruciform.GetHoliness(body);
             var revision = SComp<CruciformBearerComponent>(body).UiRevision;
             var result = _litany.TryBeginLitany(

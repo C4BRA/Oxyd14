@@ -28,8 +28,9 @@ public sealed partial class LitanySystem
             pendingComp.Cast.AwaitingBookSpeech)
         {
             var pending = pendingComp.Cast;
-            var compare = ResolveCompareText(pending.LitanyId, args);
-            if (!LitanyPhraseParser.TryMatchExact(compare, pending.Phrase))
+            // Book casts speak server-generated text: match the pre-accent original,
+            // which is the phrase this cast sent, so accents cannot cancel it.
+            if (!LitanyPhraseParser.TryMatchExact(args.OriginalMessage, pending.Phrase))
                 return;
 
             pending.AwaitingBookSpeech = false;
@@ -151,13 +152,5 @@ public sealed partial class LitanySystem
         return TryComp<IdentityComponent>(target, out var identity) &&
                identity.IdentityEntitySlot?.ContainedEntity is { } ident &&
                string.Equals(MetaData(ident).EntityName, spokenName, StringComparison.Ordinal);
-    }
-
-    private string ResolveCompareText(string litanyId, EntitySpokeEvent args)
-    {
-        if (_catalog.TryGetLitany(litanyId, out var litany) && litany.IgnoreStuttering)
-            return args.OriginalMessage;
-
-        return args.Message;
     }
 }
