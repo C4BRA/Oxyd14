@@ -94,8 +94,8 @@
   description: A door secured by NeoTheology clearance.
   components:
   - type: NeoTheologyDoor
-  - type: LitanyMachine
     minimumClearance: Common
+  - type: LitanyMachine
 
 - type: entity
   parent: OxydNtHolyDoor
@@ -103,8 +103,8 @@
   name: NeoTheology clergy door
   components:
   - type: NeoTheologyDoor
-  - type: LitanyMachine
     minimumClearance: Clergy
+  - type: LitanyMachine
 
 - type: entity
   parent: OxydNtHolyDoor
@@ -112,8 +112,8 @@
   name: NeoTheology public door
   components:
   - type: NeoTheologyDoor
-  - type: LitanyMachine
     minimumClearance: None
+  - type: LitanyMachine
 
 - type: entity
   parent: ClothingNeckGoldmedal
