@@ -121,7 +121,7 @@ public sealed partial class ViewCalcSystem : EntitySystem
             }
             else
             {
-                comp.lastSeen.RemoveWhere(TerminatingOrDeleted);
+                comp.lastSeen.RemoveWhere(e => TerminatingOrDeleted(e));
             }
             RaiseLocalEvent(uid, new ViewTickEvent { seen = comp.lastSeen });
         }
