@@ -1,4 +1,5 @@
 using System.Linq;
+using Content.Shared.Database;
 using Content.Shared._Oxyd.NeoTheology;
 using Content.Shared._Oxyd.NeoTheology.Components;
 using Content.Shared._Oxyd.NeoTheology.Effects;
@@ -202,6 +203,8 @@ public sealed partial class LitanySystem
 
         if (_effects.TryApplyEffects(starter, litany, targets, ceremonyParticipants: participantCount))
         {
+            _adminLogger.Add(LogType.Action, LogImpact.Medium,
+                $"{ToPrettyString(starter):user} completed ceremony {litany.ID} with {participantCount} participant(s)");
             ConsumeCeremonyMiraclePoint(litany);
             foreach (var target in targets)
             {

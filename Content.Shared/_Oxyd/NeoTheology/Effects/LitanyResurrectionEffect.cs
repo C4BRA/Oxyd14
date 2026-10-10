@@ -1,4 +1,5 @@
 using System.Linq;
+using Content.Shared.Database;
 using Content.Shared._Oxyd.NeoTheology.Events;
 
 namespace Content.Shared._Oxyd.NeoTheology.Effects;
@@ -41,7 +42,12 @@ public sealed partial class LitanyResurrectionEffect : LitanyEffect
             var start = new LitanyResurrectionEvent(target, reader, false, validateOnly, context.User);
             system.RaiseOn(target, ref start);
             if (start.Handled)
+            {
+                if (!validateOnly)
+                    system.AdminLog(LogType.Action, LogImpact.High, context.User,
+                        $"started resurrection via {context.Litany.ID} on", target);
                 return true;
+            }
         }
 
         return false;

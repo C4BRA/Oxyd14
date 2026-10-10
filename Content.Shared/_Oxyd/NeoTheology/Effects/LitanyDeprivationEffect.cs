@@ -1,3 +1,4 @@
+using Content.Shared.Database;
 using Content.Shared.Damage;
 using Content.Shared.FixedPoint;
 
@@ -69,6 +70,10 @@ public sealed partial class LitanyDeprivationEffect : LitanyEffect
                 new DamageSpecifier { DamageDict = { ["Blunt"] = FixedPoint2.New(EjectDamage) } }))
             return false;
 
-        return system.TryExtractInstalledCruciform(target, cruciform);
+        var extracted = system.TryExtractInstalledCruciform(target, cruciform);
+        if (extracted)
+            system.AdminLog(LogType.Action, LogImpact.Medium, context.User,
+                $"extracted the cruciform via {context.Litany.ID} from", target);
+        return extracted;
     }
 }

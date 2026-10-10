@@ -1,4 +1,5 @@
 using System.Linq;
+using Content.Shared.Database;
 using Content.Shared._Oxyd.NeoTheology.Events;
 
 namespace Content.Shared._Oxyd.NeoTheology.Effects;
@@ -38,6 +39,9 @@ public sealed partial class LitanyWordsOfPurgingEffect : LitanyEffect
         {
             var purge = new LitanyPurgeAddictionEvent(target, false);
             system.RaiseOn(target, ref purge);
+            if (purge.Handled)
+                system.AdminLog(LogType.Action, LogImpact.Medium, context.User,
+                    $"purged addictions via {context.Litany.ID} on", target);
             handled |= purge.Handled;
         }
 

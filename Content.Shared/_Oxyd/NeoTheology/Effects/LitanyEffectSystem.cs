@@ -1,6 +1,8 @@
 using System.Linq;
 using System.Numerics;
 using Content.Server._Oxyd.SanityInsightAndResting;
+using Content.Shared.Administration.Logs;
+using Content.Shared.Database;
 using Content.Shared._Oxyd.NeoTheology.Components;
 using Content.Shared._Oxyd.NeoTheology.Prototypes;
 using Content.Shared._Oxyd.Skills;
@@ -66,6 +68,7 @@ public sealed partial class LitanyEffectSystem : EntitySystem, ILitanyEffectRais
     [Dependency] private Content.Shared.Power.EntitySystems.SharedPowerReceiverSystem _power = default!;
     [Dependency] private SharedEntityEffectsSystem _entityEffects = default!;
     [Dependency] private IPrototypeManager _prototypes = default!;
+    [Dependency] private ISharedAdminLogManager _adminLogger = default!;
 
     private LitanyEffectContext _context;
     private bool _lastApplyResult = true;
@@ -86,6 +89,15 @@ public sealed partial class LitanyEffectSystem : EntitySystem, ILitanyEffectRais
 
     /// <summary>Observers receive notices without retaining them in this system.</summary>
     public event Action<EntityUid, string>? SocialNotice;
+
+    /// <summary>Admin-log a litany mutation: actor did <paramref name="action"/> to target.</summary>
+    public void AdminLog(LogType type, LogImpact impact, EntityUid actor, string action, EntityUid? target = null)
+    {
+        if (target is { } other)
+            _adminLogger.Add(type, impact, $"{ToPrettyString(actor):user} {action} {ToPrettyString(other):target}");
+        else
+            _adminLogger.Add(type, impact, $"{ToPrettyString(actor):user} {action}");
+    }
 
     public bool TryValidateEffects(
         EntityUid user,

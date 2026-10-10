@@ -1,3 +1,4 @@
+using Content.Shared.Database;
 using Content.Shared._Oxyd.NeoTheology.Events;
 using Robust.Shared.Prototypes;
 
@@ -39,6 +40,9 @@ public sealed partial class LitanyConfirmationEffect : LitanyEffect
         var profile = context.Designation ?? AcolyteProfile;
         var rank = new LitanySetRankEvent(target, profile, false);
         system.RaiseOn(target, ref rank);
+        if (rank.Handled)
+            system.AdminLog(LogType.Action, LogImpact.Medium, context.User,
+                $"confirmed via {context.Litany.ID} as {profile} on", target);
         return rank.Handled;
     }
 }

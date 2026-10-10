@@ -1,3 +1,4 @@
+using Content.Shared.Database;
 using Content.Shared._Oxyd.NeoTheology.Events;
 using Robust.Shared.Prototypes;
 
@@ -31,6 +32,9 @@ public sealed partial class LitanyAdoptionEffect : LitanyEffect
 
         var grant = new LitanySetClearanceEvent(context.Targets[0], NeoTheologyClearance.Common, false);
         system.RaiseOn(context.Targets[0], ref grant);
+        if (grant.Handled)
+            system.AdminLog(LogType.Action, LogImpact.Medium, context.User,
+                $"converted via {context.Litany.ID} to Common clearance on", context.Targets[0]);
         return grant.Handled;
     }
 }

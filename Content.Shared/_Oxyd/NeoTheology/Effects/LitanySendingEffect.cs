@@ -1,3 +1,5 @@
+using Content.Shared.Database;
+
 namespace Content.Shared._Oxyd.NeoTheology.Effects;
 
 /// <summary>
@@ -35,6 +37,8 @@ public sealed partial class LitanySendingEffect : LitanyEffect
                 ? Loc.GetString("oxyd-litany-private-sending-text", ("text", text))
                 : Loc.GetString("oxyd-litany-private-sending");
             system.DeliverSocialNotice(recipient, message);
+            system.AdminLog(LogType.Chat, LogImpact.Low, context.User,
+                $"sent \"{context.SelectedText}\" via {context.Litany.ID} to", recipient);
             delivered = true;
         }
 

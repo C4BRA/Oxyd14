@@ -1,3 +1,4 @@
+using Content.Shared.Database;
 using Content.Shared._Oxyd.NeoTheology.Events;
 
 namespace Content.Shared._Oxyd.NeoTheology.Effects;
@@ -26,6 +27,9 @@ public sealed partial class LitanyRejectionEffect : LitanyEffect
         {
             var shed = new LitanyRejectForeignBodyEvent(target, false);
             system.RaiseOn(target, ref shed);
+            if (shed.Handled)
+                system.AdminLog(LogType.Action, LogImpact.High, context.User,
+                    $"shed foreign bodies via {context.Litany.ID} on", target);
             handled |= shed.Handled;
         }
 

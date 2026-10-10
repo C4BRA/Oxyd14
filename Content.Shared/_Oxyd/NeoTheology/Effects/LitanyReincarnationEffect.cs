@@ -1,3 +1,4 @@
+using Content.Shared.Database;
 using Content.Shared._Oxyd.NeoTheology.Events;
 
 namespace Content.Shared._Oxyd.NeoTheology.Effects;
@@ -30,6 +31,9 @@ public sealed partial class LitanyReincarnationEffect : LitanyEffect
 
         var transfer = new LitanyReincarnationEvent(context.Targets[0], false);
         system.RaiseOn(context.Targets[0], ref transfer);
+        if (transfer.Handled)
+            system.AdminLog(LogType.Mind, LogImpact.High, context.User,
+                $"reincarnated via {context.Litany.ID} into", context.Targets[0]);
         return transfer.Handled;
     }
 }

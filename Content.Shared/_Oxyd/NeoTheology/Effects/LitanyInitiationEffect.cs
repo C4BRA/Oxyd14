@@ -1,3 +1,4 @@
+using Content.Shared.Database;
 using Content.Shared._Oxyd.NeoTheology.Events;
 using Robust.Shared.Prototypes;
 
@@ -52,6 +53,9 @@ public sealed partial class LitanyInitiationEffect : LitanyEffect
         var target = context.Targets[0];
         var ev = new LitanyInitiationEvent(context.User, false);
         system.RaiseOn(target, ref ev);
+        if (ev.Handled)
+            system.AdminLog(LogType.Action, LogImpact.Medium, context.User,
+                $"initiated via {context.Litany.ID} on", target);
         return ev.Handled;
     }
 }

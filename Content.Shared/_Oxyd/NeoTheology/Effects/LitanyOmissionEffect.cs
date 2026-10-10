@@ -1,3 +1,4 @@
+using Content.Shared.Database;
 using Content.Shared._Oxyd.NeoTheology.Events;
 using Robust.Shared.Prototypes;
 
@@ -47,6 +48,9 @@ public sealed partial class LitanyOmissionEffect : LitanyEffect
         var target = context.Targets[0];
         var clearance = new LitanySetClearanceEvent(target, NeoTheologyClearance.None, false);
         system.RaiseOn(target, ref clearance);
+        if (clearance.Handled)
+            system.AdminLog(LogType.Action, LogImpact.Medium, context.User,
+                $"omitted clearance via {context.Litany.ID} on", target);
         return clearance.Handled;
     }
 }

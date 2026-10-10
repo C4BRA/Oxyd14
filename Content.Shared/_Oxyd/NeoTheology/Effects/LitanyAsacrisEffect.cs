@@ -1,3 +1,4 @@
+using Content.Shared.Database;
 using Content.Shared._Oxyd.NeoTheology.Events;
 
 namespace Content.Shared._Oxyd.NeoTheology.Effects;
@@ -32,6 +33,9 @@ public sealed partial class LitanyAsacrisEffect : LitanyEffect
         {
             var strip = new LitanyRemoveUpgradesEvent(target, false);
             system.RaiseOn(target, ref strip);
+            if (strip.Handled)
+                system.AdminLog(LogType.Action, LogImpact.Medium, context.User,
+                    $"stripped upgrades via {context.Litany.ID} on", target);
             handled |= strip.Handled;
         }
 

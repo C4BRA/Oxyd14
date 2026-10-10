@@ -1,3 +1,4 @@
+using Content.Shared.Database;
 using Content.Shared._Oxyd.NeoTheology.Events;
 using Robust.Shared.Prototypes;
 
@@ -58,6 +59,8 @@ public sealed partial class LitanyExcommunicationEffect : LitanyEffect
 
         // Eris: to_chat(M, SPAN_DANGER("You have been spiritually separated...")) — delivered on
         // announcement only, exactly as the source does.
+        system.AdminLog(LogType.Action, LogImpact.High, context.User,
+            $"excommunicated via {context.Litany.ID} on", target);
         system.DeliverSocialNotice(target, Loc.GetString("oxyd-litany-excommunication-notice"));
         return true;
     }
