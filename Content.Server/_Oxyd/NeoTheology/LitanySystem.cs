@@ -8,7 +8,9 @@ using Content.Shared._Oxyd.NeoTheology.Events;
 using Content.Shared._Oxyd.NeoTheology.Prototypes;
 using Content.Shared._Oxyd.NeoTheology.UI;
 using Content.Shared.ActionBlocker;
+using Content.Shared.Administration.Logs;
 using Content.Shared.Chat;
+using Content.Shared.Database;
 using Content.Shared.DoAfter;
 using Content.Shared.GameTicking;
 using Content.Shared.Hands.EntitySystems;
@@ -21,8 +23,9 @@ namespace Content.Server._Oxyd.NeoTheology;
 
 /// <summary>
 /// Speech recognition and the server cast transaction state machine.
-/// Packet B/C handlers live in LitanySystem.Medical.cs / LitanySystem.Social.cs;
-/// unimplemented available effects may still commit a no-op stub.
+/// Cast lifecycle lives in LitanySystem.Casting.cs, ceremonies in
+/// LitanySystem.Ceremony.cs, speech matching in LitanySystem.Speech.cs,
+/// book/viewer UI in LitanySystem.UI.cs.
 /// </summary>
 public sealed partial class LitanySystem : EntitySystem
 {
@@ -35,6 +38,7 @@ public sealed partial class LitanySystem : EntitySystem
     /// <summary>Server limit for a Sending message, matching the client edit limit.</summary>
     public const int MaxChoicePlainTextLength = 512;
 
+    [Dependency] private ISharedAdminLogManager _adminLogger = default!;
     [Dependency] private ActionBlockerSystem _actionBlocker = default!;
     [Dependency] private ChatSystem _chat = default!;
     [Dependency] private CruciformSystem _cruciform = default!;
@@ -466,47 +470,47 @@ public sealed partial class LitanySystem : EntitySystem
 /// <summary>Server-only pending cast record. Never networked.</summary>
 public sealed class PendingLitanyCast
 {
-    public string RequestId = string.Empty;
-    public EntityUid Actor;
-    public EntityUid Cruciform;
-    public EntityUid? Book;
-    public EntityUid? Prompt;
-    public string LitanyId = string.Empty;
-    public LitanyCastOrigin Origin;
+    [ViewVariables] public string RequestId = string.Empty;
+    [ViewVariables] public EntityUid Actor;
+    [ViewVariables] public EntityUid Cruciform;
+    [ViewVariables] public EntityUid? Book;
+    [ViewVariables] public EntityUid? Prompt;
+    [ViewVariables] public string LitanyId = string.Empty;
+    [ViewVariables] public LitanyCastOrigin Origin;
 
     /// <summary>
     /// Targets resolved once at begin time (P4.1). Commit revalidates and applies to
     /// this exact list — it never re-resolves, so a mid-chant move cannot retarget.
     /// </summary>
-    public List<EntityUid> Targets = new();
-    public Dictionary<EntityUid, EntityUid> TargetCruciforms = new();
-    public EntityUid? HeldOddity;
+    [ViewVariables] public List<EntityUid> Targets = new();
+    [ViewVariables] public Dictionary<EntityUid, EntityUid> TargetCruciforms = new();
+    [ViewVariables] public EntityUid? HeldOddity;
 
-    public LitanyCastStage Stage;
-    public string Phrase = string.Empty;
-    public double Cost;
-    public string CooldownKey = string.Empty;
-    public LitanyCooldownScope CooldownScope;
-    public TimeSpan CooldownDuration;
-    public TimeSpan ExtraDelay;
-    public TimeSpan StartedAt;
-    public TimeSpan ChantEndsAt;
-    public TimeSpan ExpiresAt;
-    public bool AwaitingBookSpeech;
-    public bool Committed;
-    public DoAfterId? DoAfterId;
+    [ViewVariables] public LitanyCastStage Stage;
+    [ViewVariables] public string Phrase = string.Empty;
+    [ViewVariables] public double Cost;
+    [ViewVariables] public string CooldownKey = string.Empty;
+    [ViewVariables] public LitanyCooldownScope CooldownScope;
+    [ViewVariables] public TimeSpan CooldownDuration;
+    [ViewVariables] public TimeSpan ExtraDelay;
+    [ViewVariables] public TimeSpan StartedAt;
+    [ViewVariables] public TimeSpan ChantEndsAt;
+    [ViewVariables] public TimeSpan ExpiresAt;
+    [ViewVariables] public bool AwaitingBookSpeech;
+    [ViewVariables] public bool Committed;
+    [ViewVariables] public DoAfterId? DoAfterId;
 
     /// <summary>True while the cast waits for the caster's book-UI selection.</summary>
-    public bool AwaitingChoice;
+    [ViewVariables] public bool AwaitingChoice;
     /// <summary>Set once the cast reaches a terminal state so cleanup never runs twice.</summary>
-    public bool Cleared;
-    public TimeSpan ChoiceExpiresAt;
-    public List<EntityUid> ChoiceTargets = new();
-    public List<ProtoId<NeoTheologyProfilePrototype>> ChoiceDesignations = new();
-    public List<ProtoId<NeoTheologyBlueprintPrototype>> ChoiceBlueprints = new();
-    public bool ChoiceAllowsPlainText;
-    public List<string> SelectedTokens = new();
-    public string? SelectedText;
-    public ProtoId<NeoTheologyProfilePrototype>? Designation;
-    public ProtoId<NeoTheologyBlueprintPrototype>? SelectedBlueprint;
+    [ViewVariables] public bool Cleared;
+    [ViewVariables] public TimeSpan ChoiceExpiresAt;
+    [ViewVariables] public List<EntityUid> ChoiceTargets = new();
+    [ViewVariables] public List<ProtoId<NeoTheologyProfilePrototype>> ChoiceDesignations = new();
+    [ViewVariables] public List<ProtoId<NeoTheologyBlueprintPrototype>> ChoiceBlueprints = new();
+    [ViewVariables] public bool ChoiceAllowsPlainText;
+    [ViewVariables] public List<string> SelectedTokens = new();
+    [ViewVariables] public string? SelectedText;
+    [ViewVariables] public ProtoId<NeoTheologyProfilePrototype>? Designation;
+    [ViewVariables] public ProtoId<NeoTheologyBlueprintPrototype>? SelectedBlueprint;
 }

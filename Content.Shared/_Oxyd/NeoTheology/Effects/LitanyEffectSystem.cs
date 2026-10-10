@@ -553,7 +553,7 @@ public sealed partial class LitanyEffectSystem : EntitySystem, ILitanyEffectRais
             !installed.ImplantContainer.Contains(cruciform))
             return false;
 
-        var dropCoordinates = Transform(body).Coordinates.Offset(Vector2.UnitX);
+        var dropCoordinates = Transform(body).Coordinates;
         if (!_containers.Remove(cruciform, installed.ImplantContainer, destination: dropCoordinates))
             return false;
 

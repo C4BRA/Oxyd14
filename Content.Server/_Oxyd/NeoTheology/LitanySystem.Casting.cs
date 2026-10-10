@@ -9,6 +9,7 @@ using Content.Shared._Oxyd.NeoTheology.Prototypes;
 using Content.Shared._Oxyd.NeoTheology.UI;
 using Content.Shared.Buckle.Components;
 using Content.Shared.Chat;
+using Content.Shared.Database;
 using Content.Shared.DoAfter;
 using Content.Shared.Examine;
 using Content.Shared.GameTicking;
@@ -289,6 +290,11 @@ public sealed partial class LitanySystem
 
         ApplyCooldown(bearer, litany);
         cast.Committed = true;
+        var targets = cast.Targets.Count > 0
+            ? string.Join(", ", cast.Targets.Select(t => ToPrettyString(t)))
+            : "no targets";
+        _adminLogger.Add(LogType.Action, LogImpact.Medium,
+            $"{ToPrettyString(cast.Actor):user} cast {litany.ID} costing {cast.Cost} holiness on {targets}");
         Spawn(NeoTheologyPrototypes.CastGlowEffect, Transform(cast.Actor).Coordinates);
         SendResultToActor(cast.Actor, LitanyActionResult.Ok(cast.RequestId));
 
