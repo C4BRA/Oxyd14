@@ -7,10 +7,10 @@ namespace Content.Client._Oxyd.Medical;
 /// Applies the borer's Hide verb (Eris hide(): draw under floor clutter) by
 /// swapping the sprite draw depth when the server toggles the appearance data.
 /// </summary>
-public sealed class OxydBorerHiddenVisualizerSystem : EntitySystem
+public sealed partial class OxydBorerHiddenVisualizerSystem : EntitySystem
 {
-    [Dependency] private readonly SpriteSystem _sprite = default!;
-    [Dependency] private readonly AppearanceSystem _appearance = default!;
+    [Dependency] private SpriteSystem _sprite = default!;
+    [Dependency] private AppearanceSystem _appearance = default!;
 
     public override void Initialize()
     {

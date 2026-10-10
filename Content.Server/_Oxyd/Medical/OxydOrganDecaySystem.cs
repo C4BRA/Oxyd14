@@ -12,21 +12,24 @@ namespace Content.Server._Oxyd.Medical;
 /// smartfridge, stasis/cryo bag). At max damage the organ dies (ORGAN_DEAD):
 /// examine shows "The decay has set in." and transplant is refused.
 /// </summary>
-public sealed class OxydOrganDecaySystem : EntitySystem
+public sealed partial class OxydOrganDecaySystem : EntitySystem
 {
-    [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly SharedTransformSystem _transform = default!;
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private IGameTiming _timing = default!;
 
     private const float TickInterval = 2f;
     private const int DecayChance = 5;
     private const float DecayDamage = 12f;
 
-    private TimeSpan _nextTick;
-
     public override void Initialize()
     {
         SubscribeLocalEvent<OxydOrganSurgeryComponent, ExaminedEvent>(OnExamined);
+        SubscribeLocalEvent<OrganComponent, MapInitEvent>(OnOrganMapInit);
+    }
+
+    private void OnOrganMapInit(Entity<OrganComponent> ent, ref MapInitEvent args)
+    {
+        EnsureComp<OxydOrganSurgeryComponent>(ent);
     }
 
     private void OnExamined(Entity<OxydOrganSurgeryComponent> ent, ref ExaminedEvent args)
@@ -38,9 +41,7 @@ public sealed class OxydOrganDecaySystem : EntitySystem
     public override void Update(float frameTime)
     {
         base.Update(frameTime);
-        if (_timing.CurTime < _nextTick)
-            return;
-        _nextTick = _timing.CurTime + TimeSpan.FromSeconds(TickInterval);
+        var now = _timing.CurTime;
 
         var query = EntityQueryEnumerator<OrganComponent>();
         while (query.MoveNext(out var uid, out var organ))
@@ -48,9 +49,11 @@ public sealed class OxydOrganDecaySystem : EntitySystem
             if (organ.Body != null)
                 continue;
 
-            var surg = EnsureComp<OxydOrganSurgeryComponent>(uid);
-            if (surg.Decayed || surg.Robotic)
+            if (!TryComp<OxydOrganSurgeryComponent>(uid, out var surg) ||
+                surg.Decayed || surg.Robotic || now < surg.NextDecay)
                 continue;
+
+            surg.NextDecay = now + TimeSpan.FromSeconds(TickInterval);
 
             if (InStasis(uid))
                 continue;

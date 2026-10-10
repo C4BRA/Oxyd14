@@ -39,18 +39,18 @@ namespace Content.Server._Oxyd.Medical;
 /// </summary>
 public sealed partial class OxydBorerSystem : EntitySystem
 {
-    [Dependency] private readonly ContainerSystem _container = default!;
-    [Dependency] private readonly DoAfterSystem _doAfter = default!;
-    [Dependency] private readonly SharedPopupSystem _popup = default!;
-    [Dependency] private readonly MobStateSystem _mobs = default!;
-    [Dependency] private readonly SharedStunSystem _stun = default!;
-    [Dependency] private readonly SharedSolutionContainerSystem _solutions = default!;
-    [Dependency] private readonly SharedTransformSystem _transform = default!;
-    [Dependency] private readonly InventorySystem _inventory = default!;
-    [Dependency] private readonly DamageableSystem _damage = default!;
-    [Dependency] private readonly VomitSystem _vomit = default!;
-    [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly IPrototypeManager _proto = default!;
+    [Dependency] private ContainerSystem _container = default!;
+    [Dependency] private DoAfterSystem _doAfter = default!;
+    [Dependency] private SharedPopupSystem _popup = default!;
+    [Dependency] private MobStateSystem _mobs = default!;
+    [Dependency] private SharedStunSystem _stun = default!;
+    [Dependency] private SharedSolutionContainerSystem _solutions = default!;
+    [Dependency] private SharedTransformSystem _transform = default!;
+    [Dependency] private InventorySystem _inventory = default!;
+    [Dependency] private DamageableSystem _damage = default!;
+    [Dependency] private VomitSystem _vomit = default!;
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private IPrototypeManager _proto = default!;
 
     /// <summary>Eris "sugar" — host blood sugar makes the borer docile.</summary>
     private static readonly ProtoId<Content.Shared.Chemistry.Reagent.ReagentPrototype> Sugar = "Sugar";

@@ -10,7 +10,7 @@ namespace Content.Server._Oxyd.Medical;
 /// <summary>Applies NSA tolerance from detox nanites and similar chems.</summary>
 public sealed partial class NsaToleranceEntityEffectSystem : EntityEffectSystem<BloodstreamComponent, NsaTolerance>
 {
-    [Dependency] private readonly OxydNsaSystem _nsa = default!;
+    [Dependency] private OxydNsaSystem _nsa = default!;
 
     protected override void Effect(Entity<BloodstreamComponent> entity, ref EntityEffectEvent<NsaTolerance> args)
     {
@@ -21,7 +21,7 @@ public sealed partial class NsaToleranceEntityEffectSystem : EntityEffectSystem<
 /// <summary>Eris stims: timed skill buffs while the stim metabolises.</summary>
 public sealed partial class StimEntityEffectSystem : EntityEffectSystem<BloodstreamComponent, Stim>
 {
-    [Dependency] private readonly SharedSkillSystem _skills = default!;
+    [Dependency] private SharedSkillSystem _skills = default!;
 
     protected override void Effect(Entity<BloodstreamComponent> entity, ref EntityEffectEvent<Stim> args)
     {
@@ -34,7 +34,7 @@ public sealed partial class StimEntityEffectSystem : EntityEffectSystem<Bloodstr
 /// <summary>Ossisine-style bone mending while metabolised.</summary>
 public sealed partial class MendBoneEntityEffectSystem : EntityEffectSystem<BloodstreamComponent, MendBone>
 {
-    [Dependency] private readonly OxydWoundSystem _wounds = default!;
+    [Dependency] private OxydWoundSystem _wounds = default!;
 
     protected override void Effect(Entity<BloodstreamComponent> entity, ref EntityEffectEvent<MendBone> args)
     {
@@ -45,7 +45,7 @@ public sealed partial class MendBoneEntityEffectSystem : EntityEffectSystem<Bloo
 /// <summary>Peridaxon-style organ repair while metabolised.</summary>
 public sealed partial class HealOrganDamageEntityEffectSystem : EntityEffectSystem<BloodstreamComponent, HealOrganDamage>
 {
-    [Dependency] private readonly OxydWoundSystem _wounds = default!;
+    [Dependency] private OxydWoundSystem _wounds = default!;
 
     protected override void Effect(Entity<BloodstreamComponent> entity, ref EntityEffectEvent<HealOrganDamage> args)
     {
@@ -56,7 +56,7 @@ public sealed partial class HealOrganDamageEntityEffectSystem : EntityEffectSyst
 /// <summary>Advances addiction recovery (Eris additol / purger).</summary>
 public sealed partial class ReduceAddictionEntityEffectSystem : EntityEffectSystem<BloodstreamComponent, ReduceAddiction>
 {
-    [Dependency] private readonly AddictionSystem _addiction = default!;
+    [Dependency] private AddictionSystem _addiction = default!;
 
     protected override void Effect(Entity<BloodstreamComponent> entity, ref EntityEffectEvent<ReduceAddiction> args)
     {
@@ -84,7 +84,7 @@ public sealed partial class SuppressWithdrawalEntityEffectSystem : EntityEffectS
 /// <summary>Chemical sanity deltas (Eris chem sanity effects).</summary>
 public sealed partial class ChemSanityEntityEffectSystem : EntityEffectSystem<BloodstreamComponent, ChemSanity>
 {
-    [Dependency] private readonly SanitySystem _sanity = default!;
+    [Dependency] private SanitySystem _sanity = default!;
 
     protected override void Effect(Entity<BloodstreamComponent> entity, ref EntityEffectEvent<ChemSanity> args)
     {
@@ -96,7 +96,7 @@ public sealed partial class ChemSanityEntityEffectSystem : EntityEffectSystem<Bl
 /// <summary>Quickclot-style wound sealing while metabolised.</summary>
 public sealed partial class SealWoundsEntityEffectSystem : EntityEffectSystem<BloodstreamComponent, SealWounds>
 {
-    [Dependency] private readonly BloodstreamSystem _bloodstream = default!;
+    [Dependency] private BloodstreamSystem _bloodstream = default!;
 
     protected override void Effect(Entity<BloodstreamComponent> entity, ref EntityEffectEvent<SealWounds> args)
     {

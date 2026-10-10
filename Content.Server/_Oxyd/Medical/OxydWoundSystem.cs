@@ -21,12 +21,11 @@ namespace Content.Server._Oxyd.Medical;
 /// </summary>
 public sealed partial class OxydWoundSystem : EntitySystem
 {
-    [Dependency] private readonly BloodstreamSystem _bloodstream = default!;
-    [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly MobStateSystem _mobs = default!;
-    [Dependency] private readonly SharedPopupSystem _popup = default!;
-    [Dependency] private readonly SharedSolutionContainerSystem _solutions = default!;
-    [Dependency] private readonly IPrototypeManager _prototypes = default!;
+    [Dependency] private BloodstreamSystem _bloodstream = default!;
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private MobStateSystem _mobs = default!;
+    [Dependency] private SharedPopupSystem _popup = default!;
+    [Dependency] private IPrototypeManager _prototypes = default!;
 
     private float _updateRemaining;
     private const float UpdateInterval = 2f;
@@ -43,7 +42,7 @@ public sealed partial class OxydWoundSystem : EntitySystem
 
     public override void Initialize()
     {
-        SubscribeLocalEvent<BodyComponent, DamageChangedEvent>(OnBodyDamaged);
+        SubscribeLocalEvent<BodyComponent, DamageDealtEvent>(OnBodyDamaged);
     }
 
     public static bool IsExternal(OrganComponent organ) =>
@@ -83,14 +82,15 @@ public sealed partial class OxydWoundSystem : EntitySystem
         return OxydPulse.Norm;
     }
 
-    private void OnBodyDamaged(EntityUid uid, BodyComponent comp, DamageChangedEvent args)
+    private void OnBodyDamaged(EntityUid uid, BodyComponent comp, DamageDealtEvent args)
     {
-        if (args.DamageDelta is not { } delta || !args.DamageIncreased || _mobs.IsDead(uid))
+        if (_mobs.IsDead(uid))
             return;
 
-        delta.TryGetDamageInGroup(_prototypes.Index<DamageGroupPrototype>("Brute"), out var brute);
-        delta.TryGetDamageInGroup(_prototypes.Index<DamageGroupPrototype>("Burn"), out var burn);
-        var incoming = brute.Float() + burn.Float() * 0.5f;
+        var delta = args.Damage;
+        var brute = OxydDamageTypes.Sum(delta, OxydDamageTypes.Brute);
+        var burn = OxydDamageTypes.Sum(delta, OxydDamageTypes.Burn);
+        var incoming = brute + burn * 0.5f;
         if (incoming < 3f)
             return;
 
@@ -99,11 +99,11 @@ public sealed partial class OxydWoundSystem : EntitySystem
             return;
 
         var (orgUid, organ, surg) = _random.Pick(externals);
-        surg.BruteDamage += brute.Float() * 0.35f;
-        surg.BurnDamage += burn.Float() * 0.5f * 0.35f;
+        surg.BruteDamage += brute * 0.35f;
+        surg.BurnDamage += burn * 0.5f * 0.35f;
         surg.OrganDamage = surg.BruteDamage + surg.BurnDamage;
 
-        if (brute.Float() >= FractureThreshold && !surg.Fractured && _random.Prob(FractureChance))
+        if (brute >= FractureThreshold && !surg.Fractured && _random.Prob(FractureChance))
         {
             surg.Fractured = true;
             surg.Splinted = false;

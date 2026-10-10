@@ -33,19 +33,19 @@ namespace Content.Server._Oxyd.Medical;
 /// </summary>
 public sealed partial class OxydForensicsSystem : EntitySystem
 {
-    [Dependency] private readonly DoAfterSystem _doAfter = default!;
-    [Dependency] private readonly DamageableSystem _damage = default!;
-    [Dependency] private readonly MobStateSystem _mobs = default!;
-    [Dependency] private readonly SharedPopupSystem _popup = default!;
-    [Dependency] private readonly SharedSolutionContainerSystem _solutions = default!;
-    [Dependency] private readonly SharedHandsSystem _hands = default!;
-    [Dependency] private readonly SharedMindSystem _mind = default!;
-    [Dependency] private readonly PaperSystem _paper = default!;
-    [Dependency] private readonly MetaDataSystem _metaData = default!;
-    [Dependency] private readonly OxydWoundSystem _wounds = default!;
-    [Dependency] private readonly IChatManager _chat = default!;
-    [Dependency] private readonly IPrototypeManager _prototypes = default!;
-    [Dependency] private readonly IGameTiming _timing = default!;
+    [Dependency] private DoAfterSystem _doAfter = default!;
+    [Dependency] private DamageableSystem _damage = default!;
+    [Dependency] private MobStateSystem _mobs = default!;
+    [Dependency] private SharedPopupSystem _popup = default!;
+    [Dependency] private SharedSolutionContainerSystem _solutions = default!;
+    [Dependency] private SharedHandsSystem _hands = default!;
+    [Dependency] private SharedMindSystem _mind = default!;
+    [Dependency] private PaperSystem _paper = default!;
+    [Dependency] private MetaDataSystem _metaData = default!;
+    [Dependency] private OxydWoundSystem _wounds = default!;
+    [Dependency] private IChatManager _chat = default!;
+    [Dependency] private IPrototypeManager _prototypes = default!;
+    [Dependency] private IGameTiming _timing = default!;
 
     private static readonly EntProtoId PaperProto = "Paper";
 

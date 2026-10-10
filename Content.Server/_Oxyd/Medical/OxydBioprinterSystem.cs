@@ -1,4 +1,6 @@
 using Content.Shared._Oxyd.Medical;
+using Content.Shared.Administration.Logs;
+using Content.Shared.Database;
 using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Interaction;
 using Content.Shared.Popups;
@@ -15,14 +17,15 @@ namespace Content.Server._Oxyd.Medical;
 /// printed one at a time for a fixed biomass cost. The prosthetics variant is
 /// not ported (Eris robotic organs use the wound system's MODIFICATION_SILICON).
 /// </summary>
-public sealed class OxydBioprinterSystem : EntitySystem
+public sealed partial class OxydBioprinterSystem : EntitySystem
 {
-    [Dependency] private readonly SharedPopupSystem _popup = default!;
-    [Dependency] private readonly SharedSolutionContainerSystem _solutions = default!;
-    [Dependency] private readonly TagSystem _tag = default!;
-    [Dependency] private readonly UserInterfaceSystem _ui = default!;
-    [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
+    [Dependency] private SharedPopupSystem _popup = default!;
+    [Dependency] private ISharedAdminLogManager _adminLogger = default!;
+    [Dependency] private SharedSolutionContainerSystem _solutions = default!;
+    [Dependency] private TagSystem _tag = default!;
+    [Dependency] private UserInterfaceSystem _ui = default!;
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private SharedAppearanceSystem _appearance = default!;
 
     /// <summary>Eris BIOMASS_TYPES: 50 units of biomass per meat item.</summary>
     private const int BiomassPerMeat = 50;
@@ -41,8 +44,6 @@ public sealed class OxydBioprinterSystem : EntitySystem
         ("liver", "OrganHumanLiver", 50),
         ("stomach", "OrganHumanStomach", 40),
     };
-
-    private readonly Dictionary<EntityUid, TimeSpan> _workingUntil = new();
 
     public override void Initialize()
     {
@@ -115,33 +116,24 @@ public sealed class OxydBioprinterSystem : EntitySystem
 
         comp.StoredMatter -= product.Cost;
         comp.Working = true;
-        _workingUntil[uid] = _timing.CurTime + PrintTime;
+        comp.NextFinish = _timing.CurTime + PrintTime;
         Dirty(uid, comp);
         _appearance.SetData(uid, OxydMachineVisuals.Working, true);
 
-        Spawn(product.Proto, Transform(uid).Coordinates);
+        var printed = Spawn(product.Proto, Transform(uid).Coordinates);
+        _adminLogger.Add(LogType.Action, LogImpact.Low,
+            $"{ToPrettyString(args.Actor):user} printed {ToPrettyString(printed)} from {ToPrettyString(uid)} for {product.Cost} biomass");
         _popup.PopupEntity(Loc.GetString("oxyd-bioprinter-printed"), uid, PopupType.Small);
         PushState(uid, comp);
     }
 
     public override void Update(float frameTime)
     {
-        if (_workingUntil.Count == 0)
-            return;
         var now = _timing.CurTime;
-        List<EntityUid>? done = null;
-        foreach (var (uid, until) in _workingUntil)
+        var query = EntityQueryEnumerator<OxydBioprinterComponent>();
+        while (query.MoveNext(out var uid, out var comp))
         {
-            if (now < until)
-                continue;
-            (done ??= new()).Add(uid);
-        }
-        if (done == null)
-            return;
-        foreach (var uid in done)
-        {
-            _workingUntil.Remove(uid);
-            if (!TryComp(uid, out OxydBioprinterComponent? comp))
+            if (!comp.Working || now < comp.NextFinish)
                 continue;
             comp.Working = false;
             Dirty(uid, comp);

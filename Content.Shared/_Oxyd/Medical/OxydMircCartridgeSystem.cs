@@ -13,8 +13,8 @@ public sealed partial class OxydMircCartridgeComponent : Component;
 
 public sealed partial class OxydMircCartridgeSystem : EntitySystem
 {
-    [Dependency] private readonly CartridgeLoaderSystem _cartridgeLoader = default!;
-    [Dependency] private readonly IPrototypeManager _prototypes = default!;
+    [Dependency] private CartridgeLoaderSystem _cartridgeLoader = default!;
+    [Dependency] private IPrototypeManager _prototypes = default!;
 
     public override void Initialize()
     {

@@ -21,14 +21,14 @@ namespace Content.Server._Oxyd.Medical;
 /// </summary>
 public sealed partial class OxydOperatingComputerSystem : EntitySystem
 {
-    [Dependency] private readonly UserInterfaceSystem _ui = default!;
-    [Dependency] private readonly DamageableSystem _damage = default!;
-    [Dependency] private readonly MobStateSystem _mobs = default!;
-    [Dependency] private readonly MobThresholdSystem _mobThreshold = default!;
-    [Dependency] private readonly BloodstreamSystem _bloodstream = default!;
-    [Dependency] private readonly SharedSolutionContainerSystem _solutions = default!;
-    [Dependency] private readonly EntityLookupSystem _lookup = default!;
-    [Dependency] private readonly OxydWoundSystem _wounds = default!;
+    [Dependency] private UserInterfaceSystem _ui = default!;
+    [Dependency] private DamageableSystem _damage = default!;
+    [Dependency] private MobStateSystem _mobs = default!;
+    [Dependency] private MobThresholdSystem _mobThreshold = default!;
+    [Dependency] private BloodstreamSystem _bloodstream = default!;
+    [Dependency] private SharedSolutionContainerSystem _solutions = default!;
+    [Dependency] private EntityLookupSystem _lookup = default!;
+    [Dependency] private OxydWoundSystem _wounds = default!;
 
     private float _refreshRemaining;
 

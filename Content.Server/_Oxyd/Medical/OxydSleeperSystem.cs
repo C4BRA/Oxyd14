@@ -1,6 +1,8 @@
 using Content.Shared.Damage.Components;
 using System.Linq;
 using Content.Shared._Oxyd.Medical;
+using Content.Shared.Administration.Logs;
+using Content.Shared.Database;
 using Content.Shared.Body;
 using Content.Shared.Body.Components;
 using Content.Shared.Chemistry.EntitySystems;
@@ -28,16 +30,16 @@ namespace Content.Server._Oxyd.Medical;
 /// </summary>
 public sealed partial class OxydSleeperSystem : EntitySystem
 {
-    [Dependency] private readonly DamageableSystem _damage = default!;
-    [Dependency] private readonly UserInterfaceSystem _ui = default!;
-    [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
-    [Dependency] private readonly ContainerSystem _container = default!;
-    [Dependency] private readonly SharedSolutionContainerSystem _solutions = default!;
-    [Dependency] private readonly MobStateSystem _mobs = default!;
-    [Dependency] private readonly MobThresholdSystem _mobThreshold = default!;
-    [Dependency] private readonly SharedPopupSystem _popup = default!;
-    [Dependency] private readonly IPrototypeManager _prototypes = default!;
-    [Dependency] private readonly OxydWoundSystem _wounds = default!;
+    [Dependency] private DamageableSystem _damage = default!;
+    [Dependency] private UserInterfaceSystem _ui = default!;
+    [Dependency] private SharedAppearanceSystem _appearance = default!;
+    [Dependency] private ContainerSystem _container = default!;
+    [Dependency] private SharedSolutionContainerSystem _solutions = default!;
+    [Dependency] private MobStateSystem _mobs = default!;
+    [Dependency] private MobThresholdSystem _mobThreshold = default!;
+    [Dependency] private SharedPopupSystem _popup = default!;
+    [Dependency] private OxydWoundSystem _wounds = default!;
+    [Dependency] private ISharedAdminLogManager _adminLogger = default!;
 
     private float _refreshRemaining;
 
@@ -182,6 +184,8 @@ public sealed partial class OxydSleeperSystem : EntitySystem
 
         var dose = Math.Min(args.Dose > 0 ? args.Dose : chem.Dose, chem.Dose);
         _solutions.TryAddReagent(solEnt.Value, chem.Reagent, dose);
+        _adminLogger.Add(LogType.Action, LogImpact.Medium,
+            $"{ToPrettyString(args.Actor):user} injected {dose}u of {chem.Reagent} into {ToPrettyString(occupant):target} via {ToPrettyString(uid)}");
         PushState(uid, comp);
     }
 

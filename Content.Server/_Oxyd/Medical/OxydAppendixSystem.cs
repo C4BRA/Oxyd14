@@ -15,14 +15,14 @@ namespace Content.Server._Oxyd.Medical;
 /// self-damage past 200s, vomiting/weaken past 400s, and ruptures past 600s.
 /// Surgical removal (DetachOrgan) is the cure, same as Eris.
 /// </summary>
-public sealed class OxydAppendixSystem : EntitySystem
+public sealed partial class OxydAppendixSystem : EntitySystem
 {
-    [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly SharedPopupSystem _popup = default!;
-    [Dependency] private readonly SharedStunSystem _stun = default!;
-    [Dependency] private readonly VomitSystem _vomit = default!;
-    [Dependency] private readonly PainSystem _pain = default!;
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private SharedPopupSystem _popup = default!;
+    [Dependency] private SharedStunSystem _stun = default!;
+    [Dependency] private VomitSystem _vomit = default!;
+    [Dependency] private PainSystem _pain = default!;
 
     /// <summary>Spontaneous appendicitis rate per minute of body-time (Eris random event).</summary>
     private const float SpontaneousPerMinute = 0.2f;

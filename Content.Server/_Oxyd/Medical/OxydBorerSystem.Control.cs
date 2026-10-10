@@ -1,6 +1,7 @@
 using Content.Server.Administration;
 using Content.Server.Chat.Managers;
 using Content.Shared.Administration.Logs;
+using Content.Shared.Database;
 using Content.Server.Chat.Systems;
 using Content.Server.Mind;
 using Content.Shared._Oxyd.Medical;
@@ -30,15 +31,15 @@ namespace Content.Server._Oxyd.Medical;
 /// </summary>
 public sealed partial class OxydBorerSystem
 {
-    [Dependency] private readonly MindSystem _mind = default!;
-    [Dependency] private readonly QuickDialogSystem _quickDialog = default!;
-    [Dependency] private readonly IChatManager _chatManager = default!;
-    [Dependency] private readonly ChatSystem _chat = default!;
-    [Dependency] private readonly IPlayerManager _players = default!;
-    [Dependency] private readonly SharedJitteringSystem _jitter = default!;
-    [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
-    [Dependency] private readonly ISharedAdminLogManager _adminLogger = default!;
+    [Dependency] private MindSystem _mind = default!;
+    [Dependency] private QuickDialogSystem _quickDialog = default!;
+    [Dependency] private IChatManager _chatManager = default!;
+    [Dependency] private ChatSystem _chat = default!;
+    [Dependency] private IPlayerManager _players = default!;
+    [Dependency] private SharedJitteringSystem _jitter = default!;
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private SharedAppearanceSystem _appearance = default!;
+    [Dependency] private ISharedAdminLogManager _adminLogger = default!;
 
     /// <summary>Exp thresholds BORER_EXP_LEVEL_1..5.</summary>
     private static readonly List<int> LevelThresholds = new() { 20, 40, 80, 160, 320 };

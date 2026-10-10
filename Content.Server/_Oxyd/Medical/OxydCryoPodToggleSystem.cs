@@ -13,11 +13,11 @@ namespace Content.Server._Oxyd.Medical;
 /// UI pushes); Off = remove it (transfers and updates stop, like the Eris off state).
 /// Stock pods never send the message and are unaffected.
 /// </summary>
-public sealed class OxydCryoPodToggleSystem : EntitySystem
+public sealed partial class OxydCryoPodToggleSystem : EntitySystem
 {
-    [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
-    [Dependency] private readonly SharedPowerReceiverSystem _power = default!;
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private SharedAppearanceSystem _appearance = default!;
+    [Dependency] private SharedPowerReceiverSystem _power = default!;
 
     public override void Initialize()
     {

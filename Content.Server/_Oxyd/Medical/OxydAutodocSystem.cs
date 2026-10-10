@@ -1,6 +1,8 @@
 using System.Linq;
 using Content.Server.Stack;
 using Content.Shared._Oxyd.Medical;
+using Content.Shared.Administration.Logs;
+using Content.Shared.Database;
 using Content.Shared.Body;
 using Content.Shared.Body.Components;
 using Content.Shared.Cargo.Components;
@@ -37,31 +39,27 @@ namespace Content.Server._Oxyd.Medical;
 /// </summary>
 public sealed partial class OxydAutodocSystem : EntitySystem
 {
-    [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly UserInterfaceSystem _ui = default!;
-    [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
-    [Dependency] private readonly ContainerSystem _container = default!;
-    [Dependency] private readonly OxydWoundSystem _wounds = default!;
-    [Dependency] private readonly SharedPopupSystem _popup = default!;
-    [Dependency] private readonly SharedSolutionContainerSystem _solutions = default!;
-    [Dependency] private readonly DamageableSystem _damage = default!;
-    [Dependency] private readonly StackSystem _stack = default!;
-    [Dependency] private readonly SharedTransformSystem _transform = default!;
-    [Dependency] private readonly Robust.Shared.Prototypes.IPrototypeManager _prototypes = default!;
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private UserInterfaceSystem _ui = default!;
+    [Dependency] private SharedAppearanceSystem _appearance = default!;
+    [Dependency] private ContainerSystem _container = default!;
+    [Dependency] private OxydWoundSystem _wounds = default!;
+    [Dependency] private SharedPopupSystem _popup = default!;
+    [Dependency] private SharedSolutionContainerSystem _solutions = default!;
+    [Dependency] private DamageableSystem _damage = default!;
+    [Dependency] private StackSystem _stack = default!;
+    [Dependency] private SharedTransformSystem _transform = default!;
+    [Dependency] private ISharedAdminLogManager _adminLogger = default!;
 
-    private static readonly ProtoId<DamageGroupPrototype> BruteGroup = "Brute";
-    private static readonly ProtoId<DamageGroupPrototype> BurnGroup = "Burn";
-    private static readonly ProtoId<DamageGroupPrototype> ToxinGroup = "Toxin";
-    private static readonly ProtoId<DamageGroupPrototype> AirlossGroup = "Airloss";
     private static readonly ProtoId<ReagentPrototype> BloodReagent = "Blood";
+    private static readonly ProtoId<DamageTypePrototype> PoisonDamage = "Poison";
 
-    private float Group(EntityUid patient, ProtoId<DamageGroupPrototype> group)
+    private float Group(EntityUid patient, HashSet<ProtoId<DamageTypePrototype>> types)
     {
         if (!TryComp<DamageableComponent>(patient, out var dmg))
             return 0f;
         var spec = _damage.GetAllDamage((patient, dmg));
-        spec.TryGetDamageInGroup(_prototypes.Index(group), out var amount);
-        return amount.Float();
+        return OxydDamageTypes.Sum(spec, types);
     }
 
     public override void Initialize()
@@ -253,7 +251,7 @@ public sealed partial class OxydAutodocSystem : EntitySystem
 
         // Global toxnote (Eris: no organ).
         var global = new OxydAutodocPatchnote();
-        if (Group(patient, ToxinGroup) > 0)
+        if (Group(patient, OxydDamageTypes.Toxin) > 0)
             global.Scanned.Add(OxydAutodocOp.Toxin);
         if (_solutions.TryGetSolution(patient, BloodstreamComponent.DefaultBloodSolutionName,
                 out var bloodEnt, out var blood))
@@ -411,9 +409,9 @@ public sealed partial class OxydAutodocSystem : EntitySystem
         {
             case OxydAutodocOp.Toxin:
                 var heal = new DamageSpecifier();
-                heal.DamageDict.TryAdd("Poison", -comp.HealPerTick);
+                heal.DamageDict.TryAdd(PoisonDamage, -comp.HealPerTick);
                 _damage.TryChangeDamage(patient, heal);
-                if (Group(patient, "Toxin") <= 0)
+                if (Group(patient, OxydDamageTypes.Toxin) <= 0)
                     note.Picked.Remove(op);
                 break;
 
@@ -527,10 +525,10 @@ public sealed partial class OxydAutodocSystem : EntitySystem
         {
             state.HasOccupant = true;
             state.OccupantName = Name(occ);
-            state.BruteLoss = Group(occ, BruteGroup);
-            state.BurnLoss = Group(occ, BurnGroup);
-            state.ToxinLoss = Group(occ, ToxinGroup);
-            state.OxyLoss = Group(occ, AirlossGroup);
+            state.BruteLoss = Group(occ, OxydDamageTypes.Brute);
+            state.BurnLoss = Group(occ, OxydDamageTypes.Burn);
+            state.ToxinLoss = Group(occ, OxydDamageTypes.Toxin);
+            state.OxyLoss = Group(occ, OxydDamageTypes.Airloss);
             if (_solutions.TryGetSolution(occ, BloodstreamComponent.DefaultBloodSolutionName,
                     out _, out var blood))
             {
