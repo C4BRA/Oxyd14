@@ -27,6 +27,12 @@
       pacifismAllowedMode: true
     - proto: RedLaser
       fireCost: 62.5
+  - type: GenericVisualizer
+    visuals:
+      enum.BatteryWeaponFireModeVisuals.State:
+        enum.GunVisualLayers.Base:
+          BulletDisabler: { state: stun }
+          RedLaser: { state: lethal }
   - type: BatterySelfRecharger
     autoRechargeRate: 40
   - type: StaticPrice

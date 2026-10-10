@@ -1,6 +1,7 @@
 - type: entity
   name: "bundle"
   id: BaseBundle
+  abstract: true
   parent: BaseItem
 
 - type: BundleGroup

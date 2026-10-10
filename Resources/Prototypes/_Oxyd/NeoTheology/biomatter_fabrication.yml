@@ -13,8 +13,8 @@
   - type: Item
     size: Large
   - type: Sprite
-    sprite: Objects/Consumable/Drinks/jug.rsi
-    state: icon
+    sprite: Objects/Specific/Chemistry/jug.rsi
+    state: icon_empty
 
 - type: entity
   parent: OxydNtBiomatterCanister
