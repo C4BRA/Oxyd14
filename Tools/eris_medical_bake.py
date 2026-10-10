@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""Bake Eris Moebius medical item/machine sprites from CEV-Eris DMIs into RSIs."""
+"""Bake Eris Moebius medical item/machine sprites from CEV-Eris DMIs into RSIs.
+
+Usage: eris_medical_bake.py <path-to-CEV-Eris-checkout>
+"""
 
 from __future__ import annotations
 
@@ -12,8 +15,11 @@ from PIL import Image
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from eris_dmi import TILE, dir_frames, first_frame, frame, parse_dmi
 
-ERIS = Path("/home/ubuntu/repos/CEV-Eris/icons/obj")
-OUT = Path("/home/ubuntu/repos/Oxyd14/Resources/Textures/Oxyd/erisported")
+if len(sys.argv) != 2:
+    sys.exit(__doc__)
+
+ERIS = Path(sys.argv[1]).resolve() / "icons" / "obj"
+OUT = Path(__file__).resolve().parents[1] / "Resources" / "Textures" / "Oxyd" / "erisported"
 
 COPYRIGHT = (
     "States taken from CEV-Eris (https://github.com/discordia-space/CEV-Eris), "
@@ -216,7 +222,7 @@ def main():
     })
 
     # Station objects: morgue + crematorium drawers
-    bake("eris_morgue.rsi", Path("/home/ubuntu/repos/CEV-Eris/icons/obj/stationobjs.dmi"), {
+    bake("eris_morgue.rsi", ERIS / "stationobjs.dmi", {
         "morgue_empty": "morgue0",
         "morgue_body": "morgue1",
         "morgue_open": "morgue2",

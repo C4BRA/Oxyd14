@@ -4,6 +4,8 @@
 Eris draws the pod as bottom tile + *_top overlays at pixel_z=32. SS14's
 cryopod.rsi is one 32x64 canvas per state (top half renders above the tile).
 States are composited accordingly.
+
+Usage: eris_cryo_bake.py <path-to-CEV-Eris-checkout>
 """
 
 from __future__ import annotations
@@ -18,11 +20,13 @@ from PIL import Image
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from eris_dmi import TILE, frame, parse_dmi
 
-ERIS = Path(r"C:\Users\Administrator\repos\CEV-Eris\icons\obj")
-OUT = Path(r"C:\Users\Administrator\repos\Oxyd14\Resources\Textures\Oxyd\erisported")
-BASE_RSI = Path(
-    r"C:\Users\Administrator\repos\Oxyd14\Resources\Textures\Structures\Machines\Medical\cryopod.rsi"
-)
+if len(sys.argv) != 2:
+    sys.exit(__doc__)
+
+_REPO_ROOT = Path(__file__).resolve().parents[1]
+ERIS = Path(sys.argv[1]).resolve() / "icons" / "obj"
+OUT = _REPO_ROOT / "Resources" / "Textures" / "Oxyd" / "erisported"
+BASE_RSI = _REPO_ROOT / "Resources" / "Textures" / "Structures" / "Machines" / "Medical" / "cryopod.rsi"
 
 COPYRIGHT = (
     "States taken from CEV-Eris (https://github.com/discordia-space/CEV-Eris), "
