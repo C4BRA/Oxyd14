@@ -495,6 +495,13 @@ public sealed partial class OxydAutopsyDoAfterEvent : SimpleDoAfterEvent
 {
 }
 
+/// <summary>Attach do-after for the IV drip (Eris attach is instant; SS14 needs a timed
+/// action like injectors use).</summary>
+[Serializable, NetSerializable]
+public sealed partial class OxydIvAttachDoAfterEvent : SimpleDoAfterEvent
+{
+}
+
 // ---------------- Operating computer ----------------
 // Ports Eris machinery/computer/Operating.dm: live vitals of the op-table patient.
 

@@ -5,12 +5,13 @@ using Content.Shared.Body;
 using Content.Shared.Body.Components;
 using Content.Shared.Cargo.Components;
 using Content.Shared.Chemistry.EntitySystems;
+using Content.Shared.Chemistry.Reagent;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Components;
+using Content.Shared.Damage.Prototypes;
 using Content.Shared.Damage.Systems;
 using Content.Shared.DragDrop;
 using Content.Shared.Interaction;
-using Content.Shared.Mobs.Systems;
 using Content.Shared.Movement.Pulling.Components;
 using Content.Shared.Popups;
 using Content.Shared.Stacks;
@@ -19,6 +20,7 @@ using Content.Shared.Verbs;
 using Robust.Server.Containers;
 using Robust.Server.GameObjects;
 using Robust.Shared.Containers;
+using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
 
 namespace Content.Server._Oxyd.Medical;
@@ -40,7 +42,6 @@ public sealed partial class OxydAutodocSystem : EntitySystem
     [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
     [Dependency] private readonly ContainerSystem _container = default!;
     [Dependency] private readonly OxydWoundSystem _wounds = default!;
-    [Dependency] private readonly MobStateSystem _mobs = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly SharedSolutionContainerSystem _solutions = default!;
     [Dependency] private readonly DamageableSystem _damage = default!;
@@ -48,14 +49,18 @@ public sealed partial class OxydAutodocSystem : EntitySystem
     [Dependency] private readonly SharedTransformSystem _transform = default!;
     [Dependency] private readonly Robust.Shared.Prototypes.IPrototypeManager _prototypes = default!;
 
-    private float Group(EntityUid patient, string group)
+    private static readonly ProtoId<DamageGroupPrototype> BruteGroup = "Brute";
+    private static readonly ProtoId<DamageGroupPrototype> BurnGroup = "Burn";
+    private static readonly ProtoId<DamageGroupPrototype> ToxinGroup = "Toxin";
+    private static readonly ProtoId<DamageGroupPrototype> AirlossGroup = "Airloss";
+    private static readonly ProtoId<ReagentPrototype> BloodReagent = "Blood";
+
+    private float Group(EntityUid patient, ProtoId<DamageGroupPrototype> group)
     {
         if (!TryComp<DamageableComponent>(patient, out var dmg))
             return 0f;
         var spec = _damage.GetAllDamage((patient, dmg));
-        spec.TryGetDamageInGroup(
-            _prototypes.Index<Content.Shared.Damage.Prototypes.DamageGroupPrototype>(group),
-            out var amount);
+        spec.TryGetDamageInGroup(_prototypes.Index(group), out var amount);
         return amount.Float();
     }
 
@@ -134,10 +139,9 @@ public sealed partial class OxydAutodocSystem : EntitySystem
             if (!TryComp<StackComponent>(ent, out var stack))
                 continue;
             var take = Math.Min(stack.Count, remaining);
-            _stack.SetCount(ent, stack.Count - take);
+            // ReduceCount reaches 0 by deleting the stack entity.
+            _stack.ReduceCount((ent, stack), take);
             remaining -= take;
-            if (stack.Count - take <= 0)
-                QueueDel(ent);
         }
         return true;
     }
@@ -153,7 +157,7 @@ public sealed partial class OxydAutodocSystem : EntitySystem
 
     private void OnEjectCredits(EntityUid uid, OxydAutodocComponent comp, OxydAutodocEjectCreditsMessage args)
     {
-        if (comp.Running)
+        if (comp.Operating)
             return;
         var coords = Transform(uid).Coordinates;
         foreach (var ent in CreditContainer(uid).ContainedEntities.ToArray())
@@ -171,13 +175,13 @@ public sealed partial class OxydAutodocSystem : EntitySystem
         if (args.Handled)
             return;
         // Only claim the drop for a body we can accept so other drop handlers can still run.
-        args.CanDrop = !comp.Running && BodySlot(uid).ContainedEntity == null && HasComp<BodyComponent>(args.Dragged);
+        args.CanDrop = !comp.Operating && BodySlot(uid).ContainedEntity == null && HasComp<BodyComponent>(args.Dragged);
         args.Handled = args.CanDrop;
     }
 
     private void OnDragDropOn(EntityUid uid, OxydAutodocComponent comp, DragDropTargetEvent args)
     {
-        if (args.Handled || comp.Running || BodySlot(uid).ContainedEntity != null ||
+        if (args.Handled || comp.Operating || BodySlot(uid).ContainedEntity != null ||
             !HasComp<BodyComponent>(args.Dragged))
             return;
 
@@ -189,7 +193,7 @@ public sealed partial class OxydAutodocSystem : EntitySystem
 
     private void AddInsertVerb(EntityUid uid, OxydAutodocComponent comp, GetVerbsEvent<InteractionVerb> args)
     {
-        if (!args.CanInteract || comp.Running || BodySlot(uid).ContainedEntity != null)
+        if (!args.CanInteract || comp.Operating || BodySlot(uid).ContainedEntity != null)
             return;
 
         // Insert the body the user is pulling (args.Target is the autodoc itself).
@@ -211,7 +215,7 @@ public sealed partial class OxydAutodocSystem : EntitySystem
     private void AddEjectVerb(EntityUid uid, OxydAutodocComponent comp, GetVerbsEvent<AlternativeVerb> args)
     {
         // Eris: locked = processor.active — can't eject mid-procedure.
-        if (comp.Running || BodySlot(uid).ContainedEntity == null)
+        if (comp.Operating || BodySlot(uid).ContainedEntity == null)
             return;
 
         args.Verbs.Add(new AlternativeVerb
@@ -223,7 +227,7 @@ public sealed partial class OxydAutodocSystem : EntitySystem
 
     private void Eject(EntityUid uid, OxydAutodocComponent comp)
     {
-        if (comp.Running)
+        if (comp.Operating)
         {
             _popup.PopupEntity(Loc.GetString("oxyd-medical-autodoc-locked"), uid, PopupType.Small);
             return;
@@ -240,7 +244,7 @@ public sealed partial class OxydAutodocSystem : EntitySystem
     /// <summary>Eris scan_user(): builds patchnotes for the occupant, auto-picked.</summary>
     private void OnScan(EntityUid uid, OxydAutodocComponent comp, OxydAutodocScanMessage args)
     {
-        if (comp.Running || BodySlot(uid).ContainedEntity is not { } patient)
+        if (comp.Operating || BodySlot(uid).ContainedEntity is not { } patient)
             return;
         if (!Charge(uid, comp, comp.ScanCost))
             return;
@@ -249,12 +253,12 @@ public sealed partial class OxydAutodocSystem : EntitySystem
 
         // Global toxnote (Eris: no organ).
         var global = new OxydAutodocPatchnote();
-        if (Group(patient, "Toxin") > 0)
+        if (Group(patient, ToxinGroup) > 0)
             global.Scanned.Add(OxydAutodocOp.Toxin);
         if (_solutions.TryGetSolution(patient, BloodstreamComponent.DefaultBloodSolutionName,
                 out var bloodEnt, out var blood))
         {
-            var bloodVol = blood.GetTotalPrototypeQuantity("Blood").Float();
+            var bloodVol = blood.GetTotalPrototypeQuantity(BloodReagent).Float();
             if (blood.Volume.Float() > bloodVol) // anything in the blood besides blood
                 global.Scanned.Add(OxydAutodocOp.Dialysis);
             if (bloodVol < blood.MaxVolume.Float() * 0.95f)
@@ -297,7 +301,7 @@ public sealed partial class OxydAutodocSystem : EntitySystem
 
     private void OnProcessAll(EntityUid uid, OxydAutodocComponent comp, OxydAutodocProcessAllMessage args)
     {
-        if (comp.Running || BodySlot(uid).ContainedEntity == null || comp.Notes.Count == 0)
+        if (comp.Operating || BodySlot(uid).ContainedEntity == null || comp.Notes.Count == 0)
             return;
         foreach (var note in comp.Notes)
             note.Picked.UnionWith(note.Scanned);
@@ -306,7 +310,7 @@ public sealed partial class OxydAutodocSystem : EntitySystem
 
     private void OnProcessPicked(EntityUid uid, OxydAutodocComponent comp, OxydAutodocProcessPickedMessage args)
     {
-        if (comp.Running || BodySlot(uid).ContainedEntity == null || comp.Notes.Count == 0)
+        if (comp.Operating || BodySlot(uid).ContainedEntity == null || comp.Notes.Count == 0)
             return;
         StartProcessing(uid, comp, CustomCost(comp));
     }
@@ -321,7 +325,7 @@ public sealed partial class OxydAutodocSystem : EntitySystem
         if (!Charge(uid, comp, cost))
             return;
 
-        comp.Running = true;
+        comp.Operating = true;
         comp.OpsTotal = comp.Notes.Sum(n => n.Picked.Count);
         comp.NextOpTime = _timing.CurTime + TimeSpan.FromSeconds(comp.StepDuration);
         _appearance.SetData(uid, OxydMachineVisuals.Working, true);
@@ -332,7 +336,7 @@ public sealed partial class OxydAutodocSystem : EntitySystem
     private void OnAbort(EntityUid uid, OxydAutodocComponent comp, OxydAutodocAbortMessage args)
     {
         // Eris stop(): halts the run and clears the picked operations.
-        comp.Running = false;
+        comp.Operating = false;
         _appearance.SetData(uid, OxydMachineVisuals.Working, false);
         foreach (var note in comp.Notes)
             note.Picked.Clear();
@@ -342,7 +346,7 @@ public sealed partial class OxydAutodocSystem : EntitySystem
 
     private void OnToggle(EntityUid uid, OxydAutodocComponent comp, OxydAutodocToggleMessage args)
     {
-        if (comp.Running || args.EntryId < 0 || args.EntryId >= comp.Notes.Count)
+        if (comp.Operating || args.EntryId < 0 || args.EntryId >= comp.Notes.Count)
             return;
         var note = comp.Notes[args.EntryId];
         if (!note.Scanned.Contains(args.Op))
@@ -364,12 +368,12 @@ public sealed partial class OxydAutodocSystem : EntitySystem
         var query = EntityQueryEnumerator<OxydAutodocComponent>();
         while (query.MoveNext(out var uid, out var comp))
         {
-            if (!comp.Running)
+            if (!comp.Operating)
                 continue;
 
             if (BodySlot(uid).ContainedEntity is not { } occupant || TerminatingOrDeleted(occupant))
             {
-                comp.Running = false;
+                comp.Operating = false;
                 comp.Notes.Clear();
                 _appearance.SetData(uid, OxydMachineVisuals.Working, false);
                 Dirty(uid, comp);
@@ -384,7 +388,7 @@ public sealed partial class OxydAutodocSystem : EntitySystem
             var note = comp.Notes.FirstOrDefault(n => n.Picked.Count > 0);
             if (note == null)
             {
-                comp.Running = false;
+                comp.Operating = false;
                 _appearance.SetData(uid, OxydMachineVisuals.Working, false);
                 _popup.PopupEntity(Loc.GetString("oxyd-medical-autodoc-done"), uid, PopupType.Small);
                 Dirty(uid, comp);
@@ -419,7 +423,7 @@ public sealed partial class OxydAutodocSystem : EntitySystem
                 {
                     // Eris removes AUTODOC_DIALYSIS_AMOUNT per reagent + a bit of blood.
                     var purged = _solutions.RemoveEachReagent(bloodEnt.Value, comp.DialysisPerTick);
-                    var bloodLeft = blood.GetTotalPrototypeQuantity("Blood").Float();
+                    var bloodLeft = blood.GetTotalPrototypeQuantity(BloodReagent).Float();
                     if (purged.Volume <= 0 || blood.Volume.Float() - bloodLeft <= 0)
                         note.Picked.Remove(op);
                 }
@@ -440,7 +444,7 @@ public sealed partial class OxydAutodocSystem : EntitySystem
                     }
                     else
                     {
-                        _solutions.TryAddReagent(bloodEnt2.Value, "Blood", Math.Min(comp.HealPerTick, missing));
+                        _solutions.TryAddReagent(bloodEnt2.Value, BloodReagent, Math.Min(comp.HealPerTick, missing));
                     }
                 }
                 else
@@ -506,7 +510,7 @@ public sealed partial class OxydAutodocSystem : EntitySystem
     {
         var state = new OxydAutodocState
         {
-            Running = comp.Running,
+            Running = comp.Operating,
             Balance = GetBalance(uid),
             ScanCost = comp.ScanCost,
             TotalCost = TotalCost(comp),
@@ -523,14 +527,14 @@ public sealed partial class OxydAutodocSystem : EntitySystem
         {
             state.HasOccupant = true;
             state.OccupantName = Name(occ);
-            state.BruteLoss = Group(occ, "Brute");
-            state.BurnLoss = Group(occ, "Burn");
-            state.ToxinLoss = Group(occ, "Toxin");
-            state.OxyLoss = Group(occ, "Airloss");
+            state.BruteLoss = Group(occ, BruteGroup);
+            state.BurnLoss = Group(occ, BurnGroup);
+            state.ToxinLoss = Group(occ, ToxinGroup);
+            state.OxyLoss = Group(occ, AirlossGroup);
             if (_solutions.TryGetSolution(occ, BloodstreamComponent.DefaultBloodSolutionName,
                     out _, out var blood))
             {
-                var vol = blood.GetTotalPrototypeQuantity("Blood").Float();
+                var vol = blood.GetTotalPrototypeQuantity(BloodReagent).Float();
                 state.BloodPercent = blood.MaxVolume.Float() > 0
                     ? vol / blood.MaxVolume.Float() * 100f : 0f;
             }

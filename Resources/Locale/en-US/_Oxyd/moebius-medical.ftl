@@ -226,7 +226,7 @@ oxyd-medical-iv-verb-eject-beaker = Remove beaker
 oxyd-medical-iv-verb-inject = Transfuse into patient
 oxyd-medical-iv-verb-draw = Draw blood from patient
 oxyd-medical-iv-verb-detach = Detach from patient
-oxyd-medical-iv-verb-attach = Attach patient
+oxyd-medical-iv-attaching = You start attaching the drip to {THE($patient)}…
 oxyd-medical-iv-attached = You attach the drip to {THE($patient)}.
 oxyd-medical-iv-detached = You detach the drip.
 

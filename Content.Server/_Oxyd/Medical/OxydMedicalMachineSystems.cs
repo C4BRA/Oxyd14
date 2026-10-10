@@ -1,6 +1,8 @@
+using Content.Shared.Administration.Logs;
 using Content.Shared.Damage.Components;
 using Content.Shared.Damage.Prototypes;
 using Content.Shared.Damage.Systems;
+using Content.Shared.DoAfter;
 using Content.Shared.Examine;
 using System.Linq;
 using Content.Server.Body.Components;
@@ -150,7 +152,12 @@ public sealed partial class OxydIvDripSystem : EntitySystem
     [Dependency] private readonly SharedSolutionContainerSystem _solutions = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
-    [Dependency] private readonly EntityLookupSystem _lookup = default!;
+    [Dependency] private readonly DoAfterSystem _doAfter = default!;
+    [Dependency] private readonly ISharedAdminLogManager _adminLogger = default!;
+    [Dependency] private readonly IGameTiming _timing = default!;
+
+    /// <summary>Max distance the drip can be from the patient before the line detaches.</summary>
+    private const float IvRange = 1.5f;
 
     public override void Initialize()
     {
@@ -164,6 +171,7 @@ public sealed partial class OxydIvDripSystem : EntitySystem
         SubscribeLocalEvent<OxydIvDripComponent, GetVerbsEvent<InteractionVerb>>(AddInsertBeakerVerb);
         SubscribeLocalEvent<OxydIvDripComponent, InteractUsingEvent>(OnInteractUsing);
         SubscribeLocalEvent<OxydIvDripComponent, ExaminedEvent>(OnExamine);
+        SubscribeLocalEvent<OxydIvDripComponent, OxydIvAttachDoAfterEvent>(OnAttachDoAfter);
     }
 
     /// <summary>Eris examine: reports the loaded tank and attached vessel + the mode.</summary>
@@ -209,6 +217,28 @@ public sealed partial class OxydIvDripSystem : EntitySystem
         ToggleAttach(args.Dragged, drip, uid, args.User);
     }
 
+    private void OnAttachDoAfter(Entity<OxydIvDripComponent> ent, ref OxydIvAttachDoAfterEvent args)
+    {
+        if (args.Handled)
+            return;
+        args.Handled = true;
+        if (args.Cancelled)
+            return;
+
+        var (uid, comp) = ent;
+        if (args.Target is not { } patient || TerminatingOrDeleted(patient))
+            return;
+        if (comp.AttachedTo != null || !_transform.InRange(uid, patient, IvRange))
+            return;
+
+        comp.AttachedTo = GetNetEntity(patient);
+        Dirty(uid, comp);
+        _popup.PopupEntity(Loc.GetString("oxyd-medical-iv-attached", ("patient", Name(patient))),
+            uid, args.User);
+        _adminLogger.Add(LogType.ForceFeed, LogImpact.Medium,
+            $"{ToPrettyString(args.User):user} attached {ToPrettyString(uid):using} to {ToPrettyString(patient):target}");
+    }
+
     private void OnCanDropPatientOnDrip(EntityUid uid, OxydIvDripComponent comp, ref CanDropTargetEvent args)
     {
         if (args.Handled || !HasComp<BodyComponent>(args.Dragged))
@@ -230,29 +260,48 @@ public sealed partial class OxydIvDripSystem : EntitySystem
     {
         if (drip.AttachedTo == GetNetEntity(patient))
         {
-            drip.AttachedTo = null;
-            _popup.PopupEntity(Loc.GetString("oxyd-medical-iv-detached"), dripUid, user);
+            Detach(dripUid, drip, user);
+            return;
         }
-        else
+
+        if (drip.AttachedTo != null || !_transform.InRange(dripUid, patient, IvRange))
+            return;
+
+        // Attach takes a do-after like an injector jab: it is not instant and the
+        // patient can move away or be damaged out of it.
+        _doAfter.TryStartDoAfter(new DoAfterArgs(EntityManager, user, drip.AttachDelay,
+            new OxydIvAttachDoAfterEvent(), dripUid, target: patient, used: dripUid)
         {
-            drip.AttachedTo = GetNetEntity(patient);
-            _popup.PopupEntity(Loc.GetString("oxyd-medical-iv-attached", ("patient", Name(patient))),
-                dripUid, user);
-        }
+            BreakOnMove = true,
+            BreakOnDamage = true,
+        });
+        _popup.PopupEntity(Loc.GetString("oxyd-medical-iv-attaching", ("patient", Name(patient))),
+            dripUid, user);
+    }
+
+    private void Detach(EntityUid dripUid, OxydIvDripComponent drip, EntityUid user)
+    {
+        var previous = drip.AttachedTo is { } net ? GetEntity(net) : (EntityUid?) null;
+        drip.AttachedTo = null;
         Dirty(dripUid, drip);
+        _popup.PopupEntity(Loc.GetString("oxyd-medical-iv-detached"), dripUid, user);
+        if (previous is { } patient && !TerminatingOrDeleted(patient))
+        {
+            _adminLogger.Add(LogType.ForceFeed, LogImpact.Low,
+                $"{ToPrettyString(user):user} detached {ToPrettyString(dripUid):using} from {ToPrettyString(patient):target}");
+        }
     }
 
     private void AddIvVerbs(EntityUid uid, OxydIvDripComponent comp, GetVerbsEvent<AlternativeVerb> args)
     {
+        if (!args.CanAccess || !args.CanInteract)
+            return;
+
         if (comp.AttachedTo != null)
         {
             args.Verbs.Add(new AlternativeVerb
             {
-                Act = () =>
-                {
-                    comp.AttachedTo = null;
-                    Dirty(uid, comp);
-                },
+                Act = () => Detach(uid, comp, args.User),
                 Text = Loc.GetString("oxyd-medical-iv-verb-detach"),
             });
         }
@@ -263,26 +312,16 @@ public sealed partial class OxydIvDripSystem : EntitySystem
             {
                 comp.DrainMode = !comp.DrainMode;
                 Dirty(uid, comp);
+                _adminLogger.Add(LogType.ForceFeed, LogImpact.Low,
+                    $"{ToPrettyString(args.User):user} set {ToPrettyString(uid):using} to {(comp.DrainMode ? "draw" : "inject")}");
             },
             Text = comp.DrainMode
                 ? Loc.GetString("oxyd-medical-iv-verb-inject")
                 : Loc.GetString("oxyd-medical-iv-verb-draw"),
         });
 
-        if (comp.AttachedTo == null)
-        {
-            args.Verbs.Add(new AlternativeVerb
-            {
-                Act = () =>
-                {
-                    var patient = _lookup.GetEntitiesInRange(uid, 1.5f)
-                        .FirstOrDefault(e => e != uid && HasComp<BodyComponent>(e));
-                    if (patient != default)
-                        ToggleAttach(uid, comp, patient, args.User);
-                },
-                Text = Loc.GetString("oxyd-medical-iv-verb-attach"),
-            });
-        }
+        // Attaching is drag-drop only (drip onto patient or patient onto drip): an
+        // explicit target plus the attach do-after, never an arbitrary nearby body.
 
         // Eris "Set IV transfer amount": cycles through the usual drip rates.
         args.Verbs.Add(new AlternativeVerb
@@ -349,15 +388,16 @@ public sealed partial class OxydIvDripSystem : EntitySystem
             if (comp.AttachedTo is not { } netPatient)
                 continue;
 
-            comp.TickRemaining -= frameTime;
-            if (comp.TickRemaining > 0)
+            var now = _timing.CurTime;
+            if (now < comp.NextTick)
                 continue;
-            comp.TickRemaining = comp.TickInterval;
+            comp.NextTick = now + TimeSpan.FromSeconds(comp.TickInterval);
 
             var patient = GetEntity(netPatient);
-            if (TerminatingOrDeleted(patient) || !_transform.InRange(uid, patient, 1.5f))
+            if (TerminatingOrDeleted(patient) || !_transform.InRange(uid, patient, IvRange))
             {
                 comp.AttachedTo = null;
+                Dirty(uid, comp);
                 continue;
             }
 
@@ -369,21 +409,19 @@ public sealed partial class OxydIvDripSystem : EntitySystem
 
             if (comp.DrainMode)
             {
-                // Draw: pull blood out of the patient into the beaker.
-                var amount = Math.Min(comp.TransferPerTick, blood.Volume.Float());
-                if (amount <= 0 || beakerSol.AvailableVolume <= 0)
-                    continue;
-                var drawn = _solutions.SplitSolution(bloodEnt.Value, amount);
-                _solutions.TryAddSolution(beakerSolEnt.Value, drawn);
+                // Draw: pull blood out of the patient into the beaker. Capped by the
+                // beaker's free volume inside TryTransferSolution — nothing is lost.
+                _solutions.TryTransferSolution(beakerSolEnt.Value, blood, comp.TransferPerTick);
             }
             else
             {
-                // Inject: push beaker contents into the bloodstream.
-                var amount = Math.Min(comp.TransferPerTick, beakerSol.Volume.Float());
-                if (amount <= 0 || blood.AvailableVolume <= 0)
+                // Inject: push beaker contents into the bloodstream, capped by the
+                // bloodstream's free volume so overflow can't delete reagents.
+                if (!_solutions.TryTransferSolution(bloodEnt.Value, beakerSol, comp.TransferPerTick))
                     continue;
-                var injected = _solutions.SplitSolution(beakerSolEnt.Value, amount);
-                _solutions.TryAddSolution(bloodEnt.Value, injected);
+                _adminLogger.Add(LogType.ForceFeed, LogImpact.Low,
+                    $"{ToPrettyString(uid):using} injected {ToPrettyString(patient):target} " +
+                    $"with {comp.TransferPerTick}u from {ToPrettyString(beaker):used}");
             }
         }
     }

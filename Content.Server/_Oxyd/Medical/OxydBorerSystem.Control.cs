@@ -1,5 +1,6 @@
 using Content.Server.Administration;
 using Content.Server.Chat.Managers;
+using Content.Shared.Administration.Logs;
 using Content.Server.Chat.Systems;
 using Content.Server.Mind;
 using Content.Shared._Oxyd.Medical;
@@ -7,6 +8,7 @@ using Content.Shared.Chat;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Prototypes;
 using Content.Shared.DoAfter;
+using Content.Shared.Interaction;
 using Content.Shared.Jittering;
 using Content.Shared.Popups;
 using Content.Shared.Verbs;
@@ -34,6 +36,7 @@ public sealed partial class OxydBorerSystem
     [Dependency] private readonly SharedJitteringSystem _jitter = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
+    [Dependency] private readonly ISharedAdminLogManager _adminLogger = default!;
 
     /// <summary>Exp thresholds BORER_EXP_LEVEL_1..5.</summary>
     private static readonly List<int> LevelThresholds = new() { 20, 40, 80, 160, 320 };
@@ -109,6 +112,8 @@ public sealed partial class OxydBorerSystem
         comp.HostBrain = captive;
         Dirty(uid, comp);
 
+        _adminLogger.Add(LogType.Mind, LogImpact.High,
+            $"{ToPrettyString(uid):user} assumed control of {ToPrettyString(host):target} (mind swap)");
         _popup.PopupEntity(Loc.GetString("oxyd-borer-control-done"), uid, uid);
         _popup.PopupEntity(Loc.GetString("oxyd-borer-control-done-host"), host, host, PopupType.LargeCaution);
     }
@@ -124,6 +129,8 @@ public sealed partial class OxydBorerSystem
         var captive = comp.HostBrain;
         comp.HostBrain = null;
         Dirty(borer, comp);
+        _adminLogger.Add(LogType.Mind, LogImpact.Medium,
+            $"{ToPrettyString(borer):user} released control of {ToPrettyString(host):target}");
 
         // The mind currently owning the host body is the borer's — move it home first.
         if (_mind.TryGetMind(host, out var bodyMindId, out _))
@@ -257,8 +264,14 @@ public sealed partial class OxydBorerSystem
         AskText(borer, Loc.GetString("oxyd-borer-dialog-speak-title"), Loc.GetString("oxyd-borer-dialog-speak-prompt"),
             text =>
             {
-                TellMind(borer, borer, Loc.GetString("oxyd-borer-speak-self", ("text", text), ("host", host)));
-                TellMind(borer, host, Loc.GetString("oxyd-borer-speak-host", ("text", text)));
+                // The dialog can be answered long after it opened — re-verify.
+                if (comp.Host != host || comp.Docile || _mobs.IsDead(borer) || TerminatingOrDeleted(host))
+                    return;
+                var escaped = FormattedMessage.EscapeText(text);
+                TellMind(borer, borer, Loc.GetString("oxyd-borer-speak-self", ("text", escaped), ("host", host)));
+                TellMind(borer, host, Loc.GetString("oxyd-borer-speak-host", ("text", escaped)));
+                _adminLogger.Add(LogType.Chat, LogImpact.Low,
+                    $"{ToPrettyString(borer):user} borer-said to {ToPrettyString(host):target}: {escaped}");
             });
     }
 
@@ -273,7 +286,14 @@ public sealed partial class OxydBorerSystem
             : Loc.GetString("oxyd-borer-dialog-say-host-title");
 
         AskText(borer, title, Loc.GetString("oxyd-borer-dialog-say-host-prompt"),
-            text => _chat.TrySendInGameICMessage(host, text, type, hideChat: false, ignoreActionBlocker: true));
+            text =>
+            {
+                if (comp.Host != host || comp.Docile || _mobs.IsDead(borer) || _mobs.IsDead(host))
+                    return;
+                _chat.TrySendInGameICMessage(host, text, type, hideChat: false, ignoreActionBlocker: true);
+                _adminLogger.Add(LogType.Chat, LogImpact.Medium,
+                    $"{ToPrettyString(borer):user} forced {ToPrettyString(host):target} to {type}: {text}");
+            });
     }
 
     /// <summary>Eris psychic_whisper: silent message to a nearby victim's mind.</summary>
@@ -282,8 +302,13 @@ public sealed partial class OxydBorerSystem
         AskText(user, Loc.GetString("oxyd-borer-dialog-psychic-title"), Loc.GetString("oxyd-borer-dialog-psychic-prompt"),
             text =>
             {
-                TellMind(user, victim, Loc.GetString("oxyd-borer-psychic-target", ("text", text)));
-                TellMind(user, user, Loc.GetString("oxyd-borer-psychic-self", ("text", text), ("target", victim)));
+                if (TerminatingOrDeleted(victim) || TerminatingOrDeleted(user))
+                    return;
+                var escaped = FormattedMessage.EscapeText(text);
+                TellMind(user, victim, Loc.GetString("oxyd-borer-psychic-target", ("text", escaped)));
+                TellMind(user, user, Loc.GetString("oxyd-borer-psychic-self", ("text", escaped), ("target", victim)));
+                _adminLogger.Add(LogType.Chat, LogImpact.Medium,
+                    $"{ToPrettyString(user):user} psychic-whispered {ToPrettyString(victim):target}: {escaped}");
             });
     }
 
@@ -293,13 +318,20 @@ public sealed partial class OxydBorerSystem
         AskText(user, Loc.GetString("oxyd-borer-dialog-commune-title"), Loc.GetString("oxyd-borer-dialog-commune-prompt"),
             text =>
             {
-                TellMind(borer, victim, Loc.GetString("oxyd-borer-commune-target", ("text", text)));
-                TellMind(borer, user, Loc.GetString("oxyd-borer-commune-self", ("text", text), ("target", victim)));
+                if (TerminatingOrDeleted(borer) || TerminatingOrDeleted(user) ||
+                    TerminatingOrDeleted(victim) || _mobs.IsDead(borer) ||
+                    !_transform.InRange(user, victim, SharedInteractionSystem.InteractionRange))
+                    return;
+                var escaped = FormattedMessage.EscapeText(text);
+                TellMind(borer, victim, Loc.GetString("oxyd-borer-commune-target", ("text", escaped)));
+                TellMind(borer, user, Loc.GetString("oxyd-borer-commune-self", ("text", escaped), ("target", victim)));
                 // Eris: H.drip_blood(1) — a trickle of blood from the nose.
                 _damage.TryChangeDamage(victim,
                     new DamageSpecifier(_proto.Index<DamageTypePrototype>("Cellular"), 1f),
                     ignoreResistances: true);
                 TellMind(borer, victim, Loc.GetString("oxyd-borer-commune-nosebleed"));
+                _adminLogger.Add(LogType.Chat, LogImpact.Medium,
+                    $"{ToPrettyString(borer):user} communed with {ToPrettyString(victim):target}: {escaped}");
             });
     }
 
@@ -318,8 +350,14 @@ public sealed partial class OxydBorerSystem
         AskText(host, Loc.GetString("oxyd-borer-dialog-captive-title"), Loc.GetString("oxyd-borer-dialog-captive-prompt"),
             text =>
             {
-                TellMind(host, host, Loc.GetString("oxyd-borer-captive-self", ("text", text)));
-                TellMind(host, captive, Loc.GetString("oxyd-borer-captive-echo", ("text", text)));
+                // Control may have been released while the dialog was open.
+                if (!comp.Controlling || comp.HostBrain is not { } cap || Deleted(cap))
+                    return;
+                var escaped = FormattedMessage.EscapeText(text);
+                TellMind(host, host, Loc.GetString("oxyd-borer-captive-self", ("text", escaped)));
+                TellMind(host, cap, Loc.GetString("oxyd-borer-captive-echo", ("text", escaped)));
+                _adminLogger.Add(LogType.Chat, LogImpact.Low,
+                    $"{ToPrettyString(host):user} borer-talked to captive {ToPrettyString(cap):target}: {escaped}");
             });
     }
 
@@ -332,8 +370,14 @@ public sealed partial class OxydBorerSystem
         AskText(captive, Loc.GetString("oxyd-borer-dialog-whisper-title"), Loc.GetString("oxyd-borer-dialog-whisper-prompt"),
             text =>
             {
-                TellMind(captive, captive, Loc.GetString("oxyd-borer-whisper-self", ("text", text)));
-                TellMind(captive, host, Loc.GetString("oxyd-borer-whisper-host", ("text", text)));
+                // The host may be gone (released/deleted) by the time the dialog is answered.
+                if (comp.Host is not { } cur || TerminatingOrDeleted(cur))
+                    return;
+                var escaped = FormattedMessage.EscapeText(text);
+                TellMind(captive, captive, Loc.GetString("oxyd-borer-whisper-self", ("text", escaped)));
+                TellMind(captive, cur, Loc.GetString("oxyd-borer-whisper-host", ("text", escaped)));
+                _adminLogger.Add(LogType.Chat, LogImpact.Low,
+                    $"{ToPrettyString(captive):user} captive-whispered {ToPrettyString(cur):target}: {escaped}");
             });
     }
 

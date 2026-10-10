@@ -123,8 +123,10 @@ public sealed partial class OxydAutodocComponent : Component
         [OxydAutodocOp.Dialysis] = 1000,
     };
 
+    /// <summary>Whether the pod is mid-procedure (named to avoid hiding
+    /// <see cref="Component.Running"/>).</summary>
     [DataField, AutoNetworkedField]
-    public bool Running;
+    public bool Operating;
 
     /// <summary>Current scan results; Organ == null is the global toxnote.</summary>
     public List<OxydAutodocPatchnote> Notes = new();
@@ -191,7 +193,13 @@ public sealed partial class OxydIvDripComponent : Component
     [DataField]
     public float TickInterval = 2f;
 
-    public float TickRemaining;
+    /// <summary>Seconds the attach do-after takes (Eris attach has no delay; SS14
+    /// injections require one, like <see cref="Content.Shared.Chemistry.Components.InjectorComponent"/>).</summary>
+    [DataField]
+    public float AttachDelay = 2f;
+
+    [AutoPausedField]
+    public TimeSpan NextTick;
 
     /// <summary>Whether to draw blood out of the patient instead of injecting.</summary>
     [DataField, AutoNetworkedField]
