@@ -397,6 +397,11 @@ public static class LitanyCatalogValidator
             }
         }
 
+        // Cast atomicity is enforced structurally: one effect per litany, so a failed
+        // apply can never refund a cast that already mutated state.
+        if (litany.Effects.Count > 1)
+            errors.Add($"{litany.ID} defines {litany.Effects.Count} effects; litanies are limited to one effect.");
+
         // Special-case data fields must be backed by a matching effect.
         if (litany.RequiresHeldOddity && !litany.Effects.OfType<LitanyDivineBlessingEffect>().Any())
             errors.Add($"{litany.ID} sets requiresHeldOddity without a LitanyDivineBlessingEffect.");
