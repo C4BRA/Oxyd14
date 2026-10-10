@@ -646,16 +646,13 @@ public sealed partial class LitanyEffectSystem : EntitySystem, ILitanyEffectRais
         if (!TryComp(actor, out TransformComponent? actorXform))
             return results;
 
-        var actorMap = actorXform.MapID;
-        if (actorMap == MapId.Nullspace)
+        if (actorXform.MapID == MapId.Nullspace)
             return results;
 
-        var query = EntityQueryEnumerator<CruciformBearerComponent, TransformComponent>();
-        while (query.MoveNext(out var body, out _, out var xform))
+        // Spatial lookup first: only nearby bearers pay the LOS raycast cost.
+        foreach (var body in _lookup.GetEntitiesInRange<CruciformBearerComponent>(actorXform.Coordinates, range))
         {
-            if (body == actor)
-                continue;
-            if (xform.MapID != actorMap)
+            if (body.Owner == actor || TerminatingOrDeleted(body))
                 continue;
             if (!_cruciform.TryGetCruciform(body, out _, out _))
                 continue;
