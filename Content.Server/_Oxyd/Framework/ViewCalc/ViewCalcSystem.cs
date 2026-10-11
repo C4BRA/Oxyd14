@@ -3,6 +3,7 @@ using Content.Shared.Physics;
 using Robust.Server.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Physics;
+using System.Numerics;
 using Robust.Shared.Physics.Systems;
 using Robust.Shared.Timing;
 
@@ -25,11 +26,14 @@ public sealed partial class ViewCalcSystem : EntitySystem
     [Dependency] private TransformSystem transform = default!;
     [Dependency] private EntityLookupSystem entlook = default!;
     [Dependency] private IGameTiming timing = default!;
-    private float passed;
+    private TimeSpan _nextTick;
 
-    /// <summary>Bumped whenever a view-relevant entity moves or is deleted, so
-    /// stationary tickers recalculate instead of serving a stale cached view.</summary>
-    private int _viewEpoch;
+    /// <summary>
+    /// Positions where view-relevant entities moved or shut down since the last ticker
+    /// pass. A stationary ticker recomputes only when its cached range covers an entry —
+    /// a global epoch would invalidate every ticker on every move.
+    /// </summary>
+    private readonly List<(MapId MapId, Vector2 Position)> _viewDirty = new();
 
     public override void Initialize()
     {
@@ -38,10 +42,22 @@ public sealed partial class ViewCalcSystem : EntitySystem
     }
 
     private void OnViewRelevantMoved(Entity<ViewRelevantComponent> ent, ref MoveEvent args)
-        => _viewEpoch++;
+    {
+        var oldMap = transform.ToMapCoordinates(args.OldPosition);
+        var newMap = transform.ToMapCoordinates(args.NewPosition);
+        _viewDirty.Add((oldMap.MapId, oldMap.Position));
+        _viewDirty.Add((newMap.MapId, newMap.Position));
+    }
 
     private void OnViewRelevantGone(Entity<ViewRelevantComponent> ent, ref ComponentShutdown args)
-        => _viewEpoch++;
+    {
+        // The transform may already be gone at shutdown; positionless removals are caught
+        // by the per-tick deleted-entity filter instead.
+        if (!TerminatingOrDeleted(ent.Owner) || !TryComp(ent.Owner, out TransformComponent? xform))
+            return;
+        var map = transform.GetMapCoordinates(ent.Owner, xform);
+        _viewDirty.Add((map.MapId, map.Position));
+    }
 
     /// <summary>Squared movement distance (≈1.4 tiles) that forces a view recalculation.</summary>
     private const float MovementThresholdSquared = 2f;
@@ -96,10 +112,9 @@ public sealed partial class ViewCalcSystem : EntitySystem
 
     public override void Update(float frameTime)
     {
-        passed += frameTime;
-        if (passed < 1f)
+        if (timing.CurTime < _nextTick)
             return;
-        passed = 0;
+        _nextTick = timing.CurTime + TimeSpan.FromSeconds(1);
 
         var tickers = EntityQueryEnumerator<ViewTickerComponent>();
         while (tickers.MoveNext(out var uid, out var comp))
@@ -107,8 +122,21 @@ public sealed partial class ViewCalcSystem : EntitySystem
             // Raise every second, but only recalculate when the ticker moved or the
             // cached view went stale — line of sight raycasts are expensive.
             var position = transform.GetMapCoordinates(uid);
-            var stale = timing.CurTime - comp.lastTickTime >= StaleAfter ||
-                comp.lastSeenEpoch != _viewEpoch;
+            var stale = timing.CurTime - comp.lastTickTime >= StaleAfter;
+            if (!stale && _viewDirty.Count > 0)
+            {
+                var effectiveRange = Math.Max(comp.range, comp.auraRange);
+                var origin = comp.lastTickPosition ?? position;
+                foreach (var (mapId, point) in _viewDirty)
+                {
+                    if (mapId == origin.MapId &&
+                        (point - origin.Position).LengthSquared() <= effectiveRange * effectiveRange)
+                    {
+                        stale = true;
+                        break;
+                    }
+                }
+            }
             var moved = comp.lastTickPosition is not { } lastPosition ||
                 position.MapId != lastPosition.MapId ||
                 (position.Position - lastPosition.Position).LengthSquared() > MovementThresholdSquared;
@@ -116,7 +144,6 @@ public sealed partial class ViewCalcSystem : EntitySystem
             {
                 comp.lastTickTime = timing.CurTime;
                 comp.lastTickPosition = position;
-                comp.lastSeenEpoch = _viewEpoch;
                 comp.lastSeen = GetEntsInView(position, Math.Max(comp.range, comp.auraRange));
             }
             else
@@ -125,5 +152,7 @@ public sealed partial class ViewCalcSystem : EntitySystem
             }
             RaiseLocalEvent(uid, new ViewTickEvent { seen = comp.lastSeen });
         }
+
+        _viewDirty.Clear();
     }
 }
