@@ -43,10 +43,17 @@ public sealed partial class ViewCalcSystem : EntitySystem
 
     private void OnViewRelevantMoved(Entity<ViewRelevantComponent> ent, ref MoveEvent args)
     {
-        var oldMap = transform.ToMapCoordinates(args.OldPosition);
-        var newMap = transform.ToMapCoordinates(args.NewPosition);
-        _viewDirty.Add((oldMap.MapId, oldMap.Position));
-        _viewDirty.Add((newMap.MapId, newMap.Position));
+        // MoveEvents also fire during deletion where the old parent is already invalid.
+        if (args.OldPosition.IsValid(EntityManager))
+        {
+            var oldMap = transform.ToMapCoordinates(args.OldPosition);
+            _viewDirty.Add((oldMap.MapId, oldMap.Position));
+        }
+        if (args.NewPosition.IsValid(EntityManager))
+        {
+            var newMap = transform.ToMapCoordinates(args.NewPosition);
+            _viewDirty.Add((newMap.MapId, newMap.Position));
+        }
     }
 
     private void OnViewRelevantGone(Entity<ViewRelevantComponent> ent, ref ComponentShutdown args)
