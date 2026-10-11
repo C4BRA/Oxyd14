@@ -87,7 +87,7 @@ public sealed partial class LitanyEffectSystem : EntitySystem, ILitanyEffectRais
         where T : EntityEffectBase<T>
         => _entityEffects.RaiseEffectEvent(target, effect, scale, user);
 
-    /// <summary>Observers receive notices without retaining them in this system.</summary>
+    /// <summary>OXYD test-only: integration fixtures subscribe to verify notice delivery.</summary>
     public event Action<EntityUid, string>? SocialNotice;
 
     /// <summary>Admin-log a litany mutation: actor did <paramref name="action"/> to target.</summary>
@@ -132,21 +132,35 @@ public sealed partial class LitanyEffectSystem : EntitySystem, ILitanyEffectRais
         ProtoId<NeoTheologyBlueprintPrototype>? selectedBlueprint = null,
         int ceremonyParticipants = 0)
     {
+        // Preserve the outer cast's context: an effect that transitively applies another
+        // litany must not clobber the frame its caller still reads after the inner call.
+        var previousContext = _context;
+        var previousResult = _lastApplyResult;
         _context = new LitanyEffectContext(user, litany, targets ?? Array.Empty<EntityUid>(),
             selectedTokens, selectedText, designation, selectedBlueprint, ceremonyParticipants);
 
         var success = true;
-        foreach (var effect in litany.Effects)
+        try
         {
-            _lastApplyResult = true;
+            foreach (var effect in litany.Effects)
+            {
+                // Reset to failure before the raise: a raise that never reports — no handler
+                // ran — must not be mistaken for a successful apply.
+                _lastApplyResult = false;
 
-            // The caster anchors the shared pipeline (scale, probability, conditions, log).
-            // The effect receives the full cast context through this raiser.
-            if (!_entityEffects.TryApplyEffect(user, effect, 1f, user, this))
-                continue;
+                // The caster anchors the shared pipeline (scale, probability, conditions, log).
+                // The effect receives the full cast context through this raiser.
+                if (!_entityEffects.TryApplyEffect(user, effect, 1f, user, this))
+                    continue;
 
-            if (!_lastApplyResult)
-                success = false;
+                if (!_lastApplyResult)
+                    success = false;
+            }
+        }
+        finally
+        {
+            _context = previousContext;
+            _lastApplyResult = previousResult;
         }
 
         return success;
