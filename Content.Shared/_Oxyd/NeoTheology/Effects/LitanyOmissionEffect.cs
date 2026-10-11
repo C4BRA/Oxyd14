@@ -10,7 +10,6 @@ namespace Content.Shared._Oxyd.NeoTheology.Effects;
 /// </summary>
 public sealed partial class LitanyOmissionEffect : LitanyEffect
 {
-    private static readonly ProtoId<NeoTheologyProfilePrototype> InquisitorProfile = "OxydNtInquisitor";
 
     public override bool CanApply(
         LitanyEffectSystem system,
@@ -24,7 +23,7 @@ public sealed partial class LitanyOmissionEffect : LitanyEffect
         }
 
         // Eris: `if(CI.get_module(CRUCIFORM_INQUISITOR)) fail("You don't have the authority for this.")`.
-        if (cruciform.Profile == InquisitorProfile)
+        if (cruciform.Profile == NeoTheologyPrototypes.InquisitorProfile)
         {
             failure = "oxyd-litany-no-authority";
             return false;

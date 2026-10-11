@@ -89,6 +89,6 @@ public sealed partial class LitanyCommitmentEffect : LitanyEffect
         // Eris damages the chest only after the implant is in.
         return system.TryApplyDamage(
             target,
-            new DamageSpecifier { DamageDict = { ["Blunt"] = FixedPoint2.New(InstallDamage) } });
+            new DamageSpecifier { DamageDict = { [NeoTheologyPrototypes.DamageBlunt] = FixedPoint2.New(InstallDamage) } });
     }
 }
