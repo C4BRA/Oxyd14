@@ -1,7 +1,7 @@
 # CEV-Eris reskin
 
 Converts CEV-Eris sprites (BYOND `.dmi`) into the SS14 RSIs and textures Oxyd14 inherits from
-upstream, so the whole game looks like CEV-Eris without touching prototypes, maps or C#.
+upstream, so the game looks like CEV-Eris without changing entity prototypes or maps.
 
 The art is written **into the existing RSIs, keeping every state name, direction count and
 unmapped state**. Visualizers, `IconSmooth`, clothing slots and anything else that refers to a
