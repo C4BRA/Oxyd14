@@ -8,13 +8,7 @@
     },
     "states": [
         {
-            "name": "icon",
-            "delays": [
-                [
-                    1.8,
-                    0.1
-                ]
-            ]
+            "name": "icon"
         }
     ]
 }

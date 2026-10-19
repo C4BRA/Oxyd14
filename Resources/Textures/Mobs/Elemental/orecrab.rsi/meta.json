@@ -1,39 +1,115 @@
 {
-  "version": 1,
-  "size": {
-    "x": 32,
-    "y": 32
-  },
-  "license": "CC-BY-SA-3.0",
-  "copyright": "Made by brainfood1183 (github)",
-  "states": [
-    {
-      "name": "iron_crab",
-      "directions": 4
+    "version": 1,
+    "size": {
+        "x": 32,
+        "y": 32
     },
-    {
-        "name": "coal_crab",
-        "directions": 4
-    },
-    {
-      "name": "uranium_crab",
-      "directions": 4
-    },
-    {
-      "name": "silver_crab",
-      "directions": 4
-    },
-    {
-        "name": "gold_crab",
-        "directions": 4
-    },
-    {
-        "name": "bananium_crab",
-        "directions": 4
-    },
-    {
-      "name": "quartz_crab",
-      "directions": 4
-    }
-  ]
+    "license": "CC-BY-SA-3.0",
+    "copyright": "Made by brainfood1183 (github). Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
+    "states": [
+        {
+            "name": "iron_crab",
+            "directions": 4
+        },
+        {
+            "name": "coal_crab",
+            "directions": 4
+        },
+        {
+            "name": "uranium_crab",
+            "directions": 4
+        },
+        {
+            "name": "silver_crab",
+            "directions": 4,
+            "delays": [
+                [
+                    0.15,
+                    0.15,
+                    0.15,
+                    0.15,
+                    0.15,
+                    0.15,
+                    0.15
+                ],
+                [
+                    0.15,
+                    0.15,
+                    0.15,
+                    0.15,
+                    0.15,
+                    0.15,
+                    0.15
+                ],
+                [
+                    0.15,
+                    0.15,
+                    0.15,
+                    0.15,
+                    0.15,
+                    0.15,
+                    0.15
+                ],
+                [
+                    0.15,
+                    0.15,
+                    0.15,
+                    0.15,
+                    0.15,
+                    0.15,
+                    0.15
+                ]
+            ]
+        },
+        {
+            "name": "gold_crab",
+            "directions": 4,
+            "delays": [
+                [
+                    0.15,
+                    0.15,
+                    0.15,
+                    0.15,
+                    0.15,
+                    0.15,
+                    0.15
+                ],
+                [
+                    0.15,
+                    0.15,
+                    0.15,
+                    0.15,
+                    0.15,
+                    0.15,
+                    0.15
+                ],
+                [
+                    0.15,
+                    0.15,
+                    0.15,
+                    0.15,
+                    0.15,
+                    0.15,
+                    0.15
+                ],
+                [
+                    0.15,
+                    0.15,
+                    0.15,
+                    0.15,
+                    0.15,
+                    0.15,
+                    0.15
+                ]
+            ]
+        },
+        {
+            "name": "bananium_crab",
+            "directions": 4
+        },
+        {
+            "name": "quartz_crab",
+            "directions": 4
+        }
+    ]
 }

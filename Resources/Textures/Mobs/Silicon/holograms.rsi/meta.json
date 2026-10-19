@@ -1,24 +1,75 @@
 {
     "version": 1,
     "license": "CC-BY-SA-3.0",
-    "copyright": "Taken from vgstation at https://github.com/vgstation-coders/vgstation13/blob/e2923df112df8aa025846d0764697bad6506586a/icons/mob/AI.dmi - modified by chromiumboy.",
+    "copyright": "Taken from vgstation at https://github.com/vgstation-coders/vgstation13/blob/e2923df112df8aa025846d0764697bad6506586a/icons/mob/AI.dmi - modified by chromiumboy.. Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
     "size": {
         "x": 32,
         "y": 32
     },
     "states": [
         {
-            "name": "ai_female"
+            "name": "ai_female",
+            "delays": [
+                [
+                    0.2,
+                    0.2,
+                    0.1,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.1
+                ]
+            ]
         },
         {
-            "name": "ai_male"
+            "name": "ai_male",
+            "delays": [
+                [
+                    0.2,
+                    0.2,
+                    0.1,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.1
+                ]
+            ]
         },
         {
             "name": "ai_face",
             "delays": [
                 [
                     0.2,
-                    2.3
+                    0.2,
+                    0.1,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.1
                 ]
             ]
         },
@@ -32,7 +83,26 @@
             ]
         },
         {
-            "name": "ai_dog"
+            "name": "ai_dog",
+            "delays": [
+                [
+                    0.2,
+                    0.2,
+                    0.1,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.1
+                ]
+            ]
         }
     ]
 }

@@ -1,7 +1,7 @@
 {
     "version": 1,
     "license": "CC-BY-NC-SA-3.0",
-    "copyright": "Original sprite by Very-Soft (https://github.com/Very-Soft), edits by Hannah 'FairlySadPanda' Dawson. Displacement maps by Hannah 'FairlySadPanda' Dawson. Original creature concept by VIDEOCULT, and used with kind permission.",
+    "copyright": "Original sprite by Very-Soft (https://github.com/Very-Soft), edits by Hannah 'FairlySadPanda' Dawson. Displacement maps by Hannah 'FairlySadPanda' Dawson. Original creature concept by VIDEOCULT, and used with kind permission.. Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
     "size": {
         "x": 32,
         "y": 32
@@ -9,13 +9,139 @@
     "states": [
         {
             "name": "scurret",
-            "directions": 4
+            "directions": 4,
+            "delays": [
+                [
+                    1.0,
+                    0.05,
+                    0.05,
+                    0.1,
+                    0.05,
+                    0.05,
+                    0.05,
+                    0.1,
+                    0.05,
+                    0.05,
+                    0.05,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1
+                ],
+                [
+                    1.0,
+                    0.05,
+                    0.05,
+                    0.1,
+                    0.05,
+                    0.05,
+                    0.05,
+                    0.1,
+                    0.05,
+                    0.05,
+                    0.05,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1
+                ],
+                [
+                    1.0,
+                    0.05,
+                    0.05,
+                    0.1,
+                    0.05,
+                    0.05,
+                    0.05,
+                    0.1,
+                    0.05,
+                    0.05,
+                    0.05,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1
+                ],
+                [
+                    1.0,
+                    0.05,
+                    0.05,
+                    0.1,
+                    0.05,
+                    0.05,
+                    0.05,
+                    0.1,
+                    0.05,
+                    0.05,
+                    0.05,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1
+                ]
+            ]
         },
         {
-            "name": "scurret_rip"
+            "name": "scurret_rip",
+            "delays": [
+                [
+                    1.0,
+                    0.05,
+                    0.05,
+                    0.1,
+                    0.05,
+                    0.05,
+                    0.05,
+                    0.1,
+                    0.05,
+                    0.05,
+                    0.05,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1
+                ]
+            ]
         },
         {
-            "name": "scurret_oof"
+            "name": "scurret_oof",
+            "delays": [
+                [
+                    1.0,
+                    0.05,
+                    0.05,
+                    0.1,
+                    0.05,
+                    0.05,
+                    0.05,
+                    0.1,
+                    0.05,
+                    0.05,
+                    0.05,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1
+                ]
+            ]
         }
     ]
 }

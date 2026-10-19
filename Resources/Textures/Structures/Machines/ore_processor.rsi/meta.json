@@ -8,40 +8,13 @@
     },
     "states": [
         {
-            "name": "inserting",
-            "delays": [
-                [
-                    0.1,
-                    0.2,
-                    0.2,
-                    0.2,
-                    0.1
-                ]
-            ]
+            "name": "inserting"
         },
         {
-            "name": "building",
-            "delays": [
-                [
-                    0.1,
-                    0.2,
-                    0.2,
-                    0.2,
-                    0.1
-                ]
-            ]
+            "name": "building"
         },
         {
-            "name": "icon",
-            "delays": [
-                [
-                    0.1,
-                    0.2,
-                    0.2,
-                    0.2,
-                    0.1
-                ]
-            ]
+            "name": "icon"
         },
         {
             "name": "panel"

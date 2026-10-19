@@ -8,13 +8,55 @@
     "copyright": "Created by Aleksh#7552 (discord) for space-station-14. Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
     "states": [
         {
-            "name": "ajar"
+            "name": "ajar",
+            "delays": [
+                [
+                    0.07,
+                    0.07,
+                    0.07,
+                    0.07,
+                    0.07,
+                    0.07,
+                    0.07,
+                    0.07,
+                    0.07,
+                    0.07
+                ]
+            ]
         },
         {
-            "name": "closed"
+            "name": "closed",
+            "delays": [
+                [
+                    0.07,
+                    0.07,
+                    0.07,
+                    0.07,
+                    0.07,
+                    0.07,
+                    0.07,
+                    0.07,
+                    0.07,
+                    0.07
+                ]
+            ]
         },
         {
-            "name": "open"
+            "name": "open",
+            "delays": [
+                [
+                    0.07,
+                    0.07,
+                    0.07,
+                    0.07,
+                    0.07,
+                    0.07,
+                    0.07,
+                    0.07,
+                    0.07,
+                    0.07
+                ]
+            ]
         }
     ]
 }

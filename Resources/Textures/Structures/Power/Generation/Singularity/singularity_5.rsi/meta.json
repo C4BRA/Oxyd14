@@ -10,7 +10,19 @@
     "states": [
         {
             "name": "singularity_5",
-            "directions": 1
+            "directions": 1,
+            "delays": [
+                [
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1
+                ]
+            ]
         }
     ]
 }

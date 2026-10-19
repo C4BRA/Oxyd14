@@ -8,63 +8,19 @@
     },
     "states": [
         {
-            "name": "sheaterOff",
-            "delays": [
-                [
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1
-                ]
-            ]
+            "name": "sheaterOff"
         },
         {
-            "name": "sheaterCool",
-            "delays": [
-                [
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1
-                ]
-            ]
+            "name": "sheaterCool"
         },
         {
-            "name": "sheaterHeat",
-            "delays": [
-                [
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1
-                ]
-            ]
+            "name": "sheaterHeat"
         },
         {
             "name": "sheaterPanelOpen"
         },
         {
-            "name": "sheaterStandby",
-            "delays": [
-                [
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1
-                ]
-            ]
+            "name": "sheaterStandby"
         }
     ]
 }

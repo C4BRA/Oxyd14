@@ -8,13 +8,7 @@
     },
     "states": [
         {
-            "name": "abductor_mod",
-            "delays": [
-                [
-                    1.0,
-                    0.1
-                ]
-            ]
+            "name": "abductor_mod"
         },
         {
             "name": "airalarm_electronics"
@@ -155,13 +149,7 @@
             "name": "cpuboard_adv"
         },
         {
-            "name": "cpuboard_super",
-            "delays": [
-                [
-                    0.1,
-                    0.1
-                ]
-            ]
+            "name": "cpuboard_super"
         },
         {
             "name": "cyborg_upgrade"

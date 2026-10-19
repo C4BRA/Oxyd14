@@ -18,33 +18,7 @@
         },
         {
             "name": "staff-inhand-left",
-            "directions": 4,
-            "delays": [
-                [
-                    0.5,
-                    0.5,
-                    0.5,
-                    0.5
-                ],
-                [
-                    0.5,
-                    0.5,
-                    0.5,
-                    0.5
-                ],
-                [
-                    0.5,
-                    0.5,
-                    0.5,
-                    0.5
-                ],
-                [
-                    0.5,
-                    0.5,
-                    0.5,
-                    0.5
-                ]
-            ]
+            "directions": 4
         },
         {
             "name": "animation-inhand-left",
@@ -60,33 +34,7 @@
         },
         {
             "name": "staff-inhand-right",
-            "directions": 4,
-            "delays": [
-                [
-                    0.5,
-                    0.5,
-                    0.5,
-                    0.5
-                ],
-                [
-                    0.5,
-                    0.5,
-                    0.5,
-                    0.5
-                ],
-                [
-                    0.5,
-                    0.5,
-                    0.5,
-                    0.5
-                ],
-                [
-                    0.5,
-                    0.5,
-                    0.5,
-                    0.5
-                ]
-            ]
+            "directions": 4
         },
         {
             "name": "animation-inhand-right",
@@ -101,158 +49,29 @@
             "directions": 4
         },
         {
-            "name": "change",
-            "delays": [
-                [
-                    0.4,
-                    0.4,
-                    0.4,
-                    0.4,
-                    0.4
-                ]
-            ]
+            "name": "change"
         },
         {
             "name": "nothing"
         },
         {
-            "name": "chaos",
-            "delays": [
-                [
-                    0.5,
-                    0.5,
-                    0.5,
-                    0.5
-                ]
-            ]
+            "name": "chaos"
         },
         {
             "name": "change-inhand-left",
-            "directions": 4,
-            "delays": [
-                [
-                    0.4,
-                    0.4,
-                    0.4,
-                    0.4,
-                    0.4
-                ],
-                [
-                    0.4,
-                    0.4,
-                    0.4,
-                    0.4,
-                    0.4
-                ],
-                [
-                    0.4,
-                    0.4,
-                    0.4,
-                    0.4,
-                    0.4
-                ],
-                [
-                    0.4,
-                    0.4,
-                    0.4,
-                    0.4,
-                    0.4
-                ]
-            ]
+            "directions": 4
         },
         {
             "name": "chaos-inhand-left",
-            "directions": 4,
-            "delays": [
-                [
-                    0.4,
-                    0.4,
-                    0.4,
-                    0.4
-                ],
-                [
-                    0.4,
-                    0.4,
-                    0.4,
-                    0.4
-                ],
-                [
-                    0.4,
-                    0.4,
-                    0.4,
-                    0.4
-                ],
-                [
-                    0.4,
-                    0.4,
-                    0.4,
-                    0.4
-                ]
-            ]
+            "directions": 4
         },
         {
             "name": "change-inhand-right",
-            "directions": 4,
-            "delays": [
-                [
-                    0.4,
-                    0.4,
-                    0.4,
-                    0.4,
-                    0.4
-                ],
-                [
-                    0.4,
-                    0.4,
-                    0.4,
-                    0.4,
-                    0.4
-                ],
-                [
-                    0.4,
-                    0.4,
-                    0.4,
-                    0.4,
-                    0.4
-                ],
-                [
-                    0.4,
-                    0.4,
-                    0.4,
-                    0.4,
-                    0.4
-                ]
-            ]
+            "directions": 4
         },
         {
             "name": "chaos-inhand-right",
-            "directions": 4,
-            "delays": [
-                [
-                    0.5,
-                    0.5,
-                    0.5,
-                    0.5
-                ],
-                [
-                    0.5,
-                    0.5,
-                    0.5,
-                    0.5
-                ],
-                [
-                    0.5,
-                    0.5,
-                    0.5,
-                    0.5
-                ],
-                [
-                    0.5,
-                    0.5,
-                    0.5,
-                    0.5
-                ]
-            ]
+            "directions": 4
         },
         {
             "name": "staff-inhand-right-unshaded",

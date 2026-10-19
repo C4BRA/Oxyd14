@@ -77,7 +77,16 @@
             "directions": 4
         },
         {
-            "name": "purple"
+            "name": "purple",
+            "delays": [
+                [
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1
+                ]
+            ]
         },
         {
             "name": "purple-inhand-left",

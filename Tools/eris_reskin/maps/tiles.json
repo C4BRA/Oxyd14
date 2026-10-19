@@ -1,0 +1,1170 @@
+[
+ {
+  "file": "Tiles/Asteroid/asteroid-plating.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/asteroidfloor_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Asteroid/asteroid-tile.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/asteroidfloor_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Asteroid/asteroid.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/asteroidfloor_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Basic/Dark/dark-herringbone.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/dark_techfloor_grid_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Basic/Dark/dark-horizontal-slats.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/dark_techfloor_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Basic/Dark/dark-maint.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/tiles_dark_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Basic/Dark/dark-mini.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/tiles_dark_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Basic/Dark/dark-mono.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/dark_monofloor_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Basic/Dark/dark-pavement-vertical.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/dark_panels_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Basic/Dark/dark-pavement.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/dark_panels_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Basic/Dark/dark-plastic.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/dark_gray_platform_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Basic/Dark/dark-vertical-slats.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/dark_techfloor_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Basic/Dark/dark.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/tiles_dark_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Basic/Gray/gray-damaged.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/tiles_steel_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Basic/Gray/gray-herringbone.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/steel_techfloor_grid_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Basic/Gray/gray-horizontal-slats.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/steel_techfloor_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Basic/Gray/gray-maint.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/tiles_steel_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Basic/Gray/gray-mini.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/tiles_steel_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Basic/Gray/gray-mono.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/steel_monofloor_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Basic/Gray/gray-pavement-vertical.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/steel_panels_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Basic/Gray/gray-pavement.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/steel_panels_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Basic/Gray/gray-plastic.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/steel_gray_platform_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Basic/Gray/gray-vertical-slats.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/steel_techfloor_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Basic/Gray/gray.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/tiles_steel_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Basic/White/white-herringbone.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/white_techfloor_grid_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Basic/White/white-horizontal-slats.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/white_techfloor_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Basic/White/white-mini.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/tiles_white_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Basic/White/white-mono.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/white_monofloor_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Basic/White/white-pavement-vertical.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/white_panels_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Basic/White/white-pavement.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/white_panels_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Basic/White/white-plastic.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/white_gray_platform_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Basic/White/white-vertical-slats.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/white_techfloor_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Basic/White/white.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/tiles_white_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Cave/cave.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/tiles_steel_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": true
+ },
+ {
+  "file": "Tiles/Checker/checker-bar.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/cafe_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Checker/checker-clown.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/cafe_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Checker/checker-dark.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/tiles_dark_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Checker/checker-kitchen.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/cafe_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Checker/checker-laundry.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/cafe_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Checker/checker-light.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/cafe_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Checker/checker-mime.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/cafe_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Chromite/chromite.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/tiles_steel_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": true
+ },
+ {
+  "file": "Tiles/Circuit/circuit-blue.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/bcircuit_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Circuit/circuit-green.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/bcircuit_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Circuit/circuit-red.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/bcircuit_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Concrete/concrete-mono.png",
+  "src": [
+   {
+    "dmi": "icons/turf/flooring/misc.dmi",
+    "state": "concrete"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Concrete/concrete-smooth.png",
+  "src": [
+   {
+    "dmi": "icons/turf/flooring/misc.dmi",
+    "state": "concrete"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Concrete/concrete.png",
+  "src": [
+   {
+    "dmi": "icons/turf/flooring/misc.dmi",
+    "state": "concrete"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Desert/desert.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/asteroidfloor_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Dirt/dirt.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/dirt_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Exo/exo-borg.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/techmaint_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Exo/exo-horizontal.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/techmaint_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Exo/exo-hull.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/techmaint_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Exo/exo-maint.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/techmaint_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Exo/exo-vertical.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/techmaint_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Exo/exo-viscera.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/techmaint_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Glass/glass-plasma.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/reinforced_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Glass/glass-plastitanium.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/reinforced_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Glass/glass-reinf.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/reinforced_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Glass/glass-uranium.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/reinforced_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Glass/glass.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/reinforced_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Grass/grass.png",
+  "src": [
+   {
+    "dmi": "icons/turf/flooring/grass.dmi",
+    "state": "grass0"
+   },
+   {
+    "dmi": "icons/turf/flooring/grass.dmi",
+    "state": "grass1"
+   },
+   {
+    "dmi": "icons/turf/flooring/grass.dmi",
+    "state": "grass2"
+   },
+   {
+    "dmi": "icons/turf/flooring/grass.dmi",
+    "state": "grass3"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/GrassDark/grass.png",
+  "src": [
+   {
+    "dmi": "icons/turf/flooring/grass.dmi",
+    "state": "grass0"
+   },
+   {
+    "dmi": "icons/turf/flooring/grass.dmi",
+    "state": "grass1"
+   },
+   {
+    "dmi": "icons/turf/flooring/grass.dmi",
+    "state": "grass2"
+   },
+   {
+    "dmi": "icons/turf/flooring/grass.dmi",
+    "state": "grass3"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/GrassJungle/grass.png",
+  "src": [
+   {
+    "dmi": "icons/turf/flooring/grass.dmi",
+    "state": "grass0"
+   },
+   {
+    "dmi": "icons/turf/flooring/grass.dmi",
+    "state": "grass1"
+   },
+   {
+    "dmi": "icons/turf/flooring/grass.dmi",
+    "state": "grass2"
+   },
+   {
+    "dmi": "icons/turf/flooring/grass.dmi",
+    "state": "grass3"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/GrassLight/grass.png",
+  "src": [
+   {
+    "dmi": "icons/turf/flooring/grass.dmi",
+    "state": "grass0"
+   },
+   {
+    "dmi": "icons/turf/flooring/grass.dmi",
+    "state": "grass1"
+   },
+   {
+    "dmi": "icons/turf/flooring/grass.dmi",
+    "state": "grass2"
+   },
+   {
+    "dmi": "icons/turf/flooring/grass.dmi",
+    "state": "grass3"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Ice/ice.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/reinforced_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Ironsand/ironsand.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/tiles_steel_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": true
+ },
+ {
+  "file": "Tiles/Marble/dark-marble-mono.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/dark_monofloor_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Marble/dark-marble.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/tiles_dark_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Marble/white-marble-mono.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/white_monofloor_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Marble/white-marble.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/tiles_white_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Shuttle/shuttle-black.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/dark_techfloor_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Shuttle/shuttle-blue.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/dark_techfloor_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Shuttle/shuttle-gray.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/tiles_steel_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Shuttle/shuttle-orange.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/dark_techfloor_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Shuttle/shuttle-purple.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/dark_techfloor_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Shuttle/shuttle-red.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/dark_techfloor_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Shuttle/shuttle-white.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/tiles_white_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Snow/snow-plating.png",
+  "src": [
+   {
+    "dmi": "icons/turf/snow.dmi",
+    "state": "snow"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Snow/snow.png",
+  "src": [
+   {
+    "dmi": "icons/turf/snow.dmi",
+    "state": "snow"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Wood/wood-broken.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/wood_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Wood/wood-large.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/wood_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Wood/wood-tile.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/wood_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/Wood/wood.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/wood_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/arcadeblue.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/tiles_steel_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": true
+ },
+ {
+  "file": "Tiles/arcadeblue2.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/tiles_steel_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": true
+ },
+ {
+  "file": "Tiles/arcadered.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/tiles_steel_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": true
+ },
+ {
+  "file": "Tiles/blue.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/blucarpet_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/boxing.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/tiles_steel_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": true
+ },
+ {
+  "file": "Tiles/carpetclown.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/tiles_steel_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": true
+ },
+ {
+  "file": "Tiles/carpetoffice.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/tiles_steel_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": true
+ },
+ {
+  "file": "Tiles/cropped_parallax.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/tiles_steel_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": true
+ },
+ {
+  "file": "Tiles/debug-indestructible.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/tiles_steel_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": true
+ },
+ {
+  "file": "Tiles/eighties.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/tiles_steel_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": true
+ },
+ {
+  "file": "Tiles/foammetal.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/tiles_steel_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": true
+ },
+ {
+  "file": "Tiles/freezer.png",
+  "src": [
+   {
+    "dmi": "icons/turf/flooring/misc.dmi",
+    "state": "freezerfloor"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/gold.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/golden_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/grating-maint.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/techmaint_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/gym.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/tiles_steel_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": true
+ },
+ {
+  "file": "Tiles/hull.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/hullcenter_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/lattice.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/lattices_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/lime.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/tiles_steel_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": true
+ },
+ {
+  "file": "Tiles/lino.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/tiles_white_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/meat.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/tiles_steel_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": true
+ },
+ {
+  "file": "Tiles/metaldiamond.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/tiles_steel_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": true
+ },
+ {
+  "file": "Tiles/plating-damaged.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/plating_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/plating.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/plating_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/reinforced.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/reinforced_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/silver.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/steel_monofloor_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/super_reinforced.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/reinforced_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ },
+ {
+  "file": "Tiles/web.png",
+  "src": [
+   {
+    "png": "Oxyd/erisported/dirt_base.png"
+   }
+  ],
+  "strip": true,
+  "standin": false
+ }
+]

@@ -8,7 +8,19 @@
     },
     "states": [
         {
-            "name": "core"
+            "name": "core",
+            "delays": [
+                [
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1
+                ]
+            ]
         },
         {
             "name": "inhand-left",

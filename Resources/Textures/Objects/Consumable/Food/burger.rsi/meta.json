@@ -115,26 +115,10 @@
             "directions": 4
         },
         {
-            "name": "cheese",
-            "delays": [
-                [
-                    0.2,
-                    0.2,
-                    0.2,
-                    0.2
-                ]
-            ]
+            "name": "cheese"
         },
         {
-            "name": "cheesealt",
-            "delays": [
-                [
-                    0.2,
-                    0.2,
-                    0.2,
-                    0.2
-                ]
-            ]
+            "name": "cheesealt"
         },
         {
             "name": "chicken"

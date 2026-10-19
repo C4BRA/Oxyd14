@@ -8,7 +8,16 @@
     },
     "states": [
         {
-            "name": "xenoborg"
+            "name": "xenoborg",
+            "delays": [
+                [
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1
+                ]
+            ]
         }
     ]
 }

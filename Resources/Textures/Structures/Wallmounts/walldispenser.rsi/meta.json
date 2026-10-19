@@ -8,28 +8,10 @@
     },
     "states": [
         {
-            "name": "cleanerdispenser",
-            "delays": [
-                [
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1
-                ]
-            ]
+            "name": "cleanerdispenser"
         },
         {
-            "name": "fueldispenser",
-            "delays": [
-                [
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1
-                ]
-            ]
+            "name": "fueldispenser"
         },
         {
             "name": "fill-1"

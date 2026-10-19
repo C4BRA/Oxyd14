@@ -1,7 +1,7 @@
 {
     "version": 1,
     "license": "CC-BY-SA-3.0",
-    "copyright": "Taken from vgstation at https://github.com/vgstation-coders/vgstation13/blob/e2923df112df8aa025846d0764697bad6506586a/icons/mob/AI.dmi - modified by chromiumboy, base modified by monotheonist.",
+    "copyright": "Taken from vgstation at https://github.com/vgstation-coders/vgstation13/blob/e2923df112df8aa025846d0764697bad6506586a/icons/mob/AI.dmi - modified by chromiumboy, base modified by monotheonist.. Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
     "size": {
         "x": 32,
         "y": 32
@@ -46,10 +46,10 @@
             "name": "ai_angel_dead",
             "delays": [
                 [
-                    1.00,
+                    1.0,
                     0.08,
-                    0.50,
-                    0.20
+                    0.5,
+                    0.2
                 ]
             ]
         },
@@ -187,8 +187,21 @@
             "name": "ai_camera",
             "delays": [
                 [
-                    1.0,
-                    1.0
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1
                 ]
             ]
         },
@@ -234,10 +247,48 @@
             "directions": 4
         },
         {
-            "name": "base"
+            "name": "base",
+            "delays": [
+                [
+                    0.2,
+                    0.2,
+                    0.1,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.1
+                ]
+            ]
         },
         {
-            "name": "frame_0"
+            "name": "frame_0",
+            "delays": [
+                [
+                    0.2,
+                    0.2,
+                    0.1,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.1
+                ]
+            ]
         },
         {
             "name": "frame_1"

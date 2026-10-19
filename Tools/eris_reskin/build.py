@@ -86,6 +86,19 @@ class Builder:
             if res and "tint" in src:
                 res = Source([[palette.tint(im, src["tint"]) for im in fr] for fr in res.images], None)
             return res
+        if "mask_transfer" in src:
+            # Eris pixels cut to the reference's silhouette, then colour-matched to it, so the
+            # result slots into SS14 systems built around the reference (skin tone tinting).
+            spec = src["mask_transfer"]
+            eris_src, ref = self.resolve(spec["src"]), self.resolve(spec["ref"])
+            if eris_src is None or ref is None:
+                return None
+            images = []
+            for d in range(ref.dirs):
+                r = ref.dir_frames(d)[0]
+                e = fit(eris_src.dir_frames(d)[0], r.size)
+                images.append([palette.transfer(e, r, spec.get("keep_shape", False))])
+            return Source(images, None)
         if "merge_dirs" in src:
             inner = self.resolve(src["merge_dirs"])
             if inner is None:
@@ -118,6 +131,8 @@ class Builder:
             return Source(images, base.delays)
         if "file_png" in src:
             res = Source([[original_png(src["file_png"])]], None)
+        elif "png" in src:
+            res = Source([[Image.open(TEXTURES / src["png"]).convert("RGBA")]], None)
         elif "rsi" in src:
             res = self.from_rsi(src["rsi"], src["state"], src.get("base", False))
         else:
@@ -244,6 +259,19 @@ class Builder:
 
     def apply_file(self, entry: dict) -> int:
         path = TEXTURES / entry["file"]
+        if entry.get("strip"):
+            # Tile variant strips: one 32x32 variant per column, filled from the given sources in turn.
+            srcs = [self.resolve(s) for s in entry["src"]]
+            srcs = [s.images[0][0] for s in srcs if s]
+            if not srcs:
+                return 0
+            with Image.open(path) as old:
+                w, h = old.size
+            sheet = Image.new("RGBA", (w, h))
+            for i in range(max(1, w // h)):
+                sheet.alpha_composite(fit(srcs[i % len(srcs)], (h, h), "stretch"), (i * h, 0))
+            sheet.save(path, optimize=True)
+            return 1
         res = self.resolve(entry["src"])
         if res is None:
             return 0

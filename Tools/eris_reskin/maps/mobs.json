@@ -1,0 +1,3252 @@
+[
+ {
+  "target": "Mobs/Aliens/Argocyte/argocyte_common.rsi",
+  "standin": true,
+  "states": {
+   "slurva": [
+    "icons/mob/hivemind.dmi",
+    "mechiver-closed"
+   ],
+   "slurva_dead": [
+    "icons/mob/hivemind.dmi",
+    "mechiver-closed"
+   ],
+   "barrier": [
+    "icons/mob/animal.dmi",
+    "goat"
+   ],
+   "barrier_dead": [
+    "icons/mob/animal.dmi",
+    "goat_dead"
+   ],
+   "barrier_naked": [
+    "icons/mob/animal.dmi",
+    "goat"
+   ],
+   "barrier_naked_dead": [
+    "icons/mob/animal.dmi",
+    "goat_dead"
+   ],
+   "skitter": [
+    "icons/mob/64x64.dmi",
+    "onestar_boss_unpowered"
+   ],
+   "skitter_dead": [
+    "icons/mob/64x64.dmi",
+    "onestar_boss_unpowered"
+   ],
+   "swiper": [
+    "icons/mob/64x64.dmi",
+    "hivemind_tyrant"
+   ],
+   "swiper_dead": [
+    "icons/mob/64x64.dmi",
+    "hivemind_tyrant"
+   ],
+   "molder": [
+    "icons/obj/crate.dmi",
+    "crate"
+   ],
+   "molder_dead": [
+    "icons/obj/crate.dmi",
+    "crate"
+   ],
+   "pouncer": [
+    "icons/mob/alien.dmi",
+    "egg_growing"
+   ],
+   "pouncer_dead": [
+    "icons/mob/alien.dmi",
+    "egg_growing"
+   ],
+   "glider": [
+    "icons/mob/hivemind.dmi",
+    "bomber"
+   ],
+   "glider_dead": [
+    "icons/mob/hivemind.dmi",
+    "bomber"
+   ],
+   "harvester": [
+    "icons/mob/animal.dmi",
+    "russianranged"
+   ],
+   "harvester_dead": [
+    "icons/mob/animal.dmi",
+    "russianranged"
+   ],
+   "crawler": [
+    "icons/mob/hivemind.dmi",
+    "hiborg"
+   ],
+   "crawler_dead": [
+    "icons/mob/hivemind.dmi",
+    "hiborg-dead"
+   ],
+   "enforcer": [
+    "icons/mob/animal.dmi",
+    "russianmelee"
+   ],
+   "enforcer_dead": [
+    "icons/mob/animal.dmi",
+    "russianmelee"
+   ]
+  },
+  "eris": [
+   "icons/mob/hivemind.dmi:mechiver-closed",
+   "icons/mob/animal.dmi:goat",
+   "icons/mob/64x64.dmi:onestar_boss_unpowered",
+   "icons/mob/64x64.dmi:hivemind_tyrant",
+   "icons/obj/crate.dmi:crate",
+   "icons/mob/alien.dmi:egg_growing",
+   "icons/mob/hivemind.dmi:bomber",
+   "icons/mob/animal.dmi:russianranged",
+   "icons/mob/hivemind.dmi:hiborg",
+   "icons/mob/animal.dmi:russianmelee"
+  ]
+ },
+ {
+  "target": "Mobs/Aliens/Argocyte/argocyte_large.rsi",
+  "standin": false,
+  "states": {
+   "founder": [
+    "icons/mob/alienqueen.dmi",
+    "queen_s"
+   ],
+   "founder_dead": [
+    "icons/mob/alienqueen.dmi",
+    "queen_s"
+   ],
+   "leviathing": [
+    "icons/mob/alienqueen.dmi",
+    "queen_s"
+   ],
+   "leviathing_dead": [
+    "icons/mob/alienqueen.dmi",
+    "queen_s"
+   ]
+  },
+  "eris": [
+   "icons/mob/alienqueen.dmi:queen_s",
+   "icons/mob/alienqueen.dmi:queen_s"
+  ]
+ },
+ {
+  "target": "Mobs/Aliens/Asteroid/basilisk.rsi",
+  "standin": true,
+  "states": {
+   "basilisk": [
+    "icons/mob/alien.dmi",
+    "alienh_l"
+   ],
+   "basilisk_alert": [
+    "icons/mob/alien.dmi",
+    "alienh_l"
+   ],
+   "basilisk_dead": [
+    "icons/mob/alien.dmi",
+    "alienh_l"
+   ]
+  },
+  "eris": [
+   "icons/mob/alien.dmi:alienh_l"
+  ]
+ },
+ {
+  "target": "Mobs/Aliens/Asteroid/goliath.rsi",
+  "standin": true,
+  "states": {
+   "goliath": [
+    "icons/mob/alien.dmi",
+    "larva2"
+   ],
+   "goliath_alert": [
+    "icons/mob/alien.dmi",
+    "larva2"
+   ],
+   "goliath_preattack": [
+    "icons/mob/alien.dmi",
+    "larva2"
+   ],
+   "goliath_dead": [
+    "icons/mob/alien.dmi",
+    "larva2_dead"
+   ],
+   "goliath_tentacle_spawn": [
+    "icons/mob/critter.dmi",
+    "viscerator_attack"
+   ],
+   "goliath_tentacle_wiggle": [
+    "icons/mob/alien.dmi",
+    "larva0_cuff"
+   ],
+   "goliath_tentacle_retract": [
+    "icons/mob/hivemind.dmi",
+    "phaser-1"
+   ]
+  },
+  "eris": [
+   "icons/mob/alien.dmi:larva2",
+   "icons/mob/critter.dmi:viscerator_attack",
+   "icons/mob/alien.dmi:larva0_cuff",
+   "icons/mob/hivemind.dmi:phaser-1"
+  ]
+ },
+ {
+  "target": "Mobs/Aliens/Asteroid/hivelord.rsi",
+  "standin": true,
+  "states": {
+   "hivelord": [
+    "icons/mob/human_races/xenos/r_xenos_drone.dmi",
+    "chest_m"
+   ],
+   "hivelord_nocore": [
+    "icons/mob/human_races/xenos/r_xenos_drone.dmi",
+    "chest_m"
+   ],
+   "hivelord_alert": [
+    "icons/mob/human_races/xenos/r_xenos_drone.dmi",
+    "chest_m"
+   ],
+   "hivelord_alert_nocore": [
+    "icons/mob/human_races/xenos/r_xenos_drone.dmi",
+    "chest_m"
+   ],
+   "hivelordbrood": [
+    "icons/mob/human_races/xenos/r_xenos_drone.dmi",
+    "chest_f"
+   ]
+  },
+  "eris": [
+   "icons/mob/human_races/xenos/r_xenos_drone.dmi:chest_m",
+   "icons/mob/human_races/xenos/r_xenos_drone.dmi:chest_f"
+  ]
+ },
+ {
+  "target": "Mobs/Aliens/Carps/dragon.rsi",
+  "standin": false,
+  "states": {
+   "alive": [
+    "icons/mob/animal.dmi",
+    "carp"
+   ],
+   "crit": [
+    "icons/mob/animal.dmi",
+    "carp"
+   ]
+  },
+  "eris": [
+   "icons/mob/animal.dmi:carp"
+  ]
+ },
+ {
+  "target": "Mobs/Aliens/Carps/holo.rsi",
+  "standin": false,
+  "states": {
+   "icon": [
+    "icons/mob/AI.dmi",
+    "holo4"
+   ],
+   "dead": [
+    "icons/mob/AI.dmi",
+    "holo4"
+   ],
+   "alive": [
+    "icons/mob/AI.dmi",
+    "holo4"
+   ]
+  },
+  "eris": [
+   "icons/mob/AI.dmi:holo4"
+  ]
+ },
+ {
+  "target": "Mobs/Aliens/Carps/magic.rsi",
+  "standin": false,
+  "states": {
+   "icon": [
+    "icons/mob/animal.dmi",
+    "carp"
+   ],
+   "dead": [
+    "icons/mob/animal.dmi",
+    "carp_dead"
+   ],
+   "alive": [
+    "icons/mob/animal.dmi",
+    "carp"
+   ],
+   "gib": [
+    "icons/mob/animal.dmi",
+    "carp_gib"
+   ]
+  },
+  "eris": [
+   "icons/mob/animal.dmi:carp"
+  ]
+ },
+ {
+  "target": "Mobs/Aliens/Carps/sharkminnow.rsi",
+  "standin": false,
+  "states": {
+   "alive": [
+    "icons/mob/spaceshark.dmi",
+    "shark"
+   ],
+   "icon": [
+    "icons/mob/spaceshark.dmi",
+    "shark"
+   ],
+   "dead": [
+    "icons/mob/spaceshark.dmi",
+    "shark_dead"
+   ]
+  },
+  "eris": [
+   "icons/mob/spaceshark.dmi:shark"
+  ]
+ },
+ {
+  "target": "Mobs/Aliens/Carps/space.rsi",
+  "standin": true,
+  "states": {
+   "alive": [
+    "icons/mob/spaceshark.dmi",
+    "shark"
+   ],
+   "icon": [
+    "icons/mob/spaceshark.dmi",
+    "shark"
+   ],
+   "dead": [
+    "icons/mob/spaceshark.dmi",
+    "shark_dead"
+   ],
+   "gib": [
+    "icons/mob/spaceshark.dmi",
+    "shark"
+   ]
+  },
+  "eris": [
+   "icons/mob/spaceshark.dmi:shark"
+  ]
+ },
+ {
+  "target": "Mobs/Aliens/Guardians/guardians.rsi",
+  "standin": true,
+  "states": {
+   "tech_base": [
+    "icons/obj/flora/pinetrees.dmi",
+    "pine_1"
+   ],
+   "magic_base": [
+    "icons/mob/animal.dmi",
+    "syndicateranged"
+   ],
+   "holoclown_base": [
+    "icons/mob/animal.dmi",
+    "clown"
+   ]
+  },
+  "eris": [
+   "icons/obj/flora/pinetrees.dmi:pine_1",
+   "icons/mob/animal.dmi:syndicateranged",
+   "icons/mob/animal.dmi:clown"
+  ]
+ },
+ {
+  "target": "Mobs/Aliens/Lavaland/watcher.rsi",
+  "standin": true,
+  "states": {
+   "base": [
+    "icons/mob/animal.dmi",
+    "strangerranged"
+   ],
+   "unshaded": [
+    "icons/mob/animal.dmi",
+    "strangerranged"
+   ],
+   "dead": [
+    "icons/mob/animal.dmi",
+    "strangerranged"
+   ],
+   "dead-unshaded": [
+    "icons/mob/animal.dmi",
+    "strangerranged"
+   ]
+  },
+  "eris": [
+   "icons/mob/animal.dmi:strangerranged"
+  ]
+ },
+ {
+  "target": "Mobs/Aliens/Xenos/burrower.rsi",
+  "standin": true,
+  "states": {
+   "running": [
+    "icons/mob/hivemind.dmi",
+    "himan"
+   ],
+   "walking": [
+    "icons/mob/hivemind.dmi",
+    "himan"
+   ],
+   "dead": [
+    "icons/mob/hivemind.dmi",
+    "himan-dead"
+   ],
+   "sleeping": [
+    "icons/mob/hivemind.dmi",
+    "himan"
+   ],
+   "crit": [
+    "icons/mob/hivemind.dmi",
+    "himan"
+   ]
+  },
+  "eris": [
+   "icons/mob/hivemind.dmi:himan"
+  ]
+ },
+ {
+  "target": "Mobs/Aliens/Xenos/drone.rsi",
+  "standin": true,
+  "states": {
+   "running": [
+    "icons/mob/alien.dmi",
+    "Drone Front Half"
+   ],
+   "sleeping": [
+    "icons/mob/alien.dmi",
+    "Drone Front Half"
+   ],
+   "crit": [
+    "icons/mob/alien.dmi",
+    "Drone Front Half"
+   ],
+   "dead": [
+    "icons/mob/alien.dmi",
+    "Drone Front Half"
+   ]
+  },
+  "eris": [
+   "icons/mob/alien.dmi:Drone Front Half"
+  ]
+ },
+ {
+  "target": "Mobs/Aliens/Xenos/praetorian.rsi",
+  "standin": false,
+  "states": {
+   "running": [
+    "icons/mob/alien.dmi",
+    "Praetorian Front Half"
+   ],
+   "sleeping": [
+    "icons/mob/alien.dmi",
+    "Praetorian Front Half"
+   ],
+   "crit": [
+    "icons/mob/alien.dmi",
+    "Praetorian Front Half"
+   ],
+   "dead": [
+    "icons/mob/alien.dmi",
+    "Praetorian Front Half"
+   ]
+  },
+  "eris": [
+   "icons/mob/alien.dmi:Praetorian Front Half"
+  ]
+ },
+ {
+  "target": "Mobs/Aliens/Xenos/purple_snake.rsi",
+  "standin": true,
+  "states": {
+   "purple_snake": [
+    "icons/mob/animal.dmi",
+    "syndicatemeleespace"
+   ],
+   "small_purple_snake": [
+    "icons/mob/animal.dmi",
+    "bear"
+   ]
+  },
+  "eris": [
+   "icons/mob/animal.dmi:syndicatemeleespace",
+   "icons/mob/animal.dmi:bear"
+  ]
+ },
+ {
+  "target": "Mobs/Aliens/Xenos/queen.rsi",
+  "standin": false,
+  "states": {
+   "running": [
+    "icons/mob/alienqueen.dmi",
+    "queen_dead"
+   ],
+   "sleeping": [
+    "icons/mob/alienqueen.dmi",
+    "queen_dead"
+   ],
+   "crit": [
+    "icons/mob/alienqueen.dmi",
+    "queen_dead"
+   ],
+   "dead": [
+    "icons/mob/alienqueen.dmi",
+    "queen_dead"
+   ]
+  },
+  "eris": [
+   "icons/mob/alienqueen.dmi:queen_dead"
+  ]
+ },
+ {
+  "target": "Mobs/Aliens/Xenos/ravager.rsi",
+  "standin": true,
+  "states": {
+   "running": [
+    "icons/mob/alien.dmi",
+    "Crawl"
+   ],
+   "sleeping": [
+    "icons/mob/alien.dmi",
+    "Crawl"
+   ],
+   "crit": [
+    "icons/mob/alien.dmi",
+    "Crawl"
+   ],
+   "dead": [
+    "icons/mob/alien.dmi",
+    "Crawl"
+   ]
+  },
+  "eris": [
+   "icons/mob/alien.dmi:Crawl"
+  ]
+ },
+ {
+  "target": "Mobs/Aliens/Xenos/rouny.rsi",
+  "standin": true,
+  "states": {
+   "running": [
+    "icons/mob/critter.dmi",
+    "naniteroach"
+   ],
+   "sleeping": [
+    "icons/mob/critter.dmi",
+    "naniteroach"
+   ],
+   "dead": [
+    "icons/mob/critter.dmi",
+    "dead"
+   ],
+   "crit": [
+    "icons/mob/critter.dmi",
+    "naniteroach"
+   ]
+  },
+  "eris": [
+   "icons/mob/critter.dmi:naniteroach"
+  ]
+ },
+ {
+  "target": "Mobs/Aliens/Xenos/runner.rsi",
+  "standin": true,
+  "states": {
+   "running": [
+    "icons/mob/critter.dmi",
+    "naniteroach"
+   ],
+   "sleeping": [
+    "icons/mob/critter.dmi",
+    "naniteroach"
+   ],
+   "crit": [
+    "icons/mob/critter.dmi",
+    "naniteroach"
+   ],
+   "dead": [
+    "icons/mob/critter.dmi",
+    "dead"
+   ]
+  },
+  "eris": [
+   "icons/mob/critter.dmi:naniteroach"
+  ]
+ },
+ {
+  "target": "Mobs/Aliens/Xenos/spacetick.rsi",
+  "standin": true,
+  "states": {
+   "alive": [
+    "icons/mob/animal.dmi",
+    "syndicaterangedpsace"
+   ],
+   "icon": [
+    "icons/mob/animal.dmi",
+    "syndicaterangedpsace"
+   ],
+   "dead": [
+    "icons/mob/animal.dmi",
+    "syndicaterangedpsace"
+   ]
+  },
+  "eris": [
+   "icons/mob/animal.dmi:syndicaterangedpsace"
+  ]
+ },
+ {
+  "target": "Mobs/Aliens/Xenos/spitter.rsi",
+  "standin": true,
+  "states": {
+   "running": [
+    "icons/mob/battle_roomba.dmi",
+    "boomba"
+   ],
+   "sleeping": [
+    "icons/mob/battle_roomba.dmi",
+    "boomba"
+   ],
+   "crit": [
+    "icons/mob/battle_roomba.dmi",
+    "boomba"
+   ],
+   "dead": [
+    "icons/mob/battle_roomba.dmi",
+    "boomba"
+   ]
+  },
+  "eris": [
+   "icons/mob/battle_roomba.dmi:boomba"
+  ]
+ },
+ {
+  "target": "Mobs/Aliens/elemental.rsi",
+  "standin": false,
+  "states": {
+   "alive": [
+    "icons/mob/alien.dmi",
+    "acid"
+   ],
+   "dead": [
+    "icons/mob/alien.dmi",
+    "acid"
+   ]
+  },
+  "eris": [
+   "icons/mob/alien.dmi:acid"
+  ]
+ },
+ {
+  "target": "Mobs/Aliens/flesh.rsi",
+  "standin": true,
+  "states": {
+   "jared": [
+    "icons/mob/alien.dmi",
+    "alienh_s_old"
+   ],
+   "golem": [
+    "icons/mob/alien.dmi",
+    "alien_l"
+   ],
+   "clamp": [
+    "icons/mob/alien.dmi",
+    "aliend_s"
+   ],
+   "lover": [
+    "icons/mob/alien.dmi",
+    "alienq_s"
+   ]
+  },
+  "eris": [
+   "icons/mob/alien.dmi:alienh_s_old",
+   "icons/mob/alien.dmi:alien_l",
+   "icons/mob/alien.dmi:aliend_s",
+   "icons/mob/alien.dmi:alienq_s"
+  ]
+ },
+ {
+  "target": "Mobs/Aliens/hivebot.rsi",
+  "standin": false,
+  "states": {
+   "basic_attack": [
+    "icons/mob/alien.dmi",
+    "aliens_s"
+   ],
+   "ranged_attack": [
+    "icons/mob/hivebot.dmi",
+    "range"
+   ],
+   "strong_attack": [
+    "icons/mob/alien.dmi",
+    "alien_s"
+   ]
+  },
+  "eris": [
+   "icons/mob/alien.dmi:aliens_s",
+   "icons/mob/hivebot.dmi:range",
+   "icons/mob/alien.dmi:alien_s"
+  ]
+ },
+ {
+  "target": "Mobs/Aliens/laser_raptor.rsi",
+  "standin": false,
+  "states": {
+   "laser_raptor": [
+    "icons/mob/alien.dmi",
+    "aliens_s"
+   ],
+   "laser_raptor_dead": [
+    "icons/mob/alien.dmi",
+    "aliens_s"
+   ]
+  },
+  "eris": [
+   "icons/mob/alien.dmi:aliens_s"
+  ]
+ },
+ {
+  "target": "Mobs/Aliens/paradox_clone.rsi",
+  "standin": false,
+  "states": {
+   "preview": [
+    "icons/mob/alien.dmi",
+    "alien_s"
+   ],
+   "paradox": [
+    "icons/mob/alien.dmi",
+    "alien_s"
+   ]
+  },
+  "eris": [
+   "icons/mob/alien.dmi:alien_s",
+   "icons/mob/alien.dmi:alien_s"
+  ]
+ },
+ {
+  "target": "Mobs/Aliens/slimes.rsi",
+  "standin": false,
+  "states": {
+   "blue_adult_slime": [
+    "icons/mob/alien.dmi",
+    "alien_s"
+   ],
+   "blue_adult_slime_dead": [
+    "icons/mob/alien.dmi",
+    "alien_s"
+   ],
+   "green_adult_slime": [
+    "icons/mob/alien.dmi",
+    "aliens_s"
+   ],
+   "green_adult_slime_dead": [
+    "icons/mob/alien.dmi",
+    "aliens_s"
+   ],
+   "yellow_adult_slime": [
+    "icons/mob/alien.dmi",
+    "aliens_dead"
+   ],
+   "yellow_adult_slime_dead": [
+    "icons/mob/alien.dmi",
+    "aliens_dead"
+   ],
+   "rainbow_slime_extract": [
+    "icons/mob/alien.dmi",
+    "aliens_dead"
+   ]
+  },
+  "eris": [
+   "icons/mob/alien.dmi:alien_s",
+   "icons/mob/alien.dmi:aliens_s",
+   "icons/mob/alien.dmi:aliens_dead",
+   "icons/mob/alien.dmi:aliens_dead"
+  ]
+ },
+ {
+  "target": "Mobs/Animals/bat.rsi",
+  "standin": true,
+  "states": {
+   "bat": [
+    "icons/mob/bats.dmi",
+    "bat"
+   ]
+  },
+  "eris": [
+   "icons/mob/bats.dmi:bat"
+  ]
+ },
+ {
+  "target": "Mobs/Animals/bear.rsi",
+  "standin": false,
+  "states": {
+   "bear": [
+    "icons/mob/animal.dmi",
+    "bear"
+   ],
+   "bear_dead": [
+    "icons/mob/animal.dmi",
+    "bear_dead"
+   ]
+  },
+  "eris": [
+   "icons/mob/animal.dmi:bear"
+  ]
+ },
+ {
+  "target": "Mobs/Animals/bee.rsi",
+  "standin": true,
+  "states": {
+   "dead": [
+    "icons/mob/animal.dmi",
+    "parrot_fly"
+   ],
+   "0": [
+    "icons/mob/animal.dmi",
+    "parrot_fly"
+   ],
+   "1": [
+    "icons/mob/animal.dmi",
+    "parrot_fly"
+   ],
+   "2": [
+    "icons/mob/animal.dmi",
+    "parrot_fly"
+   ],
+   "3": [
+    "icons/mob/animal.dmi",
+    "parrot_fly"
+   ],
+   "4": [
+    "icons/mob/animal.dmi",
+    "parrot_fly"
+   ]
+  },
+  "eris": [
+   "icons/mob/animal.dmi:parrot_fly"
+  ]
+ },
+ {
+  "target": "Mobs/Animals/buffrat.rsi",
+  "standin": true,
+  "states": {
+   "regalrat": [
+    "icons/mob/animal.dmi",
+    "mushroom"
+   ],
+   "dead": [
+    "icons/mob/animal.dmi",
+    "mushroom_dead"
+   ],
+   "icon": [
+    "icons/mob/animal.dmi",
+    "mushroom"
+   ]
+  },
+  "eris": [
+   "icons/mob/animal.dmi:mushroom"
+  ]
+ },
+ {
+  "target": "Mobs/Animals/butterfly.rsi",
+  "standin": false,
+  "states": {
+   "butterfly": [
+    "icons/mob/iriska.dmi",
+    "iriska"
+   ],
+   "dead": [
+    "icons/mob/iriska.dmi",
+    "iriska_dead"
+   ]
+  },
+  "eris": [
+   "icons/mob/iriska.dmi:iriska"
+  ]
+ },
+ {
+  "target": "Mobs/Animals/chick.rsi",
+  "standin": false,
+  "states": {
+   "dead": [
+    "icons/mob/animal.dmi",
+    "chick"
+   ],
+   "chick": [
+    "icons/mob/animal.dmi",
+    "chick"
+   ],
+   "gib": [
+    "icons/mob/animal.dmi",
+    "chick_gib"
+   ]
+  },
+  "eris": [
+   "icons/mob/animal.dmi:chick"
+  ]
+ },
+ {
+  "target": "Mobs/Animals/chicken.rsi",
+  "standin": false,
+  "states": {
+   "chicken-0": [
+    "icons/mob/animal.dmi",
+    "chicken_black"
+   ],
+   "chicken-1": [
+    "icons/mob/animal.dmi",
+    "chicken_brown"
+   ],
+   "chicken-2": [
+    "icons/mob/animal.dmi",
+    "chicken_white"
+   ]
+  },
+  "eris": [
+   "icons/mob/animal.dmi:chicken_black",
+   "icons/mob/animal.dmi:chicken_brown",
+   "icons/mob/animal.dmi:chicken_white"
+  ]
+ },
+ {
+  "target": "Mobs/Animals/clownspider.rsi",
+  "standin": false,
+  "states": {
+   "clown": [
+    "icons/mob/animal.dmi",
+    "clown"
+   ],
+   "dead": [
+    "icons/mob/animal.dmi",
+    "clown_dead"
+   ]
+  },
+  "eris": [
+   "icons/mob/animal.dmi:clown"
+  ]
+ },
+ {
+  "target": "Mobs/Animals/cockroach.rsi",
+  "standin": false,
+  "states": {
+   "cockroach": [
+    "icons/mob/animal.dmi",
+    "roach"
+   ],
+   "cockroach_dead": [
+    "icons/mob/animal.dmi",
+    "roach_dead"
+   ],
+   "cockroach_icon": [
+    "icons/mob/animal.dmi",
+    "roach"
+   ],
+   "glockroach": [
+    "icons/mob/animal.dmi",
+    "roach"
+   ]
+  },
+  "eris": [
+   "icons/mob/animal.dmi:roach",
+   "icons/mob/animal.dmi:roach"
+  ]
+ },
+ {
+  "target": "Mobs/Animals/cow.rsi",
+  "standin": false,
+  "states": {
+   "cow": [
+    "icons/mob/animal.dmi",
+    "cow"
+   ],
+   "dead": [
+    "icons/mob/animal.dmi",
+    "cow_dead"
+   ],
+   "gib": [
+    "icons/mob/animal.dmi",
+    "cow_gib"
+   ]
+  },
+  "eris": [
+   "icons/mob/animal.dmi:cow"
+  ]
+ },
+ {
+  "target": "Mobs/Animals/crab.rsi",
+  "standin": false,
+  "states": {
+   "crab": [
+    "icons/mob/animal.dmi",
+    "crab"
+   ],
+   "crab-moving": [
+    "icons/mob/animal.dmi",
+    "crab"
+   ],
+   "dead": [
+    "icons/mob/animal.dmi",
+    "crab_dead"
+   ]
+  },
+  "eris": [
+   "icons/mob/animal.dmi:crab"
+  ]
+ },
+ {
+  "target": "Mobs/Animals/duck.rsi",
+  "standin": true,
+  "states": {
+   "duck-0": [
+    "icons/mob/animal.dmi",
+    "cat2"
+   ],
+   "duck-1": [
+    "icons/mob/mouse.dmi",
+    "mouse_white"
+   ],
+   "duck-2": [
+    "icons/mob/animal.dmi",
+    "mouse_brown"
+   ]
+  },
+  "eris": [
+   "icons/mob/animal.dmi:cat2",
+   "icons/mob/mouse.dmi:mouse_white",
+   "icons/mob/animal.dmi:mouse_brown"
+  ]
+ },
+ {
+  "target": "Mobs/Animals/fox.rsi",
+  "standin": false,
+  "states": {
+   "fox": [
+    "icons/mob/animal.dmi",
+    "corgi"
+   ],
+   "fox-moving": [
+    "icons/mob/animal.dmi",
+    "corgi"
+   ],
+   "fox_dead": [
+    "icons/mob/animal.dmi",
+    "corgi_dead"
+   ]
+  },
+  "eris": [
+   "icons/mob/animal.dmi:corgi"
+  ]
+ },
+ {
+  "target": "Mobs/Animals/frog.rsi",
+  "standin": true,
+  "states": {
+   "frog": [
+    "icons/mob/armalis.dmi",
+    "armalis_naked"
+   ],
+   "frog-moving": [
+    "icons/mob/armalis.dmi",
+    "armalis_naked"
+   ],
+   "dead": [
+    "icons/mob/armalis.dmi",
+    "armalis_naked_dead"
+   ]
+  },
+  "eris": [
+   "icons/mob/armalis.dmi:armalis_naked"
+  ]
+ },
+ {
+  "target": "Mobs/Animals/goat.rsi",
+  "standin": false,
+  "states": {
+   "goat": [
+    "icons/mob/animal.dmi",
+    "goat"
+   ],
+   "dead": [
+    "icons/mob/animal.dmi",
+    "goat_dead"
+   ]
+  },
+  "eris": [
+   "icons/mob/animal.dmi:goat"
+  ]
+ },
+ {
+  "target": "Mobs/Animals/goose.rsi",
+  "standin": false,
+  "states": {
+   "goose": [
+    "icons/mob/animal.dmi",
+    "corgi"
+   ],
+   "dead": [
+    "icons/mob/animal.dmi",
+    "corgi_dead"
+   ],
+   "vomit": [
+    "icons/mob/animal.dmi",
+    "corgi"
+   ],
+   "vomit_end": [
+    "icons/mob/animal.dmi",
+    "corgi"
+   ],
+   "vomit_start": [
+    "icons/mob/animal.dmi",
+    "corgi"
+   ]
+  },
+  "eris": [
+   "icons/mob/animal.dmi:corgi"
+  ]
+ },
+ {
+  "target": "Mobs/Animals/gorilla.rsi",
+  "standin": false,
+  "states": {
+   "crawling": [
+    "icons/mob/animal.dmi",
+    "cow"
+   ],
+   "icon": [
+    "icons/mob/animal.dmi",
+    "cow"
+   ],
+   "dead": [
+    "icons/mob/animal.dmi",
+    "cow_dead"
+   ],
+   "standing": [
+    "icons/mob/animal.dmi",
+    "cow"
+   ]
+  },
+  "eris": [
+   "icons/mob/animal.dmi:cow"
+  ]
+ },
+ {
+  "target": "Mobs/Animals/grenadepenguin.rsi",
+  "standin": true,
+  "states": {
+   "penguin": [
+    "icons/mob/animal.dmi",
+    "mushroom"
+   ],
+   "icon": [
+    "icons/mob/animal.dmi",
+    "mushroom"
+   ]
+  },
+  "eris": [
+   "icons/mob/animal.dmi:mushroom"
+  ]
+ },
+ {
+  "target": "Mobs/Animals/hamster.rsi",
+  "standin": true,
+  "states": {
+   "hamster-0": [
+    "icons/mob/animal.dmi",
+    "chick"
+   ],
+   "icon-0": [
+    "icons/mob/animal.dmi",
+    "chick"
+   ],
+   "hamster-moving-0": [
+    "icons/mob/animal.dmi",
+    "chick"
+   ],
+   "dead-0": [
+    "icons/mob/animal.dmi",
+    "chick_dead"
+   ],
+   "splat-0": [
+    "icons/mob/animal.dmi",
+    "chick"
+   ]
+  },
+  "eris": [
+   "icons/mob/animal.dmi:chick"
+  ]
+ },
+ {
+  "target": "Mobs/Animals/headslug.rsi",
+  "standin": false,
+  "states": {
+   "slug": [
+    "icons/mob/animal.dmi",
+    "spacewormheaddead"
+   ],
+   "slug_dead": [
+    "icons/mob/animal.dmi",
+    "spacewormheaddead"
+   ],
+   "icon": [
+    "icons/mob/animal.dmi",
+    "spacewormheaddead"
+   ]
+  },
+  "eris": [
+   "icons/mob/animal.dmi:spacewormheaddead"
+  ]
+ },
+ {
+  "target": "Mobs/Animals/kangaroo.rsi",
+  "standin": false,
+  "states": {
+   "kangaroo-space": [
+    "icons/mob/animal.dmi",
+    "bear"
+   ],
+   "kangaroo-space-crit": [
+    "icons/mob/animal.dmi",
+    "bear"
+   ],
+   "kangaroo-space-dead": [
+    "icons/mob/animal.dmi",
+    "bear_dead"
+   ],
+   "kangaroo": [
+    "icons/jungle.dmi",
+    "yithian"
+   ],
+   "kangaroo-dead": [
+    "icons/jungle.dmi",
+    "yithian_dead"
+   ],
+   "kangaroo-crit": [
+    "icons/jungle.dmi",
+    "yithian"
+   ]
+  },
+  "eris": [
+   "icons/mob/animal.dmi:bear",
+   "icons/jungle.dmi:yithian"
+  ]
+ },
+ {
+  "target": "Mobs/Animals/kobold.rsi",
+  "standin": false,
+  "states": {
+   "kobold": [
+    "icons/mob/animal.dmi",
+    "syndicate"
+   ]
+  },
+  "eris": [
+   "icons/mob/animal.dmi:syndicate"
+  ]
+ },
+ {
+  "target": "Mobs/Animals/lizard.rsi",
+  "standin": false,
+  "states": {
+   "lizard": [
+    "icons/mob/critter.dmi",
+    "lizard"
+   ],
+   "dead": [
+    "icons/mob/critter.dmi",
+    "lizard_dead"
+   ]
+  },
+  "eris": [
+   "icons/mob/critter.dmi:lizard"
+  ]
+ },
+ {
+  "target": "Mobs/Animals/monkey.rsi",
+  "standin": true,
+  "states": {
+   "monkey": [
+    "icons/mob/animal.dmi",
+    "syndicatemelee"
+   ]
+  },
+  "eris": [
+   "icons/mob/animal.dmi:syndicatemelee"
+  ]
+ },
+ {
+  "target": "Mobs/Animals/mothroach/moproach.rsi",
+  "standin": true,
+  "states": {
+   "icon": [
+    "icons/mob/animal.dmi",
+    "fuhrer"
+   ],
+   "mothroach": [
+    "icons/mob/animal.dmi",
+    "fuhrer"
+   ],
+   "mothroach-moving": [
+    "icons/mob/animal.dmi",
+    "fuhrer"
+   ],
+   "mothroach_dead": [
+    "icons/mob/animal.dmi",
+    "fuhrer_dead"
+   ]
+  },
+  "eris": [
+   "icons/mob/animal.dmi:fuhrer"
+  ]
+ },
+ {
+  "target": "Mobs/Animals/mothroach/mothroach.rsi",
+  "standin": true,
+  "states": {
+   "mothroach": [
+    "icons/mob/animal.dmi",
+    "roachling"
+   ],
+   "icon": [
+    "icons/mob/animal.dmi",
+    "roachling"
+   ],
+   "mothroach-moving": [
+    "icons/mob/animal.dmi",
+    "roachling"
+   ],
+   "mothroach_lazy": [
+    "icons/mob/animal.dmi",
+    "roachling"
+   ],
+   "mothroach_sleep": [
+    "icons/mob/animal.dmi",
+    "roachling"
+   ],
+   "mothroach_dead": [
+    "icons/mob/animal.dmi",
+    "roachling_dead"
+   ]
+  },
+  "eris": [
+   "icons/mob/animal.dmi:roachling"
+  ]
+ },
+ {
+  "target": "Mobs/Animals/mouse.rsi",
+  "standin": false,
+  "states": {
+   "mouse-0": [
+    "icons/mob/mouse.dmi",
+    "mouse_gray"
+   ],
+   "mouse-1": [
+    "icons/mob/mouse.dmi",
+    "mouse_brown"
+   ],
+   "mouse-2": [
+    "icons/mob/mouse.dmi",
+    "mouse_gray"
+   ]
+  },
+  "eris": [
+   "icons/mob/mouse.dmi:mouse_gray",
+   "icons/mob/mouse.dmi:mouse_brown",
+   "icons/mob/mouse.dmi:mouse_gray"
+  ]
+ },
+ {
+  "target": "Mobs/Animals/nymph.rsi",
+  "standin": true,
+  "states": {
+   "nymph": [
+    "icons/jungle.dmi",
+    "yithian"
+   ],
+   "nymph_dead": [
+    "icons/jungle.dmi",
+    "yithian_dead"
+   ],
+   "nymph_sleep": [
+    "icons/jungle.dmi",
+    "yithian"
+   ],
+   "icon": [
+    "icons/jungle.dmi",
+    "yithian"
+   ]
+  },
+  "eris": [
+   "icons/jungle.dmi:yithian"
+  ]
+ },
+ {
+  "target": "Mobs/Animals/parrot/parrot.rsi",
+  "standin": false,
+  "states": {
+   "icon": [
+    "icons/mob/animal.dmi",
+    "parrot_sit"
+   ],
+   "parrot": [
+    "icons/mob/animal.dmi",
+    "parrot_sit"
+   ]
+  },
+  "eris": [
+   "icons/mob/animal.dmi:parrot_sit"
+  ]
+ },
+ {
+  "target": "Mobs/Animals/penguin.rsi",
+  "standin": false,
+  "states": {
+   "penguin": [
+    "icons/mob/iriska.dmi",
+    "iriska"
+   ],
+   "penguin_dead": [
+    "icons/mob/iriska.dmi",
+    "iriska_dead"
+   ],
+   "penguin_dead_blood": [
+    "icons/mob/iriska.dmi",
+    "iriska_dead"
+   ],
+   "penguin_shamebrero": [
+    "icons/mob/iriska.dmi",
+    "iriska"
+   ]
+  },
+  "eris": [
+   "icons/mob/iriska.dmi:iriska"
+  ]
+ },
+ {
+  "target": "Mobs/Animals/pig.rsi",
+  "standin": false,
+  "states": {
+   "pig": [
+    "icons/mob/animal.dmi",
+    "crab"
+   ],
+   "dead": [
+    "icons/mob/animal.dmi",
+    "crab_dead"
+   ]
+  },
+  "eris": [
+   "icons/mob/animal.dmi:crab"
+  ]
+ },
+ {
+  "target": "Mobs/Animals/possum.rsi",
+  "standin": false,
+  "states": {
+   "poppy": [
+    "icons/jungle.dmi",
+    "yithian"
+   ],
+   "poppy_dead": [
+    "icons/jungle.dmi",
+    "yithian_dead"
+   ],
+   "possum": [
+    "icons/mob/iriska.dmi",
+    "iriska"
+   ],
+   "possum_dead": [
+    "icons/mob/iriska.dmi",
+    "iriska_dead"
+   ]
+  },
+  "eris": [
+   "icons/jungle.dmi:yithian",
+   "icons/mob/iriska.dmi:iriska"
+  ]
+ },
+ {
+  "target": "Mobs/Animals/possum_old.rsi",
+  "standin": false,
+  "states": {
+   "possum_old": [
+    "icons/mob/animal.dmi",
+    "cow"
+   ],
+   "possum_dead_old": [
+    "icons/mob/animal.dmi",
+    "cow_dead"
+   ]
+  },
+  "eris": [
+   "icons/mob/animal.dmi:cow"
+  ]
+ },
+ {
+  "target": "Mobs/Animals/raccoon.rsi",
+  "standin": true,
+  "states": {
+   "raccoon": [
+    "icons/mob/robots.dmi",
+    "spiderbot-chassis"
+   ],
+   "raccoon_dead": [
+    "icons/mob/robots.dmi",
+    "spiderbot-chassis"
+   ]
+  },
+  "eris": [
+   "icons/mob/robots.dmi:spiderbot-chassis"
+  ]
+ },
+ {
+  "target": "Mobs/Animals/rat.rsi",
+  "standin": false,
+  "states": {
+   "rat": [
+    "icons/mob/animal.dmi",
+    "corgi"
+   ],
+   "icon": [
+    "icons/mob/animal.dmi",
+    "corgi"
+   ],
+   "rat-moving": [
+    "icons/mob/animal.dmi",
+    "corgi"
+   ],
+   "dead": [
+    "icons/mob/animal.dmi",
+    "corgi_dead"
+   ],
+   "splat": [
+    "icons/mob/animal.dmi",
+    "corgi"
+   ]
+  },
+  "eris": [
+   "icons/mob/animal.dmi:corgi"
+  ]
+ },
+ {
+  "target": "Mobs/Animals/regalrat.rsi",
+  "standin": true,
+  "states": {
+   "regalrat": [
+    "icons/mob/animal.dmi",
+    "spider_core"
+   ],
+   "critical": [
+    "icons/mob/animal.dmi",
+    "spider_core"
+   ],
+   "dead": [
+    "icons/mob/animal.dmi",
+    "spider_core"
+   ],
+   "icon": [
+    "icons/mob/animal.dmi",
+    "spider_core"
+   ]
+  },
+  "eris": [
+   "icons/mob/animal.dmi:spider_core"
+  ]
+ },
+ {
+  "target": "Mobs/Animals/reindeer_buck.rsi",
+  "standin": true,
+  "states": {
+   "reindeer_buck": [
+    "icons/mob/animal.dmi",
+    "brainslug"
+   ],
+   "reindeer_buck_still": [
+    "icons/mob/animal.dmi",
+    "brainslug"
+   ],
+   "reindeer_buck_dead": [
+    "icons/mob/animal.dmi",
+    "brainslug_dead"
+   ]
+  },
+  "eris": [
+   "icons/mob/animal.dmi:brainslug"
+  ]
+ },
+ {
+  "target": "Mobs/Animals/reindeer_doe.rsi",
+  "standin": true,
+  "states": {
+   "reindeer_doe": [
+    "icons/mob/animal.dmi",
+    "brainslug"
+   ],
+   "reindeer_doe_still": [
+    "icons/mob/animal.dmi",
+    "brainslug"
+   ],
+   "reindeer_doe_dead": [
+    "icons/mob/animal.dmi",
+    "brainslug_dead"
+   ]
+  },
+  "eris": [
+   "icons/mob/animal.dmi:brainslug"
+  ]
+ },
+ {
+  "target": "Mobs/Animals/scurret/scurret.rsi",
+  "standin": false,
+  "states": {
+   "scurret": [
+    "icons/mob/animal.dmi",
+    "seuche"
+   ],
+   "scurret_rip": [
+    "icons/mob/animal.dmi",
+    "seuche"
+   ],
+   "scurret_oof": [
+    "icons/mob/animal.dmi",
+    "seuche"
+   ]
+  },
+  "eris": [
+   "icons/mob/animal.dmi:seuche"
+  ]
+ },
+ {
+  "target": "Mobs/Animals/sheep.rsi",
+  "standin": false,
+  "states": {
+   "space_sheep_bare": [
+    "icons/mob/animal.dmi",
+    "bear"
+   ],
+   "sheep_bare": [
+    "icons/mob/iriska.dmi",
+    "iriska"
+   ]
+  },
+  "eris": [
+   "icons/mob/animal.dmi:bear",
+   "icons/mob/iriska.dmi:iriska"
+  ]
+ },
+ {
+  "target": "Mobs/Animals/slug.rsi",
+  "standin": false,
+  "states": {
+   "slug": [
+    "icons/mob/critter.dmi",
+    "lizard"
+   ],
+   "dead": [
+    "icons/mob/critter.dmi",
+    "lizard_dead"
+   ]
+  },
+  "eris": [
+   "icons/mob/critter.dmi:lizard"
+  ]
+ },
+ {
+  "target": "Mobs/Animals/snail.rsi",
+  "standin": false,
+  "states": {
+   "snail": [
+    "icons/jungle.dmi",
+    "tindalos"
+   ],
+   "spacesnail": [
+    "icons/jungle.dmi",
+    "tindalos"
+   ],
+   "snoth": [
+    "icons/jungle.dmi",
+    "yithian"
+   ],
+   "snothdead": [
+    "icons/jungle.dmi",
+    "yithian"
+   ]
+  },
+  "eris": [
+   "icons/jungle.dmi:tindalos",
+   "icons/jungle.dmi:tindalos",
+   "icons/jungle.dmi:yithian"
+  ]
+ },
+ {
+  "target": "Mobs/Animals/snake.rsi",
+  "standin": false,
+  "states": {
+   "snake": [
+    "icons/mob/animal.dmi",
+    "chick"
+   ],
+   "icon": [
+    "icons/mob/animal.dmi",
+    "chick"
+   ],
+   "dead": [
+    "icons/mob/animal.dmi",
+    "chick_dead"
+   ]
+  },
+  "eris": [
+   "icons/mob/animal.dmi:chick"
+  ]
+ },
+ {
+  "target": "Mobs/Animals/spacecobra.rsi",
+  "standin": true,
+  "states": {
+   "spacecobra": [
+    "icons/mob/spaceshark.dmi",
+    "shark"
+   ],
+   "dead_spacecobra": [
+    "icons/mob/spaceshark.dmi",
+    "shark_dead"
+   ]
+  },
+  "eris": [
+   "icons/mob/spaceshark.dmi:shark"
+  ]
+ },
+ {
+  "target": "Mobs/Animals/spacespider.rsi",
+  "standin": false,
+  "states": {
+   "spacespider": [
+    "icons/mob/animal.dmi",
+    "spider_core"
+   ],
+   "spacespider_dead": [
+    "icons/mob/animal.dmi",
+    "spider_core"
+   ]
+  },
+  "eris": [
+   "icons/mob/animal.dmi:spider_core"
+  ]
+ },
+ {
+  "target": "Mobs/Animals/spider.rsi",
+  "standin": false,
+  "states": {
+   "tarantula": [
+    "icons/mob/animal.dmi",
+    "guard"
+   ],
+   "hunter": [
+    "icons/mob/animal.dmi",
+    "hunter"
+   ],
+   "hunter-moving": [
+    "icons/mob/animal.dmi",
+    "hunter"
+   ],
+   "midwife": [
+    "icons/mob/animal.dmi",
+    "guard"
+   ],
+   "midwife-moving": [
+    "icons/mob/animal.dmi",
+    "guard"
+   ],
+   "viper": [
+    "icons/mob/animal.dmi",
+    "guard"
+   ],
+   "viper-moving": [
+    "icons/mob/animal.dmi",
+    "guard"
+   ],
+   "tarantula-moving": [
+    "icons/mob/animal.dmi",
+    "guard"
+   ],
+   "nurse": [
+    "icons/mob/animal.dmi",
+    "nurse"
+   ],
+   "nurse-moving": [
+    "icons/mob/animal.dmi",
+    "nurse"
+   ],
+   "guard": [
+    "icons/mob/animal.dmi",
+    "guard"
+   ],
+   "guard-moving": [
+    "icons/mob/animal.dmi",
+    "guard"
+   ],
+   "hunter_dead": [
+    "icons/mob/animal.dmi",
+    "hunter"
+   ],
+   "midwife_dead": [
+    "icons/mob/animal.dmi",
+    "guard_dead"
+   ],
+   "viper_dead": [
+    "icons/mob/animal.dmi",
+    "guard_dead"
+   ],
+   "tarantula_dead": [
+    "icons/mob/animal.dmi",
+    "guard_dead"
+   ],
+   "nurse_dead": [
+    "icons/mob/animal.dmi",
+    "nurse"
+   ],
+   "guard_dead": [
+    "icons/mob/animal.dmi",
+    "guard_dead"
+   ]
+  },
+  "eris": [
+   "icons/mob/animal.dmi:guard"
+  ]
+ },
+ {
+  "target": "Mobs/Demons/abomination.rsi",
+  "standin": true,
+  "states": {
+   "abomination": [
+    "icons/mob/hivemind.dmi",
+    "mechiver-hands"
+   ],
+   "dead": [
+    "icons/mob/hivemind.dmi",
+    "mechiver-hands"
+   ]
+  },
+  "eris": [
+   "icons/mob/hivemind.dmi:mechiver-hands"
+  ]
+ },
+ {
+  "target": "Mobs/Demons/behonker.rsi",
+  "standin": true,
+  "states": {
+   "alive": [
+    "icons/mob/animal.dmi",
+    "corgi_unused"
+   ],
+   "dead": [
+    "icons/mob/animal.dmi",
+    "corgi_unused"
+   ]
+  },
+  "eris": [
+   "icons/mob/animal.dmi:corgi_unused"
+  ]
+ },
+ {
+  "target": "Mobs/Demons/hellspawn.rsi",
+  "standin": true,
+  "states": {
+   "alive": [
+    "icons/mob/64x64.dmi",
+    "kaiser_roach"
+   ],
+   "dead": [
+    "icons/mob/64x64.dmi",
+    "kaiser_roach_dead"
+   ]
+  },
+  "eris": [
+   "icons/mob/64x64.dmi:kaiser_roach"
+  ]
+ },
+ {
+  "target": "Mobs/Demons/honkmother.rsi",
+  "standin": true,
+  "states": {
+   "honkmother": [
+    "icons/mob/animal.dmi",
+    "puppy_old"
+   ]
+  },
+  "eris": [
+   "icons/mob/animal.dmi:puppy_old"
+  ]
+ },
+ {
+  "target": "Mobs/Demons/narsie.rsi",
+  "standin": true,
+  "states": {
+   "narsie": [
+    "icons/mob/critter.dmi",
+    "hunter"
+   ],
+   "spawn": [
+    "icons/mob/critter.dmi",
+    "blob"
+   ]
+  },
+  "eris": [
+   "icons/mob/critter.dmi:hunter",
+   "icons/mob/critter.dmi:blob"
+  ]
+ },
+ {
+  "target": "Mobs/Demons/ratvar.rsi",
+  "standin": true,
+  "states": {
+   "ratvar": [
+    "icons/mob/animal.dmi",
+    "spaceworm9"
+   ],
+   "spawn": [
+    "icons/mob/slimes.dmi",
+    "dark blue baby slime dead-nocore"
+   ]
+  },
+  "eris": [
+   "icons/mob/animal.dmi:spaceworm9",
+   "icons/mob/slimes.dmi:dark blue baby slime dead-nocore"
+  ]
+ },
+ {
+  "target": "Mobs/Demons/tomatokiller.rsi",
+  "standin": false,
+  "states": {
+   "alive": [
+    "icons/mob/critter.dmi",
+    "killertomato"
+   ],
+   "dead": [
+    "icons/mob/critter.dmi",
+    "killertomato-dead"
+   ]
+  },
+  "eris": [
+   "icons/mob/critter.dmi:killertomato"
+  ]
+ },
+ {
+  "target": "Mobs/Effects/brute_damage.rsi",
+  "standin": true,
+  "states": {
+   "Head_Brute_10": [
+    "icons/mob/critter.dmi",
+    "spideregg"
+   ],
+   "LArm_Brute_10": [
+    "icons/mob/critter.dmi",
+    "spideregg"
+   ],
+   "RLeg_Brute_10": [
+    "icons/mob/critter.dmi",
+    "spideregg"
+   ],
+   "Chest_Brute_10": [
+    "icons/mob/critter.dmi",
+    "spideregg"
+   ],
+   "Head_Brute_20": [
+    "icons/mob/critter.dmi",
+    "spideregg"
+   ],
+   "LArm_Brute_20": [
+    "icons/mob/critter.dmi",
+    "spideregg"
+   ],
+   "LLeg_Brute_20": [
+    "icons/mob/critter.dmi",
+    "spideregg"
+   ],
+   "RLeg_Brute_20": [
+    "icons/mob/critter.dmi",
+    "spideregg"
+   ],
+   "Chest_Brute_20": [
+    "icons/mob/critter.dmi",
+    "spideregg"
+   ],
+   "Head_Brute_30": [
+    "icons/mob/critter.dmi",
+    "spideregg"
+   ],
+   "LArm_Brute_30": [
+    "icons/mob/critter.dmi",
+    "spideregg"
+   ],
+   "LLeg_Brute_30": [
+    "icons/mob/critter.dmi",
+    "spideregg"
+   ],
+   "RArm_Brute_30": [
+    "icons/mob/critter.dmi",
+    "spideregg"
+   ],
+   "RLeg_Brute_30": [
+    "icons/mob/critter.dmi",
+    "spideregg"
+   ],
+   "Chest_Brute_30": [
+    "icons/mob/critter.dmi",
+    "spideregg"
+   ],
+   "Head_Brute_50": [
+    "icons/mob/critter.dmi",
+    "spideregg"
+   ],
+   "LArm_Brute_50": [
+    "icons/mob/critter.dmi",
+    "spideregg"
+   ],
+   "LLeg_Brute_50": [
+    "icons/mob/critter.dmi",
+    "spideregg"
+   ],
+   "RArm_Brute_50": [
+    "icons/mob/critter.dmi",
+    "spideregg"
+   ],
+   "RLeg_Brute_50": [
+    "icons/mob/critter.dmi",
+    "spideregg"
+   ],
+   "Chest_Brute_50": [
+    "icons/mob/critter.dmi",
+    "spideregg"
+   ],
+   "Head_Brute_70": [
+    "icons/mob/critter.dmi",
+    "spideregg"
+   ],
+   "LArm_Brute_70": [
+    "icons/mob/critter.dmi",
+    "spideregg"
+   ],
+   "LLeg_Brute_70": [
+    "icons/mob/critter.dmi",
+    "spideregg"
+   ],
+   "RArm_Brute_70": [
+    "icons/mob/critter.dmi",
+    "spideregg"
+   ],
+   "RLeg_Brute_70": [
+    "icons/mob/critter.dmi",
+    "spideregg"
+   ],
+   "Chest_Brute_70": [
+    "icons/mob/critter.dmi",
+    "spideregg"
+   ],
+   "Head_Brute_100": [
+    "icons/mob/critter.dmi",
+    "spideregg"
+   ],
+   "LArm_Brute_100": [
+    "icons/mob/critter.dmi",
+    "spideregg"
+   ],
+   "LLeg_Brute_100": [
+    "icons/mob/critter.dmi",
+    "spideregg"
+   ],
+   "RArm_Brute_100": [
+    "icons/mob/critter.dmi",
+    "spideregg"
+   ],
+   "RLeg_Brute_100": [
+    "icons/mob/critter.dmi",
+    "spideregg"
+   ],
+   "Chest_Brute_100": [
+    "icons/mob/critter.dmi",
+    "spideregg"
+   ]
+  },
+  "eris": [
+   "icons/mob/critter.dmi:spideregg"
+  ]
+ },
+ {
+  "target": "Mobs/Effects/burn_damage.rsi",
+  "standin": true,
+  "states": {
+   "Head_Burn_10": [
+    "icons/mob/hivemind.dmi",
+    "himan-damaged"
+   ],
+   "LArm_Burn_10": [
+    "icons/mob/hivemind.dmi",
+    "himan-damaged"
+   ],
+   "LLeg_Burn_10": [
+    "icons/mob/hivemind.dmi",
+    "himan-damaged"
+   ],
+   "RArm_Burn_10": [
+    "icons/mob/hivemind.dmi",
+    "himan-damaged"
+   ],
+   "RLeg_Burn_10": [
+    "icons/mob/hivemind.dmi",
+    "himan-damaged"
+   ],
+   "Chest_Burn_10": [
+    "icons/mob/hivemind.dmi",
+    "himan-damaged"
+   ],
+   "Head_Burn_20": [
+    "icons/mob/hivemind.dmi",
+    "himan-damaged"
+   ],
+   "LArm_Burn_20": [
+    "icons/mob/hivemind.dmi",
+    "himan-damaged"
+   ],
+   "LLeg_Burn_20": [
+    "icons/mob/hivemind.dmi",
+    "himan-damaged"
+   ],
+   "RArm_Burn_20": [
+    "icons/mob/hivemind.dmi",
+    "himan-damaged"
+   ],
+   "RLeg_Burn_20": [
+    "icons/mob/hivemind.dmi",
+    "himan-damaged"
+   ],
+   "Chest_Burn_20": [
+    "icons/mob/hivemind.dmi",
+    "himan-damaged"
+   ],
+   "Head_Burn_30": [
+    "icons/mob/hivemind.dmi",
+    "himan-damaged"
+   ],
+   "LArm_Burn_30": [
+    "icons/mob/hivemind.dmi",
+    "himan-damaged"
+   ],
+   "LLeg_Burn_30": [
+    "icons/mob/hivemind.dmi",
+    "himan-damaged"
+   ],
+   "RArm_Burn_30": [
+    "icons/mob/hivemind.dmi",
+    "himan-damaged"
+   ],
+   "RLeg_Burn_30": [
+    "icons/mob/hivemind.dmi",
+    "himan-damaged"
+   ],
+   "Chest_Burn_30": [
+    "icons/mob/hivemind.dmi",
+    "himan-damaged"
+   ],
+   "Head_Burn_50": [
+    "icons/mob/hivemind.dmi",
+    "himan-damaged"
+   ],
+   "LArm_Burn_50": [
+    "icons/mob/hivemind.dmi",
+    "himan-damaged"
+   ],
+   "LLeg_Burn_50": [
+    "icons/mob/hivemind.dmi",
+    "himan-damaged"
+   ],
+   "RArm_Burn_50": [
+    "icons/mob/hivemind.dmi",
+    "himan-damaged"
+   ],
+   "RLeg_Burn_50": [
+    "icons/mob/hivemind.dmi",
+    "himan-damaged"
+   ],
+   "Chest_Burn_50": [
+    "icons/mob/hivemind.dmi",
+    "himan-damaged"
+   ],
+   "Head_Burn_70": [
+    "icons/mob/hivemind.dmi",
+    "himan-damaged"
+   ],
+   "LArm_Burn_70": [
+    "icons/mob/hivemind.dmi",
+    "himan-damaged"
+   ],
+   "LLeg_Burn_70": [
+    "icons/mob/hivemind.dmi",
+    "himan-damaged"
+   ],
+   "RArm_Burn_70": [
+    "icons/mob/hivemind.dmi",
+    "himan-damaged"
+   ],
+   "RLeg_Burn_70": [
+    "icons/mob/hivemind.dmi",
+    "himan-damaged"
+   ],
+   "Chest_Burn_70": [
+    "icons/mob/hivemind.dmi",
+    "himan-damaged"
+   ],
+   "Head_Burn_100": [
+    "icons/mob/hivemind.dmi",
+    "himan-damaged"
+   ],
+   "LArm_Burn_100": [
+    "icons/mob/hivemind.dmi",
+    "himan-damaged"
+   ],
+   "LLeg_Burn_100": [
+    "icons/mob/hivemind.dmi",
+    "himan-damaged"
+   ],
+   "RArm_Burn_100": [
+    "icons/mob/hivemind.dmi",
+    "himan-damaged"
+   ],
+   "RLeg_Burn_100": [
+    "icons/mob/hivemind.dmi",
+    "himan-damaged"
+   ],
+   "Chest_Burn_100": [
+    "icons/mob/hivemind.dmi",
+    "himan-damaged"
+   ]
+  },
+  "eris": [
+   "icons/mob/hivemind.dmi:himan-damaged"
+  ]
+ },
+ {
+  "target": "Mobs/Effects/onfire.rsi",
+  "standin": true,
+  "states": {
+   "Generic_mob_burning": [
+    "icons/mob/animal.dmi",
+    "mouse_brown_splat"
+   ],
+   "Monkey_burning": [
+    "icons/mob/animal.dmi",
+    "mouse_brown_splat"
+   ],
+   "Standing": [
+    "icons/mob/animal.dmi",
+    "mouse_brown_splat"
+   ],
+   "Mouse_burning": [
+    "icons/mob/animal.dmi",
+    "mouse_brown_splat"
+   ]
+  },
+  "eris": [
+   "icons/mob/animal.dmi:mouse_brown_splat"
+  ]
+ },
+ {
+  "target": "Mobs/Effects/stunned.rsi",
+  "standin": true,
+  "states": {
+   "stunned": [
+    "icons/mob/golems.dmi",
+    "goldspike_tip"
+   ]
+  },
+  "eris": [
+   "icons/mob/golems.dmi:goldspike_tip"
+  ]
+ },
+ {
+  "target": "Mobs/Elemental/living_light/luminous_entity.rsi",
+  "standin": true,
+  "states": {
+   "luminous_entity": [
+    "icons/mob/slimes.dmi",
+    "light pink slime extract"
+   ],
+   "glow": [
+    "icons/mob/slimes.dmi",
+    "light pink slime extract"
+   ]
+  },
+  "eris": [
+   "icons/mob/slimes.dmi:light pink slime extract"
+  ]
+ },
+ {
+  "target": "Mobs/Elemental/living_light/luminous_object.rsi",
+  "standin": true,
+  "states": {
+   "luminous_object": [
+    "icons/mob/slimes.dmi",
+    "light pink baby slime"
+   ]
+  },
+  "eris": [
+   "icons/mob/slimes.dmi:light pink baby slime"
+  ]
+ },
+ {
+  "target": "Mobs/Elemental/living_light/luminous_person.rsi",
+  "standin": true,
+  "states": {
+   "luminous_person": [
+    "icons/mob/slimes.dmi",
+    "light pink adult slime"
+   ]
+  },
+  "eris": [
+   "icons/mob/slimes.dmi:light pink adult slime"
+  ]
+ },
+ {
+  "target": "Mobs/Elemental/orecrab.rsi",
+  "standin": false,
+  "states": {
+   "uranium_crab": [
+    "icons/mob/golems.dmi",
+    "golem_uranium"
+   ],
+   "quartz_crab": [
+    "icons/mob/animal.dmi",
+    "evilcrab"
+   ],
+   "iron_crab": [
+    "icons/mob/golems.dmi",
+    "golem_iron"
+   ],
+   "coal_crab": [
+    "icons/mob/golems.dmi",
+    "golem_coal"
+   ],
+   "bananium_crab": [
+    "icons/mob/animal.dmi",
+    "crab"
+   ],
+   "silver_crab": [
+    "icons/mob/slimes.dmi",
+    "silver baby slime"
+   ],
+   "gold_crab": [
+    "icons/mob/slimes.dmi",
+    "gold baby slime"
+   ]
+  },
+  "eris": [
+   "icons/mob/golems.dmi:golem_uranium",
+   "icons/mob/animal.dmi:evilcrab",
+   "icons/mob/golems.dmi:golem_iron",
+   "icons/mob/golems.dmi:golem_coal",
+   "icons/mob/animal.dmi:crab",
+   "icons/mob/slimes.dmi:silver baby slime",
+   "icons/mob/slimes.dmi:gold baby slime"
+  ]
+ },
+ {
+  "target": "Mobs/Ghosts/ghost_human.rsi",
+  "standin": false,
+  "states": {
+   "icon": [
+    "icons/mob/mob.dmi",
+    "ghostian"
+   ],
+   "animated": [
+    "icons/mob/mob.dmi",
+    "ghost"
+   ]
+  },
+  "eris": [
+   "icons/mob/mob.dmi:ghostian",
+   "icons/mob/mob.dmi:ghost"
+  ]
+ },
+ {
+  "target": "Mobs/Ghosts/revenant.rsi",
+  "standin": false,
+  "states": {
+   "active": [
+    "icons/mob/mob.dmi",
+    "ghost-narsie"
+   ],
+   "ectoplasm": [
+    "icons/mob/mob.dmi",
+    "ghostking"
+   ],
+   "icon": [
+    "icons/mob/mob.dmi",
+    "ghostking"
+   ]
+  },
+  "eris": [
+   "icons/mob/mob.dmi:ghost-narsie",
+   "icons/mob/mob.dmi:ghostking",
+   "icons/mob/mob.dmi:ghostking"
+  ]
+ },
+ {
+  "target": "Mobs/Pets/Smile/smile.rsi",
+  "standin": false,
+  "states": {
+   "inhand-right": [
+    "icons/mob/slimes.dmi",
+    "grey baby slime"
+   ]
+  },
+  "eris": [
+   "icons/mob/slimes.dmi:grey baby slime"
+  ]
+ },
+ {
+  "target": "Mobs/Pets/bingus.rsi",
+  "standin": true,
+  "states": {
+   "bingus": [
+    "icons/mob/animal.dmi",
+    "brownbear"
+   ],
+   "bingus_dead": [
+    "icons/mob/animal.dmi",
+    "brownbear_dead"
+   ]
+  },
+  "eris": [
+   "icons/mob/animal.dmi:brownbear"
+  ]
+ },
+ {
+  "target": "Mobs/Pets/breaddog.rsi",
+  "standin": true,
+  "states": {
+   "base": [
+    "icons/mob/slimes.dmi",
+    "yellow baby slime dead"
+   ],
+   "dead": [
+    "icons/mob/slimes.dmi",
+    "yellow baby slime dead"
+   ]
+  },
+  "eris": [
+   "icons/mob/slimes.dmi:yellow baby slime dead"
+  ]
+ },
+ {
+  "target": "Mobs/Pets/caracal.rsi",
+  "standin": false,
+  "states": {
+   "caracal_flop": [
+    "icons/mob/animal.dmi",
+    "kitten"
+   ],
+   "caracal": [
+    "icons/mob/animal.dmi",
+    "kitten"
+   ],
+   "caracal_dead": [
+    "icons/mob/animal.dmi",
+    "kitten_dead"
+   ],
+   "stanislav": [
+    "icons/mob/animal.dmi",
+    "kitten"
+   ],
+   "stanislav_dead": [
+    "icons/mob/animal.dmi",
+    "kitten_dead"
+   ]
+  },
+  "eris": [
+   "icons/mob/animal.dmi:kitten"
+  ]
+ },
+ {
+  "target": "Mobs/Pets/cat.rsi",
+  "standin": true,
+  "states": {
+   "cat": [
+    "icons/mob/animal.dmi",
+    "cat"
+   ],
+   "cat_dead": [
+    "icons/mob/animal.dmi",
+    "cat_dead"
+   ],
+   "cat_rest": [
+    "icons/mob/animal.dmi",
+    "cat_rest"
+   ],
+   "cat_sit": [
+    "icons/mob/animal.dmi",
+    "cat_sit"
+   ],
+   "cat2": [
+    "icons/mob/animal.dmi",
+    "cat2"
+   ],
+   "cat2_dead": [
+    "icons/mob/animal.dmi",
+    "cat2_dead"
+   ],
+   "cat2_rest": [
+    "icons/mob/animal.dmi",
+    "cat2_rest"
+   ],
+   "cat2_sit": [
+    "icons/mob/animal.dmi",
+    "cat2_sit"
+   ],
+   "syndicat": [
+    "icons/mob/animal.dmi",
+    "kitten"
+   ],
+   "syndicat_dead": [
+    "icons/mob/animal.dmi",
+    "kitten_dead"
+   ],
+   "spacecat": [
+    "icons/mob/animal.dmi",
+    "syndicatemeleespace"
+   ],
+   "spacecat_dead": [
+    "icons/mob/animal.dmi",
+    "syndicatemeleespace"
+   ],
+   "spacecat_rest": [
+    "icons/mob/animal.dmi",
+    "syndicatemeleespace"
+   ],
+   "spacecat_sit": [
+    "icons/mob/animal.dmi",
+    "syndicatemeleespace"
+   ],
+   "kitten": [
+    "icons/mob/animal.dmi",
+    "kitten"
+   ],
+   "kitten_dead": [
+    "icons/mob/animal.dmi",
+    "kitten_dead"
+   ],
+   "kitten_rest": [
+    "icons/mob/animal.dmi",
+    "kitten"
+   ],
+   "kitten_sit": [
+    "icons/mob/animal.dmi",
+    "kitten"
+   ],
+   "cak": [
+    "icons/mob/animal.dmi",
+    "kitten"
+   ],
+   "cak_dead": [
+    "icons/mob/animal.dmi",
+    "kitten_dead"
+   ],
+   "cak_rest": [
+    "icons/mob/animal.dmi",
+    "kitten"
+   ],
+   "cak_sit": [
+    "icons/mob/animal.dmi",
+    "kitten"
+   ]
+  },
+  "eris": [
+   "icons/mob/animal.dmi:cat",
+   "icons/mob/animal.dmi:cat2",
+   "icons/mob/animal.dmi:kitten",
+   "icons/mob/animal.dmi:syndicatemeleespace",
+   "icons/mob/animal.dmi:kitten",
+   "icons/mob/animal.dmi:kitten"
+  ]
+ },
+ {
+  "target": "Mobs/Pets/corgi.rsi",
+  "standin": false,
+  "states": {
+   "ian": [
+    "icons/mob/animal.dmi",
+    "corgi_old"
+   ],
+   "ian_dead": [
+    "icons/mob/animal.dmi",
+    "corgi_old"
+   ],
+   "ian_shaved": [
+    "icons/mob/animal.dmi",
+    "corgi_old"
+   ],
+   "ian_shaved_dead": [
+    "icons/mob/animal.dmi",
+    "corgi_old"
+   ],
+   "old_ian": [
+    "icons/mob/animal.dmi",
+    "corgi_old"
+   ],
+   "old_ian_dead": [
+    "icons/mob/animal.dmi",
+    "corgi_old"
+   ],
+   "old_ian_shaved": [
+    "icons/mob/animal.dmi",
+    "corgi_old"
+   ],
+   "old_ian_shaved_dead": [
+    "icons/mob/animal.dmi",
+    "corgi_old"
+   ],
+   "lisa": [
+    "icons/mob/animal.dmi",
+    "lisa"
+   ],
+   "lisa_dead": [
+    "icons/mob/animal.dmi",
+    "lisa_dead"
+   ],
+   "lisa_shaved": [
+    "icons/mob/animal.dmi",
+    "lisa"
+   ],
+   "lisa_shaved_dead": [
+    "icons/mob/animal.dmi",
+    "lisa_dead"
+   ],
+   "real_mouse": [
+    "icons/mob/animal.dmi",
+    "corgi_dead_old"
+   ],
+   "real_mouse_dead": [
+    "icons/mob/animal.dmi",
+    "corgi_dead_old"
+   ],
+   "corgi": [
+    "icons/mob/animal.dmi",
+    "corgi_old"
+   ],
+   "corgi_rest": [
+    "icons/mob/animal.dmi",
+    "corgi_old"
+   ],
+   "corgi_dead": [
+    "icons/mob/animal.dmi",
+    "corgi_old"
+   ],
+   "narsian": [
+    "icons/mob/animal.dmi",
+    "corgi_old"
+   ],
+   "narsian_dead": [
+    "icons/mob/animal.dmi",
+    "corgi_old"
+   ],
+   "puppy": [
+    "icons/mob/animal.dmi",
+    "puppy"
+   ],
+   "puppy_dead": [
+    "icons/mob/animal.dmi",
+    "puppy_dead"
+   ],
+   "puppy_shaved": [
+    "icons/mob/animal.dmi",
+    "puppy"
+   ],
+   "puppy_shaved_dead": [
+    "icons/mob/animal.dmi",
+    "puppy_dead"
+   ]
+  },
+  "eris": [
+   "icons/mob/animal.dmi:corgi_old",
+   "icons/mob/animal.dmi:corgi_old",
+   "icons/mob/animal.dmi:lisa",
+   "icons/mob/animal.dmi:corgi_dead_old",
+   "icons/mob/animal.dmi:corgi_old",
+   "icons/mob/animal.dmi:corgi_old",
+   "icons/mob/animal.dmi:puppy"
+  ]
+ },
+ {
+  "target": "Mobs/Pets/ferret.rsi",
+  "standin": true,
+  "states": {
+   "ferret": [
+    "icons/mob/animal.dmi",
+    "russianmelee"
+   ],
+   "ferret_dead": [
+    "icons/mob/animal.dmi",
+    "russianmelee"
+   ]
+  },
+  "eris": [
+   "icons/mob/animal.dmi:russianmelee"
+  ]
+ },
+ {
+  "target": "Mobs/Pets/fox.rsi",
+  "standin": true,
+  "states": {
+   "fox": [
+    "icons/mob/hivemind.dmi",
+    "phaser-2"
+   ],
+   "fox-moving": [
+    "icons/mob/hivemind.dmi",
+    "phaser-2"
+   ],
+   "fox_dead": [
+    "icons/mob/hivemind.dmi",
+    "phaser-2"
+   ]
+  },
+  "eris": [
+   "icons/mob/hivemind.dmi:phaser-2"
+  ]
+ },
+ {
+  "target": "Mobs/Pets/hamlet.rsi",
+  "standin": true,
+  "states": {
+   "hamster-0": [
+    "icons/mob/animal.dmi",
+    "lisa_old"
+   ],
+   "hamster-moving-0": [
+    "icons/mob/animal.dmi",
+    "lisa_old"
+   ],
+   "dead-0": [
+    "icons/mob/animal.dmi",
+    "lisa_old"
+   ],
+   "splat-0": [
+    "icons/mob/animal.dmi",
+    "lisa_old"
+   ]
+  },
+  "eris": [
+   "icons/mob/animal.dmi:lisa_old"
+  ]
+ },
+ {
+  "target": "Mobs/Pets/mcgriff.rsi",
+  "standin": true,
+  "states": {
+   "mcgriff": [
+    "icons/mob/golems.dmi",
+    "goldspike_full"
+   ],
+   "mcgriff_dead": [
+    "icons/mob/golems.dmi",
+    "goldspike_full"
+   ]
+  },
+  "eris": [
+   "icons/mob/golems.dmi:goldspike_full"
+  ]
+ },
+ {
+  "target": "Mobs/Pets/paperwork.rsi",
+  "standin": true,
+  "states": {
+   "paperwork": [
+    "icons/mob/animal.dmi",
+    "pirateranged"
+   ],
+   "paperwork_dead": [
+    "icons/mob/animal.dmi",
+    "pirateranged"
+   ]
+  },
+  "eris": [
+   "icons/mob/animal.dmi:pirateranged"
+  ]
+ },
+ {
+  "target": "Mobs/Pets/shiva.rsi",
+  "standin": true,
+  "states": {
+   "shiva": [
+    "icons/mob/animal.dmi",
+    "nurse"
+   ],
+   "shiva-moving": [
+    "icons/mob/animal.dmi",
+    "nurse"
+   ],
+   "shiva_dead": [
+    "icons/mob/animal.dmi",
+    "nurse_dead"
+   ]
+  },
+  "eris": [
+   "icons/mob/animal.dmi:nurse"
+  ]
+ },
+ {
+  "target": "Mobs/Pets/sloth.rsi",
+  "standin": true,
+  "states": {
+   "sloth": [
+    "icons/mob/animal.dmi",
+    "spacewormhead1"
+   ],
+   "sloth_dead": [
+    "icons/mob/animal.dmi",
+    "spacewormhead1"
+   ]
+  },
+  "eris": [
+   "icons/mob/animal.dmi:spacewormhead1"
+  ]
+ },
+ {
+  "target": "Mobs/Pets/walter.rsi",
+  "standin": true,
+  "states": {
+   "walter": [
+    "icons/mob/animal.dmi",
+    "spaceworm3"
+   ],
+   "walter_dead": [
+    "icons/mob/animal.dmi",
+    "spaceworm3"
+   ]
+  },
+  "eris": [
+   "icons/mob/animal.dmi:spaceworm3"
+  ]
+ },
+ {
+  "target": "Mobs/Silicon/Bots/cleanbot.rsi",
+  "standin": false,
+  "states": {
+   "cleanbot": [
+    "icons/obj/aibots.dmi",
+    "cleanbot0"
+   ]
+  },
+  "eris": [
+   "icons/obj/aibots.dmi:cleanbot0"
+  ]
+ },
+ {
+  "target": "Mobs/Silicon/Bots/firebot.rsi",
+  "standin": true,
+  "states": {
+   "firebot": [
+    "icons/obj/aibots.dmi",
+    "floorbot0"
+   ]
+  },
+  "eris": [
+   "icons/obj/aibots.dmi:floorbot0"
+  ]
+ },
+ {
+  "target": "Mobs/Silicon/Bots/honkbot.rsi",
+  "standin": false,
+  "states": {
+   "honkbot": [
+    "icons/obj/aibots.dmi",
+    "honkbuddy1_honk"
+   ],
+   "jonkbot": [
+    "icons/obj/aibots.dmi",
+    "medibot0"
+   ]
+  },
+  "eris": [
+   "icons/obj/aibots.dmi:honkbuddy1_honk",
+   "icons/obj/aibots.dmi:medibot0"
+  ]
+ },
+ {
+  "target": "Mobs/Silicon/Bots/hugbot.rsi",
+  "standin": false,
+  "states": {
+   "hugbot": [
+    "icons/obj/aibots.dmi",
+    "floorbot0"
+   ]
+  },
+  "eris": [
+   "icons/obj/aibots.dmi:floorbot0"
+  ]
+ },
+ {
+  "target": "Mobs/Silicon/Bots/medibot.rsi",
+  "standin": false,
+  "states": {
+   "medibot": [
+    "icons/obj/aibots.dmi",
+    "medibots"
+   ]
+  },
+  "eris": [
+   "icons/obj/aibots.dmi:medibots"
+  ]
+ },
+ {
+  "target": "Mobs/Silicon/Bots/mimebot.rsi",
+  "standin": false,
+  "states": {
+   "mimebot": [
+    "icons/obj/aibots.dmi",
+    "farmbot0"
+   ]
+  },
+  "eris": [
+   "icons/obj/aibots.dmi:farmbot0"
+  ]
+ },
+ {
+  "target": "Mobs/Silicon/Bots/mommi.rsi",
+  "standin": true,
+  "states": {
+   "base": [
+    "icons/mob/robots.dmi",
+    "robotsecy"
+   ],
+   "wiggle": [
+    "icons/mob/robots.dmi",
+    "robotsecy"
+   ]
+  },
+  "eris": [
+   "icons/mob/robots.dmi:robotsecy"
+  ]
+ },
+ {
+  "target": "Mobs/Silicon/Bots/supplybot.rsi",
+  "standin": false,
+  "states": {
+   "supplybot": [
+    "icons/obj/aibots.dmi",
+    "cleanbot0"
+   ],
+   "supplybot-moving": [
+    "icons/obj/aibots.dmi",
+    "cleanbot0"
+   ]
+  },
+  "eris": [
+   "icons/obj/aibots.dmi:cleanbot0"
+  ]
+ },
+ {
+  "target": "Mobs/Silicon/Bots/taxibot.rsi",
+  "standin": true,
+  "states": {
+   "taxibot": [
+    "icons/mob/robots.dmi",
+    "robotserv"
+   ]
+  },
+  "eris": [
+   "icons/mob/robots.dmi:robotserv"
+  ]
+ },
+ {
+  "target": "Mobs/Silicon/chassis.rsi",
+  "standin": false,
+  "states": {
+   "robot": [
+    "icons/mob/robots.dmi",
+    "robot"
+   ],
+   "synd_sec": [
+    "icons/mob/robots.dmi",
+    "securityrobot"
+   ],
+   "synd_medical": [
+    "icons/mob/robots.dmi",
+    "syndi-medi"
+   ],
+   "synd_engi": [
+    "icons/mob/robots.dmi",
+    "syndi-heavy"
+   ],
+   "derelict": [
+    "icons/mob/robots.dmi",
+    "robot"
+   ],
+   "derelict_icon": [
+    "icons/mob/robots.dmi",
+    "robot"
+   ],
+   "engineer_derelict": [
+    "icons/mob/robots.dmi",
+    "engineering"
+   ],
+   "janitor_derelict": [
+    "icons/mob/robots.dmi",
+    "robot"
+   ],
+   "medical_derelict": [
+    "icons/mob/robots.dmi",
+    "robot"
+   ],
+   "miner_derelict": [
+    "icons/mob/robots.dmi",
+    "robot"
+   ],
+   "synd_sec_derelict": [
+    "icons/mob/robots.dmi",
+    "securityrobot"
+   ],
+   "xenoborg_heavy": [
+    "icons/mob/robots.dmi",
+    "syndi-heavy"
+   ],
+   "xenoborg_scout": [
+    "icons/mob/robots.dmi",
+    "spiderbot-chassis"
+   ],
+   "xenoborg_stealth": [
+    "icons/mob/robots.dmi",
+    "spiderbot-chassis"
+   ]
+  },
+  "eris": [
+   "icons/mob/robots.dmi:robot",
+   "icons/mob/robots.dmi:securityrobot",
+   "icons/mob/robots.dmi:syndi-medi",
+   "icons/mob/robots.dmi:syndi-heavy",
+   "icons/mob/robots.dmi:robot",
+   "icons/mob/robots.dmi:engineering",
+   "icons/mob/robots.dmi:robot",
+   "icons/mob/robots.dmi:robot",
+   "icons/mob/robots.dmi:robot",
+   "icons/mob/robots.dmi:securityrobot",
+   "icons/mob/robots.dmi:syndi-heavy",
+   "icons/mob/robots.dmi:spiderbot-chassis",
+   "icons/mob/robots.dmi:spiderbot-chassis"
+  ]
+ },
+ {
+  "target": "Mobs/Silicon/drone.rsi",
+  "standin": false,
+  "states": {
+   "drone": [
+    "icons/mob/robots.dmi",
+    "drone"
+   ],
+   "shell": [
+    "icons/mob/robots.dmi",
+    "drone"
+   ]
+  },
+  "eris": [
+   "icons/mob/robots.dmi:drone"
+  ]
+ },
+ {
+  "target": "Mobs/Silicon/holograms.rsi",
+  "standin": false,
+  "states": {
+   "ai_female": [
+    "icons/mob/AI.dmi",
+    "ai"
+   ],
+   "ai_male": [
+    "icons/mob/AI.dmi",
+    "ai"
+   ],
+   "ai_face": [
+    "icons/mob/AI.dmi",
+    "ai"
+   ],
+   "ai_dog": [
+    "icons/mob/AI.dmi",
+    "ai"
+   ]
+  },
+  "eris": [
+   "icons/mob/AI.dmi:ai"
+  ]
+ },
+ {
+  "target": "Mobs/Silicon/mothership_core.rsi",
+  "standin": true,
+  "states": {
+   "core-active": [
+    "icons/mob/robots.dmi",
+    "robot"
+   ],
+   "core-idle": [
+    "icons/mob/robots.dmi",
+    "robot"
+   ]
+  },
+  "eris": [
+   "icons/mob/robots.dmi:robot"
+  ]
+ },
+ {
+  "target": "Mobs/Silicon/onestar.rsi",
+  "standin": false,
+  "states": {
+   "onestar_boss": [
+    "icons/mob/AI.dmi",
+    "ai"
+   ],
+   "onestar_boss_unpowered": [
+    "icons/mob/AI.dmi",
+    "ai"
+   ],
+   "onestar_boss_wrecked": [
+    "icons/mob/AI.dmi",
+    "ai"
+   ]
+  },
+  "eris": [
+   "icons/mob/AI.dmi:ai"
+  ]
+ },
+ {
+  "target": "Mobs/Silicon/output.rsi",
+  "standin": false,
+  "states": {
+   "ai": [
+    "icons/mob/AI.dmi",
+    "ai"
+   ],
+   "ai-banned": [
+    "icons/mob/AI.dmi",
+    "ai"
+   ],
+   "ai-banned_dead": [
+    "icons/mob/AI.dmi",
+    "ai"
+   ],
+   "ai-empty": [
+    "icons/mob/AI.dmi",
+    "ai-empty"
+   ],
+   "ai-holo-old": [
+    "icons/mob/AI.dmi",
+    "ai"
+   ],
+   "ai-unshaded": [
+    "icons/mob/AI.dmi",
+    "ai"
+   ],
+   "ai_dead": [
+    "icons/mob/AI.dmi",
+    "ai"
+   ],
+   "ai_dead-unshaded": [
+    "icons/mob/AI.dmi",
+    "ai"
+   ],
+   "default": [
+    "icons/mob/AI.dmi",
+    "ai"
+   ],
+   "default-unshaded": [
+    "icons/mob/AI.dmi",
+    "ai"
+   ],
+   "horror": [
+    "icons/mob/AI.dmi",
+    "ai"
+   ],
+   "xeno_queen": [
+    "icons/mob/AI.dmi",
+    "ai"
+   ],
+   "xeno_queen-unshaded": [
+    "icons/mob/AI.dmi",
+    "ai"
+   ]
+  },
+  "eris": [
+   "icons/mob/AI.dmi:ai"
+  ]
+ },
+ {
+  "target": "Mobs/Silicon/rockets.rsi",
+  "standin": false,
+  "states": {
+   "heavy_xenoborg_rockets": [
+    "icons/mob/AI.dmi",
+    "ai"
+   ]
+  },
+  "eris": [
+   "icons/mob/AI.dmi:ai"
+  ]
+ },
+ {
+  "target": "Mobs/Silicon/station_ai.rsi",
+  "standin": false,
+  "states": {
+   "base": [
+    "icons/mob/AI.dmi",
+    "ai"
+   ],
+   "frame_0": [
+    "icons/mob/AI.dmi",
+    "ai"
+   ],
+   "ai_camera": [
+    "icons/mob/AI.dmi",
+    "ai-holo-old"
+   ]
+  },
+  "eris": [
+   "icons/mob/AI.dmi:ai",
+   "icons/mob/AI.dmi:ai",
+   "icons/mob/AI.dmi:ai-holo-old"
+  ]
+ },
+ {
+  "target": "Mobs/Silicon/station_ai_cracks.rsi",
+  "standin": false,
+  "states": {
+   "DamageOverlay_25": [
+    "icons/mob/AI.dmi",
+    "ai"
+   ],
+   "DamageOverlay_50": [
+    "icons/mob/AI.dmi",
+    "ai"
+   ],
+   "DamageOverlay_75": [
+    "icons/mob/AI.dmi",
+    "ai"
+   ],
+   "DamageOverlay_100": [
+    "icons/mob/AI.dmi",
+    "ai"
+   ],
+   "DamageOverlay_200": [
+    "icons/mob/AI.dmi",
+    "ai"
+   ],
+   "DamageOverlay_300": [
+    "icons/mob/AI.dmi",
+    "ai"
+   ],
+   "DamageOverlay_400": [
+    "icons/mob/AI.dmi",
+    "ai"
+   ]
+  },
+  "eris": [
+   "icons/mob/AI.dmi:ai"
+  ]
+ }
+]

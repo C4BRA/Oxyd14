@@ -9,11 +9,23 @@
     "states": [
         {
             "name": "icon",
-            "directions": 1
+            "directions": 1,
+            "delays": [
+                [
+                    0.2,
+                    0.2
+                ]
+            ]
         },
         {
             "name": "icon-on",
-            "directions": 1
+            "directions": 1,
+            "delays": [
+                [
+                    0.2,
+                    0.2
+                ]
+            ]
         },
         {
             "name": "inhand-left",
@@ -91,7 +103,13 @@
             "name": "integrity-unshaded-3"
         },
         {
-            "name": "integrity-unshaded-4"
+            "name": "integrity-unshaded-4",
+            "delays": [
+                [
+                    0.2,
+                    0.2
+                ]
+            ]
         }
     ]
 }

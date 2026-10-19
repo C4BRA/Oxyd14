@@ -32,7 +32,15 @@
             "name": "red_phone"
         },
         {
-            "name": "seashell"
+            "name": "seashell",
+            "delays": [
+                [
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1
+                ]
+            ]
         },
         {
             "name": "banana_phone",

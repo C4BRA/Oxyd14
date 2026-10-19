@@ -8,10 +8,22 @@
     },
     "states": [
         {
-            "name": "base_machine"
+            "name": "base_machine",
+            "delays": [
+                [
+                    0.1,
+                    0.1
+                ]
+            ]
         },
         {
-            "name": "base_machine_processing"
+            "name": "base_machine_processing",
+            "delays": [
+                [
+                    0.1,
+                    0.1
+                ]
+            ]
         },
         {
             "name": "buttons_on"

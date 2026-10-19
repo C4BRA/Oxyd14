@@ -121,6 +121,33 @@ GROUPS["structures"] = [
     ("Structures", [ST, M], [O + "structures.dmi", O + "objects.dmi", O + "stationobjs.dmi", O + "machines"], "blank"),
 ]
 
+MOB = "/mob/living/"
+MI = "icons/mob/"
+GROUPS["mobs"] = [
+    ("Mobs/Species", [], [], "keep"),        # bodies are handled by gen_mobs.py; other species have no Eris art
+    ("Mobs/Customization", [], [], "keep"),
+    ("Mobs/Silicon", [MOB + "silicon", MOB + "bot"], [MI + "robots.dmi", MI + "AI.dmi", MI + "pai.dmi",
+                                                      MI + "build_a_drone.dmi", "icons/obj/aibots.dmi"], "keep"),
+    ("Mobs/Ghosts", ["/mob/observer"], [MI + "mob.dmi"], "keep"),
+    ("Mobs/Aliens", [MOB + "carbon/alien", MOB + "simple_animal/hostile"], [MI + "alien.dmi", MI + "alienqueen.dmi",
+                                                                            MI + "human_races/xenos"], "keep"),
+    ("Mobs", [MOB + "simple_animal", MOB + "carbon/superior_animal", MOB + "bot"],
+     [MI + "animal.dmi", MI + "critter.dmi", MI + "mouse.dmi", MI + "bats.dmi", MI + "spaceshark.dmi",
+      MI + "slimes.dmi", MI + "golems.dmi", MI + "hivemind.dmi", MI + "onestar.dmi", MI + "iriska.dmi",
+      MI + "64x64.dmi", MI + "battle_roomba.dmi", MI + "armalis.dmi"], "keep"),
+]
+
+E = "icons/effects/"
+GROUPS["effects"] = [
+    ("Decals", [], ["icons/turf/flooring/decals.dmi", O + "decals.dmi", E + "crayondecal.dmi", E + "wall_graffiti.dmi",
+                    E + "warning_stripes.dmi", "icons/turf/mining_decals.dmi"], "perstate"),
+    ("Fluids", ["/obj/effect/decal/cleanable"], [E + "blood.dmi", E + "effects.dmi", E + "tomatodecal.dmi",
+                                                  E + "drip.dmi", E + "liquid.dmi"], "perstate"),
+    ("Effects", ["/obj/effect"], [E], "perstate"),
+    ("Markers", ["/obj/landmark", "/obj/effect/landmark"], ["icons/misc/landmarks.dmi", "icons/misc/mark.dmi"], "perstate"),
+    ("Parallaxes", [], [], "keep"),
+]
+
 VARIANT_SYNONYMS = {
     "open": ["open", "opened", "_open", "-open"], "closed": ["closed", ""], "on": ["on", "1", "_on", "-on", "active", "lit"],
     "off": ["off", "0", "", "_off"], "empty": ["empty", "0", "_empty", "-empty"], "full": ["full", "", "1"],
@@ -174,7 +201,8 @@ def load_candidates(eris: Path, items: list[dict], prefixes: list[str], loose: l
             for st, data in all_states.items():
                 # Variant states (off, open, door, broken, vend...) belong to their base state.
                 base = re.sub(r"([-_](door|open|opened|off|on|broken|vend|deny|panel|lh|rh|wielded|empty|full|lit|unlit|"
-                              r"locked|unlocked|sparks?|closing|opening|working|work|pause|idle)|[0-9]+)$", "", st)
+                              r"locked|unlocked|sparks?|closing|opening|working|work|pause|idle|dead|rest|sit|sleep|dying|gib|"
+                              r"harvest|walk|run|s)|[0-9]+)$", "", st)
                 if base != st and base in all_states:
                     continue
                 key = f"{rel}:{st}"
@@ -287,10 +315,11 @@ def main() -> int:
     roots = sorted({c[0].split("/")[0] for c in config})
     for root in roots:
         for rsi in match.list_rsis(root):
-            if rsi in done:
+            # Displacement maps are positioning data, not art.
+            if rsi in done or "displacement" in rsi:
                 continue
             rule = next((c for c in config if rsi.startswith(c[0])), None)
-            if rule is None:
+            if rule is None or not (rule[1] or rule[2]):
                 continue
             prefix, type_prefixes, loose, policy = rule
             if prefix not in pools:
@@ -300,7 +329,10 @@ def main() -> int:
             snames = [s["name"] for s in states]
             used = [s for s in match.USED_STATES.get(rsi, {}) if s in snames]
             # Machines show different states of one machine, so only object-like RSIs are split.
-            if len(used) > 1 and policy != "blank":
+            if policy == "perstate":
+                # Sheets of unrelated sprites (decals, effects): every state is its own target.
+                groups = {n: [] for n in snames}
+            elif len(used) > 1 and policy != "blank":
                 groups = {u: [] for u in used}
                 for n in snames:
                     if n in groups:
@@ -316,6 +348,8 @@ def main() -> int:
             gun_class = GUN_CLASS.get(rsi.split("/")[3] if rsi.startswith("Objects/Weapons/Guns/") else "", [])
             for primary, related in groups.items():
                 ent_names = match.USED_NAMES.get(rsi, {}).get(primary) if len(groups) > 1 else names.get(rsi, [])
+                if policy == "perstate":
+                    ent_names = []
                 im = frame(rsi, primary)
                 tok = match.tokens(Path(rsi).stem, rsi.split("/")[-2], primary if len(groups) > 1 else "", *(ent_names or []))
                 targets.append({"rsi": rsi, "snames": snames, "primary": primary, "related": related, "prefix": prefix,
@@ -328,7 +362,7 @@ def main() -> int:
     def score(t, c):
         ns = match.name_score(t["tok"], c["tok"], idf)
         bonus = 0.15 if t["gun_class"] and any(k in c["type"] for k in t["gun_class"]) else 0.0
-        return 0.65 * ns + 0.35 * match.colour_score(t["sig"], c["sig"]) + bonus, ns
+        return 0.8 * ns + 0.2 * match.colour_score(t["sig"], c["sig"]) + bonus, ns
 
     by_key = {c["key"]: c for pool in pools.values() for c in pool}
     picks = match.assign(targets, lambda t: pools[t["prefix"]], score, reuse_penalty=0.04)

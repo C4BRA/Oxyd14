@@ -8,28 +8,10 @@
     },
     "states": [
         {
-            "name": "icon",
-            "delays": [
-                [
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1
-                ]
-            ]
+            "name": "icon"
         },
         {
-            "name": "icon-filled",
-            "delays": [
-                [
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1
-                ]
-            ]
+            "name": "icon-filled"
         },
         {
             "name": "equipped-BACKPACK",

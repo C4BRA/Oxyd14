@@ -5,17 +5,17 @@
         "y": 32
     },
     "license": "CC-BY-SA-3.0",
-    "copyright": "Taken from https://github.com/tgstation/tgstation at 87e833a2252741f795df5a05a08fe5f08e4dad2b",
+    "copyright": "Taken from https://github.com/tgstation/tgstation at 87e833a2252741f795df5a05a08fe5f08e4dad2b. Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
     "states": [
         {
             "name": "chempuff",
             "delays": [
                 [
-                    0.05,
-                    0.05,
-                    0.05,
-                    0.05,
-                    0.05
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    2.0
                 ]
             ]
         }

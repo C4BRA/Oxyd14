@@ -8,10 +8,32 @@
     "copyright": "Made by Potato1234x (github) for SS14. Inhands by Tiniest Shark (Github). Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
     "states": [
         {
-            "name": "icon"
+            "name": "icon",
+            "delays": [
+                [
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    2.0
+                ]
+            ]
         },
         {
-            "name": "icon_open"
+            "name": "icon_open",
+            "delays": [
+                [
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    2.0
+                ]
+            ]
         },
         {
             "name": "inhand-right",

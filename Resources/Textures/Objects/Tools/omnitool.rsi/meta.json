@@ -8,64 +8,19 @@
     },
     "states": [
         {
-            "name": "omnitool-prying",
-            "delays": [
-                [
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1
-                ]
-            ]
+            "name": "omnitool-prying"
         },
         {
-            "name": "omnitool-screwing",
-            "delays": [
-                [
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1
-                ]
-            ]
+            "name": "omnitool-screwing"
         },
         {
-            "name": "omnitool-pulsing",
-            "delays": [
-                [
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1
-                ]
-            ]
+            "name": "omnitool-pulsing"
         },
         {
-            "name": "omnitool-snipping",
-            "delays": [
-                [
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1
-                ]
-            ]
+            "name": "omnitool-snipping"
         },
         {
-            "name": "omnitool-wrenching",
-            "delays": [
-                [
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1
-                ]
-            ]
+            "name": "omnitool-wrenching"
         }
     ]
 }

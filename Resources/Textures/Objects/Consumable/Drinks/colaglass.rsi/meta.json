@@ -8,26 +8,10 @@
     "copyright": "Made by RumiTiger. Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
     "states": [
         {
-            "name": "icon",
-            "delays": [
-                [
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1
-                ]
-            ]
+            "name": "icon"
         },
         {
-            "name": "icon_empty",
-            "delays": [
-                [
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1
-                ]
-            ]
+            "name": "icon_empty"
         },
         {
             "name": "fill-1"

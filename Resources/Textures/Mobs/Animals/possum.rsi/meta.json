@@ -1,27 +1,93 @@
 {
-  "version": 1,
-  "license": "CC-BY-SA-3.0",
-  "copyright": "Taken from Baystation12 at https://github.com/Baystation12/Baystation12/blob/c7442716b52ce4edeef5eaf5d2fc7c57a08a3f01/icons/mob/simple_animal/possum.dmi",
-  "size": {
-    "x": 32,
-    "y": 32
-  },
-  "states": [
-    {
-      "name": "possum",
-      "directions": 4
+    "version": 1,
+    "license": "CC-BY-SA-3.0",
+    "copyright": "Taken from Baystation12 at https://github.com/Baystation12/Baystation12/blob/c7442716b52ce4edeef5eaf5d2fc7c57a08a3f01/icons/mob/simple_animal/possum.dmi. Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
+    "size": {
+        "x": 32,
+        "y": 32
     },
-    {
-      "name": "possum_dead",
-      "directions": 4
-    },
-    {
-      "name": "poppy",
-      "directions": 4
-    },
-    {
-      "name": "poppy_dead",
-      "directions": 4
-    }
-  ]
+    "states": [
+        {
+            "name": "possum",
+            "directions": 4,
+            "delays": [
+                [
+                    1.0,
+                    0.15,
+                    0.15,
+                    0.15,
+                    0.2,
+                    0.15,
+                    0.15,
+                    0.15,
+                    1.0,
+                    0.1,
+                    0.1,
+                    0.15,
+                    0.1,
+                    0.1
+                ],
+                [
+                    1.0,
+                    0.15,
+                    0.15,
+                    0.15,
+                    0.2,
+                    0.15,
+                    0.15,
+                    0.15,
+                    1.0,
+                    0.1,
+                    0.1,
+                    0.15,
+                    0.1,
+                    0.1
+                ],
+                [
+                    1.0,
+                    0.15,
+                    0.15,
+                    0.15,
+                    0.2,
+                    0.15,
+                    0.15,
+                    0.15,
+                    1.0,
+                    0.1,
+                    0.1,
+                    0.15,
+                    0.1,
+                    0.1
+                ],
+                [
+                    1.0,
+                    0.15,
+                    0.15,
+                    0.15,
+                    0.2,
+                    0.15,
+                    0.15,
+                    0.15,
+                    1.0,
+                    0.1,
+                    0.1,
+                    0.15,
+                    0.1,
+                    0.1
+                ]
+            ]
+        },
+        {
+            "name": "possum_dead",
+            "directions": 4
+        },
+        {
+            "name": "poppy",
+            "directions": 4
+        },
+        {
+            "name": "poppy_dead",
+            "directions": 4
+        }
+    ]
 }

@@ -1,0 +1,3983 @@
+[
+ {
+  "target": "Mobs/Species/Human/parts.rsi",
+  "standin": false,
+  "states": {
+   "full": {
+    "mask_transfer": {
+     "src": {
+      "layers": [
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "chest_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "groin_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "head_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "l_arm_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "r_arm_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "l_leg_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "r_leg_m"
+       }
+      ]
+     },
+     "ref": {
+      "rsi": "Mobs/Species/Human/parts.rsi",
+      "state": "full",
+      "base": true
+     }
+    }
+   },
+   "head_f": {
+    "mask_transfer": {
+     "src": {
+      "layers": [
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "chest_f"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "groin_f"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "head_f"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "l_arm_f"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "r_arm_f"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "l_leg_f"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "r_leg_f"
+       }
+      ]
+     },
+     "ref": {
+      "rsi": "Mobs/Species/Human/parts.rsi",
+      "state": "head_f",
+      "base": true
+     }
+    }
+   },
+   "head_m": {
+    "mask_transfer": {
+     "src": {
+      "layers": [
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "chest_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "groin_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "head_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "l_arm_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "r_arm_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "l_leg_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "r_leg_m"
+       }
+      ]
+     },
+     "ref": {
+      "rsi": "Mobs/Species/Human/parts.rsi",
+      "state": "head_m",
+      "base": true
+     }
+    }
+   },
+   "l_arm": {
+    "mask_transfer": {
+     "src": {
+      "layers": [
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "chest_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "groin_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "head_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "l_arm_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "r_arm_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "l_leg_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "r_leg_m"
+       }
+      ]
+     },
+     "ref": {
+      "rsi": "Mobs/Species/Human/parts.rsi",
+      "state": "l_arm",
+      "base": true
+     }
+    }
+   },
+   "l_foot": {
+    "mask_transfer": {
+     "src": {
+      "layers": [
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "chest_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "groin_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "head_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "l_arm_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "r_arm_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "l_leg_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "r_leg_m"
+       }
+      ]
+     },
+     "ref": {
+      "rsi": "Mobs/Species/Human/parts.rsi",
+      "state": "l_foot",
+      "base": true
+     }
+    }
+   },
+   "l_hand": {
+    "mask_transfer": {
+     "src": {
+      "layers": [
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "chest_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "groin_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "head_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "l_arm_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "r_arm_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "l_leg_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "r_leg_m"
+       }
+      ]
+     },
+     "ref": {
+      "rsi": "Mobs/Species/Human/parts.rsi",
+      "state": "l_hand",
+      "base": true
+     }
+    }
+   },
+   "l_leg": {
+    "mask_transfer": {
+     "src": {
+      "layers": [
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "chest_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "groin_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "head_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "l_arm_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "r_arm_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "l_leg_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "r_leg_m"
+       }
+      ]
+     },
+     "ref": {
+      "rsi": "Mobs/Species/Human/parts.rsi",
+      "state": "l_leg",
+      "base": true
+     }
+    }
+   },
+   "r_arm": {
+    "mask_transfer": {
+     "src": {
+      "layers": [
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "chest_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "groin_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "head_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "l_arm_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "r_arm_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "l_leg_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "r_leg_m"
+       }
+      ]
+     },
+     "ref": {
+      "rsi": "Mobs/Species/Human/parts.rsi",
+      "state": "r_arm",
+      "base": true
+     }
+    }
+   },
+   "r_foot": {
+    "mask_transfer": {
+     "src": {
+      "layers": [
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "chest_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "groin_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "head_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "l_arm_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "r_arm_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "l_leg_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "r_leg_m"
+       }
+      ]
+     },
+     "ref": {
+      "rsi": "Mobs/Species/Human/parts.rsi",
+      "state": "r_foot",
+      "base": true
+     }
+    }
+   },
+   "r_hand": {
+    "mask_transfer": {
+     "src": {
+      "layers": [
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "chest_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "groin_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "head_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "l_arm_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "r_arm_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "l_leg_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "r_leg_m"
+       }
+      ]
+     },
+     "ref": {
+      "rsi": "Mobs/Species/Human/parts.rsi",
+      "state": "r_hand",
+      "base": true
+     }
+    }
+   },
+   "r_leg": {
+    "mask_transfer": {
+     "src": {
+      "layers": [
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "chest_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "groin_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "head_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "l_arm_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "r_arm_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "l_leg_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "r_leg_m"
+       }
+      ]
+     },
+     "ref": {
+      "rsi": "Mobs/Species/Human/parts.rsi",
+      "state": "r_leg",
+      "base": true
+     }
+    }
+   },
+   "torso_f": {
+    "mask_transfer": {
+     "src": {
+      "layers": [
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "chest_f"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "groin_f"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "head_f"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "l_arm_f"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "r_arm_f"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "l_leg_f"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "r_leg_f"
+       }
+      ]
+     },
+     "ref": {
+      "rsi": "Mobs/Species/Human/parts.rsi",
+      "state": "torso_f",
+      "base": true
+     }
+    }
+   },
+   "torso_m": {
+    "mask_transfer": {
+     "src": {
+      "layers": [
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "chest_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "groin_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "head_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "l_arm_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "r_arm_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "l_leg_m"
+       },
+       {
+        "dmi": "icons/mob/human_races/r_human.dmi",
+        "state": "r_leg_m"
+       }
+      ]
+     },
+     "ref": {
+      "rsi": "Mobs/Species/Human/parts.rsi",
+      "state": "torso_m",
+      "base": true
+     }
+    }
+   }
+  }
+ },
+ {
+  "target": "Mobs/Customization/human_hair.rsi",
+  "standin": false,
+  "states": {
+   "80s": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "80s"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "80s",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "a": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "short"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "a",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "afro": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "afro"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "afro",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "afro2": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "afro2"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "afro2",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "antenna": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "curls"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "antenna",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "b": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "shoulderlen"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "b",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "b_alt": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "veryshortovereye"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "b_alt",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "baby": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "mohawk"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "baby",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "baldfade": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "shavedmohawk"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "baldfade",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "bedhead": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "bedhead"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "bedhead",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "bedheadv2": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "bedheadv2"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "bedheadv2",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "bedheadv3": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "bedheadv3"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "bedheadv3",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "beehive": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "beehive"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "beehive",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "beehivev2": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "beehive2"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "beehivev2",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "bigafro": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "bigafro"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "bigafro",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "bigflattop": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "familyman"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "bigflattop",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "bigpompadour": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "dandypompadour"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "bigpompadour",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "bob": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "bun2"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "bob",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "bob2": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "scully"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "bob2",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "bob4": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "curls"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "bob4",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "bob5": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "afro"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "bob5",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "bobcurl": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "bobcurl"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "bobcurl",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "bobcut": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "bobcut"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "bobcut",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "boddicker": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "buzzcut"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "boddicker",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "bowlcut": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "bowlcut1"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "bowlcut",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "bowlcut2": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "bowlcut2"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "bowlcut2",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "braid": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "braid"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "braid",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "braid2": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "braid"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "braid2",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "braided": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "jensen"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "braided",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "braidfront": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "drillruru"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "braidfront",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "braidtail": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "oneshoulder"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "braidtail",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "bun": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "bun"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "bun",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "bun3": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "bun3"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "bun3",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "bunhead2": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "belle"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "bunhead2",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "business": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "business"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "business",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "business2": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "business2"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "business2",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "business3": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "business3"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "business3",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "business4": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "business4"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "business4",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "buzzcut": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "buzzcut"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "buzzcut",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "c": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "cuthair"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "c",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "classicafro": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "afro"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "classicafro",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "classicbigafro": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "bigafro"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "classicbigafro",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "classicbusiness": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "business"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "classicbusiness",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "classiccia": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "business3"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "classiccia",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "classiccornrows2": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "rows2"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "classiccornrows2",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "classicfloorlength_bedhead": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "nia"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "classicfloorlength_bedhead",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "classicmodern": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "modern"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "classicmodern",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "classicmulder": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "business4"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "classicmulder",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "classicwisp": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "wisp"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "classicwisp",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "cia": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "cia"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "cia",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "coffeehouse": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "coffeehouse"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "coffeehouse",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "combover": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "combover"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "combover",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "cornrowbraid": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "ponytail"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "cornrowbraid",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "cornrowbun": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "rows1"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "cornrowbun",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "cornrows": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "thinningrear"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "cornrows",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "cornrows2": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "rows2"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "cornrows2",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "cornrowtail": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "rows2"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "cornrowtail",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "country": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "halfshaved_emo"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "country",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "crewcut": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "crewcut"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "crewcut",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "crewcut2": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "crewcut"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "crewcut2",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "cube": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "beehive"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "cube",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "curls": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "curls"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "curls",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "d": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "mohawk"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "d",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "dandypompadour": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "dandypompadour"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "dandypompadour",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "devilock": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "devilock"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "devilock",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "doublebun": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "doublebun"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "doublebun",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "doublebun_long": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "doublebun"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "doublebun_long",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "dreads": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "dreads"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "dreads",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "drillhair": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "nitori"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "drillhair",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "drillhairextended": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "nitori"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "drillhairextended",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "drillruru": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "drillruru"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "drillruru",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "e": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "balding"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "e",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "emo": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "emo"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "emo",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "emo2": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "kare"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "emo2",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "emofringe": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "emofringe"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "emofringe",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "f": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "flowhair"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "f",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "father": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "father"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "father",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "feather": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "feather"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "feather",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "flair": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "flair"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "flair",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "floorlength_bedhead": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "poofy2"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "floorlength_bedhead",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "fringetail": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "fringetail"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "fringetail",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "gelled": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "gelled"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "gelled",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "gentle": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "gentle"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "gentle",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "halfbang": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "halfbang"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "halfbang",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "halfbang2": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "longeralt2"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "halfbang2",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "halfshaved": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "halfshaved"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "halfshaved",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "hbraid": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "hbraid"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "hbraid",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "hedgehog": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "blackswordsman"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "hedgehog",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "highfade": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "shavedmohawk"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "highfade",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "highponytail": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "highponytail"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "highponytail",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "himecut": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "himecut"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "himecut",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "himecut2": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "himecut"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "himecut2",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "himeup": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "himecut_alt"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "himeup",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "hitop": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "hitop"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "hitop",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "jade": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "marysue"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "jade",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "jensen": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "jensen"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "jensen",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "joestar": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "joestar"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "joestar",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "kagami": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "kagami"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "kagami",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "keanu": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "keanu"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "keanu",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "kusanagi": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "kusanagi"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "kusanagi",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "largebun": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "croft"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "largebun",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "lbangs": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "ramona"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "lbangs",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "long": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "nia"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "long",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "long2": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "longeralt3"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "long2",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "long3": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "longeralt3"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "long3",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "longbundled": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "chop"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "longbundled",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "long_bedhead": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "poofy2"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "long_bedhead",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "long_bedhead2": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "bigafro"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "long_bedhead2",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "longemo": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "emolong"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "longemo",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "longest": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "longest"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "longest",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "longest2": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "longovereye"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "longest2",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "longfringe": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "longfringe"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "longfringe",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "longovereye": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "longovereye"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "longovereye",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "longovereye_highlight": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "flowhair"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "longovereye_highlight",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "longsidepart": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "angelique"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "longsidepart",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "longstraightponytail": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "shortbraid"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "longstraightponytail",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "lowfade": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "skinhead"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "lowfade",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "manbun": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "manbun"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "manbun",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "medfade": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "shavedmohawk"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "medfade",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "megaeyebrows": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "father"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "megaeyebrows",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "messy": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "short3"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "messy",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "modern": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "modern"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "modern",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "mulder": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "mulder"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "mulder",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "nitori": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "nitori"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "nitori",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "nofade": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "ronin"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "nofade",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "odango": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "odango"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "odango",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "ombre": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "ombre"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "ombre",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "oneshoulder": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "oneshoulder"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "oneshoulder",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "oxton": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "oxton"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "oxton",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "part": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "boyish5b"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "part",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "parted": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "parted"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "parted",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "pigtails": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "poofy"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "pigtails",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "pigtails2": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "nitori"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "pigtails2",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "pixie": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "pixie"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "pixie",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "pompadour": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "pompadour"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "pompadour",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "ponytail": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "ponytail"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "ponytail",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "ponytail2": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "ponytail2"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "ponytail2",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "ponytail3": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "ponytail3"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "ponytail3",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "ponytail4": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "ponytail4"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "ponytail4",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "ponytail5": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "ponytail5"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "ponytail5",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "ponytail6": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "ponytail6"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "ponytail6",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "ponytail7": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "ponytail7"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "ponytail7",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "poofy": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "poofy"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "poofy",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "protagonist": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "protagonist"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "protagonist",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "pulato": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "kusanagi"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "pulato",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "quiff": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "quiff"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "quiff",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "reversemohawk": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "reversemohawk"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "reversemohawk",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "ronin": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "ronin"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "ronin",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "rosa": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "ramona"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "rosa",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "sargeant": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "sargeant"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "sargeant",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "shaved": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "shavedmohawk"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "shaved",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "shavedmohawk": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "shavedmohawk"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "shavedmohawk",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "shavedpart": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "shavedpart"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "shavedpart",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "shortbangs": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "shortbangs"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "shortbangs",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "shortbraid": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "shortbraid"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "shortbraid",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "shorthair2": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "bun2"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "shorthair2",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "shorthair3": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "shorthair3beta"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "shorthair3",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "shorthairg": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "femc"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "shorthairg",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "shorthime": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "hbangs"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "shorthime",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "shortovereye": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "shortovereye"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "shortovereye",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "sidecut": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "ponytail3"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "sidecut",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "sidetail": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "mia"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "sidetail",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "sidetail2": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "flipped"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "sidetail2",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "sidetail3": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "kusanagi"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "sidetail3",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "sidetail4": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "ponytail4"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "sidetail4",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "skinhead": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "skinhead"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "skinhead",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "spikey": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "spikey"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "spikey",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "spiky": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "toriyama"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "spiky",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "spiky2": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "toriyama2"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "spiky2",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "spikyponytail": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "spikyponytail"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "spikyponytail",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "spookylong": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "smessy"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "spookylong",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "stail": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "stail"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "stail",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "swept": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "joestar"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "swept",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "swept2": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "joestar"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "swept2",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "terminal": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "spikyponytail"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "terminal",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "terminal_highlight": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "amazon"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "terminal_highlight",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "terminal_headband": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "shavedmohawk"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "terminal_headband",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "thinning": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "thinning"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "thinning",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "thinningfront": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "thinningfront"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "thinningfront",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "thinningrear": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "thinningrear"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "thinningrear",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "tightbun": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "ronin"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "tightbun",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "topknot": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "topknot"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "topknot",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "tressshoulder": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "tressshoulder"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "tressshoulder",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "trimflat": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "reversemohawk"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "trimflat",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "trimmed": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "skinhead"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "trimmed",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "twintail": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "hbangs_alt"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "twintail",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "twostrands": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "angelique"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "twostrands",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "undercut": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "undercut"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "undercut",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "undercutleft": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "short2"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "undercutleft",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "undercutright": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "ponytail2"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "undercutright",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "unkept": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "unkept"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "unkept",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "unshaven_mohawk": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "spikey"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "unshaven_mohawk",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "updo": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "updo"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "updo",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "veryshortovereyealternate": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "veryshortovereyealternate"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "veryshortovereyealternate",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "vlong": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "vlong"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "vlong",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "vlongfringe": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "vlongfringe"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "vlongfringe",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "volaju": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "volaju"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "volaju",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "wisp": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "wisp"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "wisp",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "bald": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "bald"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "bald",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "uneven": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "himecut_alt"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "uneven",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "tailed": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "hbraid"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "tailed",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "classiclong2": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "nia"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "classiclong2",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "classiclong3": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "nia"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "classiclong3",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "shaped": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "bobcurl"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "shaped",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "longbow": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "adhara"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "longbow",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "longwithbangs": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "emolong"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "longwithbangs",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "overeyepigtail": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/hair.dmi",
+      "state": "hbangs_alt"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_hair.rsi",
+      "state": "overeyepigtail",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   }
+  }
+ },
+ {
+  "target": "Mobs/Customization/human_facial_hair.rsi",
+  "standin": false,
+  "states": {
+   "3oclock": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/facial.dmi",
+      "state": "3oclock"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_facial_hair.rsi",
+      "state": "3oclock",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "5oclockmoustache": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/facial.dmi",
+      "state": "5oclockmoustache"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_facial_hair.rsi",
+      "state": "5oclockmoustache",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "7oclock": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/facial.dmi",
+      "state": "7oclock"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_facial_hair.rsi",
+      "state": "7oclock",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "7oclockmoustache": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/facial.dmi",
+      "state": "7oclockmoustache"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_facial_hair.rsi",
+      "state": "7oclockmoustache",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "abe": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/facial.dmi",
+      "state": "abe"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_facial_hair.rsi",
+      "state": "abe",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "brokenman": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/facial.dmi",
+      "state": "wise"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_facial_hair.rsi",
+      "state": "brokenman",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "chaplin": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/facial.dmi",
+      "state": "chaplin"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_facial_hair.rsi",
+      "state": "chaplin",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "chin": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/facial.dmi",
+      "state": "chin"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_facial_hair.rsi",
+      "state": "chin",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "chinlessbeard": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/facial.dmi",
+      "state": "volaju"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_facial_hair.rsi",
+      "state": "chinlessbeard",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "croppedfullbeard": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/facial.dmi",
+      "state": "volaju"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_facial_hair.rsi",
+      "state": "croppedfullbeard",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "dorsalfnil": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/facial.dmi",
+      "state": "shaved"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_facial_hair.rsi",
+      "state": "dorsalfnil",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "dwarf": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/facial.dmi",
+      "state": "dwarf"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_facial_hair.rsi",
+      "state": "dwarf",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "elvis": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/facial.dmi",
+      "state": "elvis"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_facial_hair.rsi",
+      "state": "elvis",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "fiveoclock": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/facial.dmi",
+      "state": "volaju"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_facial_hair.rsi",
+      "state": "fiveoclock",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "fullbeard": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/facial.dmi",
+      "state": "fullbeard"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_facial_hair.rsi",
+      "state": "fullbeard",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "fumanchu": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/facial.dmi",
+      "state": "vandyke"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_facial_hair.rsi",
+      "state": "fumanchu",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "gt": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/facial.dmi",
+      "state": "gt"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_facial_hair.rsi",
+      "state": "gt",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "hip": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/facial.dmi",
+      "state": "hip"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_facial_hair.rsi",
+      "state": "hip",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "hogan": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/facial.dmi",
+      "state": "hogan"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_facial_hair.rsi",
+      "state": "hogan",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "jensen": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/facial.dmi",
+      "state": "jensen"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_facial_hair.rsi",
+      "state": "jensen",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "longbeard": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/facial.dmi",
+      "state": "longbeard"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_facial_hair.rsi",
+      "state": "longbeard",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "longbeard_l": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/facial.dmi",
+      "state": "watson"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_facial_hair.rsi",
+      "state": "longbeard_l",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "martialartist": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/facial.dmi",
+      "state": "dwarf"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_facial_hair.rsi",
+      "state": "martialartist",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "moonshiner": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/facial.dmi",
+      "state": "dwarf"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_facial_hair.rsi",
+      "state": "moonshiner",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "moustache": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/facial.dmi",
+      "state": "muttonmu"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_facial_hair.rsi",
+      "state": "moustache",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "mutton": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/facial.dmi",
+      "state": "mutton"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_facial_hair.rsi",
+      "state": "mutton",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "muttonmus": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/facial.dmi",
+      "state": "muttonmu"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_facial_hair.rsi",
+      "state": "muttonmus",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "neckbeard": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/facial.dmi",
+      "state": "neckbeard"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_facial_hair.rsi",
+      "state": "neckbeard",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "pencilstache": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/facial.dmi",
+      "state": "mutton"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_facial_hair.rsi",
+      "state": "pencilstache",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "selleck": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/facial.dmi",
+      "state": "selleck"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_facial_hair.rsi",
+      "state": "selleck",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "sideburn": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/facial.dmi",
+      "state": "neckbeard"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_facial_hair.rsi",
+      "state": "sideburn",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "smallstache": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/facial.dmi",
+      "state": "chin"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_facial_hair.rsi",
+      "state": "smallstache",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "vandyke": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/facial.dmi",
+      "state": "vandyke"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_facial_hair.rsi",
+      "state": "vandyke",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "volaju": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/facial.dmi",
+      "state": "volaju"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_facial_hair.rsi",
+      "state": "volaju",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "walrus": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/facial.dmi",
+      "state": "walrus"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_facial_hair.rsi",
+      "state": "walrus",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "watson": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/facial.dmi",
+      "state": "watson"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_facial_hair.rsi",
+      "state": "watson",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "wise": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/facial.dmi",
+      "state": "wise"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_facial_hair.rsi",
+      "state": "wise",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   },
+   "shaved": {
+    "mask_transfer": {
+     "src": {
+      "dmi": "icons/mob/human_races/species/human/facial.dmi",
+      "state": "shaved"
+     },
+     "ref": {
+      "rsi": "Mobs/Customization/human_facial_hair.rsi",
+      "state": "shaved",
+      "base": true
+     },
+     "keep_shape": true
+    }
+   }
+  }
+ }
+]

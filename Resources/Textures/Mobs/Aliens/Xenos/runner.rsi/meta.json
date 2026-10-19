@@ -1,24 +1,72 @@
 {
-  "version": 1,
-  "license": "CC-BY-SA-3.0",
-  "copyright": "https://gitlab.com/cmdevs/colonial-warfare/-/tree/dev/icons/mob/xenonids",
-  "size": {
-    "x": 64,
-    "y": 64
-  },
-  "states": [
-    {
-      "name": "running",
-      "directions": 4
+    "version": 1,
+    "license": "CC-BY-SA-3.0",
+    "copyright": "https://gitlab.com/cmdevs/colonial-warfare/-/tree/dev/icons/mob/xenonids. Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
+    "size": {
+        "x": 64,
+        "y": 64
     },
-    {
-      "name": "sleeping"
-    },
-    {
-      "name": "crit"
-    },
-    {
-      "name": "dead"
-    }
-  ]
+    "states": [
+        {
+            "name": "running",
+            "directions": 4,
+            "delays": [
+                [
+                    0.04,
+                    0.04,
+                    0.04,
+                    0.04,
+                    0.04
+                ],
+                [
+                    0.04,
+                    0.04,
+                    0.04,
+                    0.04,
+                    0.04
+                ],
+                [
+                    0.04,
+                    0.04,
+                    0.04,
+                    0.04,
+                    0.04
+                ],
+                [
+                    0.04,
+                    0.04,
+                    0.04,
+                    0.04,
+                    0.04
+                ]
+            ]
+        },
+        {
+            "name": "sleeping",
+            "delays": [
+                [
+                    0.04,
+                    0.04,
+                    0.04,
+                    0.04,
+                    0.04
+                ]
+            ]
+        },
+        {
+            "name": "crit",
+            "delays": [
+                [
+                    0.04,
+                    0.04,
+                    0.04,
+                    0.04,
+                    0.04
+                ]
+            ]
+        },
+        {
+            "name": "dead"
+        }
+    ]
 }

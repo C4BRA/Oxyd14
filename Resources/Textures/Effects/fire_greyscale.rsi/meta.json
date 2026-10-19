@@ -1,15 +1,15 @@
 {
-    "version":1,
-    "size":{
-        "x":32,
-        "y":32
+    "version": 1,
+    "size": {
+        "x": 32,
+        "y": 32
     },
-    "license":"CC-BY-SA-3.0",
-    "copyright":"Taken from https://github.com/tgstation/tgstation at 04e43d8c1d5097fdb697addd4395fb849dd341bd",
-    "states":[
+    "license": "CC-BY-SA-3.0",
+    "copyright": "Taken from https://github.com/tgstation/tgstation at 04e43d8c1d5097fdb697addd4395fb849dd341bd. Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
+    "states": [
         {
-            "name":"1",
-            "delays":[
+            "name": "1",
+            "delays": [
                 [
                     0.1,
                     0.2,
@@ -21,8 +21,8 @@
             ]
         },
         {
-            "name":"2",
-            "delays":[
+            "name": "2",
+            "delays": [
                 [
                     0.1,
                     0.2,
@@ -42,8 +42,8 @@
             ]
         },
         {
-            "name":"3",
-            "delays":[
+            "name": "3",
+            "delays": [
                 [
                     0.1,
                     0.2,

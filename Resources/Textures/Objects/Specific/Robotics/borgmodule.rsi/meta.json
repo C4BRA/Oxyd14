@@ -14,19 +14,7 @@
             "name": "engineering"
         },
         {
-            "name": "generic",
-            "delays": [
-                [
-                    9.0,
-                    0.2,
-                    6.0,
-                    0.2,
-                    3.0,
-                    0.2,
-                    0.2,
-                    0.2
-                ]
-            ]
+            "name": "generic"
         },
         {
             "name": "icon-anomalies"
@@ -233,19 +221,7 @@
             "name": "security"
         },
         {
-            "name": "service",
-            "delays": [
-                [
-                    9.0,
-                    0.2,
-                    6.0,
-                    0.2,
-                    3.0,
-                    0.2,
-                    0.2,
-                    0.2
-                ]
-            ]
+            "name": "service"
         },
         {
             "name": "syndicateborgbomb"
@@ -263,16 +239,7 @@
             "name": "xenoborg_heavy"
         },
         {
-            "name": "xenoborg_scout",
-            "delays": [
-                [
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1
-                ]
-            ]
+            "name": "xenoborg_scout"
         },
         {
             "name": "xenoborg_stealth"

@@ -1,0 +1,842 @@
+[
+ {
+  "target": "Effects/sparks.rsi",
+  "standin": false,
+  "states": {
+   "sparks": {
+    "dmi": "icons/effects/effects.dmi",
+    "state": "sparks"
+   }
+  }
+ },
+ {
+  "target": "Effects/fire.rsi",
+  "standin": false,
+  "states": {
+   "1": {
+    "dmi": "icons/effects/fire.dmi",
+    "state": "1"
+   },
+   "2": {
+    "dmi": "icons/effects/fire.dmi",
+    "state": "2"
+   },
+   "3": {
+    "dmi": "icons/effects/fire.dmi",
+    "state": "3"
+   },
+   "fire": {
+    "dmi": "icons/effects/fire.dmi",
+    "state": "fire"
+   }
+  }
+ },
+ {
+  "target": "Effects/fire_greyscale.rsi",
+  "standin": false,
+  "states": {
+   "1": {
+    "dmi": "icons/effects/fire.dmi",
+    "state": "1"
+   },
+   "2": {
+    "dmi": "icons/effects/fire.dmi",
+    "state": "2"
+   },
+   "3": {
+    "dmi": "icons/effects/fire.dmi",
+    "state": "3"
+   }
+  }
+ },
+ {
+  "target": "Effects/foam.rsi",
+  "standin": false,
+  "states": {
+   "foam": {
+    "dmi": "icons/effects/effects.dmi",
+    "state": "foam"
+   },
+   "metal_foam": {
+    "dmi": "icons/effects/effects.dmi",
+    "state": "metalfoam"
+   },
+   "iron_foam": {
+    "dmi": "icons/effects/effects.dmi",
+    "state": "ironfoam"
+   }
+  }
+ },
+ {
+  "target": "Effects/emp.rsi",
+  "standin": false,
+  "states": {
+   "emp_disable": {
+    "dmi": "icons/effects/effects.dmi",
+    "state": "empdisable"
+   },
+   "emp_pulse": {
+    "dmi": "icons/effects/effects.dmi",
+    "state": "emppulse"
+   }
+  }
+ },
+ {
+  "target": "Effects/extinguisherSpray.rsi",
+  "standin": false,
+  "states": {
+   "extinguish": {
+    "dmi": "icons/effects/effects.dmi",
+    "state": "extinguish"
+   }
+  }
+ },
+ {
+  "target": "Effects/electricity.rsi",
+  "standin": false,
+  "states": {
+   "electrified": {
+    "dmi": "icons/effects/effects.dmi",
+    "state": "electricity"
+   }
+  }
+ },
+ {
+  "target": "Effects/chempuff.rsi",
+  "standin": false,
+  "states": {
+   "chempuff": {
+    "dmi": "icons/obj/chempuff.dmi",
+    "state": ""
+   }
+  }
+ },
+ {
+  "target": "Effects/explosion.rsi",
+  "standin": false,
+  "states": {
+   "explosion": {
+    "dmi": "icons/effects/96x96.dmi",
+    "state": "explosion"
+   },
+   "explosionfast": {
+    "dmi": "icons/effects/96x96.dmi",
+    "state": "explosion"
+   }
+  }
+ },
+ {
+  "target": "Effects/speech.rsi",
+  "standin": false,
+  "states": {
+   "alien0": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h0"
+   },
+   "alien1": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h1"
+   },
+   "alien2": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h2"
+   },
+   "alien3": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h2"
+   },
+   "alienroyal0": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h0"
+   },
+   "alienroyal1": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h1"
+   },
+   "alienroyal2": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h2"
+   },
+   "alienroyal3": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h2"
+   },
+   "blob0": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h0"
+   },
+   "blob1": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h1"
+   },
+   "blob2": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h2"
+   },
+   "clock0": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h0"
+   },
+   "clock1": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h1"
+   },
+   "clock2": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h2"
+   },
+   "default0": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h0"
+   },
+   "default1": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h1"
+   },
+   "default2": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h2"
+   },
+   "default3": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h2"
+   },
+   "diona0": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h0"
+   },
+   "diona1": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h1"
+   },
+   "diona2": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h2"
+   },
+   "diona3": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h2"
+   },
+   "gingerbread0": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h0"
+   },
+   "gingerbread1": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h1"
+   },
+   "gingerbread2": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h2"
+   },
+   "gingerbread3": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h2"
+   },
+   "guardian0": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h0"
+   },
+   "guardian1": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h1"
+   },
+   "guardian2": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h2"
+   },
+   "guardian3": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h2"
+   },
+   "holo0": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "hR0"
+   },
+   "holo1": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "hR1"
+   },
+   "holo2": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "hR2"
+   },
+   "holo3": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "hR2"
+   },
+   "lawyer0": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h0"
+   },
+   "lawyer1": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h1"
+   },
+   "lawyer2": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h2"
+   },
+   "lawyer3": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h2"
+   },
+   "lizard0": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h0"
+   },
+   "lizard1": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h1"
+   },
+   "lizard2": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h2"
+   },
+   "lizard3": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h2"
+   },
+   "moth0": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h0"
+   },
+   "moth1": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h1"
+   },
+   "moth2": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h2"
+   },
+   "moth3": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h2"
+   },
+   "machine0": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "hR0"
+   },
+   "machine1": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "hR1"
+   },
+   "machine2": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "hR2"
+   },
+   "regal0": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h0"
+   },
+   "regal1": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h1"
+   },
+   "regal2": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h2"
+   },
+   "regal3": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h2"
+   },
+   "robot0": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "hR0"
+   },
+   "robot1": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "hR1"
+   },
+   "robot2": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "hR2"
+   },
+   "robot3": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "hR2"
+   },
+   "slime0": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h0"
+   },
+   "slime1": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h1"
+   },
+   "slime2": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h2"
+   },
+   "slime3": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h2"
+   },
+   "swarmer0": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "hR0"
+   },
+   "swarmer1": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "hR1"
+   },
+   "swarmer2": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "hR2"
+   },
+   "syndibot0": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "hR0"
+   },
+   "syndibot1": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "hR1"
+   },
+   "syndibot2": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "hR2"
+   },
+   "syndibot3": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "hR2"
+   },
+   "spider0": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h0"
+   },
+   "spider1": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h1"
+   },
+   "spider2": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h2"
+   },
+   "spider3": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h2"
+   },
+   "vox0": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h0"
+   },
+   "vulpkanin0": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h0"
+   },
+   "vulpkanin1": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h1"
+   },
+   "vulpkanin2": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h2"
+   },
+   "vulpkanin3": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "h2"
+   },
+   "xenoborg0": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "hR0"
+   },
+   "xenoborg1": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "hR1"
+   },
+   "xenoborg2": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "hR2"
+   },
+   "xenoborg3": {
+    "dmi": "icons/mob/talk.dmi",
+    "state": "hR2"
+   }
+  }
+ },
+ {
+  "target": "Fluids/vomit.rsi",
+  "standin": false,
+  "states": {
+   "vomit-0": {
+    "dmi": "icons/effects/blood.dmi",
+    "state": "vomit_1"
+   },
+   "vomit-1": {
+    "dmi": "icons/effects/blood.dmi",
+    "state": "vomit_2"
+   },
+   "vomit-2": {
+    "dmi": "icons/effects/blood.dmi",
+    "state": "vomit_3"
+   },
+   "vomit-3": {
+    "dmi": "icons/effects/blood.dmi",
+    "state": "vomit_4"
+   }
+  }
+ },
+ {
+  "target": "Fluids/vomit_toxin.rsi",
+  "standin": false,
+  "states": {
+   "vomit_toxin-0": {
+    "dmi": "icons/effects/blood.dmi",
+    "state": "vomittox_1"
+   },
+   "vomit_toxin-1": {
+    "dmi": "icons/effects/blood.dmi",
+    "state": "vomittox_2"
+   },
+   "vomit_toxin-2": {
+    "dmi": "icons/effects/blood.dmi",
+    "state": "vomittox_3"
+   },
+   "vomit_toxin-3": {
+    "dmi": "icons/effects/blood.dmi",
+    "state": "vomittox_4"
+   }
+  }
+ },
+ {
+  "target": "Fluids/gibblet.rsi",
+  "standin": false,
+  "states": {
+   "gibblet-0": {
+    "dmi": "icons/effects/blood.dmi",
+    "state": "gib1"
+   },
+   "gibblet-1": {
+    "dmi": "icons/effects/blood.dmi",
+    "state": "gib2"
+   },
+   "gibblet-2": {
+    "dmi": "icons/effects/blood.dmi",
+    "state": "gib3"
+   },
+   "gibblet-3": {
+    "dmi": "icons/effects/blood.dmi",
+    "state": "gib5"
+   },
+   "gibblet-4": {
+    "dmi": "icons/effects/blood.dmi",
+    "state": "gib6"
+   }
+  }
+ },
+ {
+  "target": "Fluids/splatter.rsi",
+  "standin": false,
+  "states": {
+   "splatter-0": {
+    "dmi": "icons/effects/blood.dmi",
+    "state": "splatter1"
+   },
+   "splatter-1": {
+    "dmi": "icons/effects/blood.dmi",
+    "state": "splatter2"
+   },
+   "splatter-2": {
+    "dmi": "icons/effects/blood.dmi",
+    "state": "splatter3"
+   },
+   "splatter-3": {
+    "dmi": "icons/effects/blood.dmi",
+    "state": "splatter4"
+   },
+   "splatter-4": {
+    "dmi": "icons/effects/blood.dmi",
+    "state": "splatter5"
+   },
+   "splatter-5": {
+    "dmi": "icons/effects/blood.dmi",
+    "state": "splatter6"
+   }
+  }
+ },
+ {
+  "target": "Fluids/writing.rsi",
+  "standin": false,
+  "states": {
+   "writing-0": {
+    "dmi": "icons/effects/blood.dmi",
+    "state": "writing1"
+   },
+   "writing-1": {
+    "dmi": "icons/effects/blood.dmi",
+    "state": "writing2"
+   },
+   "writing-2": {
+    "dmi": "icons/effects/blood.dmi",
+    "state": "writing3"
+   },
+   "writing-3": {
+    "dmi": "icons/effects/blood.dmi",
+    "state": "writing4"
+   },
+   "writing-4": {
+    "dmi": "icons/effects/blood.dmi",
+    "state": "writing5"
+   }
+  }
+ },
+ {
+  "target": "Decals/markings.rsi",
+  "standin": false,
+  "states": {
+   "delivery": {
+    "dmi": "icons/turf/flooring/decals.dmi",
+    "state": "delivery"
+   },
+   "loading_area": {
+    "dmi": "icons/turf/flooring/decals.dmi",
+    "state": "loadingarea"
+   },
+   "warn_full": {
+    "dmi": "icons/turf/flooring/decals.dmi",
+    "state": "warningfull"
+   },
+   "warningline": {
+    "dmi": "icons/turf/flooring/decals.dmi",
+    "state": "warning"
+   },
+   "warninglinecorner": {
+    "dmi": "icons/turf/flooring/decals.dmi",
+    "state": "warningcorner"
+   },
+   "warninglinecorner_flipped": {
+    "dmi": "icons/turf/flooring/decals.dmi",
+    "state": "warningcorner",
+    "flip": "x"
+   },
+   "warn_corner": {
+    "dmi": "icons/turf/flooring/decals.dmi",
+    "state": "warningcorner"
+   },
+   "warn_corner_flipped": {
+    "dmi": "icons/turf/flooring/decals.dmi",
+    "state": "warningcorner",
+    "flip": "x"
+   },
+   "caution": {
+    "dmi": "icons/turf/flooring/decals.dmi",
+    "state": "dangerfull"
+   },
+   "warn_box": {
+    "dmi": "icons/turf/flooring/decals.dmi",
+    "state": "warningcee"
+   },
+   "warn_end": {
+    "dmi": "icons/turf/flooring/decals.dmi",
+    "state": "warningcee"
+   },
+   "warn_line_s": {
+    "dmi": "icons/turf/flooring/decals.dmi",
+    "state": "warning",
+    "dir": 0
+   },
+   "warn_end_s": {
+    "dmi": "icons/turf/flooring/decals.dmi",
+    "state": "warningcee",
+    "dir": 0
+   },
+   "warn_line_n": {
+    "dmi": "icons/turf/flooring/decals.dmi",
+    "state": "warning",
+    "dir": 1
+   },
+   "warn_end_n": {
+    "dmi": "icons/turf/flooring/decals.dmi",
+    "state": "warningcee",
+    "dir": 1
+   },
+   "warn_line_e": {
+    "dmi": "icons/turf/flooring/decals.dmi",
+    "state": "warning",
+    "dir": 2
+   },
+   "warn_end_e": {
+    "dmi": "icons/turf/flooring/decals.dmi",
+    "state": "warningcee",
+    "dir": 2
+   },
+   "warn_line_w": {
+    "dmi": "icons/turf/flooring/decals.dmi",
+    "state": "warning",
+    "dir": 3
+   },
+   "warn_end_w": {
+    "dmi": "icons/turf/flooring/decals.dmi",
+    "state": "warningcee",
+    "dir": 3
+   },
+   "warn_corner_se": {
+    "dmi": "icons/turf/flooring/decals.dmi",
+    "state": "warningcorner",
+    "dir": 0
+   },
+   "warn_corner_small_se": {
+    "dmi": "icons/turf/flooring/decals.dmi",
+    "state": "warningcorner",
+    "dir": 0
+   },
+   "warn_corner_nw": {
+    "dmi": "icons/turf/flooring/decals.dmi",
+    "state": "warningcorner",
+    "dir": 1
+   },
+   "warn_corner_small_nw": {
+    "dmi": "icons/turf/flooring/decals.dmi",
+    "state": "warningcorner",
+    "dir": 1
+   },
+   "warn_corner_ne": {
+    "dmi": "icons/turf/flooring/decals.dmi",
+    "state": "warningcorner",
+    "dir": 2
+   },
+   "warn_corner_small_ne": {
+    "dmi": "icons/turf/flooring/decals.dmi",
+    "state": "warningcorner",
+    "dir": 2
+   },
+   "warn_corner_sw": {
+    "dmi": "icons/turf/flooring/decals.dmi",
+    "state": "warningcorner",
+    "dir": 3
+   },
+   "warn_corner_small_sw": {
+    "dmi": "icons/turf/flooring/decals.dmi",
+    "state": "warningcorner",
+    "dir": 3
+   }
+  }
+ },
+ {
+  "target": "Decals/burnt.rsi",
+  "standin": false,
+  "states": {
+   "burnt1": {
+    "dmi": "icons/effects/effects.dmi",
+    "state": "scorch"
+   },
+   "burnt2": {
+    "dmi": "icons/effects/effects.dmi",
+    "state": "light_scorch"
+   },
+   "burnt3": {
+    "dmi": "icons/effects/effects.dmi",
+    "state": "scorch"
+   },
+   "burnt4": {
+    "dmi": "icons/effects/effects.dmi",
+    "state": "light_scorch"
+   }
+  }
+ },
+ {
+  "target": "Decals/dirty.rsi",
+  "standin": false,
+  "states": {
+   "dirt": {
+    "dmi": "icons/effects/effects.dmi",
+    "state": "dirt"
+   },
+   "dirtlight": {
+    "dmi": "icons/effects/effects.dmi",
+    "state": "dirt"
+   },
+   "dirtmedium": {
+    "dmi": "icons/effects/effects.dmi",
+    "state": "dirt"
+   },
+   "dirtheavy": {
+    "dmi": "icons/effects/effects.dmi",
+    "state": "dirt"
+   },
+   "rust": {
+    "dmi": "icons/turf/flooring/decals.dmi",
+    "state": "rust"
+   },
+   "damaged": {
+    "dmi": "icons/turf/flooring/damage.dmi",
+    "state": "broken0"
+   },
+   "remains": {
+    "dmi": "icons/effects/blood.dmi",
+    "state": "remains"
+   }
+  }
+ },
+ {
+  "target": "Decals/derelictsign.rsi",
+  "standin": false,
+  "states": {
+   "derelict1": {
+    "dmi": "icons/turf/flooring/decals.dmi",
+    "state": "derelict1"
+   },
+   "derelict2": {
+    "dmi": "icons/turf/flooring/decals.dmi",
+    "state": "derelict2"
+   },
+   "derelict3": {
+    "dmi": "icons/turf/flooring/decals.dmi",
+    "state": "derelict3"
+   },
+   "derelict4": {
+    "dmi": "icons/turf/flooring/decals.dmi",
+    "state": "derelict4"
+   },
+   "derelict5": {
+    "dmi": "icons/turf/flooring/decals.dmi",
+    "state": "derelict5"
+   },
+   "derelict6": {
+    "dmi": "icons/turf/flooring/decals.dmi",
+    "state": "derelict6"
+   },
+   "derelict7": {
+    "dmi": "icons/turf/flooring/decals.dmi",
+    "state": "derelict7"
+   },
+   "derelict8": {
+    "dmi": "icons/turf/flooring/decals.dmi",
+    "state": "derelict8"
+   },
+   "derelict9": {
+    "dmi": "icons/turf/flooring/decals.dmi",
+    "state": "derelict9"
+   },
+   "derelict10": {
+    "dmi": "icons/turf/flooring/decals.dmi",
+    "state": "derelict10"
+   },
+   "derelict11": {
+    "dmi": "icons/turf/flooring/decals.dmi",
+    "state": "derelict11"
+   },
+   "derelict12": {
+    "dmi": "icons/turf/flooring/decals.dmi",
+    "state": "derelict12"
+   },
+   "derelict13": {
+    "dmi": "icons/turf/flooring/decals.dmi",
+    "state": "derelict13"
+   },
+   "derelict14": {
+    "dmi": "icons/turf/flooring/decals.dmi",
+    "state": "derelict14"
+   },
+   "derelict15": {
+    "dmi": "icons/turf/flooring/decals.dmi",
+    "state": "derelict15"
+   },
+   "derelict16": {
+    "dmi": "icons/turf/flooring/decals.dmi",
+    "state": "derelict16"
+   }
+  }
+ }
+]

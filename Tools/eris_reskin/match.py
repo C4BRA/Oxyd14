@@ -111,7 +111,7 @@ def assign(targets: list, candidates_for, score, reuse_penalty: float = 0.06):
     Returns {target index: (candidate, total, name_score)}."""
     ranked = []
     for i, t in enumerate(targets):
-        sc = sorted(((score(t, c), c) for c in candidates_for(t)), key=lambda x: -x[0][0])[:12]
+        sc = sorted(((score(t, c), c) for c in candidates_for(t)), key=lambda x: -x[0][0])[:25]
         if sc:
             ranked.append((sc[0][0][0], i, sc))
     ranked.sort(key=lambda x: -x[0])
@@ -255,12 +255,26 @@ def rsi_states(rsi: str) -> tuple[dict, list[dict]]:
 
 
 def rsi_first_frame(rsi: str, state: str) -> Image.Image | None:
-    meta = json.loads((TEXTURES / rsi / "meta.json").read_text(encoding="utf-8-sig"))
-    p = TEXTURES / rsi / f"{state}.png"
-    if not p.exists():
-        return None
+    """First frame of an RSI state as it was at the upstream BASE commit (before any reskin)."""
+    import io
+    import subprocess
+
+    base = (Path(__file__).resolve().parent / "BASE").read_text().strip()
+
+    def git(path):
+        r = subprocess.run(["git", "-C", str(REPO), "show", f"{base}:Resources/Textures/{rsi}/{path}"],
+                           capture_output=True)
+        return r.stdout if r.returncode == 0 else None
+
+    meta_bytes, png = git("meta.json"), git(f"{state}.png")
+    if meta_bytes is None or png is None:
+        p = TEXTURES / rsi / f"{state}.png"
+        if not p.exists():
+            return None
+        meta_bytes, png = (TEXTURES / rsi / "meta.json").read_bytes(), p.read_bytes()
+    meta = json.loads(meta_bytes.decode("utf-8-sig"))
     w, h = meta["size"]["x"], meta["size"]["y"]
-    return Image.open(p).convert("RGBA").crop((0, 0, w, h))
+    return Image.open(io.BytesIO(png)).convert("RGBA").crop((0, 0, w, h))
 
 
 def list_rsis(prefix: str) -> list[str]:

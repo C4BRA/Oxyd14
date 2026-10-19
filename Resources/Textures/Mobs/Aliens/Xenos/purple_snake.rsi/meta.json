@@ -1,7 +1,7 @@
 {
     "version": 1,
     "license": "CC-BY-SA-3.0",
-    "copyright": "From user named CAROU in Discord, purple_snake & dead_purple_snake edited by mubururu_ (github)",
+    "copyright": "From user named CAROU in Discord, purple_snake & dead_purple_snake edited by mubururu_ (github). Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
     "size": {
         "x": 32,
         "y": 32
@@ -11,10 +11,22 @@
             "name": "purple_snake",
             "directions": 4,
             "delays": [
-                [ 0.3, 0.2, 0.2, 0.4, 0.2, 0.2, 0.3 ],
-                [ 0.3, 0.2, 0.2, 0.4, 0.2, 0.2, 0.3 ],
-                [ 0.3, 0.2, 0.2, 0.4, 0.2, 0.2, 0.3 ],
-                [ 0.3, 0.2, 0.2, 0.4, 0.2, 0.2, 0.3 ]
+                [
+                    0.2,
+                    0.2
+                ],
+                [
+                    0.2,
+                    0.2
+                ],
+                [
+                    0.2,
+                    0.2
+                ],
+                [
+                    0.2,
+                    0.2
+                ]
             ]
         },
         {
@@ -22,18 +34,10 @@
         },
         {
             "name": "small_purple_snake",
-            "directions": 4,
-            "delays": [
-                [ 0.3, 0.2, 0.2, 0.4, 0.2, 0.2, 0.3 ],
-                [ 0.3, 0.2, 0.2, 0.4, 0.2, 0.2, 0.3 ],
-                [ 0.3, 0.2, 0.2, 0.4, 0.2, 0.2, 0.3 ],
-                [ 0.3, 0.2, 0.2, 0.4, 0.2, 0.2, 0.3 ]
-            ]
+            "directions": 4
         },
         {
             "name": "dead_small_purple_snake"
         }
-
-
     ]
 }

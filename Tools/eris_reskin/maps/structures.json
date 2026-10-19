@@ -6,10 +6,6 @@
    "closed": [
     "icons/obj/curtain.dmi",
     "open"
-   ],
-   "open": [
-    "icons/obj/curtain.dmi",
-    "open"
    ]
   },
   "eris": [
@@ -21,10 +17,6 @@
   "standin": false,
   "states": {
    "closed": [
-    "icons/obj/curtain.dmi",
-    "open"
-   ],
-   "open": [
     "icons/obj/curtain.dmi",
     "open"
    ]
@@ -40,10 +32,6 @@
    "closed": [
     "icons/obj/curtain.dmi",
     "open"
-   ],
-   "open": [
-    "icons/obj/curtain.dmi",
-    "open"
    ]
   },
   "eris": [
@@ -55,10 +43,6 @@
   "standin": false,
   "states": {
    "closed": [
-    "icons/obj/curtain.dmi",
-    "open"
-   ],
-   "open": [
     "icons/obj/curtain.dmi",
     "open"
    ]
@@ -74,10 +58,6 @@
    "closed": [
     "icons/obj/curtain.dmi",
     "open"
-   ],
-   "open": [
-    "icons/obj/curtain.dmi",
-    "open"
    ]
   },
   "eris": [
@@ -89,10 +69,6 @@
   "standin": false,
   "states": {
    "closed": [
-    "icons/obj/curtain.dmi",
-    "open"
-   ],
-   "open": [
     "icons/obj/curtain.dmi",
     "open"
    ]
@@ -108,10 +84,6 @@
    "closed": [
     "icons/obj/curtain.dmi",
     "open"
-   ],
-   "open": [
-    "icons/obj/curtain.dmi",
-    "open"
    ]
   },
   "eris": [
@@ -123,10 +95,6 @@
   "standin": false,
   "states": {
    "closed": [
-    "icons/obj/curtain.dmi",
-    "open"
-   ],
-   "open": [
     "icons/obj/curtain.dmi",
     "open"
    ]
@@ -142,10 +110,6 @@
    "closed": [
     "icons/obj/curtain.dmi",
     "open"
-   ],
-   "open": [
-    "icons/obj/curtain.dmi",
-    "open"
    ]
   },
   "eris": [
@@ -157,10 +121,6 @@
   "standin": false,
   "states": {
    "closed": [
-    "icons/obj/curtain.dmi",
-    "open"
-   ],
-   "open": [
     "icons/obj/curtain.dmi",
     "open"
    ]
@@ -176,10 +136,6 @@
    "closed": [
     "icons/obj/curtain.dmi",
     "open"
-   ],
-   "open": [
-    "icons/obj/curtain.dmi",
-    "open"
    ]
   },
   "eris": [
@@ -192,7 +148,7 @@
   "states": {
    "banner": [
     "icons/obj/decals.dmi",
-    "NT"
+    "one_star_old"
    ],
    "banner_cargo": [
     "icons/obj/decals.dmi",
@@ -212,7 +168,7 @@
    ],
    "banner_syndicate": [
     "icons/obj/decals.dmi",
-    "one_star_old"
+    "serbian"
    ],
    "banner_science": [
     "icons/obj/decals.dmi",
@@ -224,7 +180,7 @@
    ],
    "banner-blue": [
     "icons/obj/decals.dmi",
-    "one_star_old"
+    "one_star"
    ],
    "banner-red": [
     "icons/obj/decals.dmi",
@@ -232,26 +188,26 @@
    ],
    "banner-yellow": [
     "icons/obj/decals.dmi",
-    "atmos"
+    "one_star_old"
    ],
    "banner-green": [
-    "icons/obj/decals.dmi",
-    "greencross"
+    "icons/obj/flora/snowflora.dmi",
+    "snowgrass1gb"
    ]
   },
   "eris": [
-   "icons/obj/decals.dmi:NT",
+   "icons/obj/decals.dmi:one_star_old",
    "icons/obj/decals.dmi:cargo",
    "icons/obj/decals.dmi:eng",
    "icons/obj/decals.dmi:direction_med",
    "icons/obj/decals.dmi:one_star",
-   "icons/obj/decals.dmi:one_star_old",
+   "icons/obj/decals.dmi:serbian",
    "icons/obj/decals.dmi:sci",
    "icons/obj/decals.dmi:ironhammer",
-   "icons/obj/decals.dmi:one_star_old",
    "icons/obj/decals.dmi:one_star",
-   "icons/obj/decals.dmi:atmos",
-   "icons/obj/decals.dmi:greencross"
+   "icons/obj/decals.dmi:one_star",
+   "icons/obj/decals.dmi:one_star_old",
+   "icons/obj/flora/snowflora.dmi:snowgrass1gb"
   ]
  },
  {
@@ -320,36 +276,32 @@
   "standin": true,
   "states": {
    "big0": [
-    "icons/obj/objects.dmi",
-    "shieldoff"
+    "icons/obj/decals.dmi",
+    "greencross"
    ],
    "big1": [
-    "icons/obj/objects.dmi",
-    "shieldoff"
+    "icons/obj/decals.dmi",
+    "greencross"
    ],
    "big2": [
-    "icons/obj/objects.dmi",
-    "shieldoff"
+    "icons/obj/decals.dmi",
+    "greencross"
    ],
    "medium0": [
-    "icons/obj/objects.dmi",
-    "shieldoff"
+    "icons/obj/decals.dmi",
+    "greencross"
    ],
    "medium1": [
-    "icons/obj/objects.dmi",
-    "shieldoff"
-   ],
-   "medium3": [
-    "icons/obj/objects.dmi",
-    "shieldoff"
+    "icons/obj/decals.dmi",
+    "greencross"
    ],
    "medium4": [
-    "icons/obj/objects.dmi",
-    "shieldoff"
+    "icons/obj/decals.dmi",
+    "greencross"
    ]
   },
   "eris": [
-   "icons/obj/objects.dmi:shieldoff"
+   "icons/obj/decals.dmi:greencross"
   ]
  },
  {
@@ -371,15 +323,11 @@
   "states": {
    "fireplace": [
     "icons/obj/objects.dmi",
-    "beertankTEMP"
-   ],
-   "fireplacefestive": [
-    "icons/obj/objects.dmi",
-    "beertankTEMP"
+    "floor_magnet"
    ]
   },
   "eris": [
-   "icons/obj/objects.dmi:beertankTEMP"
+   "icons/obj/objects.dmi:floor_magnet"
   ]
  },
  {
@@ -387,20 +335,20 @@
   "standin": true,
   "states": {
    "closed": [
-    "icons/obj/decals.dmi",
-    "neotheology-old"
+    "icons/effects/effects.dmi",
+    "cultwall"
    ],
    "ajar": [
-    "icons/obj/decals.dmi",
-    "neotheology-old"
+    "icons/effects/effects.dmi",
+    "cultwall"
    ],
    "open": [
-    "icons/obj/decals.dmi",
-    "neotheology-old"
+    "icons/effects/effects.dmi",
+    "cultwall"
    ]
   },
   "eris": [
-   "icons/obj/decals.dmi:neotheology-old"
+   "icons/effects/effects.dmi:cultwall"
   ]
  },
  {
@@ -409,16 +357,16 @@
   "states": {
    "small_pillar": [
     "icons/obj/decals.dmi",
-    "map-left"
+    "miner_dock"
    ],
    "small_pillar_2": [
-    "icons/obj/flora/greygrass.dmi",
-    "grass_6_shadow"
+    "icons/effects/effects.dmi",
+    "eggs"
    ]
   },
   "eris": [
-   "icons/obj/decals.dmi:map-left",
-   "icons/obj/flora/greygrass.dmi:grass_6_shadow"
+   "icons/obj/decals.dmi:miner_dock",
+   "icons/effects/effects.dmi:eggs"
   ]
  },
  {
@@ -430,13 +378,13 @@
     "cargo_dock"
    ],
    "inverse_pillar": [
-    "icons/obj/decals.dmi",
-    "miner_dock"
+    "icons/obj/flora/greygrass.dmi",
+    "grass_6_shadow"
    ]
   },
   "eris": [
    "icons/obj/decals.dmi:cargo_dock",
-   "icons/obj/decals.dmi:miner_dock"
+   "icons/obj/flora/greygrass.dmi:grass_6_shadow"
   ]
  },
  {
@@ -444,12 +392,12 @@
   "standin": true,
   "states": {
    "mannequin": [
-    "icons/obj/objects.dmi",
-    "wooden_chair_wings"
+    "icons/effects/effects.dmi",
+    "breakdoor"
    ]
   },
   "eris": [
-   "icons/obj/objects.dmi:wooden_chair_wings"
+   "icons/effects/effects.dmi:breakdoor"
   ]
  },
  {
@@ -465,8 +413,8 @@
     "white"
    ],
    "showcase_3": [
-    "icons/obj/structures.dmi",
-    "down-supply"
+    "icons/obj/decals.dmi",
+    "astersguild"
    ],
    "showcase_4": [
     "icons/obj/decals.dmi",
@@ -476,7 +424,7 @@
   "eris": [
    "icons/obj/decals.dmi:ironhammer",
    "icons/effects/effects.dmi:white",
-   "icons/obj/structures.dmi:down-supply",
+   "icons/obj/decals.dmi:astersguild",
    "icons/obj/decals.dmi:robo"
   ]
  },
@@ -516,7 +464,7 @@
   "standin": false,
   "states": {
    "bolted_unlit": [
-    "icons/obj/doors/Doorext.dmi",
+    "icons/obj/doors/Doorplasma.dmi",
     "door_closed"
    ],
    "open_unlit": {
@@ -529,34 +477,36 @@
     "blank": true
    },
    "deny_unlit": [
-    "icons/obj/doors/Doorext.dmi",
+    "icons/obj/doors/Doorplasma.dmi",
     "door_closed"
    ],
    "opening_unlit": [
-    "icons/obj/doors/Doorext.dmi",
+    "icons/obj/doors/Doorplasma.dmi",
     "door_closed"
    ],
    "emergency_unlit": [
-    "icons/obj/doors/Doorext.dmi",
+    "icons/obj/doors/Doorplasma.dmi",
     "door_closed"
    ],
    "temperature_unlit": [
-    "icons/obj/doors/Doorext.dmi",
+    "icons/obj/doors/Doorplasma.dmi",
     "door_closed"
    ],
    "pressure_unlit": [
-    "icons/obj/doors/Doorext.dmi",
+    "icons/obj/doors/Doorplasma.dmi",
     "door_closed"
    ],
-   "welded": {
-    "blank": true
-   },
-   "welded_open": {
-    "blank": true
-   }
+   "welded": [
+    "icons/obj/doors/Doorplasma.dmi",
+    "welded"
+   ],
+   "welded_open": [
+    "icons/obj/doors/Doorplasma.dmi",
+    "welded"
+   ]
   },
   "eris": [
-   "icons/obj/doors/Doorext.dmi:door_closed"
+   "icons/obj/doors/Doorplasma.dmi:door_closed"
   ]
  },
  {
@@ -564,35 +514,35 @@
   "standin": true,
   "states": {
    "security": [
-    "icons/obj/power.dmi",
-    "tracker"
+    "icons/obj/doors/Doorhatchele.dmi",
+    "door_closed"
    ],
    "regular": [
-    "icons/obj/power.dmi",
-    "tracker"
+    "icons/obj/doors/Doorhatchele.dmi",
+    "door_closed"
    ],
    "direction": {
     "blank": true
    },
    "idle": [
-    "icons/obj/power.dmi",
-    "tracker"
+    "icons/obj/doors/Doorhatchele.dmi",
+    "door_closed"
    ],
    "idle-security": [
-    "icons/obj/power.dmi",
-    "tracker"
+    "icons/obj/doors/Doorhatchele.dmi",
+    "door_closed"
    ],
    "operate": [
-    "icons/obj/power.dmi",
-    "tracker"
+    "icons/obj/doors/Doorhatchele.dmi",
+    "door_closed"
    ],
    "deny": [
-    "icons/obj/power.dmi",
-    "tracker"
+    "icons/obj/doors/Doorhatchele.dmi",
+    "door_closed"
    ]
   },
   "eris": [
-   "icons/obj/power.dmi:tracker"
+   "icons/obj/doors/Doorhatchele.dmi:door_closed"
   ]
  },
  {
@@ -610,15 +560,15 @@
  },
  {
   "target": "Structures/Furniture/Altars/Cults/fangs.rsi",
-  "standin": true,
+  "standin": false,
   "states": {
    "full": [
     "icons/obj/structures.dmi",
-    "grillecult-b"
+    "grillecult"
    ]
   },
   "eris": [
-   "icons/obj/structures.dmi:grillecult-b"
+   "icons/obj/structures.dmi:grillecult"
   ]
  },
  {
@@ -640,7 +590,7 @@
   "states": {
    "festival": [
     "icons/obj/objects.dmi",
-    "hvweldtank"
+    "hvweldtank-derelict"
    ],
    "maint": [
     "icons/obj/furniture.dmi",
@@ -660,7 +610,7 @@
    ],
    "red": [
     "icons/obj/furniture.dmi",
-    "wooden_chair_wings"
+    "onestar_chair_red"
    ],
    "white": [
     "icons/obj/objects.dmi",
@@ -668,18 +618,18 @@
    ],
    "yellow": [
     "icons/obj/objects.dmi",
-    "hvweldtank-derelict"
+    "mouse_brown"
    ]
   },
   "eris": [
-   "icons/obj/objects.dmi:hvweldtank",
+   "icons/obj/objects.dmi:hvweldtank-derelict",
    "icons/obj/furniture.dmi:stool_padded_preview",
    "icons/obj/watercloset.dmi:puddle",
    "icons/obj/objects.dmi:acidtank",
    "icons/obj/objects.dmi:monkey",
-   "icons/obj/furniture.dmi:wooden_chair_wings",
+   "icons/obj/furniture.dmi:onestar_chair_red",
    "icons/obj/objects.dmi:mouse_white",
-   "icons/obj/objects.dmi:hvweldtank-derelict"
+   "icons/obj/objects.dmi:mouse_brown"
   ]
  },
  {
@@ -817,11 +767,11 @@
   "states": {
    "full": [
     "icons/turf/flooring/carpet.dmi",
-    "carpet"
+    "carpet_edges"
    ]
   },
   "eris": [
-   "icons/turf/flooring/carpet.dmi:carpet"
+   "icons/turf/flooring/carpet.dmi:carpet_edges"
   ]
  },
  {
@@ -869,11 +819,11 @@
   "states": {
    "full": [
     "icons/turf/flooring/carpet.dmi",
-    "carpet_edges"
+    "carpet"
    ]
   },
   "eris": [
-   "icons/turf/flooring/carpet.dmi:carpet_edges"
+   "icons/turf/flooring/carpet.dmi:carpet"
   ]
  },
  {
@@ -907,12 +857,12 @@
   "standin": true,
   "states": {
    "memorial": [
-    "icons/obj/watercloset.dmi",
-    "mirror"
+    "icons/obj/toy.dmi",
+    "ianplushie"
    ]
   },
   "eris": [
-   "icons/obj/watercloset.dmi:mirror"
+   "icons/obj/toy.dmi:ianplushie"
   ]
  },
  {
@@ -935,38 +885,6 @@
    "full": [
     "icons/obj/tables.dmi",
     "frame"
-   ],
-   "state_0": [
-    "icons/obj/tables.dmi",
-    "0"
-   ],
-   "state_1": [
-    "icons/obj/tables.dmi",
-    "1"
-   ],
-   "state_2": [
-    "icons/obj/tables.dmi",
-    "2"
-   ],
-   "state_3": [
-    "icons/obj/tables.dmi",
-    "3"
-   ],
-   "state_4": [
-    "icons/obj/tables.dmi",
-    "4"
-   ],
-   "state_5": [
-    "icons/obj/tables.dmi",
-    "5"
-   ],
-   "state_6": [
-    "icons/obj/tables.dmi",
-    "6"
-   ],
-   "state_7": [
-    "icons/obj/tables.dmi",
-    "7"
    ]
   },
   "eris": [
@@ -1001,7 +919,20 @@
  },
  {
   "target": "Structures/Furniture/Tables/Fancy/green.rsi",
-  "standin": true,
+  "standin": false,
+  "states": {
+   "full": [
+    "icons/obj/objects.dmi",
+    "rack"
+   ]
+  },
+  "eris": [
+   "icons/obj/objects.dmi:rack"
+  ]
+ },
+ {
+  "target": "Structures/Furniture/Tables/Fancy/orange.rsi",
+  "standin": false,
   "states": {
    "full": [
     "icons/obj/tables.dmi",
@@ -1013,29 +944,16 @@
   ]
  },
  {
-  "target": "Structures/Furniture/Tables/Fancy/orange.rsi",
-  "standin": false,
-  "states": {
-   "full": [
-    "icons/obj/objects.dmi",
-    "rack"
-   ]
-  },
-  "eris": [
-   "icons/obj/objects.dmi:rack"
-  ]
- },
- {
   "target": "Structures/Furniture/Tables/Fancy/pink.rsi",
-  "standin": false,
+  "standin": true,
   "states": {
    "full": [
-    "icons/obj/objects.dmi",
-    "rack"
+    "icons/obj/tables.dmi",
+    "onestar_preview"
    ]
   },
   "eris": [
-   "icons/obj/objects.dmi:rack"
+   "icons/obj/tables.dmi:onestar_preview"
   ]
  },
  {
@@ -1044,11 +962,11 @@
   "states": {
    "full": [
     "icons/obj/tables.dmi",
-    "onestar_preview"
+    "bar_table_preview"
    ]
   },
   "eris": [
-   "icons/obj/tables.dmi:onestar_preview"
+   "icons/obj/tables.dmi:bar_table_preview"
   ]
  },
  {
@@ -1056,38 +974,6 @@
   "standin": false,
   "states": {
    "full": [
-    "icons/obj/furniture.dmi",
-    "onestar_chair_red"
-   ],
-   "state_0": [
-    "icons/obj/furniture.dmi",
-    "onestar_chair_red"
-   ],
-   "state_1": [
-    "icons/obj/furniture.dmi",
-    "onestar_chair_red"
-   ],
-   "state_2": [
-    "icons/obj/furniture.dmi",
-    "onestar_chair_red"
-   ],
-   "state_3": [
-    "icons/obj/furniture.dmi",
-    "onestar_chair_red"
-   ],
-   "state_4": [
-    "icons/obj/furniture.dmi",
-    "onestar_chair_red"
-   ],
-   "state_5": [
-    "icons/obj/furniture.dmi",
-    "onestar_chair_red"
-   ],
-   "state_6": [
-    "icons/obj/furniture.dmi",
-    "onestar_chair_red"
-   ],
-   "state_7": [
     "icons/obj/furniture.dmi",
     "onestar_chair_red"
    ]
@@ -1114,38 +1000,6 @@
   "standin": false,
   "states": {
    "full": [
-    "icons/obj/objects.dmi",
-    "mouse_white"
-   ],
-   "state_0": [
-    "icons/obj/objects.dmi",
-    "mouse_white"
-   ],
-   "state_1": [
-    "icons/obj/objects.dmi",
-    "mouse_white"
-   ],
-   "state_2": [
-    "icons/obj/objects.dmi",
-    "mouse_white"
-   ],
-   "state_3": [
-    "icons/obj/objects.dmi",
-    "mouse_white"
-   ],
-   "state_4": [
-    "icons/obj/objects.dmi",
-    "mouse_white"
-   ],
-   "state_5": [
-    "icons/obj/objects.dmi",
-    "mouse_white"
-   ],
-   "state_6": [
-    "icons/obj/objects.dmi",
-    "mouse_white"
-   ],
-   "state_7": [
     "icons/obj/objects.dmi",
     "mouse_white"
    ]
@@ -1261,7 +1115,7 @@
     "chair"
    ],
    "meat": [
-    "icons/obj/objects.dmi",
+    "icons/obj/furniture.dmi",
     "chair"
    ],
    "cursed": [
@@ -1281,7 +1135,7 @@
     "wooden_chair"
    ],
    "xeno-chair": [
-    "icons/obj/furniture.dmi",
+    "icons/obj/objects.dmi",
     "chair"
    ]
   },
@@ -1297,12 +1151,12 @@
    "icons/obj/furniture.dmi:shuttle_chair",
    "icons/obj/objects.dmi:wooden_chair",
    "icons/obj/furniture.dmi:chair",
-   "icons/obj/objects.dmi:chair",
+   "icons/obj/furniture.dmi:chair",
    "icons/obj/objects.dmi:chair",
    "icons/obj/objects.dmi:chair",
    "icons/obj/objects.dmi:stool_base",
    "icons/obj/objects.dmi:wooden_chair",
-   "icons/obj/furniture.dmi:chair"
+   "icons/obj/objects.dmi:chair"
   ]
  },
  {
@@ -1344,7 +1198,7 @@
    ],
    "mattress": [
     "icons/obj/objects.dmi",
-    "nymph"
+    "hvweldtank"
    ],
    "psychbed": [
     "icons/obj/objects.dmi",
@@ -1360,7 +1214,7 @@
    "icons/obj/objects.dmi:bed",
    "icons/obj/objects.dmi:bed",
    "icons/obj/objects.dmi:bed",
-   "icons/obj/objects.dmi:nymph",
+   "icons/obj/objects.dmi:hvweldtank",
    "icons/obj/objects.dmi:psychbed",
    "icons/obj/objects.dmi:rack"
   ]
@@ -1373,23 +1227,7 @@
     "icons/obj/watercloset.dmi",
     "water"
    ],
-   "disposal-open": [
-    "icons/obj/watercloset.dmi",
-    "water"
-   ],
-   "disposal-closed": [
-    "icons/obj/watercloset.dmi",
-    "water"
-   ],
    "disposal": [
-    "icons/obj/watercloset.dmi",
-    "water"
-   ],
-   "disposal-up": [
-    "icons/obj/watercloset.dmi",
-    "water"
-   ],
-   "disposal-down": [
     "icons/obj/watercloset.dmi",
     "water"
    ],
@@ -1412,7 +1250,7 @@
   "states": {
    "applebush": [
     "icons/obj/objects.dmi",
-    "weldtank-derelict"
+    "boxingbell"
    ],
    "plant-01": [
     "icons/obj/objects.dmi",
@@ -1471,8 +1309,8 @@
     "stool_padded_preview"
    ],
    "plant-15": [
-    "icons/obj/toy.dmi",
-    "ianplushie"
+    "icons/obj/watercloset.dmi",
+    "rubberducky"
    ],
    "plant-16": [
     "icons/obj/structures.dmi",
@@ -1512,7 +1350,7 @@
    ],
    "plant-25": [
     "icons/obj/objects.dmi",
-    "mouse_brown"
+    "echair_over"
    ],
    "plant-26": [
     "icons/obj/structures.dmi",
@@ -1536,7 +1374,7 @@
    ]
   },
   "eris": [
-   "icons/obj/objects.dmi:weldtank-derelict",
+   "icons/obj/objects.dmi:boxingbell",
    "icons/obj/objects.dmi:watertank",
    "icons/obj/objects.dmi:navbeacon1",
    "icons/obj/library.dmi:book_piping",
@@ -1551,7 +1389,7 @@
    "icons/obj/structures.dmi:sp_smart_full_window_plasma",
    "icons/obj/objects.dmi:weldtank",
    "icons/obj/objects.dmi:stool_padded_preview",
-   "icons/obj/toy.dmi:ianplushie",
+   "icons/obj/watercloset.dmi:rubberducky",
    "icons/obj/structures.dmi:hatchdown",
    "icons/obj/objects.dmi:navbeacon0",
    "icons/obj/objects.dmi:floor_magnet",
@@ -1561,7 +1399,7 @@
    "icons/obj/objects.dmi:pai-repairbot",
    "icons/obj/structures.dmi:sp_full_window_reinforced",
    "icons/obj/library.dmi:book_construction",
-   "icons/obj/objects.dmi:mouse_brown",
+   "icons/obj/objects.dmi:echair_over",
    "icons/obj/structures.dmi:sp_full_window",
    "icons/obj/library.dmi:fax",
    "icons/obj/library.dmi:faxreceive",
@@ -1589,6 +1427,10 @@
     "icons/obj/rollerbed.dmi",
     "down"
    ],
+   "cheap_rollerbed_folded": [
+    "icons/obj/rollerbed.dmi",
+    "folded"
+   ],
    "emergency_rollerbed": [
     "icons/obj/rollerbed.dmi",
     "down"
@@ -1596,6 +1438,10 @@
    "emergency_rollerbed_buckled": [
     "icons/obj/rollerbed.dmi",
     "down"
+   ],
+   "emergency_rollerbed_folded": [
+    "icons/obj/rollerbed.dmi",
+    "folded"
    ]
   },
   "eris": [
@@ -1610,7 +1456,7 @@
   "states": {
    "sink_stem": [
     "icons/obj/watercloset.dmi",
-    "sink_alt"
+    "sink"
    ],
    "sink_wide": [
     "icons/obj/watercloset.dmi",
@@ -1622,7 +1468,7 @@
    ]
   },
   "eris": [
-   "icons/obj/watercloset.dmi:sink_alt",
+   "icons/obj/watercloset.dmi:sink",
    "icons/obj/watercloset.dmi:sink_alt",
    "icons/obj/watercloset.dmi:sink"
   ]
@@ -1902,8 +1748,8 @@
   "standin": true,
   "states": {
    "base": [
-    "icons/obj/machines/sorter.dmi",
-    "sorter"
+    "icons/obj/watercloset.dmi",
+    "shower"
    ],
    "anomaly-1": {
     "blank": true
@@ -1928,7 +1774,7 @@
    }
   },
   "eris": [
-   "icons/obj/machines/sorter.dmi:sorter"
+   "icons/obj/watercloset.dmi:shower"
   ]
  },
  {
@@ -1977,12 +1823,12 @@
   "standin": true,
   "states": {
    "base": [
-    "icons/obj/machines/medisarcophagus.dmi",
-    "sarcophagus_0"
+    "icons/obj/Cryogenic2.dmi",
+    "sleeper_0"
    ],
    "base-spinning": [
-    "icons/obj/machines/medisarcophagus.dmi",
-    "sarcophagus_0"
+    "icons/obj/Cryogenic2.dmi",
+    "sleeper_0"
    ],
    "panel": {
     "blank": true
@@ -1992,7 +1838,7 @@
    }
   },
   "eris": [
-   "icons/obj/machines/medisarcophagus.dmi:sarcophagus_0"
+   "icons/obj/Cryogenic2.dmi:sleeper_0"
   ]
  },
  {
@@ -2305,11 +2151,11 @@
   "states": {
    "off": [
     "icons/obj/vending.dmi",
-    "showcase"
+    "gym"
    ],
    "broken": [
     "icons/obj/vending.dmi",
-    "showcase-broken"
+    "gym-broken"
    ],
    "panel": {
     "blank": true
@@ -2319,7 +2165,7 @@
    }
   },
   "eris": [
-   "icons/obj/vending.dmi:showcase"
+   "icons/obj/vending.dmi:gym"
   ]
  },
  {
@@ -2328,11 +2174,11 @@
   "states": {
    "off": [
     "icons/obj/vending.dmi",
-    "gym"
+    "showcase"
    ],
    "broken": [
     "icons/obj/vending.dmi",
-    "gym-broken"
+    "showcase-broken"
    ],
    "eject-unshaded": {
     "blank": true
@@ -2345,7 +2191,7 @@
    }
   },
   "eris": [
-   "icons/obj/vending.dmi:gym"
+   "icons/obj/vending.dmi:showcase"
   ]
  },
  {
@@ -2434,7 +2280,7 @@
   "states": {
    "off": [
     "icons/obj/vending.dmi",
-    "Cola_Machine"
+    "coffee"
    ],
    "normal-unshaded": {
     "blank": true
@@ -2444,14 +2290,14 @@
    },
    "broken": [
     "icons/obj/vending.dmi",
-    "Cola_Machine-broken"
+    "coffee-broken"
    ],
    "panel": {
     "blank": true
    }
   },
   "eris": [
-   "icons/obj/vending.dmi:Cola_Machine"
+   "icons/obj/vending.dmi:coffee"
   ]
  },
  {
@@ -2591,15 +2437,15 @@
   "states": {
    "off": [
     "icons/obj/vending.dmi",
-    "coffee"
+    "Cola_Machine"
    ],
    "icon": [
     "icons/obj/vending.dmi",
-    "coffee"
+    "Cola_Machine"
    ]
   },
   "eris": [
-   "icons/obj/vending.dmi:coffee"
+   "icons/obj/vending.dmi:Cola_Machine"
   ]
  },
  {
@@ -2832,19 +2678,19 @@
   "standin": false,
   "states": {
    "off": [
-    "icons/obj/vending.dmi",
-    "MagiVend"
+    "icons/obj/machines/one_star/vending.dmi",
+    "vendor_guns"
    ],
    "normal-unshaded": {
     "blank": true
    },
    "broken": [
-    "icons/obj/vending.dmi",
-    "MagiVend-broken"
+    "icons/obj/machines/one_star/vending.dmi",
+    "vendor_guns"
    ],
    "normal": [
-    "icons/obj/vending.dmi",
-    "MagiVend"
+    "icons/obj/machines/one_star/vending.dmi",
+    "vendor_guns"
    ],
    "deny-unshaded": {
     "blank": true
@@ -2857,7 +2703,7 @@
    }
   },
   "eris": [
-   "icons/obj/vending.dmi:MagiVend"
+   "icons/obj/machines/one_star/vending.dmi:vendor_guns"
   ]
  },
  {
@@ -2892,29 +2738,6 @@
   "states": {
    "off": [
     "icons/obj/vending.dmi",
-    "coffee"
-   ],
-   "broken": [
-    "icons/obj/vending.dmi",
-    "coffee-broken"
-   ],
-   "panel": {
-    "blank": true
-   },
-   "normal-unshaded": {
-    "blank": true
-   }
-  },
-  "eris": [
-   "icons/obj/vending.dmi:coffee"
-  ]
- },
- {
-  "target": "Structures/Machines/VendingMachines/janidrobe.rsi",
-  "standin": false,
-  "states": {
-   "off": [
-    "icons/obj/vending.dmi",
     "generic"
    ],
    "broken": [
@@ -2930,6 +2753,29 @@
   },
   "eris": [
    "icons/obj/vending.dmi:generic"
+  ]
+ },
+ {
+  "target": "Structures/Machines/VendingMachines/janidrobe.rsi",
+  "standin": false,
+  "states": {
+   "off": [
+    "icons/obj/vending.dmi",
+    "coffee"
+   ],
+   "broken": [
+    "icons/obj/vending.dmi",
+    "coffee-broken"
+   ],
+   "panel": {
+    "blank": true
+   },
+   "normal-unshaded": {
+    "blank": true
+   }
+  },
+  "eris": [
+   "icons/obj/vending.dmi:coffee"
   ]
  },
  {
@@ -3017,11 +2863,11 @@
   "states": {
    "off": [
     "icons/obj/vending.dmi",
-    "Cola_Machine"
+    "med"
    ],
    "broken": [
     "icons/obj/vending.dmi",
-    "Cola_Machine-broken"
+    "med-broken"
    ],
    "panel": {
     "blank": true
@@ -3031,7 +2877,7 @@
    }
   },
   "eris": [
-   "icons/obj/vending.dmi:Cola_Machine"
+   "icons/obj/vending.dmi:med"
   ]
  },
  {
@@ -3232,11 +3078,11 @@
   "states": {
    "off": [
     "icons/obj/vending.dmi",
-    "generic"
+    "Cola_Machine"
    ],
    "broken": [
     "icons/obj/vending.dmi",
-    "generic-broken"
+    "Cola_Machine-broken"
    ],
    "panel": {
     "blank": true
@@ -3246,7 +3092,7 @@
    }
   },
   "eris": [
-   "icons/obj/vending.dmi:generic"
+   "icons/obj/vending.dmi:Cola_Machine"
   ]
  },
  {
@@ -3335,19 +3181,19 @@
   "standin": false,
   "states": {
    "off": [
-    "icons/obj/machines/one_star/vending.dmi",
-    "vendor_guns"
+    "icons/obj/vending.dmi",
+    "MagiVend"
    ],
    "normal-unshaded": {
     "blank": true
    },
    "broken": [
-    "icons/obj/machines/one_star/vending.dmi",
-    "vendor_guns"
+    "icons/obj/vending.dmi",
+    "MagiVend-broken"
    ],
    "normal": [
-    "icons/obj/machines/one_star/vending.dmi",
-    "vendor_guns"
+    "icons/obj/vending.dmi",
+    "MagiVend"
    ],
    "deny-unshaded": {
     "blank": true
@@ -3360,7 +3206,7 @@
    }
   },
   "eris": [
-   "icons/obj/machines/one_star/vending.dmi:vendor_guns"
+   "icons/obj/vending.dmi:MagiVend"
   ]
  },
  {
@@ -3368,19 +3214,19 @@
   "standin": false,
   "states": {
    "off": [
-    "icons/obj/machines/one_star/vending.dmi",
-    "vendor_guns"
+    "icons/obj/vending.dmi",
+    "MagiVend"
    ],
    "normal-unshaded": {
     "blank": true
    },
    "broken": [
-    "icons/obj/machines/one_star/vending.dmi",
-    "vendor_guns"
+    "icons/obj/vending.dmi",
+    "MagiVend-broken"
    ],
    "normal": [
-    "icons/obj/machines/one_star/vending.dmi",
-    "vendor_guns"
+    "icons/obj/vending.dmi",
+    "MagiVend"
    ],
    "deny-unshaded": {
     "blank": true
@@ -3393,7 +3239,7 @@
    }
   },
   "eris": [
-   "icons/obj/machines/one_star/vending.dmi:vendor_guns"
+   "icons/obj/vending.dmi:MagiVend"
   ]
  },
  {
@@ -3674,15 +3520,15 @@
   "standin": false,
   "states": {
    "off": [
-    "icons/obj/vending.dmi",
-    "MagiVend"
+    "icons/obj/machines/one_star/vending.dmi",
+    "vendor_guns"
    ],
    "normal-unshaded": {
     "blank": true
    },
    "broken": [
-    "icons/obj/vending.dmi",
-    "MagiVend-broken"
+    "icons/obj/machines/one_star/vending.dmi",
+    "vendor_guns"
    ],
    "deny-unshaded": {
     "blank": true
@@ -3695,7 +3541,7 @@
    }
   },
   "eris": [
-   "icons/obj/vending.dmi:MagiVend"
+   "icons/obj/machines/one_star/vending.dmi:vendor_guns"
   ]
  },
  {
@@ -3743,14 +3589,14 @@
   "states": {
    "off": [
     "icons/obj/vending.dmi",
-    "Theater-Off"
+    "Theater"
    ],
    "normal-unshaded": {
     "blank": true
    },
    "broken": [
     "icons/obj/vending.dmi",
-    "Theater-Off"
+    "Theater"
    ],
    "deny-unshaded": {
     "blank": true
@@ -3766,7 +3612,7 @@
    }
   },
   "eris": [
-   "icons/obj/vending.dmi:Theater-Off"
+   "icons/obj/vending.dmi:Theater"
   ]
  },
  {
@@ -3859,7 +3705,7 @@
   "states": {
    "off": [
     "icons/obj/vending.dmi",
-    "weapon"
+    "Cola_Machine"
    ],
    "normal-unshaded": {
     "blank": true
@@ -3869,14 +3715,14 @@
    },
    "broken": [
     "icons/obj/vending.dmi",
-    "weapon-broken"
+    "Cola_Machine-broken"
    ],
    "panel": {
     "blank": true
    }
   },
   "eris": [
-   "icons/obj/vending.dmi:weapon"
+   "icons/obj/vending.dmi:Cola_Machine"
   ]
  },
  {
@@ -3913,8 +3759,8 @@
   "standin": true,
   "states": {
    "base": [
-    "icons/obj/machines/recharger.dmi",
-    "recharger"
+    "icons/obj/machines/sorter.dmi",
+    "sorter"
    ],
    "energy": {
     "blank": true
@@ -3924,7 +3770,7 @@
    }
   },
   "eris": [
-   "icons/obj/machines/recharger.dmi:recharger"
+   "icons/obj/machines/sorter.dmi:sorter"
   ]
  },
  {
@@ -4245,8 +4091,8 @@
   "standin": true,
   "states": {
    "computer": [
-    "icons/obj/status_display.dmi",
-    "frame"
+    "icons/obj/stationobjs.dmi",
+    "comm_computer"
    ],
    "ai-fixer": {
     "blank": true
@@ -4321,8 +4167,8 @@
     "blank": true
    },
    "broken": [
-    "icons/obj/status_display.dmi",
-    "frame"
+    "icons/obj/stationobjs.dmi",
+    "comm_computer"
    ],
    "cameras": {
     "blank": true
@@ -4550,16 +4396,16 @@
     "blank": true
    },
    "computer-datatheory": [
-    "icons/obj/status_display.dmi",
-    "frame"
+    "icons/obj/stationobjs.dmi",
+    "comm_computer"
    ],
    "avionics-systems": [
-    "icons/obj/status_display.dmi",
-    "frame"
+    "icons/obj/stationobjs.dmi",
+    "comm_computer"
    ],
    "television": [
-    "icons/obj/status_display.dmi",
-    "frame"
+    "icons/obj/stationobjs.dmi",
+    "comm_computer"
    ],
    "television_broken": {
     "blank": true
@@ -4596,7 +4442,7 @@
    }
   },
   "eris": [
-   "icons/obj/status_display.dmi:frame"
+   "icons/obj/stationobjs.dmi:comm_computer"
   ]
  },
  {
@@ -4644,11 +4490,11 @@
  },
  {
   "target": "Structures/Machines/electric_grill.rsi",
-  "standin": true,
+  "standin": false,
   "states": {
    "icon": [
-    "icons/obj/hivemind_machines.dmi",
-    "turret"
+    "icons/obj/cwj_cooking/grill.dmi",
+    "grill"
    ],
    "low": {
     "blank": true
@@ -4661,7 +4507,7 @@
    }
   },
   "eris": [
-   "icons/obj/hivemind_machines.dmi:turret"
+   "icons/obj/cwj_cooking/grill.dmi:grill"
   ]
  },
  {
@@ -4733,8 +4579,8 @@
   "standin": true,
   "states": {
    "icon": [
-    "icons/obj/machines/floor_light.dmi",
-    "base"
+    "icons/obj/machines/conduit_of_soul.dmi",
+    "core_inactive"
    ],
    "idle": {
     "blank": true
@@ -4756,7 +4602,7 @@
    }
   },
   "eris": [
-   "icons/obj/machines/floor_light.dmi:base"
+   "icons/obj/machines/conduit_of_soul.dmi:core_inactive"
   ]
  },
  {
@@ -4809,20 +4655,20 @@
   "standin": false,
   "states": {
    "portal": [
-    "icons/obj/turrets.dmi",
-    "turretCover"
+    "icons/obj/stationobjs.dmi",
+    "portal"
    ],
    "frame": [
-    "icons/obj/turrets.dmi",
-    "turretCover"
+    "icons/obj/stationobjs.dmi",
+    "portal"
    ],
    "on": [
-    "icons/obj/turrets.dmi",
-    "turretCover"
+    "icons/obj/stationobjs.dmi",
+    "portal1"
    ]
   },
   "eris": [
-   "icons/obj/turrets.dmi:turretCover"
+   "icons/obj/stationobjs.dmi:portal"
   ]
  },
  {
@@ -5134,16 +4980,16 @@
   "standin": false,
   "states": {
    "icon": [
-    "icons/obj/machines/bioreactor.dmi",
-    "screen_process"
+    "icons/obj/kitchen.dmi",
+    "processor"
    ],
    "inserting": [
-    "icons/obj/machines/bioreactor.dmi",
-    "screen_process"
+    "icons/obj/kitchen.dmi",
+    "processor"
    ],
    "building": [
-    "icons/obj/machines/bioreactor.dmi",
-    "screen_process"
+    "icons/obj/kitchen.dmi",
+    "processor"
    ],
    "panel": {
     "blank": true
@@ -5153,7 +4999,7 @@
    }
   },
   "eris": [
-   "icons/obj/machines/bioreactor.dmi:screen_process"
+   "icons/obj/kitchen.dmi:processor"
   ]
  },
  {
@@ -5161,16 +5007,16 @@
   "standin": true,
   "states": {
    "icon": [
-    "icons/obj/hivemind_machines.dmi",
-    "core"
+    "icons/obj/machines/telecomms.dmi",
+    "processor"
    ],
    "inserting": [
-    "icons/obj/hivemind_machines.dmi",
-    "core"
+    "icons/obj/machines/telecomms.dmi",
+    "processor"
    ],
    "building": [
-    "icons/obj/hivemind_machines.dmi",
-    "core"
+    "icons/obj/machines/telecomms.dmi",
+    "processor"
    ],
    "panel": {
     "blank": true
@@ -5180,7 +5026,7 @@
    }
   },
   "eris": [
-   "icons/obj/hivemind_machines.dmi:core"
+   "icons/obj/machines/telecomms.dmi:processor"
   ]
  },
  {
@@ -5404,24 +5250,24 @@
   "standin": false,
   "states": {
    "open": [
-    "icons/obj/xenoarchaeology.dmi",
-    "scanner"
+    "icons/obj/modular_console.dmi",
+    "medical"
    ],
    "closed": [
-    "icons/obj/xenoarchaeology.dmi",
-    "scanner"
+    "icons/obj/modular_console.dmi",
+    "medical"
    ],
    "open_unpowered": [
-    "icons/obj/xenoarchaeology.dmi",
-    "scanner"
+    "icons/obj/modular_console.dmi",
+    "medical"
    ],
    "closed_unpowered": [
-    "icons/obj/xenoarchaeology.dmi",
-    "scanner"
+    "icons/obj/modular_console.dmi",
+    "medical"
    ],
    "occupied": [
-    "icons/obj/xenoarchaeology.dmi",
-    "scanner"
+    "icons/obj/modular_console.dmi",
+    "medical"
    ],
    "off_unlit": {
     "blank": true
@@ -5440,7 +5286,7 @@
    }
   },
   "eris": [
-   "icons/obj/xenoarchaeology.dmi:scanner"
+   "icons/obj/modular_console.dmi:medical"
   ]
  },
  {
@@ -5514,22 +5360,22 @@
  },
  {
   "target": "Structures/Machines/sheetifier.rsi",
-  "standin": true,
+  "standin": false,
   "states": {
    "base_machine": [
-    "icons/obj/pipes/disposal.dmi",
-    "disposal"
+    "icons/obj/machines/slotmachine.dmi",
+    "slotmachine"
    ],
    "base_machine_processing": [
-    "icons/obj/pipes/disposal.dmi",
-    "disposal"
+    "icons/obj/machines/slotmachine.dmi",
+    "slotmachine"
    ],
    "buttons_on": {
     "blank": true
    }
   },
   "eris": [
-   "icons/obj/pipes/disposal.dmi:disposal"
+   "icons/obj/machines/slotmachine.dmi:slotmachine"
   ]
  },
  {
@@ -5610,15 +5456,15 @@
   "standin": false,
   "states": {
    "station_anchor": [
-    "icons/obj/airlock_machines.dmi",
-    "airlock_sensor_off"
+    "icons/obj/machines/stationmap.dmi",
+    "station_map"
    ],
    "station_anchor_unlit": {
     "blank": true
    }
   },
   "eris": [
-   "icons/obj/airlock_machines.dmi:airlock_sensor_off"
+   "icons/obj/machines/stationmap.dmi:station_map"
   ]
  },
  {
@@ -5711,8 +5557,8 @@
   "standin": false,
   "states": {
    "telecom-nopower": [
-    "icons/obj/machines/telecomms.dmi",
-    "comm_server_o"
+    "icons/obj/computer.dmi",
+    "comm"
    ],
    "telecom-on": {
     "blank": true
@@ -5758,7 +5604,7 @@
    }
   },
   "eris": [
-   "icons/obj/machines/telecomms.dmi:comm_server_o"
+   "icons/obj/computer.dmi:comm"
   ]
  },
  {
@@ -5766,15 +5612,15 @@
   "standin": false,
   "states": {
    "redemption": [
-    "icons/obj/meter.dmi",
-    "meterX"
+    "icons/obj/machines/chemistry.dmi",
+    "centrifuge"
    ],
    "redemption-unshaded": {
     "blank": true
    }
   },
   "eris": [
-   "icons/obj/meter.dmi:meterX"
+   "icons/obj/machines/chemistry.dmi:centrifuge"
   ]
  },
  {
@@ -5943,23 +5789,23 @@
   "states": {
    "sheaterOff": [
     "icons/obj/atmos.dmi",
-    "sheater1"
+    "sheater0"
    ],
    "sheaterCool": [
     "icons/obj/atmos.dmi",
-    "sheater1"
+    "sheater0"
    ],
    "sheaterHeat": [
     "icons/obj/atmos.dmi",
-    "sheater1"
+    "sheater0"
    ],
    "sheaterStandby": [
     "icons/obj/atmos.dmi",
-    "sheater1"
+    "sheater0"
    ]
   },
   "eris": [
-   "icons/obj/atmos.dmi:sheater1"
+   "icons/obj/atmos.dmi:sheater0"
   ]
  },
  {
@@ -6001,12 +5847,12 @@
   "standin": true,
   "states": {
    "pipe": [
-    "icons/atmos/valve.dmi",
-    "map_valve0"
+    "icons/atmos/tvalve.dmi",
+    "map_tvalve0"
    ]
   },
   "eris": [
-   "icons/atmos/valve.dmi:map_valve0"
+   "icons/atmos/tvalve.dmi:map_tvalve0"
   ]
  },
  {
@@ -6027,12 +5873,12 @@
   "standin": true,
   "states": {
    "icon": [
-    "icons/obj/pipes/disposal.dmi",
-    "pipe-c"
+    "icons/atmos/pump.dmi",
+    "map_on"
    ]
   },
   "eris": [
-   "icons/obj/pipes/disposal.dmi:pipe-c"
+   "icons/atmos/pump.dmi:map_on"
   ]
  },
  {
@@ -6040,12 +5886,12 @@
   "standin": true,
   "states": {
    "icon": [
-    "icons/atmos/volume_pump.dmi",
-    "map_off"
+    "icons/obj/pipes/disposal.dmi",
+    "pipe-c"
    ]
   },
   "eris": [
-   "icons/atmos/volume_pump.dmi:map_off"
+   "icons/obj/pipes/disposal.dmi:pipe-c"
   ]
  },
  {
@@ -6117,24 +5963,24 @@
   "standin": true,
   "states": {
    "gasMixer": [
-    "icons/atmos/connector.dmi",
-    "map_connector"
+    "icons/atmos/tank.dmi",
+    "air_map"
    ],
    "gasMixerF": [
-    "icons/atmos/connector.dmi",
-    "map_connector"
+    "icons/atmos/tank.dmi",
+    "air_map"
    ],
    "gasMixerOn": [
-    "icons/atmos/connector.dmi",
-    "map_connector"
+    "icons/atmos/tank.dmi",
+    "air_map"
    ],
    "gasMixerFOn": [
-    "icons/atmos/connector.dmi",
-    "map_connector"
+    "icons/atmos/tank.dmi",
+    "air_map"
    ]
   },
   "eris": [
-   "icons/atmos/connector.dmi:map_connector"
+   "icons/atmos/tank.dmi:air_map"
   ]
  },
  {
@@ -6159,24 +6005,24 @@
   "standin": false,
   "states": {
    "freezerOff": [
-    "icons/atmos/omni_devices.dmi",
-    "base"
+    "icons/obj/pipeturbine.dmi",
+    "turbine"
    ],
    "freezerOn": [
-    "icons/atmos/omni_devices.dmi",
-    "base"
+    "icons/obj/pipeturbine.dmi",
+    "turbine"
    ],
    "heaterOff": [
-    "icons/atmos/omni_devices.dmi",
-    "base"
+    "icons/obj/pipeturbine.dmi",
+    "turbine"
    ],
    "heaterOn": [
-    "icons/atmos/omni_devices.dmi",
-    "base"
+    "icons/obj/pipeturbine.dmi",
+    "turbine"
    ]
   },
   "eris": [
-   "icons/atmos/omni_devices.dmi:base"
+   "icons/obj/pipeturbine.dmi:turbine"
   ]
  },
  {
@@ -6224,7 +6070,7 @@
  },
  {
   "target": "Structures/Piping/Atmospherics/pipe.rsi",
-  "standin": true,
+  "standin": false,
   "states": {
    "pipeStraight": [
     "icons/obj/atmos.dmi",
@@ -6232,22 +6078,22 @@
    ],
    "pipeBend": [
     "icons/obj/atmos.dmi",
-    "sheater0"
+    "sheater1"
    ],
    "pipeBroken": [
     "icons/obj/pipes/disposal.dmi",
     "pipe-b"
    ],
    "pipeHalf": [
-    "icons/atmos/manifold.dmi",
-    "map"
+    "icons/obj/cryogenics.dmi",
+    "pod_preview"
    ]
   },
   "eris": [
    "icons/obj/atmos.dmi:sheater0",
-   "icons/obj/atmos.dmi:sheater0",
+   "icons/obj/atmos.dmi:sheater1",
    "icons/obj/pipes/disposal.dmi:pipe-b",
-   "icons/atmos/manifold.dmi:map"
+   "icons/obj/cryogenics.dmi:pod_preview"
   ]
  },
  {
@@ -6599,25 +6445,25 @@
   "standin": true,
   "states": {
    "pipe": [
-    "icons/atmos/tvalve.dmi",
-    "map_tvalve0"
+    "icons/atmos/valve.dmi",
+    "map_valve0"
    ]
   },
   "eris": [
-   "icons/atmos/tvalve.dmi:map_tvalve0"
+   "icons/atmos/valve.dmi:map_valve0"
   ]
  },
  {
   "target": "Structures/Piping/Atmospherics/thermomachine_alt2.rsi",
-  "standin": true,
+  "standin": false,
   "states": {
    "pipe": [
-    "icons/atmos/tvalve.dmi",
-    "map_tvalve0"
+    "icons/atmos/omni_devices.dmi",
+    "base"
    ]
   },
   "eris": [
-   "icons/atmos/tvalve.dmi:map_tvalve0"
+   "icons/atmos/omni_devices.dmi:base"
   ]
  },
  {
@@ -6740,7 +6586,7 @@
    ],
    "conpipe-x": [
     "icons/obj/pipes/disposal.dmi",
-    "pipe-j1s"
+    "pipe-j1"
    ],
    "conpipe-c": [
     "icons/obj/pipes/disposal.dmi",
@@ -6748,7 +6594,7 @@
    ],
    "signal-router-free": [
     "icons/obj/pipes/disposal.dmi",
-    "pipe-d"
+    "disposal-flush"
    ],
    "signal-router-flipped-free": [
     "icons/obj/pipes/disposal.dmi",
@@ -6768,9 +6614,9 @@
    "icons/obj/pipes/disposal.dmi:pipe-j1",
    "icons/obj/pipes/disposal.dmi:conpipe-j2",
    "icons/obj/pipes/disposal.dmi:pipe-y",
-   "icons/obj/pipes/disposal.dmi:pipe-j1s",
+   "icons/obj/pipes/disposal.dmi:pipe-j1",
    "icons/obj/pipes/disposal.dmi:conpipe-c",
-   "icons/obj/pipes/disposal.dmi:pipe-d",
+   "icons/obj/pipes/disposal.dmi:disposal-flush",
    "icons/obj/pipes/disposal.dmi:pipe-j2s"
   ]
  },
@@ -7394,11 +7240,11 @@
   "states": {
    "unwired": [
     "icons/obj/power.dmi",
-    "power_key"
+    "bbox_off"
    ],
    "completed": [
     "icons/obj/power.dmi",
-    "power_key"
+    "bbox_off"
    ],
    "unlitp": {
     "blank": true
@@ -7417,11 +7263,11 @@
    },
    "wired": [
     "icons/obj/power.dmi",
-    "power_key"
+    "bbox_off"
    ]
   },
   "eris": [
-   "icons/obj/power.dmi:power_key"
+   "icons/obj/power.dmi:bbox_off"
   ]
  },
  {
@@ -7477,8 +7323,8 @@
   "standin": true,
   "states": {
    "icon": [
-    "icons/obj/machines/one_star/machines.dmi",
-    "generator"
+    "icons/obj/singularity.dmi",
+    "beaconsynd0"
    ],
    "a1": {
     "blank": true
@@ -7512,7 +7358,7 @@
    }
   },
   "eris": [
-   "icons/obj/machines/one_star/machines.dmi:generator"
+   "icons/obj/singularity.dmi:beaconsynd0"
   ]
  },
  {
@@ -7632,11 +7478,11 @@
   "states": {
    "singularity_5": [
     "icons/obj/singularity.dmi",
-    "TheSingGen"
+    "singularity_s1"
    ]
   },
   "eris": [
-   "icons/obj/singularity.dmi:TheSingGen"
+   "icons/obj/singularity.dmi:singularity_s1"
   ]
  },
  {
@@ -7773,76 +7619,76 @@
   "standin": true,
   "states": {
    "control": [
-    "icons/obj/power.dmi",
-    "apc0"
+    "icons/obj/machines/shielding.dmi",
+    "conduit_0"
    ],
    "shield_0": [
-    "icons/obj/power.dmi",
-    "apc0"
+    "icons/obj/machines/shielding.dmi",
+    "shield"
    ],
    "shield_1": [
-    "icons/obj/power.dmi",
-    "apc0"
+    "icons/obj/machines/shielding.dmi",
+    "shield"
    ],
    "shield_10": [
-    "icons/obj/power.dmi",
-    "apc0"
+    "icons/obj/machines/shielding.dmi",
+    "shield"
    ],
    "shield_11": [
-    "icons/obj/power.dmi",
-    "apc0"
+    "icons/obj/machines/shielding.dmi",
+    "shield"
    ],
    "shield_12": [
-    "icons/obj/power.dmi",
-    "apc0"
+    "icons/obj/machines/shielding.dmi",
+    "shield"
    ],
    "shield_13": [
-    "icons/obj/power.dmi",
-    "apc0"
+    "icons/obj/machines/shielding.dmi",
+    "shield"
    ],
    "shield_14": [
-    "icons/obj/power.dmi",
-    "apc0"
+    "icons/obj/machines/shielding.dmi",
+    "shield"
    ],
    "shield_15": [
-    "icons/obj/power.dmi",
-    "apc0"
+    "icons/obj/machines/shielding.dmi",
+    "shield"
    ],
    "shield_2": [
-    "icons/obj/power.dmi",
-    "apc0"
+    "icons/obj/machines/shielding.dmi",
+    "shield"
    ],
    "shield_3": [
-    "icons/obj/power.dmi",
-    "apc0"
+    "icons/obj/machines/shielding.dmi",
+    "shield"
    ],
    "shield_4": [
-    "icons/obj/power.dmi",
-    "apc0"
+    "icons/obj/machines/shielding.dmi",
+    "shield"
    ],
    "shield_5": [
-    "icons/obj/power.dmi",
-    "apc0"
+    "icons/obj/machines/shielding.dmi",
+    "shield"
    ],
    "shield_6": [
-    "icons/obj/power.dmi",
-    "apc0"
+    "icons/obj/machines/shielding.dmi",
+    "shield"
    ],
    "shield_7": [
-    "icons/obj/power.dmi",
-    "apc0"
+    "icons/obj/machines/shielding.dmi",
+    "shield"
    ],
    "shield_8": [
-    "icons/obj/power.dmi",
-    "apc0"
+    "icons/obj/machines/shielding.dmi",
+    "shield"
    ],
    "core": [
-    "icons/obj/power.dmi",
-    "apc0"
+    "icons/obj/machines/shielding.dmi",
+    "conduit_0"
    ],
    "shield_9": [
-    "icons/obj/power.dmi",
-    "apc0"
+    "icons/obj/machines/shielding.dmi",
+    "shield"
    ],
    "core_weak": {
     "blank": true
@@ -7851,8 +7697,8 @@
     "blank": true
    },
    "static": [
-    "icons/obj/power.dmi",
-    "apc0"
+    "icons/obj/machines/shielding.dmi",
+    "conduit_0"
    ],
    "control_warning": {
     "blank": true
@@ -7868,7 +7714,7 @@
    }
   },
   "eris": [
-   "icons/obj/power.dmi:apc0"
+   "icons/obj/machines/shielding.dmi:conduit_0"
   ]
  },
  {
@@ -7950,11 +7796,11 @@
   "states": {
    "solar_panel_glass": [
     "icons/obj/power.dmi",
-    "solar_panel-b"
+    "solar_panel"
    ],
    "solar_assembly": [
     "icons/obj/power.dmi",
-    "solar_panel-b"
+    "solar_panel"
    ],
    "solar_assembly_tracker_circuit": [
     "icons/obj/power.dmi",
@@ -7962,23 +7808,23 @@
    ],
    "solar_panel_glass_broken": [
     "icons/obj/power.dmi",
-    "solar_panel-b"
+    "solar_panel"
    ],
    "solar_panel_plasma_broken": [
     "icons/obj/power.dmi",
-    "solar_panel-b"
+    "solar_panel"
    ],
    "solar_panel_uranium_broken": [
     "icons/obj/power.dmi",
-    "solar_panel-b"
+    "solar_panel"
    ],
    "solar_panel_plasma": [
     "icons/obj/power.dmi",
-    "solar_panel-b"
+    "solar_panel"
    ],
    "solar_panel_uranium": [
     "icons/obj/power.dmi",
-    "solar_panel-b"
+    "solar_panel"
    ],
    "solar_tracker": [
     "icons/obj/power.dmi",
@@ -7990,7 +7836,7 @@
    ],
    "solar_assembly_uncabled": [
     "icons/obj/power.dmi",
-    "solar_panel-b"
+    "solar_panel"
    ],
    "solar_assembly_tracker_circuit_uncabled": [
     "icons/obj/power.dmi",
@@ -7998,15 +7844,15 @@
    ],
    "solar_panel_glass_uncabled": [
     "icons/obj/power.dmi",
-    "solar_panel-b"
+    "solar_panel"
    ],
    "solar_panel_plasma_uncabled": [
     "icons/obj/power.dmi",
-    "solar_panel-b"
+    "solar_panel"
    ],
    "solar_panel_uranium_uncabled": [
     "icons/obj/power.dmi",
-    "solar_panel-b"
+    "solar_panel"
    ],
    "solar_tracker_uncabled": [
     "icons/obj/power.dmi",
@@ -8018,7 +7864,7 @@
    ]
   },
   "eris": [
-   "icons/obj/power.dmi:solar_panel-b"
+   "icons/obj/power.dmi:solar_panel"
   ]
  },
  {
@@ -8112,12 +7958,12 @@
   "standin": true,
   "states": {
    "panel": [
-    "icons/obj/machines/shielding.dmi",
-    "baygenerator0"
+    "icons/obj/machines/one_star/machines.dmi",
+    "generator"
    ],
    "static": [
-    "icons/obj/machines/shielding.dmi",
-    "baygenerator0"
+    "icons/obj/machines/one_star/machines.dmi",
+    "generator"
    ],
    "on": {
     "blank": true
@@ -8127,7 +7973,7 @@
    }
   },
   "eris": [
-   "icons/obj/machines/shielding.dmi:baygenerator0"
+   "icons/obj/machines/one_star/machines.dmi:generator"
   ]
  },
  {
@@ -8185,39 +8031,39 @@
  },
  {
   "target": "Structures/Power/cage_recharger.rsi",
-  "standin": true,
+  "standin": false,
   "states": {
    "light-off": [
-    "icons/obj/supplybeacon.dmi",
-    "beacon"
+    "icons/obj/power.dmi",
+    "power_key"
    ],
    "empty": [
-    "icons/obj/supplybeacon.dmi",
-    "beacon"
+    "icons/obj/power.dmi",
+    "power_key"
    ],
    "full": [
-    "icons/obj/supplybeacon.dmi",
-    "beacon"
+    "icons/obj/power.dmi",
+    "power_key"
    ],
    "open": [
-    "icons/obj/supplybeacon.dmi",
-    "beacon"
+    "icons/obj/power.dmi",
+    "power_key"
    ],
    "light-charging": [
-    "icons/obj/supplybeacon.dmi",
-    "beacon"
+    "icons/obj/power.dmi",
+    "power_key"
    ],
    "light-charged": [
-    "icons/obj/supplybeacon.dmi",
-    "beacon"
+    "icons/obj/power.dmi",
+    "power_key"
    ],
    "light-empty": [
-    "icons/obj/supplybeacon.dmi",
-    "beacon"
+    "icons/obj/power.dmi",
+    "power_key"
    ]
   },
   "eris": [
-   "icons/obj/supplybeacon.dmi:beacon"
+   "icons/obj/power.dmi:power_key"
   ]
  },
  {
@@ -8320,27 +8166,27 @@
   "states": {
    "smes": [
     "icons/obj/power.dmi",
-    "smes"
+    "smes_old"
    ],
    "advancedsmes": [
     "icons/obj/power.dmi",
-    "smes"
+    "smes_old"
    ],
    "advancedsmes-static": [
     "icons/obj/power.dmi",
-    "smes"
+    "smes_old"
    ],
    "advancedsmes-open": [
     "icons/obj/power.dmi",
-    "smes"
+    "smes_old"
    ],
    "static": [
     "icons/obj/power.dmi",
-    "smes"
+    "smes_old"
    ],
    "smes-open": [
     "icons/obj/power.dmi",
-    "smes"
+    "smes_old"
    ],
    "smes-oc0": {
     "blank": true
@@ -8377,7 +8223,7 @@
    }
   },
   "eris": [
-   "icons/obj/power.dmi:smes"
+   "icons/obj/power.dmi:smes_old"
   ]
  },
  {
@@ -8385,23 +8231,23 @@
   "standin": true,
   "states": {
    "substation_wall": [
-    "icons/obj/power.dmi",
-    "sp_base"
+    "icons/obj/machines/biogenerator.dmi",
+    "core"
    ],
    "substation": [
-    "icons/obj/power.dmi",
-    "sp_base"
+    "icons/obj/machines/biogenerator.dmi",
+    "core"
    ],
    "substation_static": [
-    "icons/obj/power.dmi",
-    "sp_base"
+    "icons/obj/machines/biogenerator.dmi",
+    "core"
    ],
    "screen_wall": {
     "blank": true
    },
    "substation_wall_static": [
-    "icons/obj/power.dmi",
-    "sp_base"
+    "icons/obj/machines/biogenerator.dmi",
+    "core"
    ],
    "full": {
     "blank": true
@@ -8417,7 +8263,7 @@
    }
   },
   "eris": [
-   "icons/obj/power.dmi:sp_base"
+   "icons/obj/machines/biogenerator.dmi:core"
   ]
  },
  {
@@ -8454,12 +8300,12 @@
   "standin": true,
   "states": {
    "empty": [
-    "icons/obj/singularity.dmi",
-    "ca"
+    "icons/obj/power.dmi",
+    "sp_base"
    ],
    "full": [
-    "icons/obj/singularity.dmi",
-    "ca"
+    "icons/obj/power.dmi",
+    "sp_base"
    ],
    "light-off": {
     "blank": true
@@ -8475,7 +8321,7 @@
    }
   },
   "eris": [
-   "icons/obj/singularity.dmi:ca"
+   "icons/obj/power.dmi:sp_base"
   ]
  },
  {
@@ -8483,36 +8329,36 @@
   "standin": true,
   "states": {
    "borgcharger0": [
-    "icons/obj/power.dmi",
-    "term"
+    "icons/obj/engine.dmi",
+    "darkmatter"
    ],
    "borgcharger1": [
-    "icons/obj/power.dmi",
-    "term"
+    "icons/obj/engine.dmi",
+    "darkmatter"
    ],
    "borgcharger2": [
-    "icons/obj/power.dmi",
-    "term"
+    "icons/obj/engine.dmi",
+    "darkmatter"
    ],
    "borgcharger3": [
-    "icons/obj/power.dmi",
-    "term"
+    "icons/obj/engine.dmi",
+    "darkmatter"
    ],
    "borgdecon1": [
-    "icons/obj/power.dmi",
-    "term"
+    "icons/obj/engine.dmi",
+    "darkmatter"
    ],
    "borgcharger-u0": [
-    "icons/obj/power.dmi",
-    "term"
+    "icons/obj/engine.dmi",
+    "darkmatter"
    ],
    "borgcharger-u1": [
-    "icons/obj/power.dmi",
-    "term"
+    "icons/obj/engine.dmi",
+    "darkmatter"
    ]
   },
   "eris": [
-   "icons/obj/power.dmi:term"
+   "icons/obj/engine.dmi:darkmatter"
   ]
  },
  {
@@ -8692,15 +8538,15 @@
   "standin": false,
   "states": {
    "core": [
-    "icons/obj/machines/biogenerator.dmi",
-    "core-pipe"
+    "icons/obj/machines/conduit_of_soul.dmi",
+    "core_active"
    ],
    "pulse": {
     "blank": true
    }
   },
   "eris": [
-   "icons/obj/machines/biogenerator.dmi:core-pipe"
+   "icons/obj/machines/conduit_of_soul.dmi:core_active"
   ]
  },
  {
@@ -8773,15 +8619,15 @@
   "standin": false,
   "states": {
    "core": [
-    "icons/obj/machines/antimatter.dmi",
-    "core"
+    "icons/obj/machines/biogenerator.dmi",
+    "core-pipe"
    ],
    "pulse": {
     "blank": true
    }
   },
   "eris": [
-   "icons/obj/machines/antimatter.dmi:core"
+   "icons/obj/machines/biogenerator.dmi:core-pipe"
   ]
  },
  {
@@ -8805,15 +8651,15 @@
   "standin": false,
   "states": {
    "core": [
-    "icons/obj/machines/antimatter.dmi",
-    "core"
+    "icons/obj/decals.dmi",
+    "anomaly"
    ],
    "pulse": {
     "blank": true
    }
   },
   "eris": [
-   "icons/obj/machines/antimatter.dmi:core"
+   "icons/obj/decals.dmi:anomaly"
   ]
  },
  {
@@ -8860,23 +8706,23 @@
  },
  {
   "target": "Structures/Specific/Anomalies/inner_anom_layer.rsi",
-  "standin": true,
+  "standin": false,
   "states": {
    "bluespace": [
     "icons/obj/stationobjs.dmi",
-    "portal"
+    "pipe_d"
    ],
    "bluespace_VOX": [
     "icons/obj/stationobjs.dmi",
-    "portal"
+    "pipe_d"
    ],
    "bluespace_ARACHNID": [
     "icons/obj/stationobjs.dmi",
-    "portal"
+    "pipe_d"
    ],
    "bluespace_MOTH": [
     "icons/obj/stationobjs.dmi",
-    "portal"
+    "pipe_d"
    ],
    "fire": {
     "blank": true
@@ -8892,87 +8738,87 @@
    },
    "flesh": [
     "icons/obj/stationobjs.dmi",
-    "portal"
+    "pipe_d"
    ],
    "flesh_VOX": [
     "icons/obj/stationobjs.dmi",
-    "portal"
+    "pipe_d"
    ],
    "flesh_ARACHNID": [
     "icons/obj/stationobjs.dmi",
-    "portal"
+    "pipe_d"
    ],
    "flesh_MOTH": [
     "icons/obj/stationobjs.dmi",
-    "portal"
+    "pipe_d"
    ],
    "flora": [
     "icons/obj/stationobjs.dmi",
-    "portal"
+    "pipe_d"
    ],
    "flora_VOX": [
     "icons/obj/stationobjs.dmi",
-    "portal"
+    "pipe_d"
    ],
    "flora_ARACHNID": [
     "icons/obj/stationobjs.dmi",
-    "portal"
+    "pipe_d"
    ],
    "flora_MOTH": [
     "icons/obj/stationobjs.dmi",
-    "portal"
+    "pipe_d"
    ],
    "frost": [
     "icons/obj/stationobjs.dmi",
-    "portal"
+    "pipe_d"
    ],
    "frost_VOX": [
     "icons/obj/stationobjs.dmi",
-    "portal"
+    "pipe_d"
    ],
    "frost_ARACHNID": [
     "icons/obj/stationobjs.dmi",
-    "portal"
+    "pipe_d"
    ],
    "frost_MOTH": [
     "icons/obj/stationobjs.dmi",
-    "portal"
+    "pipe_d"
    ],
    "grav": [
     "icons/obj/stationobjs.dmi",
-    "portal"
+    "pipe_d"
    ],
    "grav_VOX": [
     "icons/obj/stationobjs.dmi",
-    "portal"
+    "pipe_d"
    ],
    "grav_ARACHNID": [
     "icons/obj/stationobjs.dmi",
-    "portal"
+    "pipe_d"
    ],
    "grav_MOTH": [
     "icons/obj/stationobjs.dmi",
-    "portal"
+    "pipe_d"
    ],
    "rock": [
     "icons/obj/stationobjs.dmi",
-    "portal"
+    "pipe_d"
    ],
    "rock_VOX": [
     "icons/obj/stationobjs.dmi",
-    "portal"
+    "pipe_d"
    ],
    "rock_ARACHNID": [
     "icons/obj/stationobjs.dmi",
-    "portal"
+    "pipe_d"
    ],
    "rock_MOTH": [
     "icons/obj/stationobjs.dmi",
-    "portal"
+    "pipe_d"
    ],
    "santa": [
     "icons/obj/stationobjs.dmi",
-    "portal"
+    "pipe_d"
    ],
    "shadow": {
     "blank": true
@@ -9000,23 +8846,23 @@
    },
    "tech": [
     "icons/obj/stationobjs.dmi",
-    "portal"
+    "pipe_d"
    ],
    "tech_VOX": [
     "icons/obj/stationobjs.dmi",
-    "portal"
+    "pipe_d"
    ],
    "tech_ARACHNID": [
     "icons/obj/stationobjs.dmi",
-    "portal"
+    "pipe_d"
    ],
    "tech_MOTH": [
     "icons/obj/stationobjs.dmi",
-    "portal"
+    "pipe_d"
    ]
   },
   "eris": [
-   "icons/obj/stationobjs.dmi:portal"
+   "icons/obj/stationobjs.dmi:pipe_d"
   ]
  },
  {
@@ -9092,12 +8938,12 @@
   "standin": true,
   "states": {
    "bg": [
-    "icons/obj/traps.dmi",
-    "wire_splicing1"
+    "icons/obj/decals.dmi",
+    "technomancers"
    ],
    "bg_powered": [
-    "icons/obj/traps.dmi",
-    "wire_splicing1"
+    "icons/obj/decals.dmi",
+    "technomancers"
    ],
    "part1": {
     "blank": true
@@ -9112,12 +8958,12 @@
     "blank": true
    },
    "pulse": [
-    "icons/obj/traps.dmi",
-    "wire_splicing1"
+    "icons/obj/decals.dmi",
+    "technomancers"
    ]
   },
   "eris": [
-   "icons/obj/traps.dmi:wire_splicing1"
+   "icons/obj/decals.dmi:technomancers"
   ]
  },
  {
@@ -9142,20 +8988,20 @@
   "standin": true,
   "states": {
    "anom1": [
-    "icons/obj/stationobjs.dmi",
-    "GraviMobile_starting"
+    "icons/obj/doors/Dooruranium.dmi",
+    "door_closed"
    ],
    "anom1-pulse": [
-    "icons/obj/stationobjs.dmi",
-    "GraviMobile_starting"
+    "icons/obj/doors/Dooruranium.dmi",
+    "door_closed"
    ],
    "anom2": [
-    "icons/obj/stationobjs.dmi",
-    "GraviMobile_starting"
+    "icons/obj/doors/Dooruranium.dmi",
+    "door_closed"
    ],
    "anom2-pulse": [
-    "icons/obj/stationobjs.dmi",
-    "GraviMobile_starting"
+    "icons/obj/doors/Dooruranium.dmi",
+    "door_closed"
    ],
    "anom3": {
     "blank": true
@@ -9170,41 +9016,41 @@
     "blank": true
    },
    "anom5": [
-    "icons/obj/stationobjs.dmi",
-    "GraviMobile_starting"
+    "icons/obj/doors/Dooruranium.dmi",
+    "door_closed"
    ],
    "anom5-pulse": [
-    "icons/obj/stationobjs.dmi",
-    "GraviMobile_starting"
+    "icons/obj/doors/Dooruranium.dmi",
+    "door_closed"
    ],
    "anom6": [
-    "icons/obj/stationobjs.dmi",
-    "GraviMobile_starting"
+    "icons/obj/doors/Dooruranium.dmi",
+    "door_closed"
    ],
    "anom6-pulse": [
-    "icons/obj/stationobjs.dmi",
-    "GraviMobile_starting"
+    "icons/obj/doors/Dooruranium.dmi",
+    "door_closed"
    ]
   },
   "eris": [
-   "icons/obj/stationobjs.dmi:GraviMobile_starting"
+   "icons/obj/doors/Dooruranium.dmi:door_closed"
   ]
  },
  {
   "target": "Structures/Specific/carp_rift.rsi",
-  "standin": true,
+  "standin": false,
   "states": {
    "icon": [
-    "icons/obj/objects.dmi",
-    "comfychair"
+    "icons/obj/toy.dmi",
+    "carpplushie"
    ],
    "icon_blue": [
-    "icons/obj/objects.dmi",
-    "comfychair"
+    "icons/obj/toy.dmi",
+    "carpplushie"
    ]
   },
   "eris": [
-   "icons/obj/objects.dmi:comfychair"
+   "icons/obj/toy.dmi:carpplushie"
   ]
  },
  {
@@ -9212,12 +9058,12 @@
   "standin": true,
   "states": {
    "statue": [
-    "icons/obj/medical_stand.dmi",
-    "medical_stand_empty"
+    "icons/obj/structures.dmi",
+    "linenbin-empty"
    ],
    "icon": [
-    "icons/obj/medical_stand.dmi",
-    "medical_stand_empty"
+    "icons/obj/structures.dmi",
+    "linenbin-empty"
    ],
    "eyes": {
     "blank": true
@@ -9230,7 +9076,7 @@
    }
   },
   "eris": [
-   "icons/obj/medical_stand.dmi:medical_stand_empty"
+   "icons/obj/structures.dmi:linenbin-empty"
   ]
  },
  {
@@ -9239,11 +9085,11 @@
   "states": {
    "church-bell": [
     "icons/obj/objects.dmi",
-    "mouse_brown"
+    "boxingbell"
    ]
   },
   "eris": [
-   "icons/obj/objects.dmi:mouse_brown"
+   "icons/obj/objects.dmi:boxingbell"
   ]
  },
  {
@@ -9288,14 +9134,6 @@
   "standin": false,
   "states": {
    "artifact_container": [
-    "icons/obj/crate.dmi",
-    "densecrate"
-   ],
-   "artifact_container_door": [
-    "icons/obj/crate.dmi",
-    "densecrate"
-   ],
-   "artifact_container_open": [
     "icons/obj/crate.dmi",
     "densecrate"
    ],
@@ -9345,10 +9183,6 @@
     "icons/obj/crate.dmi",
     "medicalcrate"
    ],
-   "closed": [
-    "icons/obj/crate.dmi",
-    "medicalcrate"
-   ],
    "open": [
     "icons/obj/crate.dmi",
     "medicalcrate_open"
@@ -9391,10 +9225,6 @@
     "icons/obj/crate.dmi",
     "securecrate"
    ],
-   "closed": [
-    "icons/obj/crate.dmi",
-    "securecrate"
-   ],
    "open": [
     "icons/obj/crate.dmi",
     "securecrate_open"
@@ -9413,10 +9243,6 @@
     "crate"
    ],
    "base": [
-    "icons/obj/crate.dmi",
-    "crate"
-   ],
-   "closed": [
     "icons/obj/crate.dmi",
     "crate"
    ],
@@ -9441,10 +9267,6 @@
     "icons/obj/crate.dmi",
     "securecrate"
    ],
-   "closed": [
-    "icons/obj/crate.dmi",
-    "securecrate"
-   ],
    "open": [
     "icons/obj/crate.dmi",
     "securecrate_open"
@@ -9463,10 +9285,6 @@
     "crate"
    ],
    "base": [
-    "icons/obj/crate.dmi",
-    "crate"
-   ],
-   "closed": [
     "icons/obj/crate.dmi",
     "crate"
    ],
@@ -9491,10 +9309,6 @@
     "icons/obj/crate.dmi",
     "freezer"
    ],
-   "closed": [
-    "icons/obj/crate.dmi",
-    "freezer"
-   ],
    "open": [
     "icons/obj/crate.dmi",
     "freezer_open"
@@ -9513,10 +9327,6 @@
     "crate"
    ],
    "base": [
-    "icons/obj/crate.dmi",
-    "crate"
-   ],
-   "closed": [
     "icons/obj/crate.dmi",
     "crate"
    ],
@@ -9541,10 +9351,6 @@
     "icons/obj/crate.dmi",
     "hydrosecurecrate"
    ],
-   "closed": [
-    "icons/obj/crate.dmi",
-    "hydrosecurecrate"
-   ],
    "open": [
     "icons/obj/crate.dmi",
     "hydrosecurecrate_open"
@@ -9566,10 +9372,6 @@
     "icons/obj/crate.dmi",
     "hydrocrate"
    ],
-   "closed": [
-    "icons/obj/crate.dmi",
-    "hydrocrate"
-   ],
    "open": [
     "icons/obj/crate.dmi",
     "hydrocrate_open"
@@ -9585,23 +9387,23 @@
   "states": {
    "paper": [
     "icons/obj/crate.dmi",
-    "freezer"
+    "securecrate"
    ],
    "bounty": [
     "icons/obj/crate.dmi",
-    "freezer"
+    "securecrate"
    ],
    "captains_paper": [
     "icons/obj/crate.dmi",
-    "freezer"
+    "securecrate"
    ],
    "invoice": [
     "icons/obj/crate.dmi",
-    "freezer"
+    "securecrate"
    ]
   },
   "eris": [
-   "icons/obj/crate.dmi:freezer"
+   "icons/obj/crate.dmi:securecrate"
   ]
  },
  {
@@ -9609,10 +9411,6 @@
   "standin": false,
   "states": {
    "base": [
-    "icons/obj/crate.dmi",
-    "critter"
-   ],
-   "closed": [
     "icons/obj/crate.dmi",
     "critter"
    ]
@@ -9650,10 +9448,6 @@
     "icons/obj/crate.dmi",
     "medicalcrate"
    ],
-   "closed": [
-    "icons/obj/crate.dmi",
-    "medicalcrate"
-   ],
    "open": [
     "icons/obj/crate.dmi",
     "medicalcrate_open"
@@ -9675,10 +9469,6 @@
     "icons/obj/crate.dmi",
     "medicalcrate"
    ],
-   "closed": [
-    "icons/obj/crate.dmi",
-    "medicalcrate"
-   ],
    "open": [
     "icons/obj/crate.dmi",
     "medicalcrate_open"
@@ -9697,10 +9487,6 @@
     "o2crate"
    ],
    "base": [
-    "icons/obj/crate.dmi",
-    "o2crate"
-   ],
-   "closed": [
     "icons/obj/crate.dmi",
     "o2crate"
    ],
@@ -9728,10 +9514,6 @@
    "crate_icon": [
     "icons/obj/crate.dmi",
     "germancrate"
-   ],
-   "crate_open": [
-    "icons/obj/crate.dmi",
-    "germancrate_open"
    ]
   },
   "eris": [
@@ -9747,10 +9529,6 @@
     "plasmacrate"
    ],
    "base": [
-    "icons/obj/crate.dmi",
-    "plasmacrate"
-   ],
-   "closed": [
     "icons/obj/crate.dmi",
     "plasmacrate"
    ],
@@ -9775,10 +9553,6 @@
     "icons/obj/crate.dmi",
     "plasticcrate"
    ],
-   "closed": [
-    "icons/obj/crate.dmi",
-    "plasticcrate"
-   ],
    "open": [
     "icons/obj/crate.dmi",
     "plasticcrate_open"
@@ -9797,10 +9571,6 @@
     "securecrate"
    ],
    "base": [
-    "icons/obj/crate.dmi",
-    "securecrate"
-   ],
-   "closed": [
     "icons/obj/crate.dmi",
     "securecrate"
    ],
@@ -9825,10 +9595,6 @@
     "icons/obj/crate.dmi",
     "radiation"
    ],
-   "closed": [
-    "icons/obj/crate.dmi",
-    "radiation"
-   ],
    "open": [
     "icons/obj/crate.dmi",
     "radiation_open"
@@ -9847,10 +9613,6 @@
     "securecrate"
    ],
    "base": [
-    "icons/obj/crate.dmi",
-    "securecrate"
-   ],
-   "closed": [
     "icons/obj/crate.dmi",
     "securecrate"
    ],
@@ -9875,10 +9637,6 @@
     "icons/obj/crate.dmi",
     "plasticcrate"
    ],
-   "closed": [
-    "icons/obj/crate.dmi",
-    "plasticcrate"
-   ],
    "open": [
     "icons/obj/crate.dmi",
     "plasticcrate_open"
@@ -9897,10 +9655,6 @@
     "secgearcrate"
    ],
    "base": [
-    "icons/obj/crate.dmi",
-    "secgearcrate"
-   ],
-   "closed": [
     "icons/obj/crate.dmi",
     "secgearcrate"
    ],
@@ -9940,23 +9694,23 @@
  },
  {
   "target": "Structures/Storage/Crates/stone_grave.rsi",
-  "standin": true,
+  "standin": false,
   "states": {
    "base": [
     "icons/obj/crate.dmi",
-    "plasmacrate"
+    "critter"
    ],
    "open": [
     "icons/obj/crate.dmi",
-    "plasmacrate_open"
+    "critteropen"
    ],
    "closed": [
     "icons/obj/crate.dmi",
-    "plasmacrate"
+    "critter"
    ]
   },
   "eris": [
-   "icons/obj/crate.dmi:plasmacrate"
+   "icons/obj/crate.dmi:critter"
   ]
  },
  {
@@ -9968,10 +9722,6 @@
     "medicalcrate"
    ],
    "base": [
-    "icons/obj/crate.dmi",
-    "medicalcrate"
-   ],
-   "closed": [
     "icons/obj/crate.dmi",
     "medicalcrate"
    ],
@@ -9996,10 +9746,6 @@
     "icons/obj/crate.dmi",
     "serbcrate"
    ],
-   "closed": [
-    "icons/obj/crate.dmi",
-    "serbcrate"
-   ],
    "open": [
     "icons/obj/crate.dmi",
     "serbcrate_open"
@@ -10018,10 +9764,6 @@
     "serbcrate_gray"
    ],
    "base": [
-    "icons/obj/crate.dmi",
-    "serbcrate_gray"
-   ],
-   "closed": [
     "icons/obj/crate.dmi",
     "serbcrate_gray"
    ],
@@ -10049,10 +9791,6 @@
    "crate_icon": [
     "icons/obj/crate.dmi",
     "lootcrate"
-   ],
-   "crate_open": [
-    "icons/obj/crate.dmi",
-    "lootcrate_open"
    ]
   },
   "eris": [
@@ -10102,10 +9840,6 @@
     "weaponcrate"
    ],
    "base": [
-    "icons/obj/crate.dmi",
-    "weaponcrate"
-   ],
-   "closed": [
     "icons/obj/crate.dmi",
     "weaponcrate"
    ],
@@ -10169,10 +9903,6 @@
   "standin": false,
   "states": {
    "base": [
-    "icons/obj/closet.dmi",
-    "med_secure"
-   ],
-   "closed": [
     "icons/obj/closet.dmi",
     "med_secure"
    ]
@@ -10243,10 +9973,6 @@
    "rbase": [
     "icons/obj/objects.dmi",
     "shelf"
-   ],
-   "closed": [
-    "icons/obj/objects.dmi",
-    "shelf"
    ]
   },
   "eris": [
@@ -10262,14 +9988,6 @@
     "wooden_chair"
    ],
    "rbase": [
-    "icons/obj/objects.dmi",
-    "wooden_chair"
-   ],
-   "closed": [
-    "icons/obj/objects.dmi",
-    "wooden_chair"
-   ],
-   "open": [
     "icons/obj/objects.dmi",
     "wooden_chair"
    ]
@@ -10346,7 +10064,7 @@
    ],
    "yellow": [
     "icons/obj/atmos.dmi",
-    "yellow"
+    "yellow-1"
    ],
    "blue": [
     "icons/obj/atmos.dmi",
@@ -10366,11 +10084,11 @@
    ],
    "green": [
     "icons/obj/closet.dmi",
-    "green_open"
+    "green_door"
    ],
    "water_vapor": [
-    "icons/obj/atmos.dmi",
-    "black"
+    "icons/obj/objects.dmi",
+    "watertank-derelict"
    ],
    "greenys": [
     "icons/obj/atmos.dmi",
@@ -10390,7 +10108,7 @@
    ],
    "yellow-1": [
     "icons/obj/atmos.dmi",
-    "yellow-1"
+    "yellow"
    ],
    "blue-1": [
     "icons/obj/atmos.dmi",
@@ -10410,37 +10128,26 @@
    ],
    "green-1": [
     "icons/obj/closet.dmi",
-    "green_door"
+    "green_open"
    ],
    "water_vapor-1": [
     "icons/obj/objects.dmi",
     "watertank"
    ],
    "greenys-1": [
-    "icons/obj/bioreactor_misc.dmi",
-    "biomatter_tank_large"
+    "icons/obj/atmos.dmi",
+    "yellow"
    ],
    "redws-1": [
     "icons/obj/atmos.dmi",
     "redws-1"
    ],
    "frezon-1": [
-    "icons/obj/atmos.dmi",
-    "blue"
+    "icons/obj/bioreactor_misc.dmi",
+    "biomatter_tank_large"
    ]
   },
   "eris": [
-   "icons/obj/atmos.dmi:grey",
-   "icons/obj/atmos.dmi:yellow",
-   "icons/obj/atmos.dmi:blue",
-   "icons/obj/atmos.dmi:red",
-   "icons/obj/atmos.dmi:black",
-   "icons/obj/atmos.dmi:orange",
-   "icons/obj/closet.dmi:green_open",
-   "icons/obj/atmos.dmi:black",
-   "icons/obj/atmos.dmi:yellow",
-   "icons/obj/atmos.dmi:redws-1",
-   "icons/obj/bioreactor_misc.dmi:biomatter_tank_large",
    "icons/obj/atmos.dmi:grey",
    "icons/obj/atmos.dmi:yellow-1",
    "icons/obj/atmos.dmi:blue",
@@ -10448,10 +10155,21 @@
    "icons/obj/atmos.dmi:black",
    "icons/obj/atmos.dmi:orange",
    "icons/obj/closet.dmi:green_door",
-   "icons/obj/objects.dmi:watertank",
-   "icons/obj/bioreactor_misc.dmi:biomatter_tank_large",
+   "icons/obj/objects.dmi:watertank-derelict",
+   "icons/obj/atmos.dmi:yellow",
    "icons/obj/atmos.dmi:redws-1",
-   "icons/obj/atmos.dmi:blue"
+   "icons/obj/bioreactor_misc.dmi:biomatter_tank_large",
+   "icons/obj/atmos.dmi:grey",
+   "icons/obj/atmos.dmi:yellow",
+   "icons/obj/atmos.dmi:blue",
+   "icons/obj/atmos.dmi:red",
+   "icons/obj/atmos.dmi:black",
+   "icons/obj/atmos.dmi:orange",
+   "icons/obj/closet.dmi:green_open",
+   "icons/obj/objects.dmi:watertank",
+   "icons/obj/atmos.dmi:yellow",
+   "icons/obj/atmos.dmi:redws-1",
+   "icons/obj/bioreactor_misc.dmi:biomatter_tank_large"
   ]
  },
  {
@@ -10466,6 +10184,10 @@
     "icons/obj/closet.dmi",
     "cabinet"
    ],
+   "cardboard_open": [
+    "icons/obj/closet.dmi",
+    "cabinet_open"
+   ],
    "generic": [
     "icons/obj/closet.dmi",
     "generic"
@@ -10479,23 +10201,23 @@
     "generic"
    ],
    "cursed": [
-    "icons/obj/closet.dmi",
-    "agrolyte"
+    "icons/obj/wall_mounted.dmi",
+    "wall-locker"
    ],
    "cursed_door": [
-    "icons/obj/closet.dmi",
-    "agrolyte_door"
+    "icons/obj/wall_mounted.dmi",
+    "wall-locker"
    ],
    "cursed_whole": [
-    "icons/obj/closet.dmi",
-    "agrolyte"
+    "icons/obj/wall_mounted.dmi",
+    "wall-locker"
    ]
   },
   "eris": [
    "icons/obj/closet.dmi:cabinet",
    "icons/obj/closet.dmi:cabinet",
    "icons/obj/closet.dmi:generic",
-   "icons/obj/closet.dmi:agrolyte"
+   "icons/obj/wall_mounted.dmi:wall-locker"
   ]
  },
  {
@@ -10535,27 +10257,7 @@
     "icons/obj/closet.dmi",
     "eng_tool_open"
    ],
-   "glass-up": [
-    "icons/obj/closet.dmi",
-    "eng_tool_open"
-   ],
-   "glass-broken": [
-    "icons/obj/closet.dmi",
-    "eng_tool_open"
-   ],
-   "caplaser": [
-    "icons/obj/closet.dmi",
-    "eng_tool_open"
-   ],
    "icon": [
-    "icons/obj/closet.dmi",
-    "eng_tool_open"
-   ],
-   "DamageOverlay_8": [
-    "icons/obj/closet.dmi",
-    "eng_tool_open"
-   ],
-   "DamageOverlay_12": [
     "icons/obj/closet.dmi",
     "eng_tool_open"
    ]
@@ -10651,144 +10353,144 @@
   "standin": true,
   "states": {
    "generic": [
-    "icons/obj/atmos.dmi",
-    "black-1"
+    "icons/obj/closet.dmi",
+    "fire"
    ],
    "atmos_door": [
-    "icons/obj/atmos.dmi",
-    "black-1"
+    "icons/obj/closet.dmi",
+    "atmos"
    ],
    "black_door": [
-    "icons/obj/atmos.dmi",
-    "black"
+    "icons/obj/closet.dmi",
+    "fire_door"
    ],
    "blue_door": [
-    "icons/obj/atmos.dmi",
-    "blue"
+    "icons/obj/closet.dmi",
+    "fire_door"
    ],
    "emergency": [
-    "icons/obj/atmos.dmi",
-    "black-1"
+    "icons/obj/closet.dmi",
+    "emergency"
    ],
    "emergency_door": [
-    "icons/obj/atmos.dmi",
-    "black-1"
+    "icons/obj/closet.dmi",
+    "emergency"
    ],
    "fire": [
-    "icons/obj/atmos.dmi",
-    "black-1"
+    "icons/obj/closet.dmi",
+    "fire"
    ],
    "fire_door": [
-    "icons/obj/atmos.dmi",
-    "black-1"
+    "icons/obj/closet.dmi",
+    "fire_door"
    ],
    "generic_door": [
-    "icons/obj/atmos.dmi",
-    "black-1"
+    "icons/obj/closet.dmi",
+    "fire_door"
    ],
    "generic_icon": [
-    "icons/obj/atmos.dmi",
-    "black-1"
+    "icons/obj/closet.dmi",
+    "fire"
    ],
    "gray_door": [
-    "icons/obj/atmos.dmi",
-    "black-1"
+    "icons/obj/closet.dmi",
+    "fire_door"
    ],
    "green_door": [
-    "icons/obj/atmos.dmi",
-    "black-1"
+    "icons/obj/closet.dmi",
+    "fire_door"
    ],
    "med": [
-    "icons/obj/atmos.dmi",
-    "black-1"
+    "icons/obj/closet.dmi",
+    "med"
    ],
    "med_door": [
-    "icons/obj/atmos.dmi",
-    "black-1"
+    "icons/obj/closet.dmi",
+    "med"
    ],
    "mixed_door": [
-    "icons/obj/atmos.dmi",
-    "black-1"
+    "icons/obj/closet.dmi",
+    "fire_door"
    ],
    "n2": [
-    "icons/obj/atmos.dmi",
-    "black-1"
+    "icons/obj/closet.dmi",
+    "fire"
    ],
    "n2_door": [
-    "icons/obj/atmos.dmi",
-    "black-1"
+    "icons/obj/closet.dmi",
+    "fire_door"
    ],
    "orange_door": [
-    "icons/obj/atmos.dmi",
-    "orange"
+    "icons/obj/closet.dmi",
+    "fire_door"
    ],
    "pink_door": [
-    "icons/obj/atmos.dmi",
-    "black-1"
+    "icons/obj/closet.dmi",
+    "fire_door"
    ],
    "red_door": [
-    "icons/obj/atmos.dmi",
-    "red"
+    "icons/obj/closet.dmi",
+    "fire_door"
    ],
    "white_door": [
-    "icons/obj/atmos.dmi",
-    "black-1"
+    "icons/obj/closet.dmi",
+    "fire_door"
    ],
    "yellow_door": [
-    "icons/obj/atmos.dmi",
-    "yellow"
+    "icons/obj/closet.dmi",
+    "fire_door"
    ],
    "eng": [
-    "icons/obj/atmos.dmi",
-    "black-1"
+    "icons/obj/closet.dmi",
+    "eng"
    ],
    "eng_evac_door": [
-    "icons/obj/atmos.dmi",
-    "black-1"
+    "icons/obj/closet.dmi",
+    "eng"
    ],
    "genpop": [
-    "icons/obj/atmos.dmi",
-    "black-1"
+    "icons/obj/closet.dmi",
+    "fire"
    ],
    "genpop_door_1": [
-    "icons/obj/atmos.dmi",
-    "black-1"
+    "icons/obj/closet.dmi",
+    "fire_door"
    ],
    "genpop_door_2": [
-    "icons/obj/atmos.dmi",
-    "black-1"
+    "icons/obj/closet.dmi",
+    "fire_door"
    ],
    "genpop_door_3": [
-    "icons/obj/atmos.dmi",
-    "black-1"
+    "icons/obj/closet.dmi",
+    "fire_door"
    ],
    "genpop_door_4": [
-    "icons/obj/atmos.dmi",
-    "black-1"
+    "icons/obj/closet.dmi",
+    "fire_door"
    ],
    "genpop_door_5": [
-    "icons/obj/atmos.dmi",
-    "black-1"
+    "icons/obj/closet.dmi",
+    "fire_door"
    ],
    "genpop_door_6": [
-    "icons/obj/atmos.dmi",
-    "black-1"
+    "icons/obj/closet.dmi",
+    "fire_door"
    ],
    "genpop_door_7": [
-    "icons/obj/atmos.dmi",
-    "black-1"
+    "icons/obj/closet.dmi",
+    "fire_door"
    ],
    "genpop_door_8": [
-    "icons/obj/atmos.dmi",
-    "black-1"
+    "icons/obj/closet.dmi",
+    "fire_door"
    ],
    "syndicate_closed": [
-    "icons/obj/atmos.dmi",
-    "black-1"
+    "icons/obj/closet.dmi",
+    "syndicate"
    ]
   },
   "eris": [
-   "icons/obj/atmos.dmi:black-1"
+   "icons/obj/closet.dmi:fire"
   ]
  },
  {
@@ -10796,20 +10498,20 @@
   "standin": false,
   "states": {
    "base": [
-    "icons/obj/machines/buttons.dmi",
-    "light1"
+    "icons/obj/lighting.dmi",
+    "penlight"
    ],
    "emergency_light_off": [
-    "icons/obj/machines/buttons.dmi",
-    "light1"
+    "icons/obj/lighting.dmi",
+    "penlight"
    ],
    "emergency_light_on": [
-    "icons/obj/machines/buttons.dmi",
-    "light1"
+    "icons/obj/lighting.dmi",
+    "penlight-on"
    ]
   },
   "eris": [
-   "icons/obj/machines/buttons.dmi:light1"
+   "icons/obj/lighting.dmi:penlight"
   ]
  },
  {
@@ -10842,19 +10544,19 @@
  },
  {
   "target": "Structures/Wallmounts/Lighting/light-tube.rsi",
-  "standin": true,
+  "standin": false,
   "states": {
    "base": [
     "icons/obj/lighting.dmi",
-    "tube-construct-stage1"
+    "tube-empty"
    ],
    "broken": [
     "icons/obj/lighting.dmi",
-    "tube-construct-stage1"
+    "tube-empty"
    ],
    "burned": [
     "icons/obj/lighting.dmi",
-    "tube-construct-stage1"
+    "tube-empty"
    ],
    "empty": {
     "blank": true
@@ -10864,7 +10566,7 @@
    }
   },
   "eris": [
-   "icons/obj/lighting.dmi:tube-construct-stage1"
+   "icons/obj/lighting.dmi:tube-empty"
   ]
  },
  {
@@ -10981,115 +10683,115 @@
   "states": {
    "empty": [
     "icons/obj/barsigns.dmi",
-    "The Harmbaton"
+    "Officer Beersky"
    ],
    "combocafe": [
     "icons/obj/barsigns.dmi",
-    "The Harmbaton"
+    "Officer Beersky"
    ],
    "thewiggleroom": [
     "icons/obj/barsigns.dmi",
-    "The Harmbaton"
+    "Officer Beersky"
    ],
    "thesun": [
     "icons/obj/barsigns.dmi",
-    "The Harmbaton"
+    "Officer Beersky"
    ],
    "lv426": [
     "icons/obj/barsigns.dmi",
-    "The Harmbaton"
+    "Officer Beersky"
    ],
    "birdcage": [
     "icons/obj/barsigns.dmi",
-    "The Harmbaton"
+    "Officer Beersky"
    ],
    "zocalo": [
     "icons/obj/barsigns.dmi",
-    "The Harmbaton"
+    "Officer Beersky"
    ],
    "emergencyrumparty": [
     "icons/obj/barsigns.dmi",
-    "The Harmbaton"
+    "Officer Beersky"
    ],
    "empbarsign": [
     "icons/obj/barsigns.dmi",
-    "The Harmbaton"
+    "Officer Beersky"
    ],
    "goose": [
     "icons/obj/barsigns.dmi",
-    "The Harmbaton"
+    "Officer Beersky"
    ],
    "maidcafe": [
     "icons/obj/barsigns.dmi",
-    "The Harmbaton"
+    "Officer Beersky"
    ],
    "officerbeersky": [
     "icons/obj/barsigns.dmi",
-    "The Harmbaton"
+    "Officer Beersky"
    ],
    "the_lightbulb": [
     "icons/obj/barsigns.dmi",
-    "The Harmbaton"
+    "Officer Beersky"
    ],
    "thealenath": [
     "icons/obj/barsigns.dmi",
-    "The Harmbaton"
+    "Officer Beersky"
    ],
    "thecoderbus": [
     "icons/obj/barsigns.dmi",
-    "The Harmbaton"
+    "Officer Beersky"
    ],
    "thedrunkcarp": [
     "icons/obj/barsigns.dmi",
-    "The Harmbaton"
+    "Officer Beersky"
    ],
    "theharmbaton": [
     "icons/obj/barsigns.dmi",
-    "The Harmbaton"
+    "Officer Beersky"
    ],
    "thenet": [
     "icons/obj/barsigns.dmi",
-    "The Harmbaton"
+    "Officer Beersky"
    ],
    "theouterspess": [
     "icons/obj/barsigns.dmi",
-    "The Harmbaton"
+    "Officer Beersky"
    ],
    "emprah": [
     "icons/obj/barsigns.dmi",
-    "The Harmbaton"
+    "Officer Beersky"
    ],
    "thesingulo": [
     "icons/obj/barsigns.dmi",
-    "The Harmbaton"
+    "Officer Beersky"
    ],
    "robustacafe": [
     "icons/obj/barsigns.dmi",
-    "The Harmbaton"
+    "Officer Beersky"
    ],
    "maltesefalcon": [
     "icons/obj/barsigns.dmi",
-    "The Harmbaton"
+    "Officer Beersky"
    ],
    "enginechange": [
     "icons/obj/barsigns.dmi",
-    "The Harmbaton"
+    "Officer Beersky"
    ],
    "spacebucks": [
     "icons/obj/barsigns.dmi",
-    "The Harmbaton"
+    "Officer Beersky"
    ],
    "maltroach": [
     "icons/obj/barsigns.dmi",
-    "The Harmbaton"
+    "Officer Beersky"
    ],
    "whiskeyechoes": [
     "icons/obj/barsigns.dmi",
-    "The Harmbaton"
+    "Officer Beersky"
    ]
   },
   "eris": [
-   "icons/obj/barsigns.dmi:The Harmbaton"
+   "icons/obj/barsigns.dmi:Officer Beersky"
   ]
  },
  {
@@ -11098,11 +10800,11 @@
   "states": {
    "bell": [
     "icons/obj/decals.dmi",
-    "goldenplaque"
+    "wall_cross_gold"
    ]
   },
   "eris": [
-   "icons/obj/decals.dmi:goldenplaque"
+   "icons/obj/decals.dmi:wall_cross_gold"
   ]
  },
  {
@@ -11338,23 +11040,23 @@
   "states": {
    "television_wall": [
     "icons/obj/lighting.dmi",
-    "floortube-construct-stage1"
+    "bulb-construct-stage1"
    ],
    "television_wall_off": [
     "icons/obj/lighting.dmi",
-    "floortube-construct-stage1"
+    "bulb-construct-stage1"
    ],
    "television_wallbroken": [
     "icons/obj/lighting.dmi",
-    "floortube-construct-stage1"
+    "bulb-construct-stage1"
    ],
    "television_wallscreen": [
     "icons/obj/lighting.dmi",
-    "floortube-construct-stage1"
+    "bulb-construct-stage1"
    ]
   },
   "eris": [
-   "icons/obj/lighting.dmi:floortube-construct-stage1"
+   "icons/obj/lighting.dmi:bulb-construct-stage1"
   ]
  },
  {
@@ -12246,19 +11948,19 @@
   "states": {
    "ai": [
     "icons/obj/decals.dmi",
-    "direction_evac"
+    "secure"
    ],
    "ai_upload": [
     "icons/obj/decals.dmi",
-    "direction_evac"
+    "secure"
    ],
    "vault": [
     "icons/obj/decals.dmi",
-    "direction_evac"
+    "secure"
    ],
    "xenoarch": [
     "icons/obj/decals.dmi",
-    "direction_evac"
+    "secure"
    ],
    "anomaly": [
     "icons/obj/decals.dmi",
@@ -12266,7 +11968,7 @@
    ],
    "arcade": [
     "icons/obj/decals.dmi",
-    "direction_evac"
+    "secure"
    ],
    "armory": [
     "icons/obj/decals.dmi",
@@ -12274,11 +11976,11 @@
    ],
    "arrivals": [
     "icons/obj/decals.dmi",
-    "direction_evac"
+    "secure"
    ],
    "barbershop": [
     "icons/obj/decals.dmi",
-    "direction_evac"
+    "secure"
    ],
    "ass": [
     "icons/obj/decals.dmi",
@@ -12326,7 +12028,7 @@
    ],
    "zumosplaque": [
     "icons/obj/decals.dmi",
-    "direction_evac"
+    "secure"
    ],
    "bar": [
     "icons/obj/decals.dmi",
@@ -12334,7 +12036,7 @@
    ],
    "bath": [
     "icons/obj/decals.dmi",
-    "direction_evac"
+    "secure"
    ],
    "biblio": [
     "icons/obj/decals.dmi",
@@ -12378,7 +12080,7 @@
    ],
    "conference_room": [
     "icons/obj/decals.dmi",
-    "direction_evac"
+    "secure"
    ],
    "corrosives": [
     "icons/obj/decals.dmi",
@@ -12398,7 +12100,7 @@
    ],
    "detective": [
     "icons/obj/decals.dmi",
-    "direction_evac"
+    "secure"
    ],
    "direction_atmos": {
     "blank": true
@@ -12491,7 +12193,7 @@
    ],
    "mats": [
     "icons/obj/decals.dmi",
-    "direction_evac"
+    "secure"
    ],
    "electrical": [
     "icons/obj/decals.dmi",
@@ -12527,11 +12229,11 @@
    ],
    "cloning": [
     "icons/obj/decals.dmi",
-    "direction_evac"
+    "secure"
    ],
    "genpop": [
     "icons/obj/decals.dmi",
-    "direction_evac"
+    "secure"
    ],
    "gravi": [
     "icons/obj/decals.dmi",
@@ -12539,7 +12241,7 @@
    ],
    "hydro": [
     "icons/obj/decals.dmi",
-    "direction_evac"
+    "secure"
    ],
    "interrogation": [
     "icons/obj/decals.dmi",
@@ -12547,7 +12249,7 @@
    ],
    "janitor": [
     "icons/obj/decals.dmi",
-    "direction_evac"
+    "secure"
    ],
    "laser": [
     "icons/obj/decals.dmi",
@@ -12555,11 +12257,11 @@
    ],
    "laundromat": [
     "icons/obj/decals.dmi",
-    "direction_evac"
+    "secure"
    ],
    "law": [
     "icons/obj/decals.dmi",
-    "direction_evac"
+    "secure"
    ],
    "magnetics": [
     "icons/obj/decals.dmi",
@@ -12586,27 +12288,27 @@
    ],
    "news": [
     "icons/obj/decals.dmi",
-    "direction_evac"
+    "secure"
    ],
    "kitchen": [
     "icons/obj/decals.dmi",
-    "direction_evac"
+    "secure"
    ],
    "drama1": [
     "icons/obj/decals.dmi",
-    "direction_evac"
+    "secure"
    ],
    "drama2": [
     "icons/obj/decals.dmi",
-    "direction_evac"
+    "secure"
    ],
    "drama3": [
     "icons/obj/decals.dmi",
-    "direction_evac"
+    "secure"
    ],
    "restroom": [
     "icons/obj/decals.dmi",
-    "direction_evac"
+    "secure"
    ],
    "nosmoking": {
     "blank": true
@@ -12616,7 +12318,7 @@
    },
    "surgery": [
     "icons/obj/decals.dmi",
-    "direction_evac"
+    "secure"
    ],
    "optical": [
     "icons/obj/decals.dmi",
@@ -12636,7 +12338,7 @@
    ],
    "psychology": [
     "icons/obj/decals.dmi",
-    "direction_evac"
+    "secure"
    ],
    "radiation": [
     "icons/obj/decals.dmi",
@@ -12644,7 +12346,7 @@
    ],
    "reception": [
     "icons/obj/decals.dmi",
-    "direction_evac"
+    "secure"
    ],
    "rnd": [
     "icons/obj/decals.dmi",
@@ -12656,7 +12358,7 @@
    ],
    "salvage": [
     "icons/obj/decals.dmi",
-    "direction_evac"
+    "secure"
    ],
    "sci": [
     "icons/obj/decals.dmi",
@@ -12672,7 +12374,7 @@
    ],
    "cans": [
     "icons/obj/decals.dmi",
-    "direction_evac"
+    "secure"
    ],
    "cans_sci": [
     "icons/obj/decals.dmi",
@@ -12684,11 +12386,11 @@
    ],
    "something-old1": [
     "icons/obj/decals.dmi",
-    "direction_evac"
+    "secure"
    ],
    "something-old2": [
     "icons/obj/decals.dmi",
-    "direction_evac"
+    "secure"
    ],
    "space": [
     "icons/obj/decals.dmi",
@@ -12712,11 +12414,11 @@
    ],
    "zomlab": [
     "icons/obj/decals.dmi",
-    "direction_evac"
+    "secure"
    ],
    "vox": [
     "icons/obj/decals.dmi",
-    "direction_evac"
+    "secure"
    ],
    "small_secure_red": {
     "blank": true
@@ -12770,35 +12472,35 @@
    ],
    "security": [
     "icons/obj/decals.dmi",
-    "direction_evac"
+    "secure"
    ],
    "data": [
     "icons/obj/decals.dmi",
-    "direction_evac"
+    "secure"
    ],
    "cryo": [
     "icons/obj/decals.dmi",
-    "direction_evac"
+    "secure"
    ],
    "nanotrasen_sign1": [
     "icons/obj/decals.dmi",
-    "direction_evac"
+    "secure"
    ],
    "nanotrasen_sign2": [
     "icons/obj/decals.dmi",
-    "direction_evac"
+    "secure"
    ],
    "nanotrasen_sign3": [
     "icons/obj/decals.dmi",
-    "direction_evac"
+    "secure"
    ],
    "nanotrasen_sign4": [
     "icons/obj/decals.dmi",
-    "direction_evac"
+    "secure"
    ],
    "nanotrasen_sign5": [
     "icons/obj/decals.dmi",
-    "direction_evac"
+    "secure"
    ],
    "one": {
     "blank": true
@@ -12838,7 +12540,7 @@
    }
   },
   "eris": [
-   "icons/obj/decals.dmi:direction_evac"
+   "icons/obj/decals.dmi:secure"
   ]
  },
  {
@@ -12878,28 +12580,28 @@
   "standin": true,
   "states": {
    "grey": [
-    "icons/obj/monitors.dmi",
-    "camera"
+    "icons/obj/machines/buttons.dmi",
+    "light0"
    ],
    "caution": [
-    "icons/obj/monitors.dmi",
-    "camera"
+    "icons/obj/machines/buttons.dmi",
+    "light0"
    ],
    "caution-security": [
-    "icons/obj/monitors.dmi",
-    "camera"
+    "icons/obj/machines/buttons.dmi",
+    "light0"
    ],
    "white": [
-    "icons/obj/monitors.dmi",
-    "camera"
+    "icons/obj/machines/buttons.dmi",
+    "light0"
    ],
    "janitor": [
-    "icons/obj/monitors.dmi",
-    "camera"
+    "icons/obj/machines/buttons.dmi",
+    "light0"
    ]
   },
   "eris": [
-   "icons/obj/monitors.dmi:camera"
+   "icons/obj/machines/buttons.dmi:light0"
   ]
  },
  {
@@ -12908,7 +12610,7 @@
   "states": {
    "base": [
     "icons/obj/contraband.dmi",
-    "rolled_poster_asters"
+    "asters_mine_ore_1"
    ],
    "lock-locked": {
     "blank": true
@@ -12930,7 +12632,7 @@
    }
   },
   "eris": [
-   "icons/obj/contraband.dmi:rolled_poster_asters"
+   "icons/obj/contraband.dmi:asters_mine_ore_1"
   ]
  },
  {
@@ -12969,12 +12671,12 @@
   "standin": true,
   "states": {
    "sylph": [
-    "icons/obj/status_display.dmi",
-    "ai_plump"
+    "icons/obj/barsigns.dmi",
+    "The Damn Wall"
    ]
   },
   "eris": [
-   "icons/obj/status_display.dmi:ai_plump"
+   "icons/obj/barsigns.dmi:The Damn Wall"
   ]
  },
  {
@@ -13004,15 +12706,15 @@
  },
  {
   "target": "Structures/Wallmounts/walldispenser.rsi",
-  "standin": true,
+  "standin": false,
   "states": {
    "cleanerdispenser": [
-    "icons/obj/wall_mounted.dmi",
-    "wall-lockerbroken"
+    "icons/obj/decals.dmi",
+    "space_old_crash"
    ],
    "fueldispenser": [
-    "icons/obj/wall_mounted.dmi",
-    "wall-lockerbroken"
+    "icons/obj/decals.dmi",
+    "space_old_crash"
    ],
    "fill-1": {
     "blank": true
@@ -13031,7 +12733,7 @@
    }
   },
   "eris": [
-   "icons/obj/wall_mounted.dmi:wall-lockerbroken"
+   "icons/obj/decals.dmi:space_old_crash"
   ]
  },
  {
@@ -13160,15 +12862,15 @@
  },
  {
   "target": "Structures/Walls/random.rsi",
-  "standin": true,
+  "standin": false,
   "states": {
    "randomgrille": [
     "icons/obj/structures.dmi",
-    "p-wingrille"
+    "wingrille"
    ]
   },
   "eris": [
-   "icons/obj/structures.dmi:p-wingrille"
+   "icons/obj/structures.dmi:wingrille"
   ]
  },
  {
@@ -13364,27 +13066,6 @@
   "standin": false,
   "states": {
    "DamageOverlay_5": [
-    "icons/obj/structures.dmi",
-    "window"
-   ],
-   "DamageOverlay_10": [
-    "icons/obj/structures.dmi",
-    "window"
-   ],
-   "DamageOverlay_20": [
-    "icons/obj/structures.dmi",
-    "window"
-   ]
-  },
-  "eris": [
-   "icons/obj/structures.dmi:window"
-  ]
- },
- {
-  "target": "Structures/Windows/cracks.rsi",
-  "standin": false,
-  "states": {
-   "DamageOverlay_5": [
     "icons/obj/podwindows.dmi",
     "window"
    ],
@@ -13399,6 +13080,27 @@
   },
   "eris": [
    "icons/obj/podwindows.dmi:window"
+  ]
+ },
+ {
+  "target": "Structures/Windows/cracks.rsi",
+  "standin": false,
+  "states": {
+   "DamageOverlay_5": [
+    "icons/obj/structures.dmi",
+    "window"
+   ],
+   "DamageOverlay_10": [
+    "icons/obj/structures.dmi",
+    "window"
+   ],
+   "DamageOverlay_20": [
+    "icons/obj/structures.dmi",
+    "window"
+   ]
+  },
+  "eris": [
+   "icons/obj/structures.dmi:window"
   ]
  },
  {
@@ -13789,23 +13491,23 @@
   "standin": false,
   "states": {
    "industrial-working": [
-    "icons/obj/machines/chemistry.dmi",
-    "industrial_dispenser"
+    "icons/obj/chemical.dmi",
+    "dispenser"
    ],
    "industrial": [
-    "icons/obj/machines/chemistry.dmi",
-    "industrial_dispenser"
+    "icons/obj/chemical.dmi",
+    "dispenser"
    ],
    "industrial-off": [
-    "icons/obj/machines/chemistry.dmi",
-    "industrial_dispenser"
+    "icons/obj/chemical.dmi",
+    "dispenser"
    ],
    "industrial-panel": {
     "blank": true
    }
   },
   "eris": [
-   "icons/obj/machines/chemistry.dmi:industrial_dispenser"
+   "icons/obj/chemical.dmi:dispenser"
   ]
  },
  {
@@ -13968,40 +13670,40 @@
   "standin": true,
   "states": {
    "stairs_steel": [
-    "icons/obj/doors/material_doors.dmi",
-    "wood"
+    "icons/obj/objects.dmi",
+    "officechair_dark"
    ],
    "stairs_white": [
-    "icons/obj/doors/material_doors.dmi",
-    "wood"
+    "icons/obj/objects.dmi",
+    "officechair_dark"
    ],
    "stairs_stage_white": [
-    "icons/obj/doors/material_doors.dmi",
-    "wood"
+    "icons/obj/objects.dmi",
+    "officechair_dark"
    ],
    "stairs_stage_steel": [
-    "icons/obj/doors/material_doors.dmi",
-    "wood"
+    "icons/obj/objects.dmi",
+    "officechair_dark"
    ],
    "stairs_dark": [
-    "icons/obj/doors/material_doors.dmi",
-    "wood"
+    "icons/obj/objects.dmi",
+    "officechair_dark"
    ],
    "stairs_stage_dark": [
-    "icons/obj/doors/material_doors.dmi",
-    "wood"
+    "icons/obj/objects.dmi",
+    "officechair_dark"
    ],
    "stairs_wood": [
-    "icons/obj/doors/material_doors.dmi",
-    "wood"
+    "icons/obj/objects.dmi",
+    "officechair_dark"
    ],
    "stairs_stage_wood": [
-    "icons/obj/doors/material_doors.dmi",
-    "wood"
+    "icons/obj/objects.dmi",
+    "officechair_dark"
    ]
   },
   "eris": [
-   "icons/obj/doors/material_doors.dmi:wood"
+   "icons/obj/objects.dmi:officechair_dark"
   ]
  }
 ]

@@ -5,14 +5,11 @@
         "y": 32
     },
     "license": "CC-BY-SA-3.0",
-    "copyright": "Created by Princess Cheeseballs, https://github.com/Princess-Cheeseballs",
+    "copyright": "Created by Princess Cheeseballs, https://github.com/Princess-Cheeseballs. Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
     "states": [
         {
             "name": "stunned",
-            "directions": 1,
-            "delays": [
-                [ 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1 ]
-            ]
+            "directions": 1
         }
     ]
 }

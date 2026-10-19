@@ -8,13 +8,7 @@
     },
     "states": [
         {
-            "name": "redemption",
-            "delays": [
-                [
-                    0.5,
-                    0.5
-                ]
-            ]
+            "name": "redemption"
         },
         {
             "name": "redemption-unshaded"
