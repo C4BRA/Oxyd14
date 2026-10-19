@@ -1489,5 +1489,73 @@
    "state": "help"
   },
   "standin": false
+ },
+ {
+  "file": "Interface/target-doll.svg.192dpi.png",
+  "src": {
+   "file_png": "Interface/target-doll.svg.192dpi.png",
+   "recolor": "eris_ui"
+  },
+  "standin": true
+ },
+ {
+  "file": "Interface/target-doll-high.svg.192dpi.png",
+  "src": {
+   "file_png": "Interface/target-doll-high.svg.192dpi.png",
+   "recolor": "eris_ui"
+  },
+  "standin": true
+ },
+ {
+  "file": "Interface/target-doll-high.svg.96dpi.png",
+  "src": {
+   "file_png": "Interface/target-doll-high.svg.96dpi.png",
+   "recolor": "eris_ui"
+  },
+  "standin": true
+ },
+ {
+  "file": "Interface/target-doll-middle.svg.192dpi.png",
+  "src": {
+   "file_png": "Interface/target-doll-middle.svg.192dpi.png",
+   "recolor": "eris_ui"
+  },
+  "standin": true
+ },
+ {
+  "file": "Interface/target-doll-middle.svg.96dpi.png",
+  "src": {
+   "file_png": "Interface/target-doll-middle.svg.96dpi.png",
+   "recolor": "eris_ui"
+  },
+  "standin": true
+ },
+ {
+  "file": "Interface/target-doll-low.svg.192dpi.png",
+  "src": {
+   "file_png": "Interface/target-doll-low.svg.192dpi.png",
+   "recolor": "eris_ui"
+  },
+  "standin": true
+ },
+ {
+  "file": "Interface/target-doll-low.svg.96dpi.png",
+  "src": {
+   "file_png": "Interface/target-doll-low.svg.96dpi.png",
+   "recolor": "eris_ui"
+  },
+  "standin": true
+ },
+ {
+  "target": "Interface/Misc/progress_bar.rsi",
+  "states": {
+   "icon": {
+    "rsi": "Interface/Misc/progress_bar.rsi",
+    "state": "icon",
+    "base": true,
+    "recolor": "eris_ui"
+   }
+  },
+  "standin": true
  }
 ]

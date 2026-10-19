@@ -170,6 +170,15 @@ file("Interface/Actions/harmOff.png", eris("help"))
 file("Interface/Actions/disarm.png", eris("disarm"))
 file("Interface/Actions/disarmOff.png", eris("help"))
 
+# --- Zone doll and progress bar ---------------------------------------------
+# Their geometry drives hit-testing and fill offsets in C#, so they keep their shape in Eris HUD colours.
+for name in ("target-doll.svg.192dpi", "target-doll-high.svg.192dpi", "target-doll-high.svg.96dpi",
+             "target-doll-middle.svg.192dpi", "target-doll-middle.svg.96dpi", "target-doll-low.svg.192dpi",
+             "target-doll-low.svg.96dpi"):
+    file(f"Interface/{name}.png", {"file_png": f"Interface/{name}.png", "recolor": "eris_ui"}, True)
+rsi("Interface/Misc/progress_bar.rsi",
+    {"icon": {"rsi": "Interface/Misc/progress_bar.rsi", "state": "icon", "base": True, "recolor": "eris_ui"}}, True)
+
 (HERE / "maps").mkdir(exist_ok=True)
 (HERE / "maps" / "ui.json").write_text(json.dumps(entries, indent=1) + "\n", encoding="utf-8")
 print(f"wrote {len(entries)} UI entries")
