@@ -55,6 +55,7 @@ SYNONYMS = {
     "backpack": ["backpack", "bag"], "belt": ["belt", "utility"], "holster": ["holster"],
     "cloak": ["cloak", "cape", "poncho", "mantle"], "scarf": ["scarf"], "tie": ["tie"],
     "medal": ["medal"], "bedsheet": ["bedsheet", "sheet"], "magboots": ["magboots"],
+    "generic": ["crate", "closet", "generic"], "secure": ["secure", "locked", "weapon"],
 }
 
 
@@ -86,7 +87,13 @@ def name_score(a: set[str], b: set[str], idf: dict[str, float] | None = None) ->
     if idf is None:
         return len(a & b) / math.sqrt(len(a) * len(b))
     w = lambda ts: sum(idf.get(t, 1.0) for t in ts)  # noqa: E731
-    return w(a & b) / math.sqrt(w(a) * w(b))
+    hit = w(a & b)
+    # Eris often runs words together ("medicalcrate", "protolathe_work"): partial credit for
+    # an SS14 word found inside an Eris word, or the other way round.
+    for t in a - b:
+        if len(t) >= 4 and any(len(x) >= 4 and (t in x or x in t) for x in b):
+            hit += 0.75 * idf.get(t, 1.0)
+    return min(1.0, hit / math.sqrt(w(a) * w(b)))
 
 
 def idf_weights(docs: list[set[str]]) -> dict[str, float]:

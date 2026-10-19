@@ -5,29 +5,11 @@
         "y": 32
     },
     "license": "CC-BY-SA-3.0",
-    "copyright": "Taken from https://github.com/discordia-space/CEV-Eris/blob/master/icons/obj/machines/excelsior/autolathe.dmi at 40b254106b46981b8ad95ccd5589deb8fa56e765",
+    "copyright": "Taken from https://github.com/discordia-space/CEV-Eris/blob/master/icons/obj/machines/excelsior/autolathe.dmi at 40b254106b46981b8ad95ccd5589deb8fa56e765. Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
     "states": [
         {
             "name": "rndpointsource",
-            "directions": 4,
-            "delays": [
-                [
-                    0.8,
-                    0.2
-                ],
-                [
-                    0.8,
-                    0.2
-                ],
-                [
-                    0.8,
-                    0.2
-                ],
-                [
-                    0.8,
-                    0.2
-                ]
-            ]
+            "directions": 4
         },
         {
             "name": "rndpointsource-broken",
@@ -35,17 +17,83 @@
                 [
                     0.1,
                     0.1,
+                    0.1,
+                    0.3,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.3,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.3,
+                    0.1,
                     0.1
                 ]
             ]
         },
         {
-            "name": "rndpointsource-off"
-
+            "name": "rndpointsource-off",
+            "delays": [
+                [
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.3,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.3,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.3,
+                    0.1,
+                    0.1
+                ]
+            ]
         },
         {
-            "name": "rndpointsource-icon"
-
+            "name": "rndpointsource-icon",
+            "delays": [
+                [
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.3,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.3,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.3,
+                    0.1,
+                    0.1
+                ]
+            ]
         }
     ]
 }

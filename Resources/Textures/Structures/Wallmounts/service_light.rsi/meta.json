@@ -1,7 +1,7 @@
 {
     "version": 1,
     "license": "CC-BY-SA-3.0",
-    "copyright": "On, off, broken, burned, empty sprites by RiceMar1244",
+    "copyright": "On, off, broken, burned, empty sprites by RiceMar1244. Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
     "size": {
         "x": 32,
         "y": 32
@@ -25,25 +25,7 @@
         },
         {
             "name": "glow",
-            "directions": 4,
-            "delays": [
-                [
-                    0.1,
-                    0.5
-                ],
-                [
-                    0.1,
-                    0.5
-                ],
-                [
-                    0.1,
-                    0.5
-                ],
-                [
-                    0.1,
-                    0.5
-                ]
-            ]
+            "directions": 4
         }
     ]
 }

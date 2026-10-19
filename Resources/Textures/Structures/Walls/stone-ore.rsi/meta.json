@@ -1,14 +1,21 @@
 {
     "version": 1,
     "license": "CC-BY-SA-3.0",
-    "copyright": "Sourced from https://github.com/Citadel-Station-13/Citadel-Station-13-RP/blob/817e7c1f225876b45891e3f06908e6d032f0a8bc/icons/turf/walls.dmi. Silver and Plasma taken from https://github.com/vgstation-coders/vgstation13 at commit f2ef221849675915a78fd92fe622c32ab740e085, Spacequartz taken from https://github.com/goonstation/goonstation at commit b51daf824df46a3a1426475f982c09479818e522 and modified by Alekshhh. Uranium, iron, gold, and coal by Alekshhh. Diamond taken from https://github.com/tgstation/tgstation/pull/78524, edited by TheShuEd. Salt by a contributor who wished to remain anonymous.",
+    "copyright": "Sourced from https://github.com/Citadel-Station-13/Citadel-Station-13-RP/blob/817e7c1f225876b45891e3f06908e6d032f0a8bc/icons/turf/walls.dmi. Silver and Plasma taken from https://github.com/vgstation-coders/vgstation13 at commit f2ef221849675915a78fd92fe622c32ab740e085, Spacequartz taken from https://github.com/goonstation/goonstation at commit b51daf824df46a3a1426475f982c09479818e522 and modified by Alekshhh. Uranium, iron, gold, and coal by Alekshhh. Diamond taken from https://github.com/tgstation/tgstation/pull/78524, edited by TheShuEd. Salt by a contributor who wished to remain anonymous.. Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
     "size": {
         "x": 32,
         "y": 32
     },
     "states": [
         {
-            "name": "rock_artifact_fragment"
+            "name": "rock_artifact_fragment",
+            "delays": [
+                [
+                    0.1,
+                    0.1,
+                    0.1
+                ]
+            ]
         },
         {
             "name": "rock_bauxite"
@@ -17,7 +24,14 @@
             "name": "rock_carbon"
         },
         {
-            "name": "rock_coal"
+            "name": "rock_coal",
+            "delays": [
+                [
+                    0.1,
+                    0.1,
+                    0.1
+                ]
+            ]
         },
         {
             "name": "rock_copper"
@@ -26,23 +40,21 @@
             "name": "rock_diamond",
             "delays": [
                 [
-                    0.2,
-                    0.2,
-                    0.2,
-                    0.2,
-                    0.2,
-                    0.2,
-                    0.2,
-                    0.2,
-                    0.2,
-                    0.2,
-                    0.2,
-                    0.2
+                    0.1,
+                    0.1,
+                    0.1
                 ]
             ]
         },
         {
-            "name": "rock_gold"
+            "name": "rock_gold",
+            "delays": [
+                [
+                    0.1,
+                    0.1,
+                    0.1
+                ]
+            ]
         },
         {
             "name": "rock_hematite"
@@ -63,19 +75,47 @@
             "name": "rock_platinum"
         },
         {
-            "name": "rock_quartz"
+            "name": "rock_quartz",
+            "delays": [
+                [
+                    0.1,
+                    0.1,
+                    0.1
+                ]
+            ]
         },
         {
             "name": "rock_rutile"
         },
         {
-            "name": "rock_silver"
+            "name": "rock_silver",
+            "delays": [
+                [
+                    0.1,
+                    0.1,
+                    0.1
+                ]
+            ]
         },
         {
-            "name": "rock_tin"
+            "name": "rock_tin",
+            "delays": [
+                [
+                    0.1,
+                    0.1,
+                    0.1
+                ]
+            ]
         },
         {
-            "name": "rock_uranium"
+            "name": "rock_uranium",
+            "delays": [
+                [
+                    0.1,
+                    0.1,
+                    0.1
+                ]
+            ]
         },
         {
             "name": "rock_verdantium"
@@ -84,7 +124,14 @@
             "name": "rock_void_opal"
         },
         {
-            "name": "rock_salt"
+            "name": "rock_salt",
+            "delays": [
+                [
+                    0.1,
+                    0.1,
+                    0.1
+                ]
+            ]
         },
         {
             "name": "gibtonite_active",
@@ -98,7 +145,14 @@
             ]
         },
         {
-            "name": "gibtonite_inactive"
+            "name": "gibtonite_inactive",
+            "delays": [
+                [
+                    0.1,
+                    0.1,
+                    0.1
+                ]
+            ]
         }
     ]
 }

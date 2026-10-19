@@ -1,20 +1,36 @@
 {
-  "version": 1,
-  "license": "CC-BY-SA-3.0",
-  "copyright": "Created by EmoGarbage404",
-  "size": {
-    "x": 32,
-    "y": 32
-  },
-  "states": [
-    {
-      "name": "display"
+    "version": 1,
+    "license": "CC-BY-SA-3.0",
+    "copyright": "Created by EmoGarbage404. Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
+    "size": {
+        "x": 32,
+        "y": 32
     },
-    {
-      "name": "icon"
-    },
-    {
-      "name": "unshaded"
-    }
-  ]
+    "states": [
+        {
+            "name": "display",
+            "delays": [
+                [
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1
+                ]
+            ]
+        },
+        {
+            "name": "icon",
+            "delays": [
+                [
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1
+                ]
+            ]
+        },
+        {
+            "name": "unshaded"
+        }
+    ]
 }

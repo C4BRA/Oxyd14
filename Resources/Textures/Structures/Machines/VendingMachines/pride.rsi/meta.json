@@ -1,31 +1,40 @@
 {
-  "version": 1,
-  "license": "CC-BY-SA-4.0",
-  "copyright": "The art belongs to Woods#1999 on discord",
-  "size": {
-    "x": 32,
-    "y": 32
-  },
-  "states": [
-    {
-      "name": "broken"
+    "version": 1,
+    "license": "CC-BY-SA-4.0",
+    "copyright": "The art belongs to Woods#1999 on discord. Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
+    "size": {
+        "x": 32,
+        "y": 32
     },
-    {
-      "name": "off"
-    },
-    {
-      "name": "panel"
-    },
-    {
-      "name": "normal-unshaded",
-      "delays": [
-        [
-          1.5,
-          0.1,
-          1.5,
-          0.1
-        ]
-      ]
-    }
-  ]
+    "states": [
+        {
+            "name": "broken",
+            "delays": [
+                [
+                    2.5,
+                    0.1,
+                    0.1,
+                    0.5,
+                    0.3,
+                    0.1,
+                    0.2
+                ]
+            ]
+        },
+        {
+            "name": "off",
+            "delays": [
+                [
+                    0.1,
+                    0.1
+                ]
+            ]
+        },
+        {
+            "name": "panel"
+        },
+        {
+            "name": "normal-unshaded"
+        }
+    ]
 }

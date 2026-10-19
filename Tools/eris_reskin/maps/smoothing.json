@@ -1,0 +1,5253 @@
+[
+ {
+  "target": "Structures/Walls/brass.rsi",
+  "standin": true,
+  "states": {
+   "brass0": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 0
+    },
+    "tint": "#ff9b6b"
+   },
+   "brass1": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 1
+    },
+    "tint": "#ff9b6b"
+   },
+   "brass2": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 2
+    },
+    "tint": "#ff9b6b"
+   },
+   "brass3": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 3
+    },
+    "tint": "#ff9b6b"
+   },
+   "brass4": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 4
+    },
+    "tint": "#ff9b6b"
+   },
+   "brass5": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 5
+    },
+    "tint": "#ff9b6b"
+   },
+   "brass6": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 6
+    },
+    "tint": "#ff9b6b"
+   },
+   "brass7": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 7
+    },
+    "tint": "#ff9b6b"
+   },
+   "full": {
+    "rsi": "Oxyd/erisported/walls.rsi",
+    "state": "full",
+    "tint": "#ff9b6b"
+   }
+  }
+ },
+ {
+  "target": "Structures/Walls/brick.rsi",
+  "standin": true,
+  "states": {
+   "brick0": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 0
+    },
+    "tint": "#ffa2c9"
+   },
+   "brick1": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 1
+    },
+    "tint": "#ffa2c9"
+   },
+   "brick2": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 2
+    },
+    "tint": "#ffa2c9"
+   },
+   "brick3": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 3
+    },
+    "tint": "#ffa2c9"
+   },
+   "brick4": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 4
+    },
+    "tint": "#ffa2c9"
+   },
+   "brick5": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 5
+    },
+    "tint": "#ffa2c9"
+   },
+   "brick6": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 6
+    },
+    "tint": "#ffa2c9"
+   },
+   "brick7": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 7
+    },
+    "tint": "#ffa2c9"
+   },
+   "full": {
+    "rsi": "Oxyd/erisported/walls.rsi",
+    "state": "full",
+    "tint": "#ffa2c9"
+   }
+  }
+ },
+ {
+  "target": "Structures/Walls/card.rsi",
+  "standin": true,
+  "states": {
+   "card0": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 0
+    },
+    "tint": "#ffb191"
+   },
+   "card1": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 1
+    },
+    "tint": "#ffb191"
+   },
+   "card2": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 2
+    },
+    "tint": "#ffb191"
+   },
+   "card3": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 3
+    },
+    "tint": "#ffb191"
+   },
+   "card4": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 4
+    },
+    "tint": "#ffb191"
+   },
+   "card5": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 5
+    },
+    "tint": "#ffb191"
+   },
+   "card6": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 6
+    },
+    "tint": "#ffb191"
+   },
+   "card7": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 7
+    },
+    "tint": "#ffb191"
+   },
+   "full": {
+    "rsi": "Oxyd/erisported/walls.rsi",
+    "state": "full",
+    "tint": "#ffb191"
+   }
+  }
+ },
+ {
+  "target": "Structures/Walls/concrete.rsi",
+  "standin": true,
+  "states": {
+   "concrete0": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 0
+    },
+    "tint": "#e3e5ff"
+   },
+   "concrete1": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 1
+    },
+    "tint": "#e3e5ff"
+   },
+   "concrete2": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 2
+    },
+    "tint": "#e3e5ff"
+   },
+   "concrete3": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 3
+    },
+    "tint": "#e3e5ff"
+   },
+   "concrete4": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 4
+    },
+    "tint": "#e3e5ff"
+   },
+   "concrete5": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 5
+    },
+    "tint": "#e3e5ff"
+   },
+   "concrete6": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 6
+    },
+    "tint": "#e3e5ff"
+   },
+   "concrete7": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 7
+    },
+    "tint": "#e3e5ff"
+   },
+   "full": {
+    "rsi": "Oxyd/erisported/walls.rsi",
+    "state": "full",
+    "tint": "#e3e5ff"
+   }
+  }
+ },
+ {
+  "target": "Structures/Walls/debug.rsi",
+  "standin": true,
+  "states": {
+   "debug0": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 0
+    },
+    "tint": "#ccd8ff"
+   },
+   "debug1": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 1
+    },
+    "tint": "#ccd8ff"
+   },
+   "debug2": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 2
+    },
+    "tint": "#ccd8ff"
+   },
+   "debug3": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 3
+    },
+    "tint": "#ccd8ff"
+   },
+   "debug4": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 4
+    },
+    "tint": "#ccd8ff"
+   },
+   "debug5": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 5
+    },
+    "tint": "#ccd8ff"
+   },
+   "debug6": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 6
+    },
+    "tint": "#ccd8ff"
+   },
+   "debug7": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 7
+    },
+    "tint": "#ccd8ff"
+   },
+   "full": {
+    "rsi": "Oxyd/erisported/walls.rsi",
+    "state": "full",
+    "tint": "#ccd8ff"
+   }
+  }
+ },
+ {
+  "target": "Structures/Walls/exo-borg.rsi",
+  "standin": true,
+  "states": {
+   "xenoborg0": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 0
+    },
+    "tint": "#9caeff"
+   },
+   "xenoborg1": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 1
+    },
+    "tint": "#9caeff"
+   },
+   "xenoborg2": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 2
+    },
+    "tint": "#9caeff"
+   },
+   "xenoborg3": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 3
+    },
+    "tint": "#9caeff"
+   },
+   "xenoborg4": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 4
+    },
+    "tint": "#9caeff"
+   },
+   "xenoborg5": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 5
+    },
+    "tint": "#9caeff"
+   },
+   "xenoborg6": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 6
+    },
+    "tint": "#9caeff"
+   },
+   "xenoborg7": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 7
+    },
+    "tint": "#9caeff"
+   },
+   "full": {
+    "rsi": "Oxyd/erisported/walls.rsi",
+    "state": "full",
+    "tint": "#9caeff"
+   }
+  }
+ },
+ {
+  "target": "Structures/Walls/exo.rsi",
+  "standin": true,
+  "states": {
+   "solid0": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 0
+    },
+    "tint": "#9aaaff"
+   },
+   "solid1": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 1
+    },
+    "tint": "#9aaaff"
+   },
+   "solid2": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 2
+    },
+    "tint": "#9aaaff"
+   },
+   "solid3": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 3
+    },
+    "tint": "#9aaaff"
+   },
+   "solid4": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 4
+    },
+    "tint": "#9aaaff"
+   },
+   "solid5": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 5
+    },
+    "tint": "#9aaaff"
+   },
+   "solid6": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 6
+    },
+    "tint": "#9aaaff"
+   },
+   "solid7": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 7
+    },
+    "tint": "#9aaaff"
+   },
+   "reinf_over0": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "reinf_over",
+     "value": 0
+    },
+    "tint": "#9aaaff"
+   },
+   "reinf_over1": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "reinf_over",
+     "value": 1
+    },
+    "tint": "#9aaaff"
+   },
+   "reinf_over2": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "reinf_over",
+     "value": 2
+    },
+    "tint": "#9aaaff"
+   },
+   "reinf_over3": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "reinf_over",
+     "value": 3
+    },
+    "tint": "#9aaaff"
+   },
+   "reinf_over4": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "reinf_over",
+     "value": 4
+    },
+    "tint": "#9aaaff"
+   },
+   "reinf_over5": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "reinf_over",
+     "value": 5
+    },
+    "tint": "#9aaaff"
+   },
+   "reinf_over6": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "reinf_over",
+     "value": 6
+    },
+    "tint": "#9aaaff"
+   },
+   "reinf_over7": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "reinf_over",
+     "value": 7
+    },
+    "tint": "#9aaaff"
+   },
+   "full": {
+    "rsi": "Oxyd/erisported/walls.rsi",
+    "state": "full",
+    "tint": "#9aaaff"
+   },
+   "reinf_construct-0": {
+    "rsi": "Oxyd/erisported/walls.rsi",
+    "state": "reinf_construct-0",
+    "tint": "#9aaaff"
+   },
+   "reinf_construct-1": {
+    "rsi": "Oxyd/erisported/walls.rsi",
+    "state": "reinf_construct-1",
+    "tint": "#9aaaff"
+   },
+   "reinf_construct-2": {
+    "rsi": "Oxyd/erisported/walls.rsi",
+    "state": "reinf_construct-2",
+    "tint": "#9aaaff"
+   },
+   "reinf_construct-3": {
+    "rsi": "Oxyd/erisported/walls.rsi",
+    "state": "reinf_construct-3",
+    "tint": "#9aaaff"
+   },
+   "reinf_construct-4": {
+    "rsi": "Oxyd/erisported/walls.rsi",
+    "state": "reinf_construct-4",
+    "tint": "#9aaaff"
+   },
+   "reinf_construct-5": {
+    "rsi": "Oxyd/erisported/walls.rsi",
+    "state": "reinf_construct-5",
+    "tint": "#9aaaff"
+   },
+   "rgeneric": {
+    "rsi": "Oxyd/erisported/walls.rsi",
+    "state": "rgeneric",
+    "tint": "#9aaaff"
+   }
+  }
+ },
+ {
+  "target": "Structures/Walls/gold.rsi",
+  "standin": true,
+  "states": {
+   "gold0": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 0
+    },
+    "tint": "#ffcd82"
+   },
+   "gold1": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 1
+    },
+    "tint": "#ffcd82"
+   },
+   "gold2": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 2
+    },
+    "tint": "#ffcd82"
+   },
+   "gold3": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 3
+    },
+    "tint": "#ffcd82"
+   },
+   "gold4": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 4
+    },
+    "tint": "#ffcd82"
+   },
+   "gold5": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 5
+    },
+    "tint": "#ffcd82"
+   },
+   "gold6": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 6
+    },
+    "tint": "#ffcd82"
+   },
+   "gold7": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 7
+    },
+    "tint": "#ffcd82"
+   },
+   "full": {
+    "rsi": "Oxyd/erisported/walls.rsi",
+    "state": "full",
+    "tint": "#ffcd82"
+   }
+  }
+ },
+ {
+  "target": "Structures/Walls/malign.rsi",
+  "standin": true,
+  "states": {
+   "malign0": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 0
+    },
+    "tint": "#ad8bff"
+   },
+   "malign1": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 1
+    },
+    "tint": "#ad8bff"
+   },
+   "malign2": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 2
+    },
+    "tint": "#ad8bff"
+   },
+   "malign3": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 3
+    },
+    "tint": "#ad8bff"
+   },
+   "malign4": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 4
+    },
+    "tint": "#ad8bff"
+   },
+   "malign5": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 5
+    },
+    "tint": "#ad8bff"
+   },
+   "malign6": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 6
+    },
+    "tint": "#ad8bff"
+   },
+   "malign7": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 7
+    },
+    "tint": "#ad8bff"
+   },
+   "full": {
+    "rsi": "Oxyd/erisported/walls.rsi",
+    "state": "full",
+    "tint": "#ad8bff"
+   }
+  }
+ },
+ {
+  "target": "Structures/Walls/marble.rsi",
+  "standin": true,
+  "states": {
+   "wall0": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 0
+    },
+    "tint": "#c1d1ff"
+   },
+   "wall1": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 1
+    },
+    "tint": "#c1d1ff"
+   },
+   "wall2": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 2
+    },
+    "tint": "#c1d1ff"
+   },
+   "wall3": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 3
+    },
+    "tint": "#c1d1ff"
+   },
+   "wall4": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 4
+    },
+    "tint": "#c1d1ff"
+   },
+   "wall5": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 5
+    },
+    "tint": "#c1d1ff"
+   },
+   "wall6": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 6
+    },
+    "tint": "#c1d1ff"
+   },
+   "wall7": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 7
+    },
+    "tint": "#c1d1ff"
+   },
+   "wall-border0": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 0
+    },
+    "tint": "#c1d1ff"
+   },
+   "wall-border1": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 1
+    },
+    "tint": "#c1d1ff"
+   },
+   "wall-border2": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 2
+    },
+    "tint": "#c1d1ff"
+   },
+   "wall-border3": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 3
+    },
+    "tint": "#c1d1ff"
+   },
+   "wall-border4": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 4
+    },
+    "tint": "#c1d1ff"
+   },
+   "wall-border5": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 5
+    },
+    "tint": "#c1d1ff"
+   },
+   "wall-border6": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 6
+    },
+    "tint": "#c1d1ff"
+   },
+   "wall-border7": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 7
+    },
+    "tint": "#c1d1ff"
+   },
+   "full": {
+    "rsi": "Oxyd/erisported/walls.rsi",
+    "state": "full",
+    "tint": "#c1d1ff"
+   }
+  }
+ },
+ {
+  "target": "Structures/Walls/meat.rsi",
+  "standin": true,
+  "states": {
+   "meat0": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 0
+    },
+    "tint": "#ff4294"
+   },
+   "meat1": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 1
+    },
+    "tint": "#ff4294"
+   },
+   "meat2": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 2
+    },
+    "tint": "#ff4294"
+   },
+   "meat3": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 3
+    },
+    "tint": "#ff4294"
+   },
+   "meat4": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 4
+    },
+    "tint": "#ff4294"
+   },
+   "meat5": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 5
+    },
+    "tint": "#ff4294"
+   },
+   "meat6": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 6
+    },
+    "tint": "#ff4294"
+   },
+   "meat7": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 7
+    },
+    "tint": "#ff4294"
+   },
+   "full": {
+    "rsi": "Oxyd/erisported/walls.rsi",
+    "state": "full",
+    "tint": "#ff4294"
+   }
+  }
+ },
+ {
+  "target": "Structures/Walls/mining.rsi",
+  "standin": true,
+  "states": {
+   "mining0": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 0
+    },
+    "tint": "#ffddd9"
+   },
+   "mining1": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 1
+    },
+    "tint": "#ffddd9"
+   },
+   "mining2": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 2
+    },
+    "tint": "#ffddd9"
+   },
+   "mining3": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 3
+    },
+    "tint": "#ffddd9"
+   },
+   "mining4": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 4
+    },
+    "tint": "#ffddd9"
+   },
+   "mining5": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 5
+    },
+    "tint": "#ffddd9"
+   },
+   "mining6": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 6
+    },
+    "tint": "#ffddd9"
+   },
+   "mining7": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 7
+    },
+    "tint": "#ffddd9"
+   },
+   "full": {
+    "rsi": "Oxyd/erisported/walls.rsi",
+    "state": "full",
+    "tint": "#ffddd9"
+   }
+  }
+ },
+ {
+  "target": "Structures/Walls/plasma.rsi",
+  "standin": true,
+  "states": {
+   "plasma0": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 0
+    },
+    "tint": "#d947ff"
+   },
+   "plasma1": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 1
+    },
+    "tint": "#d947ff"
+   },
+   "plasma2": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 2
+    },
+    "tint": "#d947ff"
+   },
+   "plasma3": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 3
+    },
+    "tint": "#d947ff"
+   },
+   "plasma4": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 4
+    },
+    "tint": "#d947ff"
+   },
+   "plasma5": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 5
+    },
+    "tint": "#d947ff"
+   },
+   "plasma6": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 6
+    },
+    "tint": "#d947ff"
+   },
+   "plasma7": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 7
+    },
+    "tint": "#d947ff"
+   },
+   "full": {
+    "rsi": "Oxyd/erisported/walls.rsi",
+    "state": "full",
+    "tint": "#d947ff"
+   }
+  }
+ },
+ {
+  "target": "Structures/Walls/plastitanium.rsi",
+  "standin": true,
+  "states": {
+   "plastitanium0": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 0
+    },
+    "tint": "#c4cfff"
+   },
+   "plastitanium1": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 1
+    },
+    "tint": "#c4cfff"
+   },
+   "plastitanium2": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 2
+    },
+    "tint": "#c4cfff"
+   },
+   "plastitanium3": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 3
+    },
+    "tint": "#c4cfff"
+   },
+   "plastitanium4": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 4
+    },
+    "tint": "#c4cfff"
+   },
+   "plastitanium5": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 5
+    },
+    "tint": "#c4cfff"
+   },
+   "plastitanium6": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 6
+    },
+    "tint": "#c4cfff"
+   },
+   "plastitanium7": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 7
+    },
+    "tint": "#c4cfff"
+   },
+   "full": {
+    "rsi": "Oxyd/erisported/walls.rsi",
+    "state": "full",
+    "tint": "#c4cfff"
+   }
+  }
+ },
+ {
+  "target": "Structures/Walls/shuttle.rsi",
+  "standin": true,
+  "states": {
+   "state0": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 0
+    },
+    "tint": "#c0d6ff"
+   },
+   "state1": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 1
+    },
+    "tint": "#c0d6ff"
+   },
+   "state2": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 2
+    },
+    "tint": "#c0d6ff"
+   },
+   "state3": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 3
+    },
+    "tint": "#c0d6ff"
+   },
+   "state4": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 4
+    },
+    "tint": "#c0d6ff"
+   },
+   "state5": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 5
+    },
+    "tint": "#c0d6ff"
+   },
+   "state6": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 6
+    },
+    "tint": "#c0d6ff"
+   },
+   "state7": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 7
+    },
+    "tint": "#c0d6ff"
+   },
+   "full": {
+    "rsi": "Oxyd/erisported/walls.rsi",
+    "state": "full",
+    "tint": "#c0d6ff"
+   }
+  }
+ },
+ {
+  "target": "Structures/Walls/silver.rsi",
+  "standin": true,
+  "states": {
+   "silver0": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 0
+    },
+    "tint": "#c8e3ff"
+   },
+   "silver1": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 1
+    },
+    "tint": "#c8e3ff"
+   },
+   "silver2": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 2
+    },
+    "tint": "#c8e3ff"
+   },
+   "silver3": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 3
+    },
+    "tint": "#c8e3ff"
+   },
+   "silver4": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 4
+    },
+    "tint": "#c8e3ff"
+   },
+   "silver5": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 5
+    },
+    "tint": "#c8e3ff"
+   },
+   "silver6": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 6
+    },
+    "tint": "#c8e3ff"
+   },
+   "silver7": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 7
+    },
+    "tint": "#c8e3ff"
+   },
+   "full": {
+    "rsi": "Oxyd/erisported/walls.rsi",
+    "state": "full",
+    "tint": "#c8e3ff"
+   }
+  }
+ },
+ {
+  "target": "Structures/Walls/solid-rust.rsi",
+  "standin": false,
+  "states": {
+   "solid0": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 0
+    }
+   },
+   "solid1": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 1
+    }
+   },
+   "solid2": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 2
+    }
+   },
+   "solid3": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 3
+    }
+   },
+   "solid4": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 4
+    }
+   },
+   "solid5": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 5
+    }
+   },
+   "solid6": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 6
+    }
+   },
+   "solid7": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 7
+    }
+   },
+   "reinf_over0": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "reinf_over",
+     "value": 0
+    }
+   },
+   "reinf_over1": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "reinf_over",
+     "value": 1
+    }
+   },
+   "reinf_over2": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "reinf_over",
+     "value": 2
+    }
+   },
+   "reinf_over3": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "reinf_over",
+     "value": 3
+    }
+   },
+   "reinf_over4": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "reinf_over",
+     "value": 4
+    }
+   },
+   "reinf_over5": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "reinf_over",
+     "value": 5
+    }
+   },
+   "reinf_over6": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "reinf_over",
+     "value": 6
+    }
+   },
+   "reinf_over7": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "reinf_over",
+     "value": 7
+    }
+   },
+   "full": {
+    "rsi": "Oxyd/erisported/walls.rsi",
+    "state": "full"
+   },
+   "reinf_construct-0": {
+    "rsi": "Oxyd/erisported/walls.rsi",
+    "state": "reinf_construct-0"
+   },
+   "reinf_construct-1": {
+    "rsi": "Oxyd/erisported/walls.rsi",
+    "state": "reinf_construct-1"
+   },
+   "reinf_construct-2": {
+    "rsi": "Oxyd/erisported/walls.rsi",
+    "state": "reinf_construct-2"
+   },
+   "reinf_construct-3": {
+    "rsi": "Oxyd/erisported/walls.rsi",
+    "state": "reinf_construct-3"
+   },
+   "reinf_construct-4": {
+    "rsi": "Oxyd/erisported/walls.rsi",
+    "state": "reinf_construct-4"
+   },
+   "reinf_construct-5": {
+    "rsi": "Oxyd/erisported/walls.rsi",
+    "state": "reinf_construct-5"
+   },
+   "rgeneric": {
+    "rsi": "Oxyd/erisported/walls.rsi",
+    "state": "rgeneric"
+   }
+  }
+ },
+ {
+  "target": "Structures/Walls/solid.rsi",
+  "standin": false,
+  "states": {
+   "solid0": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 0
+    }
+   },
+   "solid1": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 1
+    }
+   },
+   "solid2": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 2
+    }
+   },
+   "solid3": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 3
+    }
+   },
+   "solid4": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 4
+    }
+   },
+   "solid5": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 5
+    }
+   },
+   "solid6": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 6
+    }
+   },
+   "solid7": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 7
+    }
+   },
+   "reinf_over0": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "reinf_over",
+     "value": 0
+    }
+   },
+   "reinf_over1": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "reinf_over",
+     "value": 1
+    }
+   },
+   "reinf_over2": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "reinf_over",
+     "value": 2
+    }
+   },
+   "reinf_over3": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "reinf_over",
+     "value": 3
+    }
+   },
+   "reinf_over4": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "reinf_over",
+     "value": 4
+    }
+   },
+   "reinf_over5": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "reinf_over",
+     "value": 5
+    }
+   },
+   "reinf_over6": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "reinf_over",
+     "value": 6
+    }
+   },
+   "reinf_over7": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "reinf_over",
+     "value": 7
+    }
+   },
+   "full": {
+    "rsi": "Oxyd/erisported/walls.rsi",
+    "state": "full"
+   },
+   "reinf_construct-0": {
+    "rsi": "Oxyd/erisported/walls.rsi",
+    "state": "reinf_construct-0"
+   },
+   "reinf_construct-1": {
+    "rsi": "Oxyd/erisported/walls.rsi",
+    "state": "reinf_construct-1"
+   },
+   "reinf_construct-2": {
+    "rsi": "Oxyd/erisported/walls.rsi",
+    "state": "reinf_construct-2"
+   },
+   "reinf_construct-3": {
+    "rsi": "Oxyd/erisported/walls.rsi",
+    "state": "reinf_construct-3"
+   },
+   "reinf_construct-4": {
+    "rsi": "Oxyd/erisported/walls.rsi",
+    "state": "reinf_construct-4"
+   },
+   "reinf_construct-5": {
+    "rsi": "Oxyd/erisported/walls.rsi",
+    "state": "reinf_construct-5"
+   },
+   "rgeneric": {
+    "rsi": "Oxyd/erisported/walls.rsi",
+    "state": "rgeneric"
+   }
+  }
+ },
+ {
+  "target": "Structures/Walls/stone-chromite.rsi",
+  "standin": true,
+  "states": {
+   "stone0": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 0
+    },
+    "tint": "#9394ff"
+   },
+   "stone1": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 1
+    },
+    "tint": "#9394ff"
+   },
+   "stone2": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 2
+    },
+    "tint": "#9394ff"
+   },
+   "stone3": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 3
+    },
+    "tint": "#9394ff"
+   },
+   "stone4": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 4
+    },
+    "tint": "#9394ff"
+   },
+   "stone5": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 5
+    },
+    "tint": "#9394ff"
+   },
+   "stone6": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 6
+    },
+    "tint": "#9394ff"
+   },
+   "stone7": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 7
+    },
+    "tint": "#9394ff"
+   },
+   "full": {
+    "rsi": "Oxyd/erisported/walls.rsi",
+    "state": "full",
+    "tint": "#9394ff"
+   }
+  }
+ },
+ {
+  "target": "Structures/Walls/stone-dirt.rsi",
+  "standin": true,
+  "states": {
+   "stone0": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 0
+    },
+    "tint": "#ffb3c3"
+   },
+   "stone1": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 1
+    },
+    "tint": "#ffb3c3"
+   },
+   "stone2": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 2
+    },
+    "tint": "#ffb3c3"
+   },
+   "stone3": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 3
+    },
+    "tint": "#ffb3c3"
+   },
+   "stone4": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 4
+    },
+    "tint": "#ffb3c3"
+   },
+   "stone5": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 5
+    },
+    "tint": "#ffb3c3"
+   },
+   "stone6": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 6
+    },
+    "tint": "#ffb3c3"
+   },
+   "stone7": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 7
+    },
+    "tint": "#ffb3c3"
+   },
+   "full": {
+    "rsi": "Oxyd/erisported/walls.rsi",
+    "state": "full",
+    "tint": "#ffb3c3"
+   }
+  }
+ },
+ {
+  "target": "Structures/Walls/stone-ironrock.rsi",
+  "standin": true,
+  "states": {
+   "stone0": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 0
+    },
+    "tint": "#ff6682"
+   },
+   "stone1": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 1
+    },
+    "tint": "#ff6682"
+   },
+   "stone2": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 2
+    },
+    "tint": "#ff6682"
+   },
+   "stone3": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 3
+    },
+    "tint": "#ff6682"
+   },
+   "stone4": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 4
+    },
+    "tint": "#ff6682"
+   },
+   "stone5": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 5
+    },
+    "tint": "#ff6682"
+   },
+   "stone6": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 6
+    },
+    "tint": "#ff6682"
+   },
+   "stone7": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 7
+    },
+    "tint": "#ff6682"
+   },
+   "full": {
+    "rsi": "Oxyd/erisported/walls.rsi",
+    "state": "full",
+    "tint": "#ff6682"
+   }
+  }
+ },
+ {
+  "target": "Structures/Walls/stone-sand.rsi",
+  "standin": true,
+  "states": {
+   "stone0": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 0
+    },
+    "tint": "#ffcfaf"
+   },
+   "stone1": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 1
+    },
+    "tint": "#ffcfaf"
+   },
+   "stone2": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 2
+    },
+    "tint": "#ffcfaf"
+   },
+   "stone3": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 3
+    },
+    "tint": "#ffcfaf"
+   },
+   "stone4": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 4
+    },
+    "tint": "#ffcfaf"
+   },
+   "stone5": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 5
+    },
+    "tint": "#ffcfaf"
+   },
+   "stone6": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 6
+    },
+    "tint": "#ffcfaf"
+   },
+   "stone7": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 7
+    },
+    "tint": "#ffcfaf"
+   },
+   "full": {
+    "rsi": "Oxyd/erisported/walls.rsi",
+    "state": "full",
+    "tint": "#ffcfaf"
+   }
+  }
+ },
+ {
+  "target": "Structures/Walls/stone-snow.rsi",
+  "standin": true,
+  "states": {
+   "stone0": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 0
+    },
+    "tint": "#b9d4ff"
+   },
+   "stone1": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 1
+    },
+    "tint": "#b9d4ff"
+   },
+   "stone2": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 2
+    },
+    "tint": "#b9d4ff"
+   },
+   "stone3": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 3
+    },
+    "tint": "#b9d4ff"
+   },
+   "stone4": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 4
+    },
+    "tint": "#b9d4ff"
+   },
+   "stone5": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 5
+    },
+    "tint": "#b9d4ff"
+   },
+   "stone6": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 6
+    },
+    "tint": "#b9d4ff"
+   },
+   "stone7": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 7
+    },
+    "tint": "#b9d4ff"
+   },
+   "full": {
+    "rsi": "Oxyd/erisported/walls.rsi",
+    "state": "full",
+    "tint": "#b9d4ff"
+   }
+  }
+ },
+ {
+  "target": "Structures/Walls/stone.rsi",
+  "standin": true,
+  "states": {
+   "stone0": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 0
+    },
+    "tint": "#e6edff"
+   },
+   "stone1": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 1
+    },
+    "tint": "#e6edff"
+   },
+   "stone2": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 2
+    },
+    "tint": "#e6edff"
+   },
+   "stone3": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 3
+    },
+    "tint": "#e6edff"
+   },
+   "stone4": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 4
+    },
+    "tint": "#e6edff"
+   },
+   "stone5": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 5
+    },
+    "tint": "#e6edff"
+   },
+   "stone6": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 6
+    },
+    "tint": "#e6edff"
+   },
+   "stone7": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 7
+    },
+    "tint": "#e6edff"
+   },
+   "full": {
+    "rsi": "Oxyd/erisported/walls.rsi",
+    "state": "full",
+    "tint": "#e6edff"
+   }
+  }
+ },
+ {
+  "target": "Structures/Walls/uranium.rsi",
+  "standin": true,
+  "states": {
+   "uranium0": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 0
+    },
+    "tint": "#64ffc1"
+   },
+   "uranium1": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 1
+    },
+    "tint": "#64ffc1"
+   },
+   "uranium2": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 2
+    },
+    "tint": "#64ffc1"
+   },
+   "uranium3": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 3
+    },
+    "tint": "#64ffc1"
+   },
+   "uranium4": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 4
+    },
+    "tint": "#64ffc1"
+   },
+   "uranium5": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 5
+    },
+    "tint": "#64ffc1"
+   },
+   "uranium6": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 6
+    },
+    "tint": "#64ffc1"
+   },
+   "uranium7": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 7
+    },
+    "tint": "#64ffc1"
+   },
+   "full": {
+    "rsi": "Oxyd/erisported/walls.rsi",
+    "state": "full",
+    "tint": "#64ffc1"
+   }
+  }
+ },
+ {
+  "target": "Structures/Walls/web.rsi",
+  "standin": true,
+  "states": {
+   "wall0": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 0
+    },
+    "tint": "#b3d8ff"
+   },
+   "wall1": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 1
+    },
+    "tint": "#b3d8ff"
+   },
+   "wall2": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 2
+    },
+    "tint": "#b3d8ff"
+   },
+   "wall3": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 3
+    },
+    "tint": "#b3d8ff"
+   },
+   "wall4": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 4
+    },
+    "tint": "#b3d8ff"
+   },
+   "wall5": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 5
+    },
+    "tint": "#b3d8ff"
+   },
+   "wall6": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 6
+    },
+    "tint": "#b3d8ff"
+   },
+   "wall7": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 7
+    },
+    "tint": "#b3d8ff"
+   },
+   "full": {
+    "rsi": "Oxyd/erisported/walls.rsi",
+    "state": "full",
+    "tint": "#b3d8ff"
+   }
+  }
+ },
+ {
+  "target": "Structures/Walls/wood.rsi",
+  "standin": true,
+  "states": {
+   "wood0": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 0
+    },
+    "tint": "#ffaaa7"
+   },
+   "wood1": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 1
+    },
+    "tint": "#ffaaa7"
+   },
+   "wood2": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 2
+    },
+    "tint": "#ffaaa7"
+   },
+   "wood3": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 3
+    },
+    "tint": "#ffaaa7"
+   },
+   "wood4": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 4
+    },
+    "tint": "#ffaaa7"
+   },
+   "wood5": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 5
+    },
+    "tint": "#ffaaa7"
+   },
+   "wood6": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 6
+    },
+    "tint": "#ffaaa7"
+   },
+   "wood7": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/walls.rsi",
+     "base": "solid",
+     "value": 7
+    },
+    "tint": "#ffaaa7"
+   },
+   "full": {
+    "rsi": "Oxyd/erisported/walls.rsi",
+    "state": "full",
+    "tint": "#ffaaa7"
+   }
+  }
+ },
+ {
+  "target": "Structures/Windows/directional.rsi",
+  "standin": false,
+  "states": {
+   "window": {
+    "rsi": "Oxyd/erisported/windows/directional.rsi",
+    "state": "window"
+   },
+   "window_corner": {
+    "rsi": "Oxyd/erisported/windows/directional.rsi",
+    "state": "window_corner"
+   },
+   "reinforced_window": {
+    "rsi": "Oxyd/erisported/windows/directional.rsi",
+    "state": "reinforced_window"
+   },
+   "reinforced_window_corner": {
+    "rsi": "Oxyd/erisported/windows/directional.rsi",
+    "state": "reinforced_window_corner"
+   },
+   "tinted_window": {
+    "rsi": "Oxyd/erisported/windows/directional.rsi",
+    "state": "tinted_window"
+   },
+   "tinted_window_corner": {
+    "rsi": "Oxyd/erisported/windows/directional.rsi",
+    "state": "tinted_window_corner"
+   },
+   "plasma_window": {
+    "rsi": "Oxyd/erisported/windows/directional.rsi",
+    "state": "plasma_window"
+   },
+   "plasma_window_corner": {
+    "rsi": "Oxyd/erisported/windows/directional.rsi",
+    "state": "plasma_window_corner"
+   },
+   "plasma_reinforced_window": {
+    "rsi": "Oxyd/erisported/windows/directional.rsi",
+    "state": "plasma_reinforced_window"
+   },
+   "plasma_reinforced_window_corner": {
+    "rsi": "Oxyd/erisported/windows/directional.rsi",
+    "state": "plasma_reinforced_window_corner"
+   }
+  }
+ },
+ {
+  "target": "Structures/Windows/exo-resin-borg.rsi",
+  "standin": true,
+  "states": {
+   "xenoborg0": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/glass.rsi",
+     "base": "window",
+     "value": 0
+    },
+    "tint": "#b5a07a"
+   },
+   "xenoborg1": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/glass.rsi",
+     "base": "window",
+     "value": 1
+    },
+    "tint": "#b5a07a"
+   },
+   "xenoborg2": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/glass.rsi",
+     "base": "window",
+     "value": 2
+    },
+    "tint": "#b5a07a"
+   },
+   "xenoborg3": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/glass.rsi",
+     "base": "window",
+     "value": 3
+    },
+    "tint": "#b5a07a"
+   },
+   "xenoborg4": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/glass.rsi",
+     "base": "window",
+     "value": 4
+    },
+    "tint": "#b5a07a"
+   },
+   "xenoborg5": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/glass.rsi",
+     "base": "window",
+     "value": 5
+    },
+    "tint": "#b5a07a"
+   },
+   "xenoborg6": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/glass.rsi",
+     "base": "window",
+     "value": 6
+    },
+    "tint": "#b5a07a"
+   },
+   "xenoborg7": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/glass.rsi",
+     "base": "window",
+     "value": 7
+    },
+    "tint": "#b5a07a"
+   },
+   "full": {
+    "rsi": "Oxyd/erisported/windows/glass.rsi",
+    "state": "full",
+    "tint": "#b5a07a"
+   }
+  }
+ },
+ {
+  "target": "Structures/Windows/exo-resin.rsi",
+  "standin": true,
+  "states": {
+   "xwindow0": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/glass.rsi",
+     "base": "window",
+     "value": 0
+    },
+    "tint": "#b5a07a"
+   },
+   "xwindow1": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/glass.rsi",
+     "base": "window",
+     "value": 1
+    },
+    "tint": "#b5a07a"
+   },
+   "xwindow2": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/glass.rsi",
+     "base": "window",
+     "value": 2
+    },
+    "tint": "#b5a07a"
+   },
+   "xwindow3": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/glass.rsi",
+     "base": "window",
+     "value": 3
+    },
+    "tint": "#b5a07a"
+   },
+   "xwindow4": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/glass.rsi",
+     "base": "window",
+     "value": 4
+    },
+    "tint": "#b5a07a"
+   },
+   "xwindow5": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/glass.rsi",
+     "base": "window",
+     "value": 5
+    },
+    "tint": "#b5a07a"
+   },
+   "xwindow6": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/glass.rsi",
+     "base": "window",
+     "value": 6
+    },
+    "tint": "#b5a07a"
+   },
+   "xwindow7": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/glass.rsi",
+     "base": "window",
+     "value": 7
+    },
+    "tint": "#b5a07a"
+   },
+   "full": {
+    "rsi": "Oxyd/erisported/windows/glass.rsi",
+    "state": "full",
+    "tint": "#b5a07a"
+   }
+  }
+ },
+ {
+  "target": "Structures/Windows/window-base-reinf.rsi",
+  "standin": false,
+  "states": {
+   "rwindow0": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/reinf.rsi",
+     "base": "rwindow",
+     "value": 0
+    }
+   },
+   "rwindow1": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/reinf.rsi",
+     "base": "rwindow",
+     "value": 1
+    }
+   },
+   "rwindow2": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/reinf.rsi",
+     "base": "rwindow",
+     "value": 2
+    }
+   },
+   "rwindow3": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/reinf.rsi",
+     "base": "rwindow",
+     "value": 3
+    }
+   },
+   "rwindow4": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/reinf.rsi",
+     "base": "rwindow",
+     "value": 4
+    }
+   },
+   "rwindow5": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/reinf.rsi",
+     "base": "rwindow",
+     "value": 5
+    }
+   },
+   "rwindow6": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/reinf.rsi",
+     "base": "rwindow",
+     "value": 6
+    }
+   },
+   "rwindow7": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/reinf.rsi",
+     "base": "rwindow",
+     "value": 7
+    }
+   },
+   "full": {
+    "rsi": "Oxyd/erisported/windows/reinf.rsi",
+    "state": "full"
+   }
+  }
+ },
+ {
+  "target": "Structures/Windows/window-base.rsi",
+  "standin": false,
+  "states": {
+   "window0": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/glass.rsi",
+     "base": "window",
+     "value": 0
+    }
+   },
+   "window1": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/glass.rsi",
+     "base": "window",
+     "value": 1
+    }
+   },
+   "window2": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/glass.rsi",
+     "base": "window",
+     "value": 2
+    }
+   },
+   "window3": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/glass.rsi",
+     "base": "window",
+     "value": 3
+    }
+   },
+   "window4": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/glass.rsi",
+     "base": "window",
+     "value": 4
+    }
+   },
+   "window5": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/glass.rsi",
+     "base": "window",
+     "value": 5
+    }
+   },
+   "window6": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/glass.rsi",
+     "base": "window",
+     "value": 6
+    }
+   },
+   "window7": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/glass.rsi",
+     "base": "window",
+     "value": 7
+    }
+   },
+   "full": {
+    "rsi": "Oxyd/erisported/windows/glass.rsi",
+    "state": "full"
+   }
+  }
+ },
+ {
+  "target": "Structures/Windows/window-malign.rsi",
+  "standin": true,
+  "states": {
+   "malign0": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/glass.rsi",
+     "base": "window",
+     "value": 0
+    },
+    "tint": "#9c56c4"
+   },
+   "malign1": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/glass.rsi",
+     "base": "window",
+     "value": 1
+    },
+    "tint": "#9c56c4"
+   },
+   "malign2": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/glass.rsi",
+     "base": "window",
+     "value": 2
+    },
+    "tint": "#9c56c4"
+   },
+   "malign3": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/glass.rsi",
+     "base": "window",
+     "value": 3
+    },
+    "tint": "#9c56c4"
+   },
+   "malign4": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/glass.rsi",
+     "base": "window",
+     "value": 4
+    },
+    "tint": "#9c56c4"
+   },
+   "malign5": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/glass.rsi",
+     "base": "window",
+     "value": 5
+    },
+    "tint": "#9c56c4"
+   },
+   "malign6": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/glass.rsi",
+     "base": "window",
+     "value": 6
+    },
+    "tint": "#9c56c4"
+   },
+   "malign7": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/glass.rsi",
+     "base": "window",
+     "value": 7
+    },
+    "tint": "#9c56c4"
+   },
+   "full": {
+    "rsi": "Oxyd/erisported/windows/glass.rsi",
+    "state": "full",
+    "tint": "#9c56c4"
+   }
+  }
+ },
+ {
+  "target": "Structures/Windows/window-plasma-reinf.rsi",
+  "standin": false,
+  "states": {
+   "rpwindow0": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/plasma_reinf.rsi",
+     "base": "rpwindow",
+     "value": 0
+    }
+   },
+   "rpwindow1": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/plasma_reinf.rsi",
+     "base": "rpwindow",
+     "value": 1
+    }
+   },
+   "rpwindow2": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/plasma_reinf.rsi",
+     "base": "rpwindow",
+     "value": 2
+    }
+   },
+   "rpwindow3": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/plasma_reinf.rsi",
+     "base": "rpwindow",
+     "value": 3
+    }
+   },
+   "rpwindow4": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/plasma_reinf.rsi",
+     "base": "rpwindow",
+     "value": 4
+    }
+   },
+   "rpwindow5": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/plasma_reinf.rsi",
+     "base": "rpwindow",
+     "value": 5
+    }
+   },
+   "rpwindow6": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/plasma_reinf.rsi",
+     "base": "rpwindow",
+     "value": 6
+    }
+   },
+   "rpwindow7": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/plasma_reinf.rsi",
+     "base": "rpwindow",
+     "value": 7
+    }
+   },
+   "full": {
+    "rsi": "Oxyd/erisported/windows/plasma_reinf.rsi",
+    "state": "full"
+   }
+  }
+ },
+ {
+  "target": "Structures/Windows/window-plasma.rsi",
+  "standin": false,
+  "states": {
+   "pwindow0": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/plasma.rsi",
+     "base": "pwindow",
+     "value": 0
+    }
+   },
+   "pwindow1": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/plasma.rsi",
+     "base": "pwindow",
+     "value": 1
+    }
+   },
+   "pwindow2": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/plasma.rsi",
+     "base": "pwindow",
+     "value": 2
+    }
+   },
+   "pwindow3": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/plasma.rsi",
+     "base": "pwindow",
+     "value": 3
+    }
+   },
+   "pwindow4": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/plasma.rsi",
+     "base": "pwindow",
+     "value": 4
+    }
+   },
+   "pwindow5": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/plasma.rsi",
+     "base": "pwindow",
+     "value": 5
+    }
+   },
+   "pwindow6": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/plasma.rsi",
+     "base": "pwindow",
+     "value": 6
+    }
+   },
+   "pwindow7": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/plasma.rsi",
+     "base": "pwindow",
+     "value": 7
+    }
+   },
+   "full": {
+    "rsi": "Oxyd/erisported/windows/plasma.rsi",
+    "state": "full"
+   }
+  }
+ },
+ {
+  "target": "Structures/Windows/window-plastitanium.rsi",
+  "standin": true,
+  "states": {
+   "ptwindow0": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/reinf.rsi",
+     "base": "rwindow",
+     "value": 0
+    },
+    "tint": "#6f7a80"
+   },
+   "ptwindow1": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/reinf.rsi",
+     "base": "rwindow",
+     "value": 1
+    },
+    "tint": "#6f7a80"
+   },
+   "ptwindow2": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/reinf.rsi",
+     "base": "rwindow",
+     "value": 2
+    },
+    "tint": "#6f7a80"
+   },
+   "ptwindow3": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/reinf.rsi",
+     "base": "rwindow",
+     "value": 3
+    },
+    "tint": "#6f7a80"
+   },
+   "ptwindow4": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/reinf.rsi",
+     "base": "rwindow",
+     "value": 4
+    },
+    "tint": "#6f7a80"
+   },
+   "ptwindow5": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/reinf.rsi",
+     "base": "rwindow",
+     "value": 5
+    },
+    "tint": "#6f7a80"
+   },
+   "ptwindow6": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/reinf.rsi",
+     "base": "rwindow",
+     "value": 6
+    },
+    "tint": "#6f7a80"
+   },
+   "ptwindow7": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/reinf.rsi",
+     "base": "rwindow",
+     "value": 7
+    },
+    "tint": "#6f7a80"
+   },
+   "full": {
+    "rsi": "Oxyd/erisported/windows/reinf.rsi",
+    "state": "full",
+    "tint": "#6f7a80"
+   }
+  }
+ },
+ {
+  "target": "Structures/Windows/window-regal.rsi",
+  "standin": true,
+  "states": {
+   "window0": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/glass.rsi",
+     "base": "window",
+     "value": 0
+    },
+    "tint": "#edd12f"
+   },
+   "window1": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/glass.rsi",
+     "base": "window",
+     "value": 1
+    },
+    "tint": "#edd12f"
+   },
+   "window2": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/glass.rsi",
+     "base": "window",
+     "value": 2
+    },
+    "tint": "#edd12f"
+   },
+   "window3": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/glass.rsi",
+     "base": "window",
+     "value": 3
+    },
+    "tint": "#edd12f"
+   },
+   "window4": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/glass.rsi",
+     "base": "window",
+     "value": 4
+    },
+    "tint": "#edd12f"
+   },
+   "window5": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/glass.rsi",
+     "base": "window",
+     "value": 5
+    },
+    "tint": "#edd12f"
+   },
+   "window6": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/glass.rsi",
+     "base": "window",
+     "value": 6
+    },
+    "tint": "#edd12f"
+   },
+   "window7": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/glass.rsi",
+     "base": "window",
+     "value": 7
+    },
+    "tint": "#edd12f"
+   },
+   "full": {
+    "rsi": "Oxyd/erisported/windows/glass.rsi",
+    "state": "full",
+    "tint": "#edd12f"
+   }
+  }
+ },
+ {
+  "target": "Structures/Windows/window-shuttle.rsi",
+  "standin": true,
+  "states": {
+   "swindow0": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/reinf.rsi",
+     "base": "rwindow",
+     "value": 0
+    },
+    "tint": "#9fb4c8"
+   },
+   "swindow1": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/reinf.rsi",
+     "base": "rwindow",
+     "value": 1
+    },
+    "tint": "#9fb4c8"
+   },
+   "swindow2": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/reinf.rsi",
+     "base": "rwindow",
+     "value": 2
+    },
+    "tint": "#9fb4c8"
+   },
+   "swindow3": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/reinf.rsi",
+     "base": "rwindow",
+     "value": 3
+    },
+    "tint": "#9fb4c8"
+   },
+   "swindow4": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/reinf.rsi",
+     "base": "rwindow",
+     "value": 4
+    },
+    "tint": "#9fb4c8"
+   },
+   "swindow5": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/reinf.rsi",
+     "base": "rwindow",
+     "value": 5
+    },
+    "tint": "#9fb4c8"
+   },
+   "swindow6": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/reinf.rsi",
+     "base": "rwindow",
+     "value": 6
+    },
+    "tint": "#9fb4c8"
+   },
+   "swindow7": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/reinf.rsi",
+     "base": "rwindow",
+     "value": 7
+    },
+    "tint": "#9fb4c8"
+   },
+   "full": {
+    "rsi": "Oxyd/erisported/windows/reinf.rsi",
+    "state": "full",
+    "tint": "#9fb4c8"
+   }
+  }
+ },
+ {
+  "target": "Structures/Windows/window-tinted.rsi",
+  "standin": false,
+  "states": {
+   "twindow0": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/tinted.rsi",
+     "base": "twindow",
+     "value": 0
+    }
+   },
+   "twindow1": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/tinted.rsi",
+     "base": "twindow",
+     "value": 1
+    }
+   },
+   "twindow2": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/tinted.rsi",
+     "base": "twindow",
+     "value": 2
+    }
+   },
+   "twindow3": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/tinted.rsi",
+     "base": "twindow",
+     "value": 3
+    }
+   },
+   "twindow4": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/tinted.rsi",
+     "base": "twindow",
+     "value": 4
+    }
+   },
+   "twindow5": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/tinted.rsi",
+     "base": "twindow",
+     "value": 5
+    }
+   },
+   "twindow6": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/tinted.rsi",
+     "base": "twindow",
+     "value": 6
+    }
+   },
+   "twindow7": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/tinted.rsi",
+     "base": "twindow",
+     "value": 7
+    }
+   },
+   "full": {
+    "rsi": "Oxyd/erisported/windows/tinted.rsi",
+    "state": "full"
+   }
+  }
+ },
+ {
+  "target": "Structures/Windows/window-uranium-reinf.rsi",
+  "standin": true,
+  "states": {
+   "ruwindow0": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/plasma_reinf.rsi",
+     "base": "rpwindow",
+     "value": 0
+    },
+    "tint": "#62e36c"
+   },
+   "ruwindow1": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/plasma_reinf.rsi",
+     "base": "rpwindow",
+     "value": 1
+    },
+    "tint": "#62e36c"
+   },
+   "ruwindow2": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/plasma_reinf.rsi",
+     "base": "rpwindow",
+     "value": 2
+    },
+    "tint": "#62e36c"
+   },
+   "ruwindow3": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/plasma_reinf.rsi",
+     "base": "rpwindow",
+     "value": 3
+    },
+    "tint": "#62e36c"
+   },
+   "ruwindow4": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/plasma_reinf.rsi",
+     "base": "rpwindow",
+     "value": 4
+    },
+    "tint": "#62e36c"
+   },
+   "ruwindow5": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/plasma_reinf.rsi",
+     "base": "rpwindow",
+     "value": 5
+    },
+    "tint": "#62e36c"
+   },
+   "ruwindow6": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/plasma_reinf.rsi",
+     "base": "rpwindow",
+     "value": 6
+    },
+    "tint": "#62e36c"
+   },
+   "ruwindow7": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/plasma_reinf.rsi",
+     "base": "rpwindow",
+     "value": 7
+    },
+    "tint": "#62e36c"
+   },
+   "full": {
+    "rsi": "Oxyd/erisported/windows/plasma_reinf.rsi",
+    "state": "full",
+    "tint": "#62e36c"
+   }
+  }
+ },
+ {
+  "target": "Structures/Windows/window-uranium.rsi",
+  "standin": true,
+  "states": {
+   "uwindow0": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/plasma.rsi",
+     "base": "pwindow",
+     "value": 0
+    },
+    "tint": "#62e36c"
+   },
+   "uwindow1": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/plasma.rsi",
+     "base": "pwindow",
+     "value": 1
+    },
+    "tint": "#62e36c"
+   },
+   "uwindow2": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/plasma.rsi",
+     "base": "pwindow",
+     "value": 2
+    },
+    "tint": "#62e36c"
+   },
+   "uwindow3": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/plasma.rsi",
+     "base": "pwindow",
+     "value": 3
+    },
+    "tint": "#62e36c"
+   },
+   "uwindow4": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/plasma.rsi",
+     "base": "pwindow",
+     "value": 4
+    },
+    "tint": "#62e36c"
+   },
+   "uwindow5": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/plasma.rsi",
+     "base": "pwindow",
+     "value": 5
+    },
+    "tint": "#62e36c"
+   },
+   "uwindow6": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/plasma.rsi",
+     "base": "pwindow",
+     "value": 6
+    },
+    "tint": "#62e36c"
+   },
+   "uwindow7": {
+    "corner_from_cardinal": {
+     "rsi": "Oxyd/erisported/windows/plasma.rsi",
+     "base": "pwindow",
+     "value": 7
+    },
+    "tint": "#62e36c"
+   },
+   "full": {
+    "rsi": "Oxyd/erisported/windows/plasma.rsi",
+    "state": "full",
+    "tint": "#62e36c"
+   }
+  }
+ },
+ {
+  "target": "Structures/Furniture/Tables/brass.rsi",
+  "standin": true,
+  "states": {
+   "state_0": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "0"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "metal_0",
+      "tint": "#edd12f"
+     }
+    ]
+   },
+   "state_1": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "1"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "metal_1",
+      "tint": "#edd12f"
+     }
+    ]
+   },
+   "state_2": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "2"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "metal_2",
+      "tint": "#edd12f"
+     }
+    ]
+   },
+   "state_3": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "3"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "metal_3",
+      "tint": "#edd12f"
+     }
+    ]
+   },
+   "state_4": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "4"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "metal_4",
+      "tint": "#edd12f"
+     }
+    ]
+   },
+   "state_5": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "5"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "metal_5",
+      "tint": "#edd12f"
+     }
+    ]
+   },
+   "state_6": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "6"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "metal_6",
+      "tint": "#edd12f"
+     }
+    ]
+   },
+   "state_7": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "7"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "metal_7",
+      "tint": "#edd12f"
+     }
+    ]
+   },
+   "full": {
+    "merge_dirs": {
+     "layers": [
+      {
+       "dmi": "icons/obj/tables.dmi",
+       "state": "0"
+      },
+      {
+       "dmi": "icons/obj/tables.dmi",
+       "state": "metal_0",
+       "tint": "#edd12f"
+      }
+     ]
+    }
+   }
+  }
+ },
+ {
+  "target": "Structures/Furniture/Tables/card.rsi",
+  "standin": true,
+  "states": {
+   "state_0": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "0"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "solid_0",
+      "tint": "#aaaaaa"
+     }
+    ]
+   },
+   "state_1": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "1"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "solid_1",
+      "tint": "#aaaaaa"
+     }
+    ]
+   },
+   "state_2": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "2"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "solid_2",
+      "tint": "#aaaaaa"
+     }
+    ]
+   },
+   "state_3": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "3"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "solid_3",
+      "tint": "#aaaaaa"
+     }
+    ]
+   },
+   "state_4": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "4"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "solid_4",
+      "tint": "#aaaaaa"
+     }
+    ]
+   },
+   "state_5": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "5"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "solid_5",
+      "tint": "#aaaaaa"
+     }
+    ]
+   },
+   "state_6": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "6"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "solid_6",
+      "tint": "#aaaaaa"
+     }
+    ]
+   },
+   "state_7": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "7"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "solid_7",
+      "tint": "#aaaaaa"
+     }
+    ]
+   },
+   "full": {
+    "merge_dirs": {
+     "layers": [
+      {
+       "dmi": "icons/obj/tables.dmi",
+       "state": "0"
+      },
+      {
+       "dmi": "icons/obj/tables.dmi",
+       "state": "solid_0",
+       "tint": "#aaaaaa"
+      }
+     ]
+    }
+   }
+  }
+ },
+ {
+  "target": "Structures/Furniture/Tables/carpet.rsi",
+  "standin": false,
+  "states": {
+   "state_0": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "0"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "carpet_0",
+      "tint": "#da020a"
+     }
+    ]
+   },
+   "state_1": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "1"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "carpet_1",
+      "tint": "#da020a"
+     }
+    ]
+   },
+   "state_2": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "2"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "carpet_2",
+      "tint": "#da020a"
+     }
+    ]
+   },
+   "state_3": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "3"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "carpet_3",
+      "tint": "#da020a"
+     }
+    ]
+   },
+   "state_4": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "4"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "carpet_4",
+      "tint": "#da020a"
+     }
+    ]
+   },
+   "state_5": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "5"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "carpet_5",
+      "tint": "#da020a"
+     }
+    ]
+   },
+   "state_6": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "6"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "carpet_6",
+      "tint": "#da020a"
+     }
+    ]
+   },
+   "state_7": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "7"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "carpet_7",
+      "tint": "#da020a"
+     }
+    ]
+   },
+   "full": {
+    "merge_dirs": {
+     "layers": [
+      {
+       "dmi": "icons/obj/tables.dmi",
+       "state": "0"
+      },
+      {
+       "dmi": "icons/obj/tables.dmi",
+       "state": "carpet_0",
+       "tint": "#da020a"
+      }
+     ]
+    }
+   }
+  }
+ },
+ {
+  "target": "Structures/Furniture/Tables/countermetal.rsi",
+  "standin": false,
+  "states": {
+   "state_0": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "0"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "metal_0",
+      "tint": "#8e9799"
+     }
+    ]
+   },
+   "state_1": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "1"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "metal_1",
+      "tint": "#8e9799"
+     }
+    ]
+   },
+   "state_2": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "2"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "metal_2",
+      "tint": "#8e9799"
+     }
+    ]
+   },
+   "state_3": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "3"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "metal_3",
+      "tint": "#8e9799"
+     }
+    ]
+   },
+   "state_4": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "4"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "metal_4",
+      "tint": "#8e9799"
+     }
+    ]
+   },
+   "state_5": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "5"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "metal_5",
+      "tint": "#8e9799"
+     }
+    ]
+   },
+   "state_6": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "6"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "metal_6",
+      "tint": "#8e9799"
+     }
+    ]
+   },
+   "state_7": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "7"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "metal_7",
+      "tint": "#8e9799"
+     }
+    ]
+   },
+   "full": {
+    "merge_dirs": {
+     "layers": [
+      {
+       "dmi": "icons/obj/tables.dmi",
+       "state": "0"
+      },
+      {
+       "dmi": "icons/obj/tables.dmi",
+       "state": "metal_0",
+       "tint": "#8e9799"
+      }
+     ]
+    }
+   }
+  }
+ },
+ {
+  "target": "Structures/Furniture/Tables/counterwood.rsi",
+  "standin": false,
+  "states": {
+   "state_0": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "0"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "wood_0"
+     }
+    ]
+   },
+   "state_1": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "1"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "wood_1"
+     }
+    ]
+   },
+   "state_2": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "2"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "wood_2"
+     }
+    ]
+   },
+   "state_3": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "3"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "wood_3"
+     }
+    ]
+   },
+   "state_4": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "4"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "wood_4"
+     }
+    ]
+   },
+   "state_5": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "5"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "wood_5"
+     }
+    ]
+   },
+   "state_6": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "6"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "wood_6"
+     }
+    ]
+   },
+   "state_7": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "7"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "wood_7"
+     }
+    ]
+   },
+   "full": {
+    "merge_dirs": {
+     "layers": [
+      {
+       "dmi": "icons/obj/tables.dmi",
+       "state": "0"
+      },
+      {
+       "dmi": "icons/obj/tables.dmi",
+       "state": "wood_0"
+      }
+     ]
+    }
+   }
+  }
+ },
+ {
+  "target": "Structures/Furniture/Tables/debug.rsi",
+  "standin": true,
+  "states": {
+   "state_0": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "0"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "solid_0",
+      "tint": "#ff00ff"
+     }
+    ]
+   },
+   "state_1": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "1"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "solid_1",
+      "tint": "#ff00ff"
+     }
+    ]
+   },
+   "state_2": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "2"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "solid_2",
+      "tint": "#ff00ff"
+     }
+    ]
+   },
+   "state_3": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "3"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "solid_3",
+      "tint": "#ff00ff"
+     }
+    ]
+   },
+   "state_4": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "4"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "solid_4",
+      "tint": "#ff00ff"
+     }
+    ]
+   },
+   "state_5": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "5"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "solid_5",
+      "tint": "#ff00ff"
+     }
+    ]
+   },
+   "state_6": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "6"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "solid_6",
+      "tint": "#ff00ff"
+     }
+    ]
+   },
+   "state_7": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "7"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "solid_7",
+      "tint": "#ff00ff"
+     }
+    ]
+   },
+   "full": {
+    "merge_dirs": {
+     "layers": [
+      {
+       "dmi": "icons/obj/tables.dmi",
+       "state": "0"
+      },
+      {
+       "dmi": "icons/obj/tables.dmi",
+       "state": "solid_0",
+       "tint": "#ff00ff"
+      }
+     ]
+    }
+   }
+  }
+ },
+ {
+  "target": "Structures/Furniture/Tables/frame.rsi",
+  "standin": false,
+  "states": {
+   "state_0": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "0"
+     }
+    ]
+   },
+   "state_1": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "1"
+     }
+    ]
+   },
+   "state_2": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "2"
+     }
+    ]
+   },
+   "state_3": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "3"
+     }
+    ]
+   },
+   "state_4": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "4"
+     }
+    ]
+   },
+   "state_5": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "5"
+     }
+    ]
+   },
+   "state_6": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "6"
+     }
+    ]
+   },
+   "state_7": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "7"
+     }
+    ]
+   },
+   "full": {
+    "merge_dirs": {
+     "layers": [
+      {
+       "dmi": "icons/obj/tables.dmi",
+       "state": "0"
+      }
+     ]
+    }
+   }
+  }
+ },
+ {
+  "target": "Structures/Furniture/Tables/generic.rsi",
+  "standin": false,
+  "states": {
+   "state_0": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "0"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "metal_0",
+      "tint": "#8e9799"
+     }
+    ]
+   },
+   "state_1": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "1"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "metal_1",
+      "tint": "#8e9799"
+     }
+    ]
+   },
+   "state_2": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "2"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "metal_2",
+      "tint": "#8e9799"
+     }
+    ]
+   },
+   "state_3": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "3"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "metal_3",
+      "tint": "#8e9799"
+     }
+    ]
+   },
+   "state_4": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "4"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "metal_4",
+      "tint": "#8e9799"
+     }
+    ]
+   },
+   "state_5": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "5"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "metal_5",
+      "tint": "#8e9799"
+     }
+    ]
+   },
+   "state_6": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "6"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "metal_6",
+      "tint": "#8e9799"
+     }
+    ]
+   },
+   "state_7": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "7"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "metal_7",
+      "tint": "#8e9799"
+     }
+    ]
+   },
+   "full": {
+    "merge_dirs": {
+     "layers": [
+      {
+       "dmi": "icons/obj/tables.dmi",
+       "state": "0"
+      },
+      {
+       "dmi": "icons/obj/tables.dmi",
+       "state": "metal_0",
+       "tint": "#8e9799"
+      }
+     ]
+    }
+   }
+  }
+ },
+ {
+  "target": "Structures/Furniture/Tables/glass.rsi",
+  "standin": false,
+  "states": {
+   "state_0": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "0"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "glass_0",
+      "tint": "#00e1ff"
+     }
+    ]
+   },
+   "state_1": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "1"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "glass_1",
+      "tint": "#00e1ff"
+     }
+    ]
+   },
+   "state_2": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "2"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "glass_2",
+      "tint": "#00e1ff"
+     }
+    ]
+   },
+   "state_3": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "3"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "glass_3",
+      "tint": "#00e1ff"
+     }
+    ]
+   },
+   "state_4": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "4"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "glass_4",
+      "tint": "#00e1ff"
+     }
+    ]
+   },
+   "state_5": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "5"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "glass_5",
+      "tint": "#00e1ff"
+     }
+    ]
+   },
+   "state_6": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "6"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "glass_6",
+      "tint": "#00e1ff"
+     }
+    ]
+   },
+   "state_7": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "7"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "glass_7",
+      "tint": "#00e1ff"
+     }
+    ]
+   },
+   "full": {
+    "merge_dirs": {
+     "layers": [
+      {
+       "dmi": "icons/obj/tables.dmi",
+       "state": "0"
+      },
+      {
+       "dmi": "icons/obj/tables.dmi",
+       "state": "glass_0",
+       "tint": "#00e1ff"
+      }
+     ]
+    }
+   }
+  }
+ },
+ {
+  "target": "Structures/Furniture/Tables/plasma.rsi",
+  "standin": true,
+  "states": {
+   "state_0": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "0"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "glass_0",
+      "tint": "#fc2bc5"
+     }
+    ]
+   },
+   "state_1": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "1"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "glass_1",
+      "tint": "#fc2bc5"
+     }
+    ]
+   },
+   "state_2": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "2"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "glass_2",
+      "tint": "#fc2bc5"
+     }
+    ]
+   },
+   "state_3": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "3"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "glass_3",
+      "tint": "#fc2bc5"
+     }
+    ]
+   },
+   "state_4": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "4"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "glass_4",
+      "tint": "#fc2bc5"
+     }
+    ]
+   },
+   "state_5": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "5"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "glass_5",
+      "tint": "#fc2bc5"
+     }
+    ]
+   },
+   "state_6": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "6"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "glass_6",
+      "tint": "#fc2bc5"
+     }
+    ]
+   },
+   "state_7": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "7"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "glass_7",
+      "tint": "#fc2bc5"
+     }
+    ]
+   },
+   "full": {
+    "merge_dirs": {
+     "layers": [
+      {
+       "dmi": "icons/obj/tables.dmi",
+       "state": "0"
+      },
+      {
+       "dmi": "icons/obj/tables.dmi",
+       "state": "glass_0",
+       "tint": "#fc2bc5"
+      }
+     ]
+    }
+   }
+  }
+ },
+ {
+  "target": "Structures/Furniture/Tables/r_glass.rsi",
+  "standin": false,
+  "states": {
+   "state_0": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "0"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "rglass_0",
+      "tint": "#00e1ff"
+     }
+    ]
+   },
+   "state_1": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "1"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "rglass_1",
+      "tint": "#00e1ff"
+     }
+    ]
+   },
+   "state_2": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "2"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "rglass_2",
+      "tint": "#00e1ff"
+     }
+    ]
+   },
+   "state_3": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "3"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "rglass_3",
+      "tint": "#00e1ff"
+     }
+    ]
+   },
+   "state_4": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "4"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "rglass_4",
+      "tint": "#00e1ff"
+     }
+    ]
+   },
+   "state_5": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "5"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "rglass_5",
+      "tint": "#00e1ff"
+     }
+    ]
+   },
+   "state_6": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "6"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "rglass_6",
+      "tint": "#00e1ff"
+     }
+    ]
+   },
+   "state_7": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "7"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "rglass_7",
+      "tint": "#00e1ff"
+     }
+    ]
+   },
+   "full": {
+    "merge_dirs": {
+     "layers": [
+      {
+       "dmi": "icons/obj/tables.dmi",
+       "state": "0"
+      },
+      {
+       "dmi": "icons/obj/tables.dmi",
+       "state": "rglass_0",
+       "tint": "#00e1ff"
+      }
+     ]
+    }
+   }
+  }
+ },
+ {
+  "target": "Structures/Furniture/Tables/reinforced.rsi",
+  "standin": false,
+  "states": {
+   "state_0": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "0"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "reinf_metal_0",
+      "tint": "#8e9799"
+     }
+    ]
+   },
+   "state_1": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "1"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "reinf_metal_1",
+      "tint": "#8e9799"
+     }
+    ]
+   },
+   "state_2": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "2"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "reinf_metal_2",
+      "tint": "#8e9799"
+     }
+    ]
+   },
+   "state_3": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "3"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "reinf_metal_3",
+      "tint": "#8e9799"
+     }
+    ]
+   },
+   "state_4": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "4"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "reinf_metal_4",
+      "tint": "#8e9799"
+     }
+    ]
+   },
+   "state_5": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "5"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "reinf_metal_5",
+      "tint": "#8e9799"
+     }
+    ]
+   },
+   "state_6": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "6"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "reinf_metal_6",
+      "tint": "#8e9799"
+     }
+    ]
+   },
+   "state_7": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "7"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "reinf_metal_7",
+      "tint": "#8e9799"
+     }
+    ]
+   },
+   "full": {
+    "merge_dirs": {
+     "layers": [
+      {
+       "dmi": "icons/obj/tables.dmi",
+       "state": "0"
+      },
+      {
+       "dmi": "icons/obj/tables.dmi",
+       "state": "reinf_metal_0",
+       "tint": "#8e9799"
+      }
+     ]
+    }
+   }
+  }
+ },
+ {
+  "target": "Structures/Furniture/Tables/stone.rsi",
+  "standin": false,
+  "states": {
+   "state_0": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "0"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "stone_0",
+      "tint": "#d9c179"
+     }
+    ]
+   },
+   "state_1": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "1"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "stone_1",
+      "tint": "#d9c179"
+     }
+    ]
+   },
+   "state_2": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "2"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "stone_2",
+      "tint": "#d9c179"
+     }
+    ]
+   },
+   "state_3": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "3"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "stone_3",
+      "tint": "#d9c179"
+     }
+    ]
+   },
+   "state_4": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "4"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "stone_4",
+      "tint": "#d9c179"
+     }
+    ]
+   },
+   "state_5": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "5"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "stone_5",
+      "tint": "#d9c179"
+     }
+    ]
+   },
+   "state_6": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "6"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "stone_6",
+      "tint": "#d9c179"
+     }
+    ]
+   },
+   "state_7": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "7"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "stone_7",
+      "tint": "#d9c179"
+     }
+    ]
+   },
+   "full": {
+    "merge_dirs": {
+     "layers": [
+      {
+       "dmi": "icons/obj/tables.dmi",
+       "state": "0"
+      },
+      {
+       "dmi": "icons/obj/tables.dmi",
+       "state": "stone_0",
+       "tint": "#d9c179"
+      }
+     ]
+    }
+   }
+  }
+ },
+ {
+  "target": "Structures/Furniture/Tables/web.rsi",
+  "standin": true,
+  "states": {
+   "state_0": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "0"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "solid_0",
+      "tint": "#e8e7c8"
+     }
+    ]
+   },
+   "state_1": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "1"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "solid_1",
+      "tint": "#e8e7c8"
+     }
+    ]
+   },
+   "state_2": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "2"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "solid_2",
+      "tint": "#e8e7c8"
+     }
+    ]
+   },
+   "state_3": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "3"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "solid_3",
+      "tint": "#e8e7c8"
+     }
+    ]
+   },
+   "state_4": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "4"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "solid_4",
+      "tint": "#e8e7c8"
+     }
+    ]
+   },
+   "state_5": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "5"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "solid_5",
+      "tint": "#e8e7c8"
+     }
+    ]
+   },
+   "state_6": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "6"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "solid_6",
+      "tint": "#e8e7c8"
+     }
+    ]
+   },
+   "state_7": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "7"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "solid_7",
+      "tint": "#e8e7c8"
+     }
+    ]
+   },
+   "full": {
+    "merge_dirs": {
+     "layers": [
+      {
+       "dmi": "icons/obj/tables.dmi",
+       "state": "0"
+      },
+      {
+       "dmi": "icons/obj/tables.dmi",
+       "state": "solid_0",
+       "tint": "#e8e7c8"
+      }
+     ]
+    }
+   }
+  }
+ },
+ {
+  "target": "Structures/Furniture/Tables/wood.rsi",
+  "standin": false,
+  "states": {
+   "state_0": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "0"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "wood_0"
+     }
+    ]
+   },
+   "state_1": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "1"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "wood_1"
+     }
+    ]
+   },
+   "state_2": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "2"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "wood_2"
+     }
+    ]
+   },
+   "state_3": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "3"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "wood_3"
+     }
+    ]
+   },
+   "state_4": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "4"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "wood_4"
+     }
+    ]
+   },
+   "state_5": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "5"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "wood_5"
+     }
+    ]
+   },
+   "state_6": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "6"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "wood_6"
+     }
+    ]
+   },
+   "state_7": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "7"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "wood_7"
+     }
+    ]
+   },
+   "full": {
+    "merge_dirs": {
+     "layers": [
+      {
+       "dmi": "icons/obj/tables.dmi",
+       "state": "0"
+      },
+      {
+       "dmi": "icons/obj/tables.dmi",
+       "state": "wood_0"
+      }
+     ]
+    }
+   }
+  }
+ },
+ {
+  "target": "Structures/Furniture/Tables/xeno.rsi",
+  "standin": true,
+  "states": {
+   "state_0": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "0"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "solid_0",
+      "tint": "#6c7364"
+     }
+    ]
+   },
+   "state_1": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "1"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "solid_1",
+      "tint": "#6c7364"
+     }
+    ]
+   },
+   "state_2": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "2"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "solid_2",
+      "tint": "#6c7364"
+     }
+    ]
+   },
+   "state_3": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "3"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "solid_3",
+      "tint": "#6c7364"
+     }
+    ]
+   },
+   "state_4": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "4"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "solid_4",
+      "tint": "#6c7364"
+     }
+    ]
+   },
+   "state_5": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "5"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "solid_5",
+      "tint": "#6c7364"
+     }
+    ]
+   },
+   "state_6": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "6"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "solid_6",
+      "tint": "#6c7364"
+     }
+    ]
+   },
+   "state_7": {
+    "layers": [
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "7"
+     },
+     {
+      "dmi": "icons/obj/tables.dmi",
+      "state": "solid_7",
+      "tint": "#6c7364"
+     }
+    ]
+   },
+   "full": {
+    "merge_dirs": {
+     "layers": [
+      {
+       "dmi": "icons/obj/tables.dmi",
+       "state": "0"
+      },
+      {
+       "dmi": "icons/obj/tables.dmi",
+       "state": "solid_0",
+       "tint": "#6c7364"
+      }
+     ]
+    }
+   }
+  }
+ }
+]

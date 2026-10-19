@@ -1,10 +1,10 @@
 {
     "version": 1,
     "license": "CC-BY-SA-3.0",
-        "copyright": "Made by brainfood1183 (github) for ss14. modified by Samuka-C (github)",
+    "copyright": "Made by brainfood1183 (github) for ss14. modified by Samuka-C (github). Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
     "size": {
         "x": 32,
-    "y": 64
+        "y": 64
     },
     "states": [
         {
@@ -26,26 +26,7 @@
             "name": "lights"
         },
         {
-            "name": "piston-push",
-            "delays": [
-                [
-                    0.66,
-                    0.66,
-                    0.66,
-                    0.66,
-                    0.66,
-                    0.66,
-                    0.66,
-                    0.66,
-                    0.66,
-                    0.66,
-                    0.66,
-                    0.66,
-                    0.66,
-                    0.66,
-                    1
-                ]
-            ]
+            "name": "piston-push"
         }
     ]
 }

@@ -1,0 +1,2220 @@
+[
+ {
+  "target": "Structures/Doors/Airlocks/Effects/airlock-effects-exo-xenoborg.rsi",
+  "standin": true,
+  "states": {
+   "bolted_unlit": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "bolted_unlit"
+   },
+   "open_unlit": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "open_unlit"
+   },
+   "closed_unlit": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "closed_unlit"
+   },
+   "closing_unlit": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "closing_unlit"
+   },
+   "deny_unlit": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "deny_unlit"
+   },
+   "opening_unlit": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "opening_unlit"
+   },
+   "emergency_unlit": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "emergency_unlit"
+   }
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Effects/airlock-effects-exo.rsi",
+  "standin": true,
+  "states": {
+   "bolted_unlit": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "bolted_unlit"
+   },
+   "open_unlit": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "open_unlit"
+   },
+   "closed_unlit": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "closed_unlit"
+   },
+   "closing_unlit": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "closing_unlit"
+   },
+   "deny_unlit": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "deny_unlit"
+   },
+   "opening_unlit": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "opening_unlit"
+   },
+   "emergency_unlit": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "emergency_unlit"
+   },
+   "welded": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "welded"
+   }
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Effects/airlock-effects-external.rsi",
+  "standin": false,
+  "states": {
+   "bolted_unlit": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects-external.rsi",
+    "state": "bolted_unlit"
+   },
+   "open_unlit": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects-external.rsi",
+    "state": "open_unlit"
+   },
+   "closed_unlit": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects-external.rsi",
+    "state": "closed_unlit"
+   },
+   "closing_unlit": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects-external.rsi",
+    "state": "closing_unlit"
+   },
+   "deny_unlit": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects-external.rsi",
+    "state": "deny_unlit"
+   },
+   "opening_unlit": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects-external.rsi",
+    "state": "opening_unlit"
+   },
+   "emergency_unlit": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects-external.rsi",
+    "state": "emergency_unlit"
+   },
+   "welded": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects-external.rsi",
+    "state": "welded"
+   }
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Effects/airlock-effects-freezer.rsi",
+  "standin": true,
+  "states": {
+   "bolted_unlit": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "bolted_unlit"
+   },
+   "open_unlit": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "open_unlit"
+   },
+   "closed_unlit": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "closed_unlit"
+   },
+   "closing_unlit": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "closing_unlit"
+   },
+   "deny_unlit": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "deny_unlit"
+   },
+   "opening_unlit": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "opening_unlit"
+   },
+   "emergency_unlit": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "emergency_unlit"
+   },
+   "welded": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "welded"
+   },
+   "panel_closing": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "panel_closing"
+   },
+   "panel_closed": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "panel_closed"
+   },
+   "panel_open": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "panel_open"
+   },
+   "panel_opening": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "panel_opening"
+   }
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Effects/airlock-effects-shuttle-xenoborg.rsi",
+  "standin": true,
+  "states": {
+   "bolted_unlit": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "bolted_unlit"
+   },
+   "open_unlit": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "open_unlit"
+   },
+   "closed_unlit": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "closed_unlit"
+   },
+   "closing_unlit": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "closing_unlit"
+   },
+   "deny_unlit": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "deny_unlit"
+   },
+   "opening_unlit": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "opening_unlit"
+   },
+   "emergency_unlit": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "emergency_unlit"
+   }
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Effects/airlock-effects-shuttle.rsi",
+  "standin": true,
+  "states": {
+   "bolted_unlit": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects-external.rsi",
+    "state": "bolted_unlit"
+   },
+   "open_unlit": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects-external.rsi",
+    "state": "open_unlit"
+   },
+   "closed_unlit": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects-external.rsi",
+    "state": "closed_unlit"
+   },
+   "closing_unlit": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects-external.rsi",
+    "state": "closing_unlit"
+   },
+   "deny_unlit": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects-external.rsi",
+    "state": "deny_unlit"
+   },
+   "opening_unlit": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects-external.rsi",
+    "state": "opening_unlit"
+   },
+   "emergency_unlit": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects-external.rsi",
+    "state": "emergency_unlit"
+   },
+   "welded": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects-external.rsi",
+    "state": "welded"
+   },
+   "panel_closing": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects-external.rsi",
+    "state": "panel_closing"
+   },
+   "panel_closed": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects-external.rsi",
+    "state": "panel_closed"
+   },
+   "panel_open": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects-external.rsi",
+    "state": "panel_open"
+   },
+   "panel_opening": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects-external.rsi",
+    "state": "panel_opening"
+   }
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Effects/airlock-effects-vault.rsi",
+  "standin": true,
+  "states": {
+   "bolted_unlit": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "bolted_unlit"
+   },
+   "open_unlit": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "open_unlit"
+   },
+   "closed_unlit": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "closed_unlit"
+   },
+   "closing_unlit": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "closing_unlit"
+   },
+   "deny_unlit": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "deny_unlit"
+   },
+   "opening_unlit": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "opening_unlit"
+   },
+   "emergency_unlit": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "emergency_unlit"
+   },
+   "welded": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "welded"
+   }
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Effects/airlock-effects.rsi",
+  "standin": false,
+  "states": {
+   "bolted_unlit": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "bolted_unlit"
+   },
+   "open_unlit": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "open_unlit"
+   },
+   "closed_unlit": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "closed_unlit"
+   },
+   "closing_unlit": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "closing_unlit"
+   },
+   "deny_unlit": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "deny_unlit"
+   },
+   "opening_unlit": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "opening_unlit"
+   },
+   "emergency_unlit": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "emergency_unlit"
+   },
+   "panel_closing": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "panel_closing"
+   },
+   "panel_closed": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "panel_closed"
+   },
+   "panel_open": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "panel_open"
+   },
+   "panel_opening": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "panel_opening"
+   },
+   "sparks": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "sparks"
+   },
+   "sparks_broken": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "sparks_broken"
+   },
+   "sparks_damaged": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "sparks_damaged"
+   },
+   "sparks_open": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "sparks_open"
+   },
+   "welded": {
+    "rsi": "Oxyd/erisported/airlocks/effects/airlock-effects.rsi",
+    "state": "welded"
+   }
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Glass/airlock-base.rsi",
+  "standin": false,
+  "states": {
+   "assembly": {
+    "rsi": "Oxyd/erisported/airlocks/glass/int.rsi",
+    "state": "assembly"
+   },
+   "opening": {
+    "rsi": "Oxyd/erisported/airlocks/glass/int.rsi",
+    "state": "opening"
+   },
+   "closed": {
+    "rsi": "Oxyd/erisported/airlocks/glass/int.rsi",
+    "state": "closed"
+   },
+   "open": {
+    "rsi": "Oxyd/erisported/airlocks/glass/int.rsi",
+    "state": "open"
+   },
+   "closing": {
+    "rsi": "Oxyd/erisported/airlocks/glass/int.rsi",
+    "state": "closing"
+   }
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Glass/airlock-external.rsi",
+  "standin": false,
+  "states": {
+   "assembly": {
+    "rsi": "Oxyd/erisported/airlocks/glass/external.rsi",
+    "state": "assembly"
+   },
+   "opening": {
+    "rsi": "Oxyd/erisported/airlocks/glass/external.rsi",
+    "state": "opening"
+   },
+   "closed": {
+    "rsi": "Oxyd/erisported/airlocks/glass/external.rsi",
+    "state": "closed"
+   },
+   "open": {
+    "rsi": "Oxyd/erisported/airlocks/glass/external.rsi",
+    "state": "open"
+   },
+   "closing": {
+    "rsi": "Oxyd/erisported/airlocks/glass/external.rsi",
+    "state": "closing"
+   }
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Glass/airlock-maints.rsi",
+  "standin": false,
+  "states": {
+   "assembly": {
+    "rsi": "Oxyd/erisported/airlocks/standard/maint.rsi",
+    "state": "assembly"
+   },
+   "opening": {
+    "rsi": "Oxyd/erisported/airlocks/standard/maint.rsi",
+    "state": "opening"
+   },
+   "closed": {
+    "rsi": "Oxyd/erisported/airlocks/standard/maint.rsi",
+    "state": "closed"
+   },
+   "open": {
+    "rsi": "Oxyd/erisported/airlocks/standard/maint.rsi",
+    "state": "open"
+   },
+   "closing": {
+    "rsi": "Oxyd/erisported/airlocks/standard/maint.rsi",
+    "state": "closing"
+   }
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Glass/cargo-base.rsi",
+  "standin": true,
+  "states": {
+   "assembly": {
+    "rsi": "Oxyd/erisported/airlocks/glass/mining.rsi",
+    "state": "assembly"
+   },
+   "opening": {
+    "rsi": "Oxyd/erisported/airlocks/glass/mining.rsi",
+    "state": "opening"
+   },
+   "closed": {
+    "rsi": "Oxyd/erisported/airlocks/glass/mining.rsi",
+    "state": "closed"
+   },
+   "open": {
+    "rsi": "Oxyd/erisported/airlocks/glass/mining.rsi",
+    "state": "open"
+   },
+   "closing": {
+    "rsi": "Oxyd/erisported/airlocks/glass/mining.rsi",
+    "state": "closing"
+   }
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Glass/cargo-mining.rsi",
+  "standin": false,
+  "states": {
+   "assembly": {
+    "rsi": "Oxyd/erisported/airlocks/glass/mining.rsi",
+    "state": "assembly"
+   },
+   "opening": {
+    "rsi": "Oxyd/erisported/airlocks/glass/mining.rsi",
+    "state": "opening"
+   },
+   "closed": {
+    "rsi": "Oxyd/erisported/airlocks/glass/mining.rsi",
+    "state": "closed"
+   },
+   "open": {
+    "rsi": "Oxyd/erisported/airlocks/glass/mining.rsi",
+    "state": "open"
+   },
+   "closing": {
+    "rsi": "Oxyd/erisported/airlocks/glass/mining.rsi",
+    "state": "closing"
+   }
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Glass/cargo-salvage.rsi",
+  "standin": false,
+  "states": {
+   "assembly": {
+    "rsi": "Oxyd/erisported/airlocks/glass/mining.rsi",
+    "state": "assembly"
+   },
+   "opening": {
+    "rsi": "Oxyd/erisported/airlocks/glass/mining.rsi",
+    "state": "opening"
+   },
+   "closed": {
+    "rsi": "Oxyd/erisported/airlocks/glass/mining.rsi",
+    "state": "closed"
+   },
+   "open": {
+    "rsi": "Oxyd/erisported/airlocks/glass/mining.rsi",
+    "state": "open"
+   },
+   "closing": {
+    "rsi": "Oxyd/erisported/airlocks/glass/mining.rsi",
+    "state": "closing"
+   }
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Glass/centcomm-base.rsi",
+  "standin": false,
+  "states": {
+   "assembly": {
+    "rsi": "Oxyd/erisported/airlocks/standard/centcomm.rsi",
+    "state": "assembly"
+   },
+   "opening": {
+    "rsi": "Oxyd/erisported/airlocks/standard/centcomm.rsi",
+    "state": "opening"
+   },
+   "closed": {
+    "rsi": "Oxyd/erisported/airlocks/standard/centcomm.rsi",
+    "state": "closed"
+   },
+   "open": {
+    "rsi": "Oxyd/erisported/airlocks/standard/centcomm.rsi",
+    "state": "open"
+   },
+   "closing": {
+    "rsi": "Oxyd/erisported/airlocks/standard/centcomm.rsi",
+    "state": "closing"
+   }
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Glass/command-base.rsi",
+  "standin": false,
+  "states": {
+   "assembly": {
+    "rsi": "Oxyd/erisported/airlocks/glass/command.rsi",
+    "state": "assembly"
+   },
+   "opening": {
+    "rsi": "Oxyd/erisported/airlocks/glass/command.rsi",
+    "state": "opening"
+   },
+   "closed": {
+    "rsi": "Oxyd/erisported/airlocks/glass/command.rsi",
+    "state": "closed"
+   },
+   "open": {
+    "rsi": "Oxyd/erisported/airlocks/glass/command.rsi",
+    "state": "open"
+   },
+   "closing": {
+    "rsi": "Oxyd/erisported/airlocks/glass/command.rsi",
+    "state": "closing"
+   }
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Glass/engineering-atmos.rsi",
+  "standin": false,
+  "states": {
+   "assembly": {
+    "rsi": "Oxyd/erisported/airlocks/glass/atmos.rsi",
+    "state": "assembly"
+   },
+   "opening": {
+    "rsi": "Oxyd/erisported/airlocks/glass/atmos.rsi",
+    "state": "opening"
+   },
+   "closed": {
+    "rsi": "Oxyd/erisported/airlocks/glass/atmos.rsi",
+    "state": "closed"
+   },
+   "open": {
+    "rsi": "Oxyd/erisported/airlocks/glass/atmos.rsi",
+    "state": "open"
+   },
+   "closing": {
+    "rsi": "Oxyd/erisported/airlocks/glass/atmos.rsi",
+    "state": "closing"
+   }
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Glass/engineering-base.rsi",
+  "standin": false,
+  "states": {
+   "assembly": {
+    "rsi": "Oxyd/erisported/airlocks/glass/engineering.rsi",
+    "state": "assembly"
+   },
+   "opening": {
+    "rsi": "Oxyd/erisported/airlocks/glass/engineering.rsi",
+    "state": "opening"
+   },
+   "closed": {
+    "rsi": "Oxyd/erisported/airlocks/glass/engineering.rsi",
+    "state": "closed"
+   },
+   "open": {
+    "rsi": "Oxyd/erisported/airlocks/glass/engineering.rsi",
+    "state": "open"
+   },
+   "closing": {
+    "rsi": "Oxyd/erisported/airlocks/glass/engineering.rsi",
+    "state": "closing"
+   }
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Glass/exo-base.rsi",
+  "standin": true,
+  "states": {
+   "assembly": [
+    "icons/obj/doors/Doorglass.dmi",
+    "door_closed"
+   ],
+   "opening": [
+    "icons/obj/doors/Doorglass.dmi",
+    "door_opening"
+   ],
+   "closed": [
+    "icons/obj/doors/Doorglass.dmi",
+    "door_closed"
+   ],
+   "open": [
+    "icons/obj/doors/Doorglass.dmi",
+    "door_open"
+   ],
+   "closing": [
+    "icons/obj/doors/Doorglass.dmi",
+    "door_closing"
+   ]
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Glass/firelock-base.rsi",
+  "standin": false,
+  "states": {
+   "assembly": [
+    "icons/obj/doors/DoorHazard.dmi",
+    "door_closed"
+   ],
+   "opening": [
+    "icons/obj/doors/DoorHazard.dmi",
+    "door_opening"
+   ],
+   "closed": [
+    "icons/obj/doors/DoorHazard.dmi",
+    "door_closed"
+   ],
+   "open": [
+    "icons/obj/doors/DoorHazard.dmi",
+    "door_open"
+   ],
+   "closing": [
+    "icons/obj/doors/DoorHazard.dmi",
+    "door_closing"
+   ]
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Glass/medical-base.rsi",
+  "standin": false,
+  "states": {
+   "assembly": {
+    "rsi": "Oxyd/erisported/airlocks/glass/medical.rsi",
+    "state": "assembly"
+   },
+   "opening": {
+    "rsi": "Oxyd/erisported/airlocks/glass/medical.rsi",
+    "state": "opening"
+   },
+   "closed": {
+    "rsi": "Oxyd/erisported/airlocks/glass/medical.rsi",
+    "state": "closed"
+   },
+   "open": {
+    "rsi": "Oxyd/erisported/airlocks/glass/medical.rsi",
+    "state": "open"
+   },
+   "closing": {
+    "rsi": "Oxyd/erisported/airlocks/glass/medical.rsi",
+    "state": "closing"
+   }
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Glass/medical-chem.rsi",
+  "standin": false,
+  "states": {
+   "assembly": {
+    "rsi": "Oxyd/erisported/airlocks/glass/medical.rsi",
+    "state": "assembly"
+   },
+   "opening": {
+    "rsi": "Oxyd/erisported/airlocks/glass/medical.rsi",
+    "state": "opening"
+   },
+   "closed": {
+    "rsi": "Oxyd/erisported/airlocks/glass/medical.rsi",
+    "state": "closed"
+   },
+   "open": {
+    "rsi": "Oxyd/erisported/airlocks/glass/medical.rsi",
+    "state": "open"
+   },
+   "closing": {
+    "rsi": "Oxyd/erisported/airlocks/glass/medical.rsi",
+    "state": "closing"
+   }
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Glass/medical-viro.rsi",
+  "standin": false,
+  "states": {
+   "assembly": {
+    "rsi": "Oxyd/erisported/airlocks/glass/medical.rsi",
+    "state": "assembly"
+   },
+   "opening": {
+    "rsi": "Oxyd/erisported/airlocks/glass/medical.rsi",
+    "state": "opening"
+   },
+   "closed": {
+    "rsi": "Oxyd/erisported/airlocks/glass/medical.rsi",
+    "state": "closed"
+   },
+   "open": {
+    "rsi": "Oxyd/erisported/airlocks/glass/medical.rsi",
+    "state": "open"
+   },
+   "closing": {
+    "rsi": "Oxyd/erisported/airlocks/glass/medical.rsi",
+    "state": "closing"
+   }
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Glass/science-base.rsi",
+  "standin": false,
+  "states": {
+   "assembly": {
+    "rsi": "Oxyd/erisported/airlocks/glass/science.rsi",
+    "state": "assembly"
+   },
+   "opening": {
+    "rsi": "Oxyd/erisported/airlocks/glass/science.rsi",
+    "state": "opening"
+   },
+   "closed": {
+    "rsi": "Oxyd/erisported/airlocks/glass/science.rsi",
+    "state": "closed"
+   },
+   "open": {
+    "rsi": "Oxyd/erisported/airlocks/glass/science.rsi",
+    "state": "open"
+   },
+   "closing": {
+    "rsi": "Oxyd/erisported/airlocks/glass/science.rsi",
+    "state": "closing"
+   }
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Glass/security-base.rsi",
+  "standin": false,
+  "states": {
+   "assembly": {
+    "rsi": "Oxyd/erisported/airlocks/glass/security.rsi",
+    "state": "assembly"
+   },
+   "opening": {
+    "rsi": "Oxyd/erisported/airlocks/glass/security.rsi",
+    "state": "opening"
+   },
+   "closed": {
+    "rsi": "Oxyd/erisported/airlocks/glass/security.rsi",
+    "state": "closed"
+   },
+   "open": {
+    "rsi": "Oxyd/erisported/airlocks/glass/security.rsi",
+    "state": "open"
+   },
+   "closing": {
+    "rsi": "Oxyd/erisported/airlocks/glass/security.rsi",
+    "state": "closing"
+   }
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Glass/service-botany.rsi",
+  "standin": true,
+  "states": {
+   "assembly": {
+    "rsi": "Oxyd/erisported/airlocks/glass/int.rsi",
+    "state": "assembly"
+   },
+   "opening": {
+    "rsi": "Oxyd/erisported/airlocks/glass/int.rsi",
+    "state": "opening"
+   },
+   "closed": {
+    "rsi": "Oxyd/erisported/airlocks/glass/int.rsi",
+    "state": "closed"
+   },
+   "open": {
+    "rsi": "Oxyd/erisported/airlocks/glass/int.rsi",
+    "state": "open"
+   },
+   "closing": {
+    "rsi": "Oxyd/erisported/airlocks/glass/int.rsi",
+    "state": "closing"
+   }
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Glass/shuttle-base.rsi",
+  "standin": true,
+  "states": {
+   "assembly": [
+    "icons/obj/doors/Doorglass.dmi",
+    "door_closed"
+   ],
+   "opening": [
+    "icons/obj/doors/Doorglass.dmi",
+    "door_opening"
+   ],
+   "closed": [
+    "icons/obj/doors/Doorglass.dmi",
+    "door_closed"
+   ],
+   "open": [
+    "icons/obj/doors/Doorglass.dmi",
+    "door_open"
+   ],
+   "closing": [
+    "icons/obj/doors/Doorglass.dmi",
+    "door_closing"
+   ]
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Glass/shuttle-syndicate.rsi",
+  "standin": true,
+  "states": {
+   "assembly": [
+    "icons/obj/doors/Doorsecglass.dmi",
+    "door_closed"
+   ],
+   "opening": [
+    "icons/obj/doors/Doorsecglass.dmi",
+    "door_opening"
+   ],
+   "closed": [
+    "icons/obj/doors/Doorsecglass.dmi",
+    "door_closed"
+   ],
+   "open": [
+    "icons/obj/doors/Doorsecglass.dmi",
+    "door_open"
+   ],
+   "closing": [
+    "icons/obj/doors/Doorsecglass.dmi",
+    "door_closing"
+   ]
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Glass/syndicate-base.rsi",
+  "standin": true,
+  "states": {
+   "assembly": [
+    "icons/obj/doors/Doorsecglass.dmi",
+    "door_closed"
+   ],
+   "opening": [
+    "icons/obj/doors/Doorsecglass.dmi",
+    "door_opening"
+   ],
+   "closed": [
+    "icons/obj/doors/Doorsecglass.dmi",
+    "door_closed"
+   ],
+   "open": [
+    "icons/obj/doors/Doorsecglass.dmi",
+    "door_open"
+   ],
+   "closing": [
+    "icons/obj/doors/Doorsecglass.dmi",
+    "door_closing"
+   ]
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Standard/airlock-base.rsi",
+  "standin": false,
+  "states": {
+   "assembly": {
+    "rsi": "Oxyd/erisported/airlocks/standard/int.rsi",
+    "state": "assembly"
+   },
+   "opening": {
+    "rsi": "Oxyd/erisported/airlocks/standard/int.rsi",
+    "state": "opening"
+   },
+   "closed": {
+    "rsi": "Oxyd/erisported/airlocks/standard/int.rsi",
+    "state": "closed"
+   },
+   "open": {
+    "rsi": "Oxyd/erisported/airlocks/standard/int.rsi",
+    "state": "open"
+   },
+   "closing": {
+    "rsi": "Oxyd/erisported/airlocks/standard/int.rsi",
+    "state": "closing"
+   }
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Standard/airlock-blastdoor.rsi",
+  "standin": false,
+  "states": {
+   "assembly": [
+    "icons/obj/doors/rapid_pdoor.dmi",
+    "pdoor_unplated"
+   ],
+   "opening": [
+    "icons/obj/doors/rapid_pdoor.dmi",
+    "pdoorc0"
+   ],
+   "closed": [
+    "icons/obj/doors/rapid_pdoor.dmi",
+    "pdoor1"
+   ],
+   "open": [
+    "icons/obj/doors/rapid_pdoor.dmi",
+    "pdoor0"
+   ],
+   "closing": [
+    "icons/obj/doors/rapid_pdoor.dmi",
+    "pdoorc1"
+   ]
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Standard/airlock-external.rsi",
+  "standin": false,
+  "states": {
+   "assembly": {
+    "rsi": "Oxyd/erisported/airlocks/standard/external.rsi",
+    "state": "assembly"
+   },
+   "opening": {
+    "rsi": "Oxyd/erisported/airlocks/standard/external.rsi",
+    "state": "opening"
+   },
+   "closed": {
+    "rsi": "Oxyd/erisported/airlocks/standard/external.rsi",
+    "state": "closed"
+   },
+   "open": {
+    "rsi": "Oxyd/erisported/airlocks/standard/external.rsi",
+    "state": "open"
+   },
+   "closing": {
+    "rsi": "Oxyd/erisported/airlocks/standard/external.rsi",
+    "state": "closing"
+   }
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Standard/airlock-hatch-maints.rsi",
+  "standin": false,
+  "states": {
+   "assembly": [
+    "icons/obj/doors/Doorhatchmaint2.dmi",
+    "door_closed"
+   ],
+   "opening": [
+    "icons/obj/doors/Doorhatchmaint2.dmi",
+    "door_opening"
+   ],
+   "closed": [
+    "icons/obj/doors/Doorhatchmaint2.dmi",
+    "door_closed"
+   ],
+   "open": [
+    "icons/obj/doors/Doorhatchmaint2.dmi",
+    "door_open"
+   ],
+   "closing": [
+    "icons/obj/doors/Doorhatchmaint2.dmi",
+    "door_closing"
+   ]
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Standard/airlock-hatch-syndicate.rsi",
+  "standin": true,
+  "states": {
+   "assembly": [
+    "icons/obj/doors/Doorhatchele.dmi",
+    "door_closed"
+   ],
+   "opening": [
+    "icons/obj/doors/Doorhatchele.dmi",
+    "door_opening"
+   ],
+   "closed": [
+    "icons/obj/doors/Doorhatchele.dmi",
+    "door_closed"
+   ],
+   "open": [
+    "icons/obj/doors/Doorhatchele.dmi",
+    "door_open"
+   ],
+   "closing": [
+    "icons/obj/doors/Doorhatchele.dmi",
+    "door_closing"
+   ]
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Standard/airlock-hatch.rsi",
+  "standin": false,
+  "states": {
+   "assembly": [
+    "icons/obj/doors/Doorhatchmaint2.dmi",
+    "door_closed"
+   ],
+   "opening": [
+    "icons/obj/doors/Doorhatchmaint2.dmi",
+    "door_opening"
+   ],
+   "closed": [
+    "icons/obj/doors/Doorhatchmaint2.dmi",
+    "door_closed"
+   ],
+   "open": [
+    "icons/obj/doors/Doorhatchmaint2.dmi",
+    "door_open"
+   ],
+   "closing": [
+    "icons/obj/doors/Doorhatchmaint2.dmi",
+    "door_closing"
+   ]
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Standard/airlock-maints.rsi",
+  "standin": false,
+  "states": {
+   "assembly": {
+    "rsi": "Oxyd/erisported/airlocks/standard/maint.rsi",
+    "state": "assembly"
+   },
+   "opening": {
+    "rsi": "Oxyd/erisported/airlocks/standard/maint.rsi",
+    "state": "opening"
+   },
+   "closed": {
+    "rsi": "Oxyd/erisported/airlocks/standard/maint.rsi",
+    "state": "closed"
+   },
+   "open": {
+    "rsi": "Oxyd/erisported/airlocks/standard/maint.rsi",
+    "state": "open"
+   },
+   "closing": {
+    "rsi": "Oxyd/erisported/airlocks/standard/maint.rsi",
+    "state": "closing"
+   }
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Standard/airlock-vault.rsi",
+  "standin": false,
+  "states": {
+   "assembly": [
+    "icons/obj/doors/vault.dmi",
+    "door_closed"
+   ],
+   "opening": [
+    "icons/obj/doors/vault.dmi",
+    "door_opening"
+   ],
+   "closed": [
+    "icons/obj/doors/vault.dmi",
+    "door_closed"
+   ],
+   "open": [
+    "icons/obj/doors/vault.dmi",
+    "door_open"
+   ],
+   "closing": [
+    "icons/obj/doors/vault.dmi",
+    "door_closing"
+   ]
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Standard/cargo-base.rsi",
+  "standin": true,
+  "states": {
+   "assembly": {
+    "rsi": "Oxyd/erisported/airlocks/standard/mining.rsi",
+    "state": "assembly"
+   },
+   "opening": {
+    "rsi": "Oxyd/erisported/airlocks/standard/mining.rsi",
+    "state": "opening"
+   },
+   "closed": {
+    "rsi": "Oxyd/erisported/airlocks/standard/mining.rsi",
+    "state": "closed"
+   },
+   "open": {
+    "rsi": "Oxyd/erisported/airlocks/standard/mining.rsi",
+    "state": "open"
+   },
+   "closing": {
+    "rsi": "Oxyd/erisported/airlocks/standard/mining.rsi",
+    "state": "closing"
+   }
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Standard/cargo-mining.rsi",
+  "standin": false,
+  "states": {
+   "assembly": {
+    "rsi": "Oxyd/erisported/airlocks/standard/mining.rsi",
+    "state": "assembly"
+   },
+   "opening": {
+    "rsi": "Oxyd/erisported/airlocks/standard/mining.rsi",
+    "state": "opening"
+   },
+   "closed": {
+    "rsi": "Oxyd/erisported/airlocks/standard/mining.rsi",
+    "state": "closed"
+   },
+   "open": {
+    "rsi": "Oxyd/erisported/airlocks/standard/mining.rsi",
+    "state": "open"
+   },
+   "closing": {
+    "rsi": "Oxyd/erisported/airlocks/standard/mining.rsi",
+    "state": "closing"
+   }
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Standard/cargo-salvage.rsi",
+  "standin": false,
+  "states": {
+   "assembly": {
+    "rsi": "Oxyd/erisported/airlocks/standard/mining.rsi",
+    "state": "assembly"
+   },
+   "opening": {
+    "rsi": "Oxyd/erisported/airlocks/standard/mining.rsi",
+    "state": "opening"
+   },
+   "closed": {
+    "rsi": "Oxyd/erisported/airlocks/standard/mining.rsi",
+    "state": "closed"
+   },
+   "open": {
+    "rsi": "Oxyd/erisported/airlocks/standard/mining.rsi",
+    "state": "open"
+   },
+   "closing": {
+    "rsi": "Oxyd/erisported/airlocks/standard/mining.rsi",
+    "state": "closing"
+   }
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Standard/centcomm-base.rsi",
+  "standin": false,
+  "states": {
+   "assembly": {
+    "rsi": "Oxyd/erisported/airlocks/standard/centcomm.rsi",
+    "state": "assembly"
+   },
+   "opening": {
+    "rsi": "Oxyd/erisported/airlocks/standard/centcomm.rsi",
+    "state": "opening"
+   },
+   "closed": {
+    "rsi": "Oxyd/erisported/airlocks/standard/centcomm.rsi",
+    "state": "closed"
+   },
+   "open": {
+    "rsi": "Oxyd/erisported/airlocks/standard/centcomm.rsi",
+    "state": "open"
+   },
+   "closing": {
+    "rsi": "Oxyd/erisported/airlocks/standard/centcomm.rsi",
+    "state": "closing"
+   }
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Standard/command-base.rsi",
+  "standin": false,
+  "states": {
+   "assembly": {
+    "rsi": "Oxyd/erisported/airlocks/standard/command.rsi",
+    "state": "assembly"
+   },
+   "opening": {
+    "rsi": "Oxyd/erisported/airlocks/standard/command.rsi",
+    "state": "opening"
+   },
+   "closed": {
+    "rsi": "Oxyd/erisported/airlocks/standard/command.rsi",
+    "state": "closed"
+   },
+   "open": {
+    "rsi": "Oxyd/erisported/airlocks/standard/command.rsi",
+    "state": "open"
+   },
+   "closing": {
+    "rsi": "Oxyd/erisported/airlocks/standard/command.rsi",
+    "state": "closing"
+   }
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Standard/engineering-atmos.rsi",
+  "standin": false,
+  "states": {
+   "assembly": {
+    "rsi": "Oxyd/erisported/airlocks/standard/atmos.rsi",
+    "state": "assembly"
+   },
+   "opening": {
+    "rsi": "Oxyd/erisported/airlocks/standard/atmos.rsi",
+    "state": "opening"
+   },
+   "closed": {
+    "rsi": "Oxyd/erisported/airlocks/standard/atmos.rsi",
+    "state": "closed"
+   },
+   "open": {
+    "rsi": "Oxyd/erisported/airlocks/standard/atmos.rsi",
+    "state": "open"
+   },
+   "closing": {
+    "rsi": "Oxyd/erisported/airlocks/standard/atmos.rsi",
+    "state": "closing"
+   }
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Standard/engineering-base.rsi",
+  "standin": false,
+  "states": {
+   "assembly": {
+    "rsi": "Oxyd/erisported/airlocks/standard/engineering.rsi",
+    "state": "assembly"
+   },
+   "opening": {
+    "rsi": "Oxyd/erisported/airlocks/standard/engineering.rsi",
+    "state": "opening"
+   },
+   "closed": {
+    "rsi": "Oxyd/erisported/airlocks/standard/engineering.rsi",
+    "state": "closed"
+   },
+   "open": {
+    "rsi": "Oxyd/erisported/airlocks/standard/engineering.rsi",
+    "state": "open"
+   },
+   "closing": {
+    "rsi": "Oxyd/erisported/airlocks/standard/engineering.rsi",
+    "state": "closing"
+   }
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Standard/exo-base.rsi",
+  "standin": true,
+  "states": {
+   "assembly": [
+    "icons/obj/doors/Doorsand.dmi",
+    "door_closed"
+   ],
+   "opening": [
+    "icons/obj/doors/Doorsand.dmi",
+    "door_opening"
+   ],
+   "closed": [
+    "icons/obj/doors/Doorsand.dmi",
+    "door_closed"
+   ],
+   "open": [
+    "icons/obj/doors/Doorsand.dmi",
+    "door_open"
+   ],
+   "closing": [
+    "icons/obj/doors/Doorsand.dmi",
+    "door_closing"
+   ]
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Standard/exo-blastdoor.rsi",
+  "standin": true,
+  "states": {
+   "assembly": [
+    "icons/obj/doors/rapid_pdoor.dmi",
+    "pdoor_unplated"
+   ],
+   "opening": [
+    "icons/obj/doors/rapid_pdoor.dmi",
+    "pdoorc0"
+   ],
+   "closed": [
+    "icons/obj/doors/rapid_pdoor.dmi",
+    "pdoor1"
+   ],
+   "open": [
+    "icons/obj/doors/rapid_pdoor.dmi",
+    "pdoor0"
+   ],
+   "closing": [
+    "icons/obj/doors/rapid_pdoor.dmi",
+    "pdoorc1"
+   ]
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Standard/exo-xenoborg.rsi",
+  "standin": true,
+  "states": {
+   "assembly": [
+    "icons/obj/doors/Doorsand.dmi",
+    "door_closed"
+   ],
+   "opening": [
+    "icons/obj/doors/Doorsand.dmi",
+    "door_opening"
+   ],
+   "closed": [
+    "icons/obj/doors/Doorsand.dmi",
+    "door_closed"
+   ],
+   "open": [
+    "icons/obj/doors/Doorsand.dmi",
+    "door_open"
+   ],
+   "closing": [
+    "icons/obj/doors/Doorsand.dmi",
+    "door_closing"
+   ]
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Standard/firelock-base.rsi",
+  "standin": false,
+  "states": {
+   "assembly": [
+    "icons/obj/doors/DoorHazard.dmi",
+    "door_closed"
+   ],
+   "opening": [
+    "icons/obj/doors/DoorHazard.dmi",
+    "door_opening"
+   ],
+   "closed": [
+    "icons/obj/doors/DoorHazard.dmi",
+    "door_closed"
+   ],
+   "open": [
+    "icons/obj/doors/DoorHazard.dmi",
+    "door_open"
+   ],
+   "closing": [
+    "icons/obj/doors/DoorHazard.dmi",
+    "door_closing"
+   ]
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Standard/medical-base.rsi",
+  "standin": false,
+  "states": {
+   "assembly": {
+    "rsi": "Oxyd/erisported/airlocks/standard/medical.rsi",
+    "state": "assembly"
+   },
+   "opening": {
+    "rsi": "Oxyd/erisported/airlocks/standard/medical.rsi",
+    "state": "opening"
+   },
+   "closed": {
+    "rsi": "Oxyd/erisported/airlocks/standard/medical.rsi",
+    "state": "closed"
+   },
+   "open": {
+    "rsi": "Oxyd/erisported/airlocks/standard/medical.rsi",
+    "state": "open"
+   },
+   "closing": {
+    "rsi": "Oxyd/erisported/airlocks/standard/medical.rsi",
+    "state": "closing"
+   }
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Standard/medical-chem.rsi",
+  "standin": false,
+  "states": {
+   "assembly": {
+    "rsi": "Oxyd/erisported/airlocks/standard/medical.rsi",
+    "state": "assembly"
+   },
+   "opening": {
+    "rsi": "Oxyd/erisported/airlocks/standard/medical.rsi",
+    "state": "opening"
+   },
+   "closed": {
+    "rsi": "Oxyd/erisported/airlocks/standard/medical.rsi",
+    "state": "closed"
+   },
+   "open": {
+    "rsi": "Oxyd/erisported/airlocks/standard/medical.rsi",
+    "state": "open"
+   },
+   "closing": {
+    "rsi": "Oxyd/erisported/airlocks/standard/medical.rsi",
+    "state": "closing"
+   }
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Standard/medical-viro.rsi",
+  "standin": false,
+  "states": {
+   "assembly": {
+    "rsi": "Oxyd/erisported/airlocks/standard/medical.rsi",
+    "state": "assembly"
+   },
+   "opening": {
+    "rsi": "Oxyd/erisported/airlocks/standard/medical.rsi",
+    "state": "opening"
+   },
+   "closed": {
+    "rsi": "Oxyd/erisported/airlocks/standard/medical.rsi",
+    "state": "closed"
+   },
+   "open": {
+    "rsi": "Oxyd/erisported/airlocks/standard/medical.rsi",
+    "state": "open"
+   },
+   "closing": {
+    "rsi": "Oxyd/erisported/airlocks/standard/medical.rsi",
+    "state": "closing"
+   }
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Standard/science-base.rsi",
+  "standin": false,
+  "states": {
+   "assembly": {
+    "rsi": "Oxyd/erisported/airlocks/standard/science.rsi",
+    "state": "assembly"
+   },
+   "opening": {
+    "rsi": "Oxyd/erisported/airlocks/standard/science.rsi",
+    "state": "opening"
+   },
+   "closed": {
+    "rsi": "Oxyd/erisported/airlocks/standard/science.rsi",
+    "state": "closed"
+   },
+   "open": {
+    "rsi": "Oxyd/erisported/airlocks/standard/science.rsi",
+    "state": "open"
+   },
+   "closing": {
+    "rsi": "Oxyd/erisported/airlocks/standard/science.rsi",
+    "state": "closing"
+   }
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Standard/security-base.rsi",
+  "standin": false,
+  "states": {
+   "assembly": {
+    "rsi": "Oxyd/erisported/airlocks/standard/security.rsi",
+    "state": "assembly"
+   },
+   "opening": {
+    "rsi": "Oxyd/erisported/airlocks/standard/security.rsi",
+    "state": "opening"
+   },
+   "closed": {
+    "rsi": "Oxyd/erisported/airlocks/standard/security.rsi",
+    "state": "closed"
+   },
+   "open": {
+    "rsi": "Oxyd/erisported/airlocks/standard/security.rsi",
+    "state": "open"
+   },
+   "closing": {
+    "rsi": "Oxyd/erisported/airlocks/standard/security.rsi",
+    "state": "closing"
+   }
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Standard/service-base.rsi",
+  "standin": true,
+  "states": {
+   "assembly": {
+    "rsi": "Oxyd/erisported/airlocks/standard/int.rsi",
+    "state": "assembly"
+   },
+   "opening": {
+    "rsi": "Oxyd/erisported/airlocks/standard/int.rsi",
+    "state": "opening"
+   },
+   "closed": {
+    "rsi": "Oxyd/erisported/airlocks/standard/int.rsi",
+    "state": "closed"
+   },
+   "open": {
+    "rsi": "Oxyd/erisported/airlocks/standard/int.rsi",
+    "state": "open"
+   },
+   "closing": {
+    "rsi": "Oxyd/erisported/airlocks/standard/int.rsi",
+    "state": "closing"
+   }
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Standard/service-botany.rsi",
+  "standin": true,
+  "states": {
+   "assembly": {
+    "rsi": "Oxyd/erisported/airlocks/standard/int.rsi",
+    "state": "assembly"
+   },
+   "opening": {
+    "rsi": "Oxyd/erisported/airlocks/standard/int.rsi",
+    "state": "opening"
+   },
+   "closed": {
+    "rsi": "Oxyd/erisported/airlocks/standard/int.rsi",
+    "state": "closed"
+   },
+   "open": {
+    "rsi": "Oxyd/erisported/airlocks/standard/int.rsi",
+    "state": "open"
+   },
+   "closing": {
+    "rsi": "Oxyd/erisported/airlocks/standard/int.rsi",
+    "state": "closing"
+   }
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Standard/service-freezer.rsi",
+  "standin": false,
+  "states": {
+   "assembly": {
+    "rsi": "Oxyd/erisported/airlocks/standard/freezer.rsi",
+    "state": "assembly"
+   },
+   "opening": {
+    "rsi": "Oxyd/erisported/airlocks/standard/freezer.rsi",
+    "state": "opening"
+   },
+   "closed": {
+    "rsi": "Oxyd/erisported/airlocks/standard/freezer.rsi",
+    "state": "closed"
+   },
+   "open": {
+    "rsi": "Oxyd/erisported/airlocks/standard/freezer.rsi",
+    "state": "open"
+   },
+   "closing": {
+    "rsi": "Oxyd/erisported/airlocks/standard/freezer.rsi",
+    "state": "closing"
+   }
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Standard/shuttle-base.rsi",
+  "standin": true,
+  "states": {
+   "assembly": [
+    "icons/obj/doors/Doorext.dmi",
+    "door_closed"
+   ],
+   "opening": [
+    "icons/obj/doors/Doorext.dmi",
+    "door_opening"
+   ],
+   "closed": [
+    "icons/obj/doors/Doorext.dmi",
+    "door_closed"
+   ],
+   "open": [
+    "icons/obj/doors/Doorext.dmi",
+    "door_open"
+   ],
+   "closing": [
+    "icons/obj/doors/Doorext.dmi",
+    "door_closing"
+   ]
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Standard/shuttle-syndicate.rsi",
+  "standin": true,
+  "states": {
+   "assembly": [
+    "icons/obj/doors/hightechsecurity.dmi",
+    "door_closed"
+   ],
+   "opening": [
+    "icons/obj/doors/hightechsecurity.dmi",
+    "door_opening"
+   ],
+   "closed": [
+    "icons/obj/doors/hightechsecurity.dmi",
+    "door_closed"
+   ],
+   "open": [
+    "icons/obj/doors/hightechsecurity.dmi",
+    "door_open"
+   ],
+   "closing": [
+    "icons/obj/doors/hightechsecurity.dmi",
+    "door_closing"
+   ]
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Standard/shuttle-xenoborg.rsi",
+  "standin": true,
+  "states": {
+   "assembly": [
+    "icons/obj/doors/Doorsand.dmi",
+    "door_closed"
+   ],
+   "opening": [
+    "icons/obj/doors/Doorsand.dmi",
+    "door_opening"
+   ],
+   "closed": [
+    "icons/obj/doors/Doorsand.dmi",
+    "door_closed"
+   ],
+   "open": [
+    "icons/obj/doors/Doorsand.dmi",
+    "door_open"
+   ],
+   "closing": [
+    "icons/obj/doors/Doorsand.dmi",
+    "door_closing"
+   ]
+  }
+ },
+ {
+  "target": "Structures/Doors/Airlocks/Standard/syndicate-base.rsi",
+  "standin": true,
+  "states": {
+   "assembly": [
+    "icons/obj/doors/hightechsecurity.dmi",
+    "door_closed"
+   ],
+   "opening": [
+    "icons/obj/doors/hightechsecurity.dmi",
+    "door_opening"
+   ],
+   "closed": [
+    "icons/obj/doors/hightechsecurity.dmi",
+    "door_closed"
+   ],
+   "open": [
+    "icons/obj/doors/hightechsecurity.dmi",
+    "door_open"
+   ],
+   "closing": [
+    "icons/obj/doors/hightechsecurity.dmi",
+    "door_closing"
+   ]
+  }
+ },
+ {
+  "target": "Structures/Doors/MaterialDoors/card-door.rsi",
+  "standin": true,
+  "states": {
+   "opening": [
+    "icons/obj/doors/material_doors.dmi",
+    "woodopening"
+   ],
+   "closed": [
+    "icons/obj/doors/material_doors.dmi",
+    "wood"
+   ],
+   "open": [
+    "icons/obj/doors/material_doors.dmi",
+    "woodopen"
+   ],
+   "closing": [
+    "icons/obj/doors/material_doors.dmi",
+    "woodclosing"
+   ]
+  }
+ },
+ {
+  "target": "Structures/Doors/MaterialDoors/gold-door.rsi",
+  "standin": false,
+  "states": {
+   "opening": [
+    "icons/obj/doors/Doorgold.dmi",
+    "door_opening"
+   ],
+   "closed": [
+    "icons/obj/doors/Doorgold.dmi",
+    "door_closed"
+   ],
+   "open": [
+    "icons/obj/doors/Doorgold.dmi",
+    "door_open"
+   ],
+   "closing": [
+    "icons/obj/doors/Doorgold.dmi",
+    "door_closing"
+   ]
+  }
+ },
+ {
+  "target": "Structures/Doors/MaterialDoors/paper-door.rsi",
+  "standin": true,
+  "states": {
+   "opening": [
+    "icons/obj/doors/material_doors.dmi",
+    "woodopening"
+   ],
+   "closed": [
+    "icons/obj/doors/material_doors.dmi",
+    "wood"
+   ],
+   "open": [
+    "icons/obj/doors/material_doors.dmi",
+    "woodopen"
+   ],
+   "closing": [
+    "icons/obj/doors/material_doors.dmi",
+    "woodclosing"
+   ]
+  }
+ },
+ {
+  "target": "Structures/Doors/MaterialDoors/plasma-door.rsi",
+  "standin": false,
+  "states": {
+   "opening": [
+    "icons/obj/doors/Doorplasma.dmi",
+    "door_opening"
+   ],
+   "closed": [
+    "icons/obj/doors/Doorplasma.dmi",
+    "door_closed"
+   ],
+   "open": [
+    "icons/obj/doors/Doorplasma.dmi",
+    "door_open"
+   ],
+   "closing": [
+    "icons/obj/doors/Doorplasma.dmi",
+    "door_closing"
+   ]
+  }
+ },
+ {
+  "target": "Structures/Doors/MaterialDoors/silver-door.rsi",
+  "standin": false,
+  "states": {
+   "opening": [
+    "icons/obj/doors/Doorsilver.dmi",
+    "door_opening"
+   ],
+   "closed": [
+    "icons/obj/doors/Doorsilver.dmi",
+    "door_closed"
+   ],
+   "open": [
+    "icons/obj/doors/Doorsilver.dmi",
+    "door_open"
+   ],
+   "closing": [
+    "icons/obj/doors/Doorsilver.dmi",
+    "door_closing"
+   ]
+  }
+ },
+ {
+  "target": "Structures/Doors/MaterialDoors/web-door.rsi",
+  "standin": true,
+  "states": {
+   "opening": [
+    "icons/obj/doors/material_doors.dmi",
+    "resinopening"
+   ],
+   "closed": [
+    "icons/obj/doors/material_doors.dmi",
+    "resin"
+   ],
+   "open": [
+    "icons/obj/doors/material_doors.dmi",
+    "resinopen"
+   ],
+   "closing": [
+    "icons/obj/doors/material_doors.dmi",
+    "resinclosing"
+   ]
+  }
+ },
+ {
+  "target": "Structures/Doors/MaterialDoors/wood-door.rsi",
+  "standin": false,
+  "states": {
+   "opening": [
+    "icons/obj/doors/material_doors.dmi",
+    "woodopening"
+   ],
+   "closed": [
+    "icons/obj/doors/material_doors.dmi",
+    "wood"
+   ],
+   "open": [
+    "icons/obj/doors/material_doors.dmi",
+    "woodopen"
+   ],
+   "closing": [
+    "icons/obj/doors/material_doors.dmi",
+    "woodclosing"
+   ]
+  }
+ },
+ {
+  "target": "Structures/Doors/Misc/edge_door_hazard.rsi",
+  "standin": false,
+  "states": {
+   "alert_cold": [
+    "icons/obj/doors/DoorHazard.dmi",
+    "alert_cold"
+   ],
+   "alert_hot": [
+    "icons/obj/doors/DoorHazard.dmi",
+    "alert_hot"
+   ],
+   "closed": [
+    "icons/obj/doors/DoorHazard.dmi",
+    "door_closed"
+   ],
+   "closing": [
+    "icons/obj/doors/DoorHazard.dmi",
+    "door_closing"
+   ],
+   "deny": [
+    "icons/obj/doors/DoorHazard.dmi",
+    "door_deny"
+   ],
+   "locked": [
+    "icons/obj/doors/DoorHazard.dmi",
+    "door_locked"
+   ],
+   "open": [
+    "icons/obj/doors/DoorHazard.dmi",
+    "door_open"
+   ],
+   "opening": [
+    "icons/obj/doors/DoorHazard.dmi",
+    "door_opening"
+   ],
+   "palert": [
+    "icons/obj/doors/DoorHazard.dmi",
+    "palert"
+   ],
+   "panel_open": [
+    "icons/obj/doors/DoorHazard.dmi",
+    "panel_open"
+   ],
+   "welded": [
+    "icons/obj/doors/DoorHazard.dmi",
+    "welded"
+   ],
+   "welded_open": [
+    "icons/obj/doors/DoorHazard.dmi",
+    "welded_open"
+   ],
+   "bolted_unlit": {
+    "blank": true
+   },
+   "closed_unlit": {
+    "blank": true
+   },
+   "closing_unlit": {
+    "blank": true
+   },
+   "deny_unlit": {
+    "blank": true
+   },
+   "opening_unlit": {
+    "blank": true
+   },
+   "panel_closing": {
+    "blank": true
+   },
+   "panel_opening": {
+    "blank": true
+   },
+   "pressure_unlit": {
+    "blank": true
+   },
+   "temperature_unlit": {
+    "blank": true
+   }
+  }
+ },
+ {
+  "target": "Structures/Doors/Misc/secret-door.rsi",
+  "standin": true,
+  "states": {
+   "closed": [
+    "icons/obj/doors/material_doors.dmi",
+    "metal"
+   ],
+   "closing": [
+    "icons/obj/doors/material_doors.dmi",
+    "metalclosing"
+   ],
+   "open": [
+    "icons/obj/doors/material_doors.dmi",
+    "metalopen"
+   ],
+   "opening": [
+    "icons/obj/doors/material_doors.dmi",
+    "metalopening"
+   ]
+  }
+ },
+ {
+  "target": "Structures/Doors/Shutters/shutters-radiation.rsi",
+  "standin": true,
+  "states": {
+   "assembly": [
+    "icons/obj/doors/rapid_pdoor.dmi",
+    "shutter_unplated"
+   ],
+   "opening": [
+    "icons/obj/doors/rapid_pdoor.dmi",
+    "shutterc0"
+   ],
+   "closed": [
+    "icons/obj/doors/rapid_pdoor.dmi",
+    "shutter1"
+   ],
+   "open": [
+    "icons/obj/doors/rapid_pdoor.dmi",
+    "shutter0"
+   ],
+   "closing": [
+    "icons/obj/doors/rapid_pdoor.dmi",
+    "shutterc1"
+   ]
+  }
+ },
+ {
+  "target": "Structures/Doors/Shutters/shutters-window.rsi",
+  "standin": false,
+  "states": {
+   "assembly": [
+    "icons/obj/doors/rapid_pdoor.dmi",
+    "lshutter_unplated"
+   ],
+   "opening": [
+    "icons/obj/doors/rapid_pdoor.dmi",
+    "lshutterc0"
+   ],
+   "closed": [
+    "icons/obj/doors/rapid_pdoor.dmi",
+    "lshutter1"
+   ],
+   "open": [
+    "icons/obj/doors/rapid_pdoor.dmi",
+    "lshutter0"
+   ],
+   "closing": [
+    "icons/obj/doors/rapid_pdoor.dmi",
+    "lshutterc1"
+   ]
+  }
+ },
+ {
+  "target": "Structures/Doors/Shutters/shutters.rsi",
+  "standin": false,
+  "states": {
+   "assembly": [
+    "icons/obj/doors/rapid_pdoor.dmi",
+    "shutter_unplated"
+   ],
+   "opening": [
+    "icons/obj/doors/rapid_pdoor.dmi",
+    "shutterc0"
+   ],
+   "closed": [
+    "icons/obj/doors/rapid_pdoor.dmi",
+    "shutter1"
+   ],
+   "open": [
+    "icons/obj/doors/rapid_pdoor.dmi",
+    "shutter0"
+   ],
+   "closing": [
+    "icons/obj/doors/rapid_pdoor.dmi",
+    "shutterc1"
+   ]
+  }
+ },
+ {
+  "target": "Structures/Doors/Windoors/plasma.rsi",
+  "standin": true,
+  "states": {
+   "assembly": [
+    "icons/obj/doors/windoor.dmi",
+    "l_windoor_assembly0"
+   ],
+   "closed": [
+    "icons/obj/doors/windoor.dmi",
+    "left"
+   ],
+   "closing": [
+    "icons/obj/doors/windoor.dmi",
+    "leftclosing"
+   ],
+   "open": [
+    "icons/obj/doors/windoor.dmi",
+    "leftopen"
+   ],
+   "opening": [
+    "icons/obj/doors/windoor.dmi",
+    "leftopening"
+   ],
+   "sparks": [
+    "icons/obj/doors/windoor.dmi",
+    "leftspark"
+   ],
+   "closed_unlit": {
+    "blank": true
+   },
+   "closing_unlit": {
+    "blank": true
+   },
+   "open_unlit": {
+    "blank": true
+   },
+   "opening_unlit": {
+    "blank": true
+   },
+   "deny_unlit": {
+    "blank": true
+   },
+   "panel_open": {
+    "blank": true
+   },
+   "bolted_unlit": {
+    "blank": true
+   },
+   "secure_underlay": {
+    "blank": true
+   },
+   "emergency_unlit": {
+    "blank": true
+   }
+  }
+ },
+ {
+  "target": "Structures/Doors/Windoors/uranium.rsi",
+  "standin": true,
+  "states": {
+   "assembly": [
+    "icons/obj/doors/windoor.dmi",
+    "l_windoor_assembly0"
+   ],
+   "closed": [
+    "icons/obj/doors/windoor.dmi",
+    "left"
+   ],
+   "closing": [
+    "icons/obj/doors/windoor.dmi",
+    "leftclosing"
+   ],
+   "open": [
+    "icons/obj/doors/windoor.dmi",
+    "leftopen"
+   ],
+   "opening": [
+    "icons/obj/doors/windoor.dmi",
+    "leftopening"
+   ],
+   "sparks": [
+    "icons/obj/doors/windoor.dmi",
+    "leftspark"
+   ],
+   "closed_unlit": {
+    "blank": true
+   },
+   "closing_unlit": {
+    "blank": true
+   },
+   "open_unlit": {
+    "blank": true
+   },
+   "opening_unlit": {
+    "blank": true
+   },
+   "deny_unlit": {
+    "blank": true
+   },
+   "panel_open": {
+    "blank": true
+   },
+   "bolted_unlit": {
+    "blank": true
+   },
+   "secure_underlay": {
+    "blank": true
+   },
+   "emergency_unlit": {
+    "blank": true
+   }
+  }
+ },
+ {
+  "target": "Structures/Doors/Windoors/windoor.rsi",
+  "standin": false,
+  "states": {
+   "assembly": [
+    "icons/obj/doors/windoor.dmi",
+    "l_windoor_assembly0"
+   ],
+   "closed": [
+    "icons/obj/doors/windoor.dmi",
+    "left"
+   ],
+   "closing": [
+    "icons/obj/doors/windoor.dmi",
+    "leftclosing"
+   ],
+   "open": [
+    "icons/obj/doors/windoor.dmi",
+    "leftopen"
+   ],
+   "opening": [
+    "icons/obj/doors/windoor.dmi",
+    "leftopening"
+   ],
+   "sparks": [
+    "icons/obj/doors/windoor.dmi",
+    "leftspark"
+   ],
+   "closed_unlit": {
+    "blank": true
+   },
+   "closing_unlit": {
+    "blank": true
+   },
+   "open_unlit": {
+    "blank": true
+   },
+   "opening_unlit": {
+    "blank": true
+   },
+   "deny_unlit": {
+    "blank": true
+   },
+   "panel_open": {
+    "blank": true
+   },
+   "bolted_unlit": {
+    "blank": true
+   },
+   "secure_underlay": {
+    "blank": true
+   },
+   "emergency_unlit": {
+    "blank": true
+   }
+  }
+ }
+]

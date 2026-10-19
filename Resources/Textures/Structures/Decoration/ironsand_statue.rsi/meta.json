@@ -1,17 +1,17 @@
 {
-  "version": 1,
-  "license": "CC-BY-SA-3.0",
-  "copyright": "Created for Space Station 14 by SeaWyrm (github Aearo-Deepwater)",
-  "size": {
-    "x": 32,
-    "y": 32
-  },
-  "states": [
-    {
-      "name": "small_pillar"
+    "version": 1,
+    "license": "CC-BY-SA-3.0",
+    "copyright": "Created for Space Station 14 by SeaWyrm (github Aearo-Deepwater). Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
+    "size": {
+        "x": 32,
+        "y": 32
     },
-    {
-      "name": "small_pillar_2"
-    }
-  ]
+    "states": [
+        {
+            "name": "small_pillar"
+        },
+        {
+            "name": "small_pillar_2"
+        }
+    ]
 }

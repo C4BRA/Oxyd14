@@ -1,17 +1,25 @@
 {
-  "version": 1,
-  "license": "CC-BY-SA-3.0",
-  "copyright": "Created by AftrLite",
-  "size": {
-    "x": 50,
-    "y": 50
-  },
-  "states": [
-    {
-      "name": "base"
+    "version": 1,
+    "license": "CC-BY-SA-3.0",
+    "copyright": "Created by AftrLite. Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
+    "size": {
+        "x": 50,
+        "y": 50
     },
-    {
-      "name": "powered"
-    }
-  ]
+    "states": [
+        {
+            "name": "base",
+            "delays": [
+                [
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2
+                ]
+            ]
+        },
+        {
+            "name": "powered"
+        }
+    ]
 }

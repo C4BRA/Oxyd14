@@ -5,35 +5,67 @@
         "y": 32
     },
     "license": "CC-BY-SA-3.0",
-    "copyright": "Taken from https://github.com/discordia-space/CEV-Eris/blob/master/icons/obj/machines/excelsior/autolathe.dmi at 40b254106b46981b8ad95ccd5589deb8fa56e765. Variant-research made for Space Station 14 by Nairod(github)",
+    "copyright": "Taken from https://github.com/discordia-space/CEV-Eris/blob/master/icons/obj/machines/excelsior/autolathe.dmi at 40b254106b46981b8ad95ccd5589deb8fa56e765. Variant-research made for Space Station 14 by Nairod(github). Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
     "states": [
         {
-            "name": "server"
-
+            "name": "server",
+            "delays": [
+                [
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2
+                ]
+            ]
         },
         {
-            "name": "server-nopower"
-
+            "name": "server-nopower",
+            "delays": [
+                [
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2
+                ]
+            ]
         },
         {
-            "name": "server-off"
-
+            "name": "server-off",
+            "delays": [
+                [
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2
+                ]
+            ]
         },
         {
             "name": "server-on"
-
         },
         {
             "name": "server_o"
-
         },
         {
             "name": "variant-crew"
-
         },
         {
             "name": "variant-research"
-
         }
     ]
 }

@@ -4,7 +4,7 @@
         "x": 32,
         "y": 32
     },
-    "copyright": "Taken from tgstation, brigmedic locker is a resprited CMO locker by PuroSlavKing (Github), n2 sprites based on fire and emergency sprites, genpop lockers by EmoGarbage404 (github), sci bio locker is a resprited bio viro locker by Alpha-Two (github), Evac lockers by EmoGarbage404 (GitHub)",
+    "copyright": "Taken from tgstation, brigmedic locker is a resprited CMO locker by PuroSlavKing (Github), n2 sprites based on fire and emergency sprites, genpop lockers by EmoGarbage404 (github), sci bio locker is a resprited bio viro locker by Alpha-Two (github), Evac lockers by EmoGarbage404 (GitHub). Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
     "license": "CC-BY-SA-3.0",
     "states": [
         {
@@ -182,49 +182,16 @@
             "name": "cmo_open"
         },
         {
-            "name": "cursed",
-            "delays": [
-                [
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1
-                ]
-            ]
+            "name": "cursed"
         },
         {
-            "name": "cursed_door",
-            "delays": [
-                [
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1
-                ]
-            ]
+            "name": "cursed_door"
         },
         {
             "name": "cursed_open"
         },
         {
-            "name": "cursed_whole",
-            "delays": [
-                [
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1
-                ]
-            ]
+            "name": "cursed_whole"
         },
         {
             "name": "decursed",

@@ -1,23 +1,55 @@
 {
-  "version": 1,
-  "license": "CC0-1.0",
-  "copyright": "Original base by deltanedas (github) for SS14. Resprited by (DISCORD)@ps3moira#9488",
-  "size": {
-    "x": 32,
-    "y": 32
-  },
-  "states": [
-    {
-      "name": "icon"
+    "version": 1,
+    "license": "CC0-1.0",
+    "copyright": "Original base by deltanedas (github) for SS14. Resprited by (DISCORD)@ps3moira#9488. Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
+    "size": {
+        "x": 32,
+        "y": 32
     },
-    {
-      "name": "low"
-    },
-    {
-      "name": "medium"
-    },
-    {
-      "name": "high"
-    }
-  ]
+    "states": [
+        {
+            "name": "icon",
+            "delays": [
+                [
+                    0.05,
+                    0.05,
+                    0.05,
+                    0.05,
+                    0.05,
+                    0.05,
+                    0.05,
+                    0.05,
+                    0.05,
+                    0.05,
+                    0.05,
+                    0.05,
+                    0.05,
+                    0.05,
+                    0.2,
+                    0.05,
+                    0.05,
+                    0.05,
+                    0.05,
+                    0.05,
+                    0.05,
+                    0.05,
+                    0.05,
+                    0.05,
+                    0.05,
+                    0.05,
+                    0.05,
+                    0.05
+                ]
+            ]
+        },
+        {
+            "name": "low"
+        },
+        {
+            "name": "medium"
+        },
+        {
+            "name": "high"
+        }
+    ]
 }

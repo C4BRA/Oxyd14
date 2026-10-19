@@ -81,6 +81,19 @@ class Builder:
             src = {"dmi": src[0], "state": src[1]}
         if src.get("blank"):
             return Source([[Image.new("RGBA", (32, 32))]], None)
+        if "corner_from_cardinal" in src:
+            res = self.corner_from_cardinal(**src["corner_from_cardinal"])
+            if res and "tint" in src:
+                res = Source([[palette.tint(im, src["tint"]) for im in fr] for fr in res.images], None)
+            return res
+        if "merge_dirs" in src:
+            inner = self.resolve(src["merge_dirs"])
+            if inner is None:
+                return None
+            canvas = Image.new("RGBA", inner.images[0][0].size)
+            for fr in inner.images:
+                canvas.alpha_composite(fr[0])
+            return Source([[canvas]], None)
         if "layers" in src:
             parts = [self.resolve(s) for s in src["layers"]]
             parts = [p for p in parts if p]
@@ -129,6 +142,30 @@ class Builder:
         if "tint" in src:
             res = Source([[palette.tint(im, src["tint"]) for im in fr] for fr in res.images], res.delays)
         return res
+
+    # IconSmooth corner layers: RSI direction S/N/E/W holds the SE/NW/NE/SW corner.
+    # Corner value bits (Baystation CornerFill): 1 = counter-clockwise cardinal, 2 = diagonal, 4 = clockwise.
+    # CardinalFlags bits: N=1, S=2, E=4, W=8.
+    _CORNERS = [  # (quadrant box, ccw cardinal bit, cw cardinal bit) in S, N, E, W order
+        ((16, 16, 32, 32), 4, 2),  # SE: ccw East, cw South
+        ((0, 0, 16, 16), 8, 1),    # NW: ccw West, cw North
+        ((16, 0, 32, 16), 1, 4),   # NE: ccw North, cw East
+        ((0, 16, 16, 32), 2, 8),   # SW: ccw South, cw West
+    ]
+
+    def corner_from_cardinal(self, rsi: str, base: str, value: int) -> Source | None:
+        """Build a corner-mode IconSmooth state from a CardinalFlags-mode RSI."""
+        images = []
+        for box, ccw, cw in self._CORNERS:
+            mask = (ccw if value & 1 else 0) | (cw if value & 4 else 0)
+            src = self.from_rsi(rsi, f"{base}{mask}")
+            if src is None:
+                return None
+            quad = src.images[0][0].crop(box)
+            canvas = Image.new("RGBA", src.images[0][0].size)
+            canvas.alpha_composite(quad, box[:2])
+            images.append([canvas])
+        return Source(images, None)
 
     def from_rsi(self, rsi: str, state: str, base: bool = False) -> Source | None:
         """Read an RSI state from the working tree, or from BASE when base=True."""

@@ -1,7 +1,7 @@
 {
     "version": 1,
     "license": "CC-BY-SA-3.0",
-    "copyright": "Taken from tgstation at commit https://github.com/tgstation/tgstation/commit/bd6873fd4dd6a61d7e46f1d75cd4d90f64c40894 and modified by Swept",
+    "copyright": "Taken from tgstation at commit https://github.com/tgstation/tgstation/commit/bd6873fd4dd6a61d7e46f1d75cd4d90f64c40894 and modified by Swept. Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
     "size": {
         "x": 32,
         "y": 32
@@ -24,66 +24,15 @@
         },
         {
             "name": "screen_invaders",
-            "directions": 4,
-            "delays": [
-                [
-                    0.3, 0.3, 0.3,
-                    0.3, 0.3, 0.3
-                ],
-                [
-                    1.8
-                ],
-                [
-                    1.8
-                ],
-                [
-                    1.8
-                ]
-            ]
+            "directions": 4
         },
         {
             "name": "screen_blockgame",
-            "directions": 4,
-            "delays": [
-                [
-                    0.2, 0.2, 0.2, 0.2, 0.2,
-                    0.2, 0.2, 0.2, 0.2, 0.2,
-                    0.2, 0.2, 0.2, 0.2, 0.2,
-                    0.2, 0.2, 0.2, 0.2, 0.1,
-                    0.1, 0.1, 0.1, 0.1, 0.5
-                ],
-                [
-                    4.8
-                ],
-                [
-                    4.8
-                ],
-                [
-                    4.8
-                ]
-            ]
+            "directions": 4
         },
         {
             "name": "screen_spacevillain",
-            "directions": 4,
-            "delays": [
-                [
-                    1.0, 0.8, 0.2, 0.8, 0.5,
-                    1.0, 0.1, 0.1, 0.1, 0.1,
-                    0.1, 0.1, 0.1, 0.5, 1.0,
-                    0.1, 0.1, 0.1, 0.1, 0.1,
-                    0.2, 0.5, 0.1, 0.8, 1.0
-                ],
-                [
-                    9.6
-                ],
-                [
-                    9.6
-                ],
-                [
-                    9.6
-                ]
-            ]
+            "directions": 4
         }
     ]
 }

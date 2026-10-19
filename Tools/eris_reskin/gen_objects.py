@@ -80,11 +80,55 @@ GROUPS: dict[str, list[tuple[str, list[str], list[str], str]]] = {
     ],
 }
 
+M = "/obj/machinery/"
+ST = "/obj/structure/"
+O = "icons/obj/"
+GROUPS["structures"] = [
+    ("Structures/Machines/VendingMachines", [M + "vending"], [O + "vending.dmi"], "blank"),
+    ("Structures/Machines/Medical", [M + "sleeper", M + "bodyscanner", M + "cryo", M + "autodoc", M + "optable"],
+     [O + "Cryogenic2.dmi", O + "cryogenics.dmi", O + "autodoc.dmi", O + "cloning.dmi", O + "surgery.dmi"], "blank"),
+    ("Structures/Machines", [M], [O + "machines", O + "stationobjs.dmi", O + "computer.dmi", O + "kitchen.dmi",
+                                  O + "biogenerator.dmi", O + "recycling.dmi", O + "telescience.dmi",
+                                  O + "hydroponics_machines.dmi", O + "jukebox.dmi", O + "modular_console.dmi",
+                                  O + "virology.dmi", O + "xenoarchaeology.dmi"], "blank"),
+    ("Structures/Storage/Crates", [ST + "closet/crate", ST + "largecrate"], [O + "crate.dmi"], "keep"),
+    ("Structures/Storage", [ST + "closet", ST + "reagent_dispensers", ST + "ore_box", M + "portable_atmospherics",
+                            ST + "filingcabinet", ST + "bookcase"], [O + "closet.dmi", O + "atmos.dmi", O + "objects.dmi"], "keep"),
+    ("Structures/Furniture/Carpets", ["/turf/floor/carpet"], ["icons/turf/flooring/carpet.dmi"], "keep"),
+    ("Structures/Furniture", [ST + "bed", ST + "stool", ST + "curtain", ST + "bookcase", ST + "toilet", ST + "sink",
+                              ST + "table", ST + "altar", ST + "plushie"],
+     [O + "furniture.dmi", O + "objects.dmi", O + "structures.dmi", O + "statue.dmi", O + "watercloset.dmi",
+      O + "library.dmi", O + "curtain.dmi"], "keep"),
+    ("Structures/Power", [M + "power", ST + "cable"], [O + "power.dmi", O + "engine.dmi", O + "singularity.dmi",
+                                                       O + "ship_engine.dmi", O + "pipeturbine.dmi", O + "power_cond_white.dmi"], "blank"),
+    ("Structures/Wallmounts", [ST + "sign", ST + "extinguisher_cabinet", ST + "fireaxecabinet", M + "firealarm",
+                               M + "alarm", M + "light_switch", M + "newscaster", M + "status_display", M + "camera",
+                               M + "button", M + "power/apc", "/obj/item/device/radio/intercom", M + "light"],
+     [O + "wall_mounted.dmi", O + "monitors.dmi", O + "status_display.dmi", O + "barsigns.dmi", O + "lighting.dmi",
+      O + "decals.dmi", O + "terminals.dmi", O + "airlock_machines.dmi", O + "holoposter.dmi", O + "contraband.dmi"], "blank"),
+    ("Structures/Piping", [M + "atmospherics", ST + "disposalpipe", M + "disposal", ST + "disposalconstruct"],
+     [O + "atmospherics", O + "pipes", O + "pipe-item.dmi", O + "meter.dmi", O + "atmos.dmi"], "keep"),
+    ("Structures/Lighting", [M + "light", M + "floodlight"], [O + "lighting.dmi"], "blank"),
+    ("Structures/Hydroponics", [M + "portable_atmospherics/hydroponics", M + "seed_storage"],
+     [O + "hydroponics_machines.dmi", O + "hydroponics_misc.dmi"], "keep"),
+    ("Structures/Decoration", [ST + "flora", ST + "curtain", ST + "sign", ST + "statue", ST + "bonfire"],
+     [O + "plants.dmi", O + "flora", O + "decals.dmi", O + "structures.dmi", O + "objects.dmi", O + "statue.dmi",
+      O + "curtain.dmi", "icons/effects/effects.dmi"], "keep"),
+    ("Structures/Walls", [ST + "railing", ST + "grille", ST + "fence"], [O + "structures.dmi", O + "railing.dmi"], "keep"),
+    ("Structures/Windows", [ST + "window"], [O + "structures", O + "podwindows.dmi"], "keep"),
+    ("Structures/Shuttles", [M + "shipsensors", ST + "shuttle", M + "atmospherics/unary/engine"],
+     [O + "ship_engine.dmi", O + "overmap.dmi"], "blank"),
+    ("Structures", [ST, M], [O + "structures.dmi", O + "objects.dmi", O + "stationobjs.dmi", O + "machines"], "blank"),
+]
+
 VARIANT_SYNONYMS = {
     "open": ["open", "opened", "_open", "-open"], "closed": ["closed", ""], "on": ["on", "1", "_on", "-on", "active", "lit"],
     "off": ["off", "0", "", "_off"], "empty": ["empty", "0", "_empty", "-empty"], "full": ["full", "", "1"],
     "lit": ["lit", "on", "_on", "1"], "unlit": ["", "off", "0"], "wielded": ["_wielded", "-wielded", "wielded"],
     "broken": ["broken", "-broken", "_broken"], "folded": ["folded", "_folded"], "active": ["active", "on", "1"],
+    "eject": ["-vend", "_vend", "vend"], "deny": ["-deny", "_deny", "deny"], "door": ["_door", "-door", "door"],
+    "working": ["_on", "-on", "on", "1", "active", "working"], "idle": ["", "_off", "0"],
+    "panel": ["-panel", "_panel", "panel", "_open", "-open"],
 }
 
 
@@ -126,7 +170,13 @@ def load_candidates(eris: Path, items: list[dict], prefixes: list[str], loose: l
             if not p.exists():
                 continue
             rel = str(p.relative_to(eris))
-            for st, data in dmi.load(p).items():
+            all_states = dmi.load(p)
+            for st, data in all_states.items():
+                # Variant states (off, open, door, broken, vend...) belong to their base state.
+                base = re.sub(r"([-_](door|open|opened|off|on|broken|vend|deny|panel|lh|rh|wielded|empty|full|lit|unlit|"
+                              r"locked|unlocked|sparks?|closing|opening|working|work|pause|idle)|[0-9]+)$", "", st)
+                if base != st and base in all_states:
+                    continue
                 key = f"{rel}:{st}"
                 if key in seen or not st:
                     continue
@@ -249,7 +299,8 @@ def main() -> int:
             meta, states = match.rsi_states(rsi)
             snames = [s["name"] for s in states]
             used = [s for s in match.USED_STATES.get(rsi, {}) if s in snames]
-            if len(used) > 1:
+            # Machines show different states of one machine, so only object-like RSIs are split.
+            if len(used) > 1 and policy != "blank":
                 groups = {u: [] for u in used}
                 for n in snames:
                     if n in groups:

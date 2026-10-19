@@ -1,17 +1,35 @@
 {
     "version": 1,
     "license": "CC-BY-SA-3.0",
-    "copyright": "Modifications made by [scrivoy], Dispenser originally taken from paradise at https://github.com/ParadiseSS13/Paradise/commit/846ce475b2258a4336d8895f07f2c0f4053963bc",
+    "copyright": "Modifications made by [scrivoy], Dispenser originally taken from paradise at https://github.com/ParadiseSS13/Paradise/commit/846ce475b2258a4336d8895f07f2c0f4053963bc. Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
     "size": {
         "x": 32,
         "y": 32
     },
     "states": [
         {
-            "name": "cleanerdispenser"
+            "name": "cleanerdispenser",
+            "delays": [
+                [
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1
+                ]
+            ]
         },
         {
-            "name": "fueldispenser"
+            "name": "fueldispenser",
+            "delays": [
+                [
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1
+                ]
+            ]
         },
         {
             "name": "fill-1"

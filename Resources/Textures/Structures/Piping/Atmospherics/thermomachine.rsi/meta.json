@@ -4,7 +4,7 @@
         "x": 32,
         "y": 32
     },
-    "copyright": "Base sprites taken from tgstation, splitted to display on two layers (machinebody/panel) by Menshin, for SS14, edited by chromiumboy",
+    "copyright": "Base sprites taken from tgstation, splitted to display on two layers (machinebody/panel) by Menshin, for SS14, edited by chromiumboy. Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
     "license": "CC-BY-SA-3.0",
     "states": [
         {
@@ -17,21 +17,7 @@
         },
         {
             "name": "freezerOn",
-            "directions": 1,
-            "delays": [
-                [
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1
-                ]
-            ]
+            "directions": 1
         },
         {
             "name": "heaterOff",
@@ -43,21 +29,7 @@
         },
         {
             "name": "heaterOn",
-            "directions": 1,
-            "delays": [
-                [
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1
-                ]
-            ]
+            "directions": 1
         },
         {
             "name": "pipe",

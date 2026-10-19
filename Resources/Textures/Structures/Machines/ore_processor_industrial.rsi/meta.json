@@ -1,50 +1,62 @@
 {
-  "version": 1,
-  "license": "CC-BY-SA-3.0",
-  "copyright": "Created by UbaserB (GitHub) for SS14, based on ore processor sprite from tgstation",
-  "size": {
-    "x": 32,
-    "y": 32
-  },
-  "states": [
-    {
-      "name": "inserting",
-      "delays": [
-        [
-          0.1,
-          0.1,
-          0.1,
-          0.1,
-          0.1,
-          0.1,
-          0.1,
-          5
-        ]
-      ]
+    "version": 1,
+    "license": "CC-BY-SA-3.0",
+    "copyright": "Created by UbaserB (GitHub) for SS14, based on ore processor sprite from tgstation. Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
+    "size": {
+        "x": 32,
+        "y": 32
     },
-	{
-      "name": "building",
-      "delays": [
-        [
-          0.1,
-          0.1,
-          0.1,
-          0.1,
-          0.1,
-          0.1,
-          0.1,
-          0.1
-        ]
-      ]
-    },
-	{
-	  "name": "icon"
-	},
-	{
-      "name": "panel"
-    },
-	{
-	  "name": "unlit"
-	}
-  ]
+    "states": [
+        {
+            "name": "inserting",
+            "delays": [
+                [
+                    0.4,
+                    0.3,
+                    0.4,
+                    0.3,
+                    0.4,
+                    0.3,
+                    0.4,
+                    0.3
+                ]
+            ]
+        },
+        {
+            "name": "building",
+            "delays": [
+                [
+                    0.4,
+                    0.3,
+                    0.4,
+                    0.3,
+                    0.4,
+                    0.3,
+                    0.4,
+                    0.3
+                ]
+            ]
+        },
+        {
+            "name": "icon",
+            "delays": [
+                [
+                    0.4,
+                    0.3,
+                    0.4,
+                    0.3,
+                    0.4,
+                    0.3,
+                    0.4,
+                    0.3
+                ]
+            ]
+        },
+        {
+            "name": "panel"
+        },
+        {
+            "name": "unlit"
+        }
+    ]
 }

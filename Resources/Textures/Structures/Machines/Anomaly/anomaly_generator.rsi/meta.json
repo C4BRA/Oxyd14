@@ -1,62 +1,26 @@
 {
-  "version":1,
-  "size":{
-    "x":96,
-    "y":96
-  },
-  "license":"CC0-1.0",
-  "copyright":"Created by EmoGarbage",
-  "states":[
-    {
-      "name": "generating",
-      "delays": [
-        [
-          0.1,
-          0.1,
-          0.1,
-          0.1,
-          0.1,
-          0.1,
-          0.1,
-          0.1
-        ]
-      ]
+    "version": 1,
+    "size": {
+        "x": 96,
+        "y": 96
     },
-    {
-      "name":"base"
-    },
-    {
-      "name": "inserting",
-      "delays": [
-        [
-          0.1,
-          0.1,
-          0.1,
-          0.1,
-          0.1,
-          0.1,
-          0.1,
-          0.1
-        ]
-      ]
-    },
-    {
-      "name": "panel"
-    },
-    {
-      "name": "unshaded",
-      "delays": [
-        [
-          1.0,
-          0.25,
-          0.25,
-          0.25,
-          0.25,
-          0.25,
-          0.25,
-          0.5
-        ]
-      ]
-    }
-  ]
+    "license": "CC0-1.0",
+    "copyright": "Created by EmoGarbage. Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
+    "states": [
+        {
+            "name": "generating"
+        },
+        {
+            "name": "base"
+        },
+        {
+            "name": "inserting"
+        },
+        {
+            "name": "panel"
+        },
+        {
+            "name": "unshaded"
+        }
+    ]
 }

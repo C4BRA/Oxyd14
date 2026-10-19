@@ -5,24 +5,13 @@
         "y": 32
     },
     "license": "CC-BY-SA-3.0",
-    "copyright": "Taken from https://github.com/discordia-space/CEV-Eris/blob/01f7518e0f8177734a6579aba2bbf76024aa96c4/icons/obj/recycling.dmi",
+    "copyright": "Taken from https://github.com/discordia-space/CEV-Eris/blob/01f7518e0f8177734a6579aba2bbf76024aa96c4/icons/obj/recycling.dmi. Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
     "states": [
         {
             "name": "industrial-reagent-grinder-off"
-
         },
         {
-            "name": "industrial-reagent-grinder-on",
-            "delays": [
-                [
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1
-                ]
-            ]
+            "name": "industrial-reagent-grinder-on"
         }
     ]
 }

@@ -1,7 +1,7 @@
 {
     "version": 1,
     "license": "CC-BY-NC-SA-3.0",
-    "copyright": "Taken from goonstation at https://github.com/goonstation/goonstation/commit/cbe076402ed43b1cd861295bbcb95608c453de7a. Edited by chromiumboy",
+    "copyright": "Taken from goonstation at https://github.com/goonstation/goonstation/commit/cbe076402ed43b1cd861295bbcb95608c453de7a. Edited by chromiumboy. Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
     "size": {
         "x": 32,
         "y": 32
@@ -44,13 +44,7 @@
             "name": "cu"
         },
         {
-            "name": "ca-o0",
-            "delays": [
-                [
-                    0.2,
-                    0.2
-                ]
-            ]
+            "name": "ca-o0"
         },
         {
             "name": "ca-o1"

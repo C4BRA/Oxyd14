@@ -1,7 +1,7 @@
 {
     "version": 1,
     "license": "CC-BY-NC-SA-3.0",
-    "copyright": "From Goonstation at https://github.com/goonstation/goonstation/commit/ed3b3c552e384bb3eb7056468a125f6a8c661261",
+    "copyright": "From Goonstation at https://github.com/goonstation/goonstation/commit/ed3b3c552e384bb3eb7056468a125f6a8c661261. Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
     "size": {
         "x": 32,
         "y": 32
@@ -18,12 +18,7 @@
             "name": "rad0"
         },
         {
-            "name": "rad1",
-            "delays": [
-                [
-                    0.1, 0.1
-                ]
-            ]
+            "name": "rad1"
         },
         {
             "name": "shipalert0"
