@@ -1,8 +1,7 @@
 {
     "version": 1,
     "license": "CC-BY-SA-3.0",
-    "copyright": "Normal and vox sprites created by https://github.com/Pronana / princesscheeseballs (Discord). Tail sprites by Tiniest Shark (github).",
-
+    "copyright": "Normal and vox sprites created by https://github.com/Pronana / princesscheeseballs (Discord). Tail sprites by Tiniest Shark (github).. Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
     "size": {
         "x": 32,
         "y": 32
@@ -13,7 +12,33 @@
         },
         {
             "name": "equipped-OUTERCLOTHING",
-            "directions": 4
+            "directions": 4,
+            "delays": [
+                [
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2
+                ],
+                [
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2
+                ],
+                [
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2
+                ],
+                [
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2
+                ]
+            ]
         },
         {
             "name": "equipped-OUTERCLOTHING-vox",
