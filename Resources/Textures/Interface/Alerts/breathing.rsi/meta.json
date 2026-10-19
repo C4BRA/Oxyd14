@@ -5,7 +5,7 @@
         "y": 32
     },
     "license": "CC-BY-SA-3.0",
-    "copyright": "https://github.com/tgstation/tgstation/blob/2f18e6232ce5897554351194082469a043c5ab06/icons/hud/screen_alert.dmi",
+    "copyright": "https://github.com/tgstation/tgstation/blob/2f18e6232ce5897554351194082469a043c5ab06/icons/hud/screen_alert.dmi. Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
     "states": [
         {
             "name": "not_enough_co2",
@@ -44,40 +44,16 @@
             ]
         },
         {
-            "name": "too_much_co2",
-            "delays": [
-                [
-                    0.5,
-                    0.5
-                ]
-            ]
+            "name": "too_much_co2"
         },
         {
-            "name": "too_much_nitro",
-            "delays": [
-                [
-                    0.5,
-                    0.5
-                ]
-            ]
+            "name": "too_much_nitro"
         },
         {
-            "name": "too_much_oxy",
-            "delays": [
-                [
-                    0.5,
-                    0.5
-                ]
-            ]
+            "name": "too_much_oxy"
         },
         {
-            "name": "too_much_tox",
-            "delays": [
-                [
-                    0.5,
-                    0.5
-                ]
-            ]
+            "name": "too_much_tox"
         }
     ]
 }

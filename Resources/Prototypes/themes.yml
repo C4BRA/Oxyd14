@@ -1,13 +1,13 @@
 - type: uiTheme
-  id: SS14DefaultTheme
+  id: SS14DefaultTheme # Oxyd: CEV-Eris HUD art and colours
   path: /Textures/Interface/Default/
   colors:
     whiteText: "#FFF5EE"
-    slotSelectedGold: "#e6b812"
-    slotColor: "#0f1215"
-    slotOutline: "#333850"
-    slotText: "#333850"
-    nanoGold: "#A88B5E"
+    slotSelectedGold: "#4299d3"
+    slotColor: "#141824"
+    slotOutline: "#284f71"
+    slotText: "#429bd6"
+    nanoGold: "#c9a46b"
     goodGreenFore: "#31843E"
     concerningOrangeFore: "#A5762F"
     dangerousRedFore: "#BB3232"

@@ -1,0 +1,1493 @@
+[
+ {
+  "file": "Interface/Default/Slots/back.png",
+  "src": {
+   "dmi": "icons/mob/screen/ErisStyle.dmi",
+   "state": "back"
+  },
+  "standin": false
+ },
+ {
+  "file": "Interface/Default/Slots/belt.png",
+  "src": {
+   "dmi": "icons/mob/screen/ErisStyle.dmi",
+   "state": "belt"
+  },
+  "standin": false
+ },
+ {
+  "file": "Interface/Default/Slots/ears.png",
+  "src": {
+   "dmi": "icons/mob/screen/ErisStyle.dmi",
+   "state": "ears0"
+  },
+  "standin": false
+ },
+ {
+  "file": "Interface/Default/Slots/glasses.png",
+  "src": {
+   "dmi": "icons/mob/screen/ErisStyle.dmi",
+   "state": "glasses"
+  },
+  "standin": false
+ },
+ {
+  "file": "Interface/Default/Slots/gloves.png",
+  "src": {
+   "dmi": "icons/mob/screen/ErisStyle.dmi",
+   "state": "gloves"
+  },
+  "standin": false
+ },
+ {
+  "file": "Interface/Default/Slots/hand_l.png",
+  "src": {
+   "dmi": "icons/mob/screen/ErisStyle.dmi",
+   "state": "hand-l"
+  },
+  "standin": false
+ },
+ {
+  "file": "Interface/Default/Slots/hand_l_no_letter.png",
+  "src": {
+   "dmi": "icons/mob/screen/ErisStyle.dmi",
+   "state": "hand-l"
+  },
+  "standin": false
+ },
+ {
+  "file": "Interface/Default/Slots/hand_r.png",
+  "src": {
+   "dmi": "icons/mob/screen/ErisStyle.dmi",
+   "state": "hand-r"
+  },
+  "standin": false
+ },
+ {
+  "file": "Interface/Default/Slots/hand_r_no_letter.png",
+  "src": {
+   "dmi": "icons/mob/screen/ErisStyle.dmi",
+   "state": "hand-r"
+  },
+  "standin": false
+ },
+ {
+  "file": "Interface/Default/Slots/head.png",
+  "src": {
+   "dmi": "icons/mob/screen/ErisStyle.dmi",
+   "state": "hair"
+  },
+  "standin": false
+ },
+ {
+  "file": "Interface/Default/Slots/id.png",
+  "src": {
+   "dmi": "icons/mob/screen/ErisStyle.dmi",
+   "state": "id"
+  },
+  "standin": false
+ },
+ {
+  "file": "Interface/Default/Slots/mask.png",
+  "src": {
+   "dmi": "icons/mob/screen/ErisStyle.dmi",
+   "state": "mask"
+  },
+  "standin": false
+ },
+ {
+  "file": "Interface/Default/Slots/pocket.png",
+  "src": {
+   "dmi": "icons/mob/screen/ErisStyle.dmi",
+   "state": "pocket_l"
+  },
+  "standin": false
+ },
+ {
+  "file": "Interface/Default/Slots/shoes.png",
+  "src": {
+   "dmi": "icons/mob/screen/ErisStyle.dmi",
+   "state": "shoes"
+  },
+  "standin": false
+ },
+ {
+  "file": "Interface/Default/Slots/suit.png",
+  "src": {
+   "dmi": "icons/mob/screen/ErisStyle.dmi",
+   "state": "equip"
+  },
+  "standin": false
+ },
+ {
+  "file": "Interface/Default/Slots/suit_storage.png",
+  "src": {
+   "dmi": "icons/mob/screen/ErisStyle.dmi",
+   "state": "suit-belt"
+  },
+  "standin": false
+ },
+ {
+  "file": "Interface/Default/Slots/toggle.png",
+  "src": {
+   "dmi": "icons/mob/screen/ErisStyle.dmi",
+   "state": "b-open"
+  },
+  "standin": false
+ },
+ {
+  "file": "Interface/Default/Slots/uniform.png",
+  "src": {
+   "dmi": "icons/mob/screen/ErisStyle.dmi",
+   "state": "center"
+  },
+  "standin": false
+ },
+ {
+  "file": "Interface/Default/Slots/neck.png",
+  "src": {
+   "layers": [
+    {
+     "dmi": "icons/mob/screen/ErisStyle.dmi",
+     "state": "block"
+    },
+    {
+     "file_png": "Interface/Default/Slots/neck.png",
+     "recolor": "eris_ui"
+    }
+   ]
+  },
+  "standin": true
+ },
+ {
+  "file": "Interface/Default/Slots/web.png",
+  "src": {
+   "layers": [
+    {
+     "dmi": "icons/mob/screen/ErisStyle.dmi",
+     "state": "block"
+    },
+    {
+     "file_png": "Interface/Default/Slots/web.png",
+     "recolor": "eris_ui"
+    }
+   ]
+  },
+  "standin": true
+ },
+ {
+  "file": "Interface/Default/Slots/hand_m.png",
+  "src": {
+   "layers": [
+    {
+     "dmi": "icons/mob/screen/ErisStyle.dmi",
+     "state": "block"
+    },
+    {
+     "file_png": "Interface/Default/Slots/hand_m.png",
+     "recolor": "eris_ui"
+    }
+   ]
+  },
+  "standin": true
+ },
+ {
+  "file": "Interface/Default/SlotBackground.png",
+  "src": {
+   "dmi": "icons/mob/screen/ErisStyle.dmi",
+   "state": "block"
+  },
+  "standin": false
+ },
+ {
+  "file": "Interface/Default/template_small.png",
+  "src": {
+   "dmi": "icons/mob/screen/ErisStyle.dmi",
+   "state": "block"
+  },
+  "standin": false
+ },
+ {
+  "file": "Interface/Default/blocked.png",
+  "src": {
+   "dmi": "icons/mob/screen/ErisStyle.dmi",
+   "state": "x"
+  },
+  "standin": false
+ },
+ {
+  "file": "Interface/Default/slot_highlight.png",
+  "src": {
+   "file_png": "Interface/Default/slot_highlight.png",
+   "recolor": "eris_ui"
+  },
+  "standin": true
+ },
+ {
+  "file": "Interface/Default/item_status_left.png",
+  "src": {
+   "file_png": "Interface/Default/item_status_left.png",
+   "recolor": "eris_ui"
+  },
+  "standin": true
+ },
+ {
+  "file": "Interface/Default/item_status_left_highlight.png",
+  "src": {
+   "file_png": "Interface/Default/item_status_left_highlight.png",
+   "recolor": "eris_ui"
+  },
+  "standin": true
+ },
+ {
+  "file": "Interface/Default/item_status_right.png",
+  "src": {
+   "file_png": "Interface/Default/item_status_right.png",
+   "recolor": "eris_ui"
+  },
+  "standin": true
+ },
+ {
+  "file": "Interface/Default/item_status_right_highlight.png",
+  "src": {
+   "file_png": "Interface/Default/item_status_right_highlight.png",
+   "recolor": "eris_ui"
+  },
+  "standin": true
+ },
+ {
+  "file": "Interface/Default/Storage/back.png",
+  "src": {
+   "file_png": "Interface/Default/Storage/back.png",
+   "recolor": "eris_ui"
+  },
+  "standin": true
+ },
+ {
+  "file": "Interface/Default/Storage/exit.png",
+  "src": {
+   "file_png": "Interface/Default/Storage/exit.png",
+   "recolor": "eris_ui"
+  },
+  "standin": true
+ },
+ {
+  "file": "Interface/Default/Storage/marked_first.png",
+  "src": {
+   "file_png": "Interface/Default/Storage/marked_first.png",
+   "recolor": "eris_ui"
+  },
+  "standin": true
+ },
+ {
+  "file": "Interface/Default/Storage/marked_second.png",
+  "src": {
+   "file_png": "Interface/Default/Storage/marked_second.png",
+   "recolor": "eris_ui"
+  },
+  "standin": true
+ },
+ {
+  "file": "Interface/Default/Storage/piece_bottom.png",
+  "src": {
+   "file_png": "Interface/Default/Storage/piece_bottom.png",
+   "recolor": "eris_ui"
+  },
+  "standin": true
+ },
+ {
+  "file": "Interface/Default/Storage/piece_bottomLeft.png",
+  "src": {
+   "file_png": "Interface/Default/Storage/piece_bottomLeft.png",
+   "recolor": "eris_ui"
+  },
+  "standin": true
+ },
+ {
+  "file": "Interface/Default/Storage/piece_bottomRight.png",
+  "src": {
+   "file_png": "Interface/Default/Storage/piece_bottomRight.png",
+   "recolor": "eris_ui"
+  },
+  "standin": true
+ },
+ {
+  "file": "Interface/Default/Storage/piece_center.png",
+  "src": {
+   "file_png": "Interface/Default/Storage/piece_center.png",
+   "recolor": "eris_ui"
+  },
+  "standin": true
+ },
+ {
+  "file": "Interface/Default/Storage/piece_left.png",
+  "src": {
+   "file_png": "Interface/Default/Storage/piece_left.png",
+   "recolor": "eris_ui"
+  },
+  "standin": true
+ },
+ {
+  "file": "Interface/Default/Storage/piece_right.png",
+  "src": {
+   "file_png": "Interface/Default/Storage/piece_right.png",
+   "recolor": "eris_ui"
+  },
+  "standin": true
+ },
+ {
+  "file": "Interface/Default/Storage/piece_top.png",
+  "src": {
+   "file_png": "Interface/Default/Storage/piece_top.png",
+   "recolor": "eris_ui"
+  },
+  "standin": true
+ },
+ {
+  "file": "Interface/Default/Storage/piece_topLeft.png",
+  "src": {
+   "file_png": "Interface/Default/Storage/piece_topLeft.png",
+   "recolor": "eris_ui"
+  },
+  "standin": true
+ },
+ {
+  "file": "Interface/Default/Storage/piece_topRight.png",
+  "src": {
+   "file_png": "Interface/Default/Storage/piece_topRight.png",
+   "recolor": "eris_ui"
+  },
+  "standin": true
+ },
+ {
+  "file": "Interface/Default/Storage/sidebar_bottom.png",
+  "src": {
+   "file_png": "Interface/Default/Storage/sidebar_bottom.png",
+   "recolor": "eris_ui"
+  },
+  "standin": true
+ },
+ {
+  "file": "Interface/Default/Storage/sidebar_fat.png",
+  "src": {
+   "file_png": "Interface/Default/Storage/sidebar_fat.png",
+   "recolor": "eris_ui"
+  },
+  "standin": true
+ },
+ {
+  "file": "Interface/Default/Storage/sidebar_mid.png",
+  "src": {
+   "file_png": "Interface/Default/Storage/sidebar_mid.png",
+   "recolor": "eris_ui"
+  },
+  "standin": true
+ },
+ {
+  "file": "Interface/Default/Storage/sidebar_top.png",
+  "src": {
+   "file_png": "Interface/Default/Storage/sidebar_top.png",
+   "recolor": "eris_ui"
+  },
+  "standin": true
+ },
+ {
+  "file": "Interface/Default/Storage/tile_blocked.png",
+  "src": {
+   "file_png": "Interface/Default/Storage/tile_blocked.png",
+   "recolor": "eris_ui"
+  },
+  "standin": true
+ },
+ {
+  "file": "Interface/Default/Storage/tile_blocked_opaque.png",
+  "src": {
+   "file_png": "Interface/Default/Storage/tile_blocked_opaque.png",
+   "recolor": "eris_ui"
+  },
+  "standin": true
+ },
+ {
+  "file": "Interface/Default/Storage/tile_empty.png",
+  "src": {
+   "file_png": "Interface/Default/Storage/tile_empty.png",
+   "recolor": "eris_ui"
+  },
+  "standin": true
+ },
+ {
+  "file": "Interface/Default/Storage/tile_empty_opaque.png",
+  "src": {
+   "file_png": "Interface/Default/Storage/tile_empty_opaque.png",
+   "recolor": "eris_ui"
+  },
+  "standin": true
+ },
+ {
+  "file": "Interface/Inventory/inv_slot_background.png",
+  "src": {
+   "dmi": "icons/mob/screen/ErisStyle.dmi",
+   "state": "block"
+  },
+  "standin": false
+ },
+ {
+  "file": "Interface/Inventory/hand_slot_highlight.png",
+  "src": {
+   "file_png": "Interface/Inventory/hand_slot_highlight.png",
+   "recolor": "eris_ui"
+  },
+  "standin": true
+ },
+ {
+  "file": "Interface/Inventory/hand_active.png",
+  "src": {
+   "dmi": "icons/mob/screen/ErisStyle.dmi",
+   "state": "act_hand-l"
+  },
+  "standin": false
+ },
+ {
+  "file": "Interface/handsbox.png",
+  "src": {
+   "dmi": "icons/mob/screen/ErisStyle.dmi",
+   "state": "block"
+  },
+  "standin": false
+ },
+ {
+  "target": "Interface/Alerts/human_alive.rsi",
+  "states": {
+   "health0": {
+    "dmi": "icons/mob/screen/ErisStyle.dmi",
+    "state": "health0"
+   },
+   "health1": {
+    "dmi": "icons/mob/screen/ErisStyle.dmi",
+    "state": "health2"
+   },
+   "health2": {
+    "dmi": "icons/mob/screen/ErisStyle.dmi",
+    "state": "health3"
+   },
+   "health3": {
+    "dmi": "icons/mob/screen/ErisStyle.dmi",
+    "state": "health4"
+   },
+   "health4": {
+    "dmi": "icons/mob/screen/ErisStyle.dmi",
+    "state": "health5"
+   }
+  },
+  "standin": false
+ },
+ {
+  "target": "Interface/Alerts/human_critical.rsi",
+  "states": {
+   "critical": {
+    "dmi": "icons/mob/screen/ErisStyle.dmi",
+    "state": "health6"
+   }
+  },
+  "standin": false
+ },
+ {
+  "target": "Interface/Alerts/human_dead.rsi",
+  "states": {
+   "dead": {
+    "dmi": "icons/mob/screen/ErisStyle.dmi",
+    "state": "health7"
+   }
+  },
+  "standin": false
+ },
+ {
+  "target": "Interface/Alerts/hunger.rsi",
+  "states": {
+   "overfed": {
+    "dmi": "icons/mob/screen/ErisStyle.dmi",
+    "state": "nutrition0"
+   },
+   "peckish": {
+    "dmi": "icons/mob/screen/ErisStyle.dmi",
+    "state": "nutrition2"
+   },
+   "starving": {
+    "dmi": "icons/mob/screen/ErisStyle.dmi",
+    "state": "nutrition4"
+   }
+  },
+  "standin": false
+ },
+ {
+  "target": "Interface/Alerts/temperature.rsi",
+  "states": {
+   "cold1": {
+    "dmi": "icons/mob/screen/ErisStyle.dmi",
+    "state": "temp-1"
+   },
+   "cold2": {
+    "dmi": "icons/mob/screen/ErisStyle.dmi",
+    "state": "temp-2"
+   },
+   "cold3": {
+    "dmi": "icons/mob/screen/ErisStyle.dmi",
+    "state": "temp-4"
+   },
+   "hot1": {
+    "dmi": "icons/mob/screen/ErisStyle.dmi",
+    "state": "temp1"
+   },
+   "hot2": {
+    "dmi": "icons/mob/screen/ErisStyle.dmi",
+    "state": "temp2"
+   },
+   "hot3": {
+    "dmi": "icons/mob/screen/ErisStyle.dmi",
+    "state": "temp4"
+   }
+  },
+  "standin": false
+ },
+ {
+  "target": "Interface/Alerts/pressure.rsi",
+  "states": {
+   "lowpressure1": {
+    "dmi": "icons/mob/screen/ErisStyle.dmi",
+    "state": "pressure-1"
+   },
+   "lowpressure2": {
+    "dmi": "icons/mob/screen/ErisStyle.dmi",
+    "state": "pressure-2"
+   },
+   "highpressure1": {
+    "dmi": "icons/mob/screen/ErisStyle.dmi",
+    "state": "pressure1"
+   },
+   "highpressure2": {
+    "dmi": "icons/mob/screen/ErisStyle.dmi",
+    "state": "pressure2"
+   }
+  },
+  "standin": false
+ },
+ {
+  "target": "Interface/Alerts/breathing.rsi",
+  "states": {
+   "not_enough_oxy": {
+    "dmi": "icons/mob/screen/ErisStyle.dmi",
+    "state": "oxy1"
+   },
+   "too_much_tox": {
+    "dmi": "icons/mob/screen/ErisStyle.dmi",
+    "state": "tox1"
+   },
+   "not_enough_co2": {
+    "dmi": "icons/mob/screen/ErisStyle.dmi",
+    "state": "oxy1"
+   },
+   "not_enough_nitro": {
+    "dmi": "icons/mob/screen/ErisStyle.dmi",
+    "state": "oxy1"
+   },
+   "not_enough_tox": {
+    "dmi": "icons/mob/screen/ErisStyle.dmi",
+    "state": "oxy1"
+   },
+   "too_much_co2": {
+    "dmi": "icons/mob/screen/ErisStyle.dmi",
+    "state": "tox1"
+   },
+   "too_much_nitro": {
+    "dmi": "icons/mob/screen/ErisStyle.dmi",
+    "state": "tox1"
+   },
+   "too_much_oxy": {
+    "dmi": "icons/mob/screen/ErisStyle.dmi",
+    "state": "tox1"
+   }
+  },
+  "standin": false
+ },
+ {
+  "target": "Interface/Alerts/internals.rsi",
+  "states": {
+   "internal0": {
+    "dmi": "icons/mob/screen/ErisStyle.dmi",
+    "state": "internal0"
+   },
+   "internal1": {
+    "dmi": "icons/mob/screen/ErisStyle.dmi",
+    "state": "internal1"
+   },
+   "internal2": {
+    "dmi": "icons/mob/screen/ErisStyle.dmi",
+    "state": "internal2"
+   }
+  },
+  "standin": false
+ },
+ {
+  "target": "Interface/Alerts/walking.rsi",
+  "states": {
+   "walking": {
+    "dmi": "icons/mob/screen/ErisStyle.dmi",
+    "state": "walking"
+   }
+  },
+  "standin": false
+ },
+ {
+  "target": "Interface/Alerts/borg_alive.rsi",
+  "states": {
+   "health0": {
+    "dmi": "icons/mob/screen/ErisStyle.dmi",
+    "state": "health0"
+   },
+   "health1": {
+    "dmi": "icons/mob/screen/ErisStyle.dmi",
+    "state": "health2"
+   },
+   "health2": {
+    "dmi": "icons/mob/screen/ErisStyle.dmi",
+    "state": "health3"
+   },
+   "health3": {
+    "dmi": "icons/mob/screen/ErisStyle.dmi",
+    "state": "health4"
+   },
+   "health4": {
+    "dmi": "icons/mob/screen/ErisStyle.dmi",
+    "state": "health5"
+   }
+  },
+  "standin": false
+ },
+ {
+  "target": "Interface/Alerts/borg_critical.rsi",
+  "states": {
+   "critical": {
+    "dmi": "icons/mob/screen/ErisStyle.dmi",
+    "state": "health6"
+   }
+  },
+  "standin": false
+ },
+ {
+  "target": "Interface/Alerts/borg_dead.rsi",
+  "states": {
+   "dead": {
+    "dmi": "icons/mob/screen/ErisStyle.dmi",
+    "state": "health7"
+   }
+  },
+  "standin": false
+ },
+ {
+  "target": "Interface/Alerts/battery.rsi",
+  "states": {
+   "battery1": {
+    "dmi": "icons/mob/screen1_robot.dmi",
+    "state": "charge0"
+   },
+   "battery2": {
+    "dmi": "icons/mob/screen1_robot.dmi",
+    "state": "charge0"
+   },
+   "battery3": {
+    "dmi": "icons/mob/screen1_robot.dmi",
+    "state": "charge1"
+   },
+   "battery4": {
+    "dmi": "icons/mob/screen1_robot.dmi",
+    "state": "charge1"
+   },
+   "battery5": {
+    "dmi": "icons/mob/screen1_robot.dmi",
+    "state": "charge2"
+   },
+   "battery6": {
+    "dmi": "icons/mob/screen1_robot.dmi",
+    "state": "charge2"
+   },
+   "battery7": {
+    "dmi": "icons/mob/screen1_robot.dmi",
+    "state": "charge2"
+   },
+   "battery8": {
+    "dmi": "icons/mob/screen1_robot.dmi",
+    "state": "charge3"
+   },
+   "battery9": {
+    "dmi": "icons/mob/screen1_robot.dmi",
+    "state": "charge3"
+   },
+   "battery10": {
+    "dmi": "icons/mob/screen1_robot.dmi",
+    "state": "charge4"
+   },
+   "battery0": {
+    "dmi": "icons/mob/screen1_robot.dmi",
+    "state": "charge-empty"
+   },
+   "battery-none": {
+    "dmi": "icons/mob/screen1_robot.dmi",
+    "state": "charge-empty"
+   }
+  },
+  "standin": false
+ },
+ {
+  "file": "Interface/Alerts/Fire/fire.png",
+  "src": {
+   "dmi": "icons/mob/screen/ErisStyle.dmi",
+   "state": "fire2"
+  },
+  "standin": false
+ },
+ {
+  "file": "Interface/Alerts/Pull/pulling.png",
+  "src": {
+   "dmi": "icons/mob/screen/ErisStyle.dmi",
+   "state": "pull1"
+  },
+  "standin": false
+ },
+ {
+  "file": "Interface/Alerts/Pull/pulled.png",
+  "src": {
+   "dmi": "icons/mob/screen/ErisStyle.dmi",
+   "state": "pull0"
+  },
+  "standin": false
+ },
+ {
+  "target": "Interface/Alerts/thirst.rsi",
+  "panel_all": true,
+  "standin": true,
+  "states": {}
+ },
+ {
+  "target": "Interface/Alerts/stamina.rsi",
+  "panel_all": true,
+  "standin": true,
+  "states": {}
+ },
+ {
+  "target": "Interface/Alerts/bleed.rsi",
+  "panel_all": true,
+  "standin": true,
+  "states": {}
+ },
+ {
+  "target": "Interface/Alerts/ensnared.rsi",
+  "panel_all": true,
+  "standin": true,
+  "states": {}
+ },
+ {
+  "target": "Interface/Alerts/pacified.rsi",
+  "panel_all": true,
+  "standin": true,
+  "states": {}
+ },
+ {
+  "target": "Interface/Alerts/status_effects.rsi",
+  "panel_all": true,
+  "standin": true,
+  "states": {}
+ },
+ {
+  "target": "Interface/Alerts/stunnable.rsi",
+  "panel_all": true,
+  "standin": true,
+  "states": {}
+ },
+ {
+  "target": "Interface/Alerts/shuttle.rsi",
+  "panel_all": true,
+  "standin": true,
+  "states": {}
+ },
+ {
+  "target": "Interface/Alerts/stealthy.rsi",
+  "panel_all": true,
+  "standin": true,
+  "states": {}
+ },
+ {
+  "target": "Interface/Alerts/changeling.rsi",
+  "panel_all": true,
+  "standin": true,
+  "states": {}
+ },
+ {
+  "target": "Interface/Alerts/ninja_power.rsi",
+  "panel_all": true,
+  "standin": true,
+  "states": {}
+ },
+ {
+  "target": "Interface/Alerts/chemicals_counter.rsi",
+  "panel_all": true,
+  "standin": true,
+  "states": {}
+ },
+ {
+  "target": "Interface/Alerts/essence_counter.rsi",
+  "panel_all": true,
+  "standin": true,
+  "states": {}
+ },
+ {
+  "target": "Interface/Alerts/generic_counter.rsi",
+  "panel_all": true,
+  "standin": true,
+  "states": {}
+ },
+ {
+  "file": "Interface/Alerts/Abilities/silenced.png",
+  "src": {
+   "layers": [
+    {
+     "dmi": "icons/mob/screen/ErisStyle.dmi",
+     "state": "block"
+    },
+    {
+     "file_png": "Interface/Alerts/Abilities/silenced.png",
+     "recolor": "eris_ui"
+    }
+   ]
+  },
+  "standin": true
+ },
+ {
+  "file": "Interface/Alerts/Buckle/buckled.png",
+  "src": {
+   "layers": [
+    {
+     "dmi": "icons/mob/screen/ErisStyle.dmi",
+     "state": "block"
+    },
+    {
+     "file_png": "Interface/Alerts/Buckle/buckled.png",
+     "recolor": "eris_ui"
+    }
+   ]
+  },
+  "standin": true
+ },
+ {
+  "file": "Interface/Alerts/Handcuffed/Handcuffed.png",
+  "src": {
+   "layers": [
+    {
+     "dmi": "icons/mob/screen/ErisStyle.dmi",
+     "state": "block"
+    },
+    {
+     "file_png": "Interface/Alerts/Handcuffed/Handcuffed.png",
+     "recolor": "eris_ui"
+    }
+   ]
+  },
+  "standin": true
+ },
+ {
+  "file": "Interface/Alerts/Rooted/rooted.png",
+  "src": {
+   "layers": [
+    {
+     "dmi": "icons/mob/screen/ErisStyle.dmi",
+     "state": "block"
+    },
+    {
+     "file_png": "Interface/Alerts/Rooted/rooted.png",
+     "recolor": "eris_ui"
+    }
+   ]
+  },
+  "standin": true
+ },
+ {
+  "file": "Interface/Alerts/Weightless/weightless.png",
+  "src": {
+   "layers": [
+    {
+     "dmi": "icons/mob/screen/ErisStyle.dmi",
+     "state": "block"
+    },
+    {
+     "file_png": "Interface/Alerts/Weightless/weightless.png",
+     "recolor": "eris_ui"
+    }
+   ]
+  },
+  "standin": true
+ },
+ {
+  "file": "Interface/Nano/black_panel_dark_thin_border.png",
+  "src": {
+   "file_png": "Interface/Nano/black_panel_dark_thin_border.png",
+   "recolor": "eris_nano"
+  },
+  "standin": true
+ },
+ {
+  "file": "Interface/Nano/black_panel_light_thin_border.png",
+  "src": {
+   "file_png": "Interface/Nano/black_panel_light_thin_border.png",
+   "recolor": "eris_nano"
+  },
+  "standin": true
+ },
+ {
+  "file": "Interface/Nano/chat_sub_background.png",
+  "src": {
+   "file_png": "Interface/Nano/chat_sub_background.png",
+   "recolor": "eris_nano"
+  },
+  "standin": true
+ },
+ {
+  "file": "Interface/Nano/light_panel_background_bordered.png",
+  "src": {
+   "file_png": "Interface/Nano/light_panel_background_bordered.png",
+   "recolor": "eris_nano"
+  },
+  "standin": true
+ },
+ {
+  "file": "Interface/Nano/lineedit.png",
+  "src": {
+   "file_png": "Interface/Nano/lineedit.png",
+   "recolor": "eris_nano"
+  },
+  "standin": true
+ },
+ {
+  "file": "Interface/Nano/tabcontainer_panel.png",
+  "src": {
+   "file_png": "Interface/Nano/tabcontainer_panel.png",
+   "recolor": "eris_nano"
+  },
+  "standin": true
+ },
+ {
+  "file": "Interface/Nano/tooltip.png",
+  "src": {
+   "file_png": "Interface/Nano/tooltip.png",
+   "recolor": "eris_nano"
+  },
+  "standin": true
+ },
+ {
+  "file": "Interface/Nano/transparent_window_background_bordered.png",
+  "src": {
+   "file_png": "Interface/Nano/transparent_window_background_bordered.png",
+   "recolor": "eris_nano"
+  },
+  "standin": true
+ },
+ {
+  "file": "Interface/Nano/whisper.png",
+  "src": {
+   "file_png": "Interface/Nano/whisper.png",
+   "recolor": "eris_nano"
+  },
+  "standin": true
+ },
+ {
+  "file": "Interface/Nano/window_background.png",
+  "src": {
+   "file_png": "Interface/Nano/window_background.png",
+   "recolor": "eris_nano"
+  },
+  "standin": true
+ },
+ {
+  "file": "Interface/Nano/window_background_bordered.png",
+  "src": {
+   "file_png": "Interface/Nano/window_background_bordered.png",
+   "recolor": "eris_nano"
+  },
+  "standin": true
+ },
+ {
+  "file": "Interface/Nano/window_header.png",
+  "src": {
+   "file_png": "Interface/Nano/window_header.png",
+   "recolor": "eris_header"
+  },
+  "standin": true
+ },
+ {
+  "file": "Interface/Radial/button_normal.png",
+  "src": {
+   "dmi": "icons/mob/radial/menu.dmi",
+   "state": "radial_slice"
+  },
+  "standin": false
+ },
+ {
+  "file": "Interface/Radial/button_hover.png",
+  "src": {
+   "dmi": "icons/mob/radial/menu.dmi",
+   "state": "radial_slice_focus"
+  },
+  "standin": false
+ },
+ {
+  "file": "Interface/Radial/back_normal.png",
+  "src": {
+   "dmi": "icons/mob/radial/menu.dmi",
+   "state": "radial_center"
+  },
+  "standin": false
+ },
+ {
+  "file": "Interface/Radial/back_hover.png",
+  "src": {
+   "dmi": "icons/mob/radial/menu.dmi",
+   "state": "radial_center_focus"
+  },
+  "standin": false
+ },
+ {
+  "file": "Interface/Radial/close_normal.png",
+  "src": {
+   "dmi": "icons/mob/radial/menu.dmi",
+   "state": "radial_center"
+  },
+  "standin": false
+ },
+ {
+  "file": "Interface/Radial/close_hover.png",
+  "src": {
+   "dmi": "icons/mob/radial/menu.dmi",
+   "state": "radial_center_focus"
+  },
+  "standin": false
+ },
+ {
+  "target": "Interface/Misc/job_icons.rsi",
+  "states": {
+   "Captain": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudcaptain"
+   },
+   "HeadOfPersonnel": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudfirstofficer"
+   },
+   "Nanotrasen": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudcentcom"
+   },
+   "Admin": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudcentcom"
+   },
+   "ChiefEngineer": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudtechnomancerexultant"
+   },
+   "AtmosphericTechnician": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudatmospherictechnomancer"
+   },
+   "StationEngineer": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudtechnomancer"
+   },
+   "SeniorEngineer": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudtechnomancer"
+   },
+   "TechnicalAssistant": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudtechnomancer"
+   },
+   "ERTEngineer": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudtechnomancer"
+   },
+   "ResearchDirector": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudmoebiusexpeditionoverseer"
+   },
+   "Scientist": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudmoebiusscientist"
+   },
+   "SeniorResearcher": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudmoebiusscientist"
+   },
+   "ResearchAssistant": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudmoebiusscientist"
+   },
+   "Roboticist": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudmoebiusroboticist"
+   },
+   "ChiefMedicalOfficer": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudmoebiusbiolabofficer"
+   },
+   "MedicalDoctor": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudmoebiusdoctor"
+   },
+   "SeniorPhysician": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudmoebiusdoctor"
+   },
+   "MedicalIntern": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudmoebiusdoctor"
+   },
+   "ERTMedical": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudmoebiusdoctor"
+   },
+   "Chemist": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudmoebiuschemist"
+   },
+   "Paramedic": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudmoebiusparamedic"
+   },
+   "Psychologist": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudmoebiuspsychiatrist"
+   },
+   "Geneticist": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudmoebiusgeneticist"
+   },
+   "Virologist": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudmoebiusvirologist"
+   },
+   "Chaplain": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudneotheologypreacher"
+   },
+   "ERTChaplain": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudneotheologypreacher"
+   },
+   "Botanist": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudneotheologyagrolyte"
+   },
+   "Janitor": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudneotheologycustodian"
+   },
+   "ERTJanitor": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudneotheologycustodian"
+   },
+   "QuarterMaster": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudguildmerchant"
+   },
+   "CargoTechnician": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudguildtechnician"
+   },
+   "SeniorCourier": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudguildtechnician"
+   },
+   "ShaftMiner": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudguildminer"
+   },
+   "HeadOfSecurity": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudironhammercommander"
+   },
+   "ERTLeader": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudironhammercommander"
+   },
+   "SecurityOfficer": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudironhammeroperative"
+   },
+   "SecurityCadet": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudironhammeroperative"
+   },
+   "SeniorOfficer": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudironhammeroperative"
+   },
+   "ERTSecurity": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudironhammeroperative"
+   },
+   "Detective": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudironhammerinspector"
+   },
+   "Warden": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudironhammergunnerysergeant"
+   },
+   "Brigmedic": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudironhammermedicalspecialist"
+   },
+   "Bartender": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudclubworker"
+   },
+   "Chef": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudclubworker"
+   },
+   "Musician": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudclubworker"
+   },
+   "Boxer": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudclubworker"
+   },
+   "ServiceWorker": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudclubworker"
+   },
+   "Reporter": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudclubworker"
+   },
+   "Zookeeper": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudclubworker"
+   },
+   "TramDriver": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudguildtechnician"
+   },
+   "Librarian": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudlibrarian"
+   },
+   "Lawyer": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudlawyer"
+   },
+   "Mime": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudmime"
+   },
+   "Clown": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudguildartist"
+   },
+   "Passenger": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudvagabond"
+   },
+   "Visitor": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudvagabond"
+   },
+   "NoId": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudunknown"
+   },
+   "Unknown": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudunknown"
+   },
+   "Ninja": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudninja"
+   },
+   "DeathSquad": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "huddeathsquad"
+   },
+   "Syndicate": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudsyndicate"
+   },
+   "SyndicateCommander": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudoperative"
+   },
+   "SyndicateOperative": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudoperative"
+   },
+   "SyndicateCorpsman": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudoperative"
+   },
+   "Wizard": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudwizard"
+   },
+   "HeadRevolutionary": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudheadrevolutionary"
+   },
+   "Revolutionary": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudrevolutionary"
+   },
+   "Prisoner": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudprisoner"
+   },
+   "MindShield": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hud_imp_loyal"
+   },
+   "Pirate": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudmercenary"
+   },
+   "InitialInfected": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudbrainworm"
+   },
+   "Zombie": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudbrainworm"
+   },
+   "Borg": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudmalborg"
+   },
+   "StationAi": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudmalai"
+   },
+   "Sus": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudunknown1"
+   },
+   "ParadoxClone": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudunknown1"
+   },
+   "CBURN": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "huddeathsquad"
+   },
+   "Cluwne": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudguildartist"
+   }
+  },
+  "standin": false
+ },
+ {
+  "target": "Interface/Misc/security_icons.rsi",
+  "states": {
+   "hud_wanted": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudwanted"
+   },
+   "hud_incarcerated": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudprisoner"
+   },
+   "hud_paroled": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudparolled"
+   },
+   "hud_discharged": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudreleased"
+   },
+   "hud_suspected": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudwanted",
+    "tint": "#ffd000"
+   },
+   "hud_hostile": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudwanted"
+   },
+   "hud_eliminated": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "huddead"
+   }
+  },
+  "standin": false
+ },
+ {
+  "target": "Interface/Misc/health_icons.rsi",
+  "states": {
+   "Fine": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudhealthy"
+   },
+   "Critical": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "hudill"
+   },
+   "Dead": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "huddead"
+   },
+   "Rotting": {
+    "dmi": "icons/mob/hud.dmi",
+    "state": "huddead"
+   }
+  },
+  "standin": false
+ },
+ {
+  "target": "Interface/Misc/pointing.rsi",
+  "states": {
+   "pointing": {
+    "dmi": "icons/mob/screen/ErisStyle.dmi",
+    "state": "arrow"
+   }
+  },
+  "standin": false
+ },
+ {
+  "file": "Interface/Actions/harm.png",
+  "src": {
+   "dmi": "icons/mob/screen/ErisStyle.dmi",
+   "state": "harm"
+  },
+  "standin": false
+ },
+ {
+  "file": "Interface/Actions/harmOff.png",
+  "src": {
+   "dmi": "icons/mob/screen/ErisStyle.dmi",
+   "state": "help"
+  },
+  "standin": false
+ },
+ {
+  "file": "Interface/Actions/disarm.png",
+  "src": {
+   "dmi": "icons/mob/screen/ErisStyle.dmi",
+   "state": "disarm"
+  },
+  "standin": false
+ },
+ {
+  "file": "Interface/Actions/disarmOff.png",
+  "src": {
+   "dmi": "icons/mob/screen/ErisStyle.dmi",
+   "state": "help"
+  },
+  "standin": false
+ }
+]
