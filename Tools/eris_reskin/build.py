@@ -47,6 +47,10 @@ MAPS = Path(__file__).resolve().parent / "maps"
 BASE = (Path(__file__).resolve().parent / "BASE").read_text().strip()
 CREDIT = "Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin"
 
+# .github/rsi-schema.json license enum.
+ALLOWED_LICENSES = {"CC-BY-SA-3.0", "CC-BY-SA-4.0", "CC-BY-NC-3.0", "CC-BY-NC-4.0", "CC-BY-NC-SA-3.0",
+                    "CC-BY-NC-SA-4.0", "CC0-1.0"}
+
 # BYOND/RSI 8-dir order: S N E W SE SW NE NW. Diagonals fall back to E/W.
 DIAG_FALLBACK = {4: 2, 5: 3, 6: 2, 7: 3}
 
@@ -252,7 +256,8 @@ class Builder:
             meta["size"] = {"x": size[0], "y": size[1]}
             if CREDIT not in (meta.get("copyright") or ""):
                 meta["copyright"] = f"{meta.get('copyright') or ''}. {CREDIT}".lstrip(". ")
-            if not meta.get("license"):
+            # The art now includes CC-BY-SA CEV-Eris sprites; CC-BY sources can be shared under it.
+            if meta.get("license") not in ALLOWED_LICENSES:
                 meta["license"] = "CC-BY-SA-3.0"
             meta_path.write_text(json.dumps(meta, indent=4) + "\n", encoding="utf-8")
         return written
