@@ -1,7 +1,7 @@
 {
     "version": 1,
     "license": "CC-BY-SA-3.0",
-    "copyright": "Taken from and modified by ProtivogaSpriter on TGStation at commit https://github.com/tgstation/tgstation/commit/2614518661bfac1dcc96f07cfcc70b4abacd27bf",
+    "copyright": "Taken from and modified by ProtivogaSpriter on TGStation at commit https://github.com/tgstation/tgstation/commit/2614518661bfac1dcc96f07cfcc70b4abacd27bf. Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
     "size": {
         "x": 32,
         "y": 32
@@ -24,19 +24,7 @@
             "directions": 4
         },
         {
-            "name": "icon",
-            "delays": [
-                [
-                    2,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1
-                ]
-            ]
+            "name": "icon"
         }
     ]
 }

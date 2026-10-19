@@ -1,9 +1,8 @@
 {
     "version": 1,
     "license": "CC-BY-NC-SA-3.0",
-    "copyright": "Made by SharkSnake98 on Github",
-    "size":
-    {
+    "copyright": "Made by SharkSnake98 on Github. Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
+    "size": {
         "x": 32,
         "y": 32
     },

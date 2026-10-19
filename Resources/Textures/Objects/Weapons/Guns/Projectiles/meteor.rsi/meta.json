@@ -1,15 +1,20 @@
 {
     "version": 1,
     "license": "CC-BY-SA-3.0",
-    "copyright": "Taken from cev-eris at https://github.com/discordia-space/CEV-Eris/raw/2acc4d34a894dbcc9dbf3779b696ddf296aa2c56/icons/obj/projectiles.dmi",
+    "copyright": "Taken from cev-eris at https://github.com/discordia-space/CEV-Eris/raw/2acc4d34a894dbcc9dbf3779b696ddf296aa2c56/icons/obj/projectiles.dmi. Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
     "size": {
-      "x": 32,
-      "y": 32
+        "x": 32,
+        "y": 32
     },
     "states": [
-      {
-        "name": "large"
-      }
+        {
+            "name": "large",
+            "delays": [
+                [
+                    0.05,
+                    0.05
+                ]
+            ]
+        }
     ]
-  }
-  
+}

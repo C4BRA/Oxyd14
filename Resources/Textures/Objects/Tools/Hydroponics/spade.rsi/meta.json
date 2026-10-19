@@ -1,7 +1,7 @@
 {
     "version": 1,
     "license": "CC-BY-SA-3.0",
-    "copyright": "Taken from Aurorastation at commit https://github.com/Aurorastation/Aurora.3/commit/3160508c1a9f367be0ab054cceaf2e36c0b66250, storage by TiniestShark (Github)",
+    "copyright": "Taken from Aurorastation at commit https://github.com/Aurorastation/Aurora.3/commit/3160508c1a9f367be0ab054cceaf2e36c0b66250, storage by TiniestShark (Github). Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
     "size": {
         "x": 32,
         "y": 32

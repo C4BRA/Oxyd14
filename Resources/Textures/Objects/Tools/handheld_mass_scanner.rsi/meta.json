@@ -5,7 +5,7 @@
         "y": 32
     },
     "license": "CC-BY-SA-3.0",
-    "copyright": "Taken from Frontier Station, created by Tem Armoff https://github.com/new-frontiers-14/frontier-station-14/pull/484/files, Inhand sprites by onesch",
+    "copyright": "Taken from Frontier Station, created by Tem Armoff https://github.com/new-frontiers-14/frontier-station-14/pull/484/files, Inhand sprites by onesch. Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
     "states": [
         {
             "name": "scanner",

@@ -1,32 +1,32 @@
 {
     "version": 1,
     "license": "CC-BY-SA-3.0",
-    "copyright": "Made by ketufaispikinut (Github)",
+    "copyright": "Made by ketufaispikinut (Github). Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
     "size": {
         "x": 32,
         "y": 32
     },
     "states": [
         {
-        "name": "black"
+            "name": "black"
         },
         {
-        "name": "red"
+            "name": "red"
         },
         {
-        "name": "blue"
+            "name": "blue"
         },
         {
-        "name": "green"
+            "name": "green"
         },
         {
-        "name": "yellow"
+            "name": "yellow"
         },
         {
-        "name": "purple"
+            "name": "purple"
         },
         {
-        "name": "rainbow"
+            "name": "rainbow"
         }
     ]
 }

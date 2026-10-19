@@ -1,7 +1,7 @@
 {
     "version": 1,
     "license": "CC-BY-SA-3.0",
-    "copyright": "taken and recolored from tg station at commit https://github.com/tgstation/tgstation/blob/832ae532766d491d91db53746d15b4b55be3f2b0, Wielded inhand sprites edited by Liem",
+    "copyright": "taken and recolored from tg station at commit https://github.com/tgstation/tgstation/blob/832ae532766d491d91db53746d15b4b55be3f2b0, Wielded inhand sprites edited by Liem. Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
     "size": {
         "x": 32,
         "y": 32
@@ -23,13 +23,7 @@
             "name": "mag-unshaded-1"
         },
         {
-            "name": "mag-unshaded-0",
-            "delays": [
-                [
-                    0.3,
-                    0.3
-                ]
-            ]
+            "name": "mag-unshaded-0"
         },
         {
             "name": "inhand-left",
@@ -69,13 +63,13 @@
         {
             "name": "inhand-right-4"
         },
-		{
-			"name": "equipped-BELT",
-			"directions": 4
-		},
-		{
-			"name": "equipped-SUITSTORAGE",
-			"directions": 4
-		}
+        {
+            "name": "equipped-BELT",
+            "directions": 4
+        },
+        {
+            "name": "equipped-SUITSTORAGE",
+            "directions": 4
+        }
     ]
 }

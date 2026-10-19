@@ -1,7 +1,7 @@
 {
     "version": 1,
     "license": "CC-BY-NC-SA-3.0",
-    "copyright": "Taken from goonstation at https://github.com/goonstation/goonstation/pull/1179",
+    "copyright": "Taken from goonstation at https://github.com/goonstation/goonstation/pull/1179. Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
     "size": {
         "x": 32,
         "y": 32
@@ -22,4 +22,4 @@
             "name": "paired"
         }
     ]
-  }
+}

@@ -1,21 +1,27 @@
 {
     "version": 1,
     "license": "CC-BY-SA-3.0",
-    "copyright": "Taken from https://github.com/austation/austation/commit/e2a4fefd01e702f48d3d4cc8d6a2686d54d104fa and edited by TheShuEd, folded sprite modified by mubururu_, inhands by mubururu_ (github)",
+    "copyright": "Taken from https://github.com/austation/austation/commit/e2a4fefd01e702f48d3d4cc8d6a2686d54d104fa and edited by TheShuEd, folded sprite modified by mubururu_, inhands by mubururu_ (github). Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
     "size": {
         "x": 32,
         "y": 32
     },
     "states": [
         {
-            "name": "folded_extraction"
+            "name": "folded_extraction",
+            "delays": [
+                [
+                    1.8,
+                    0.1
+                ]
+            ]
         },
         {
             "name": "extraction_point",
             "delays": [
                 [
-                    0.5,
-                    0.5
+                    1.8,
+                    0.1
                 ]
             ]
         },
@@ -36,6 +42,5 @@
             "name": "inhand-right",
             "directions": 4
         }
-
     ]
 }

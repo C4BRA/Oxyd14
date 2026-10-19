@@ -1,7 +1,7 @@
 {
     "version": 1,
     "license": "CC-BY-SA-3.0",
-    "copyright": "Taken from ParadiseSS13 at commit https://github.com/ParadiseSS13/Paradise/pull/19710/commits/6fb423d9045d43f04e47770bbf505770f2d7b75a, inhands by TiniestShark (github)",
+    "copyright": "Taken from ParadiseSS13 at commit https://github.com/ParadiseSS13/Paradise/pull/19710/commits/6fb423d9045d43f04e47770bbf505770f2d7b75a, inhands by TiniestShark (github). Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
     "size": {
         "x": 32,
         "y": 32

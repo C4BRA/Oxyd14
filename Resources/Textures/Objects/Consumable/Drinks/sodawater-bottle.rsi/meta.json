@@ -5,7 +5,7 @@
         "y": 32
     },
     "license": "CC-BY-SA-3.0",
-    "copyright": "modified from space-up_bottle.rsi and inspired by sodawater.rsi by Prole0 (GitHub), inhands by TiniestShark (github)",
+    "copyright": "modified from space-up_bottle.rsi and inspired by sodawater.rsi by Prole0 (GitHub), inhands by TiniestShark (github). Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
     "states": [
         {
             "name": "icon"

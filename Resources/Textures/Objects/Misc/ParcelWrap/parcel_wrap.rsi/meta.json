@@ -1,7 +1,7 @@
 {
     "version": 1,
     "license": "CC-BY-SA-3.0",
-    "copyright": "Taken from tgstation https://github.com/tgstation/tgstation/blob/bd704770f7146d820e1e93b04ae1dcf3723b299a/icons/obj/stack_objects.dmi",
+    "copyright": "Taken from tgstation https://github.com/tgstation/tgstation/blob/bd704770f7146d820e1e93b04ae1dcf3723b299a/icons/obj/stack_objects.dmi. Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
     "size": {
         "x": 32,
         "y": 32

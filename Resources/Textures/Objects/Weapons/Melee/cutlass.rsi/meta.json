@@ -1,7 +1,7 @@
 {
     "version": 1,
     "license": "CC-BY-SA-3.0",
-    "copyright": "Modified from https://github.com/space-wizards/space-station-14/tree/master/Resources/Textures/Objects/Weapons/Melee/captain_sabre.rsi by Taral#6480 (Discord) for ss14. Storage and Foam Storage sprites by RedBookcase on Github.",
+    "copyright": "Modified from https://github.com/space-wizards/space-station-14/tree/master/Resources/Textures/Objects/Weapons/Melee/captain_sabre.rsi by Taral#6480 (Discord) for ss14. Storage and Foam Storage sprites by RedBookcase on Github.. Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
     "size": {
         "x": 32,
         "y": 32
@@ -19,7 +19,7 @@
         {
             "name": "foam_storage"
         },
-		{
+        {
             "name": "inhand-left",
             "directions": 4
         },

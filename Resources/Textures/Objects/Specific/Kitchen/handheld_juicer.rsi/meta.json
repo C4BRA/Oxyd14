@@ -5,7 +5,7 @@
         "y": 32
     },
     "license": "CC-BY-SA-4.0",
-    "copyright": "Created by TheShuEd (Github), edited into a juicer and inhands by ScarKy0(GitHub)",
+    "copyright": "Created by TheShuEd (Github), edited into a juicer and inhands by ScarKy0(GitHub). Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
     "states": [
         {
             "name": "icon"

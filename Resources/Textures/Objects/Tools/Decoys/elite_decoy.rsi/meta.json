@@ -1,18 +1,18 @@
 {
     "version": 1,
     "license": "CC-BY-SA-3.0",
-    "copyright": "Modified from existing sprites.",
+    "copyright": "Modified from existing sprites.. Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
     "size": {
         "x": 32,
         "y": 32
     },
     "states": [
         {
-        "name": "folded"
+            "name": "folded"
         },
         {
-        "name": "eballoon",
-        "directions": 4
+            "name": "eballoon",
+            "directions": 4
         }
-]
+    ]
 }

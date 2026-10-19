@@ -1,26 +1,14 @@
 {
     "version": 1,
     "license": "CC-BY-SA-3.0",
-    "copyright": "Edit of the door remote sprite by Flareguy for https://github.com/space-wizards/space-station-14",
+    "copyright": "Edit of the door remote sprite by Flareguy for https://github.com/space-wizards/space-station-14. Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
     "size": {
         "x": 32,
         "y": 32
     },
     "states": [
         {
-            "name": "declarator",
-            "delays": [
-                [
-                    0.3,
-                    0.3,
-                    0.3,
-                    0.3,
-                    0.3,
-                    0.2,
-                    0.2,
-                    0.2
-                ]
-            ]
+            "name": "declarator"
         }
     ]
 }

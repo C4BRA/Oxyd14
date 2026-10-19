@@ -1,7 +1,7 @@
 {
     "version": 1,
     "license": "CC-BY-SA-3.0",
-    "copyright": "Taken from tgstation at https://github.com/tgstation/tgstation/commit/e1142f20f5e4661cb6845cfcf2dd69f864d67432, holoplush and magicplush modified by deltanedas (github), rainbowcarplush and inhand sprites modified from carpplush and inhand sprites by ArtisticRoomba, magicarp and holocarp inhand sprites by TiniestShark (github)",
+    "copyright": "Taken from tgstation at https://github.com/tgstation/tgstation/commit/e1142f20f5e4661cb6845cfcf2dd69f864d67432, holoplush and magicplush modified by deltanedas (github), rainbowcarplush and inhand sprites modified from carpplush and inhand sprites by ArtisticRoomba, magicarp and holocarp inhand sprites by TiniestShark (github). Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
     "size": {
         "x": 32,
         "y": 32
@@ -30,25 +30,7 @@
             "directions": 4
         },
         {
-            "name": "holoplush",
-            "delays": [
-                [
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1
-                ]
-            ]
+            "name": "holoplush"
         },
         {
             "name": "holocarpplush-inhand-left",

@@ -1,7 +1,7 @@
 {
     "version": 1,
     "license": "CC-BY-NC-SA-3.0",
-    "copyright": "Taken from goonstation at commit https://github.com/goonstation/goonstation/commit/8c9738746d1222a80dddff25af1bceda58bbccac and created by Flaborized. ano11/ano11_on created by brainfood#7460. Inhands created by brainfood#7460 and modified by EmoGarbage404 (github)",
+    "copyright": "Taken from goonstation at commit https://github.com/goonstation/goonstation/commit/8c9738746d1222a80dddff25af1bceda58bbccac and created by Flaborized. ano11/ano11_on created by brainfood#7460. Inhands created by brainfood#7460 and modified by EmoGarbage404 (github). Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
     "size": {
         "x": 32,
         "y": 32
@@ -107,17 +107,7 @@
             "name": "ano05"
         },
         {
-            "name": "ano05_on",
-            "delays": [
-                [
-                    0.15,
-                    0.15,
-                    0.15,
-                    0.15,
-                    0.15,
-                    0.15
-                ]
-            ]
+            "name": "ano05_on"
         },
         {
             "name": "ano05-inhand-left",
@@ -131,17 +121,7 @@
             "name": "ano06"
         },
         {
-            "name": "ano06_on",
-            "delays": [
-                [
-                    0.15,
-                    0.15,
-                    0.15,
-                    0.15,
-                    0.15,
-                    0.15
-                ]
-            ]
+            "name": "ano06_on"
         },
         {
             "name": "ano06-inhand-left",

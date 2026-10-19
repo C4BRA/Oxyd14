@@ -1,10 +1,10 @@
 {
     "version": 1,
     "license": "CC-BY-SA-3.0",
-    "copyright": "Made by Dezzzix; Discord: dezzzix, inhands by TiniestShark (github)",
+    "copyright": "Made by Dezzzix; Discord: dezzzix, inhands by TiniestShark (github). Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
     "size": {
-      "x": 32,
-      "y": 32
+        "x": 32,
+        "y": 32
     },
     "states": [
         {
@@ -19,4 +19,4 @@
             "directions": 4
         }
     ]
-  }
+}

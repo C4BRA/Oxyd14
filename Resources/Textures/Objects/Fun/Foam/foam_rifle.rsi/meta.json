@@ -1,14 +1,22 @@
 {
     "version": 1,
     "license": "CC-BY-SA-3.0",
-    "copyright": "Taken from  at commit https://github.com/tgstation/tgstation/commit/f01de25493e2bd2706ef9b0303cb0d7b5e3e471b and modified from the foam force poster by IProduceWidgets (github)",
+    "copyright": "Taken from  at commit https://github.com/tgstation/tgstation/commit/f01de25493e2bd2706ef9b0303cb0d7b5e3e471b and modified from the foam force poster by IProduceWidgets (github). Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
     "size": {
         "x": 32,
         "y": 32
     },
     "states": [
         {
-            "name": "icon"
+            "name": "icon",
+            "delays": [
+                [
+                    0.5,
+                    0.1,
+                    0.1,
+                    0.1
+                ]
+            ]
         },
         {
             "name": "bolt-open"

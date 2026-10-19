@@ -1,26 +1,71 @@
 {
     "version": 1,
     "license": "CC-BY-NC-SA-3.0",
-    "copyright": "Taken from https://github.com/goonstation/goonstation at commit 68aa9d134c07ed345755ff4cc0e11eae531f624e",
+    "copyright": "Taken from https://github.com/goonstation/goonstation at commit 68aa9d134c07ed345755ff4cc0e11eae531f624e. Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
     "size": {
         "x": 32,
         "y": 32
     },
     "states": [
         {
-            "name": "omnitool-prying"
+            "name": "omnitool-prying",
+            "delays": [
+                [
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1
+                ]
+            ]
         },
         {
-            "name": "omnitool-screwing"
+            "name": "omnitool-screwing",
+            "delays": [
+                [
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1
+                ]
+            ]
         },
         {
-            "name": "omnitool-pulsing"
+            "name": "omnitool-pulsing",
+            "delays": [
+                [
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1
+                ]
+            ]
         },
         {
-            "name": "omnitool-snipping"
+            "name": "omnitool-snipping",
+            "delays": [
+                [
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1
+                ]
+            ]
         },
         {
-            "name": "omnitool-wrenching"
+            "name": "omnitool-wrenching",
+            "delays": [
+                [
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1
+                ]
+            ]
         }
     ]
 }

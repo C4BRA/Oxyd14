@@ -1,14 +1,14 @@
 {
     "version": 1,
     "license": "CC-BY-SA-3.0",
-    "copyright": "Created by TheShuEd (github) for Space Station 14",
+    "copyright": "Created by TheShuEd (github) for Space Station 14. Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
     "size": {
         "x": 64,
         "y": 64
     },
     "states": [
-    {
-        "name": "base"
-    }
+        {
+            "name": "base"
+        }
     ]
 }

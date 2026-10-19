@@ -1,29 +1,29 @@
 {
-  "version": 1,
-  "size": {
-    "x": 32,
-    "y": 32
-  },
-  "license": "CC-BY-SA-3.0",
-  "copyright": "Made by borkroman. Fill levels by RumiTiger",
-  "states": [
-    {
-      "name": "icon"
+    "version": 1,
+    "size": {
+        "x": 32,
+        "y": 32
     },
-    {
-      "name": "icon_empty"
-    },
-    {
-      "name": "fill-1"
-    },
-    {
-      "name": "fill-2"
-    },
-    {
-      "name": "fill-3"
-    },
-    {
-      "name": "fill-4"
-    }
-  ]
+    "license": "CC-BY-SA-3.0",
+    "copyright": "Made by borkroman. Fill levels by RumiTiger. Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
+    "states": [
+        {
+            "name": "icon"
+        },
+        {
+            "name": "icon_empty"
+        },
+        {
+            "name": "fill-1"
+        },
+        {
+            "name": "fill-2"
+        },
+        {
+            "name": "fill-3"
+        },
+        {
+            "name": "fill-4"
+        }
+    ]
 }

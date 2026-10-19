@@ -1,7 +1,7 @@
 {
     "version": 1,
     "license": "CC-BY-SA-3.0",
-    "copyright": "Storage sprite by RedBookcase on Github.",
+    "copyright": "Storage sprite by RedBookcase on Github.. Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
     "size": {
         "x": 64,
         "y": 64

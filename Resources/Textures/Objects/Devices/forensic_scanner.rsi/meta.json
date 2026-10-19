@@ -1,21 +1,14 @@
 {
-   "version": 1,
-   "license" : "CC-BY-SA-3.0",
-   "copyright" : "Icon modified from VG Station https://github.com/vgstation-coders/vgstation13/commit/4fc020f93702a45a66ebf01aed66864355393550, inhands/belt by TiniestShark (Github)",
-   "size" : {
-      "x" : 32,
-      "y" : 32
-   },
+    "version": 1,
+    "license": "CC-BY-SA-3.0",
+    "copyright": "Icon modified from VG Station https://github.com/vgstation-coders/vgstation13/commit/4fc020f93702a45a66ebf01aed66864355393550, inhands/belt by TiniestShark (Github). Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
+    "size": {
+        "x": 32,
+        "y": 32
+    },
     "states": [
         {
-            "name": "icon",
-            "delays": [
-                [
-                    0.8,
-                    0.2,
-                    0.2
-                ]
-            ]
+            "name": "icon"
         },
         {
             "name": "equipped-BELT",

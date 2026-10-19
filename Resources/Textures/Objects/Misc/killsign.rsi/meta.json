@@ -1,47 +1,23 @@
 {
     "version": 1,
     "license": "CC-BY-NC-SA-3.0",
-    "copyright": "Created by github user @moonheart08 | bald, cat, dog, furry, it, nerd, peak, raider, stinky and icon-hidden states edited by ScarKy0(Github)",
+    "copyright": "Created by github user @moonheart08 | bald, cat, dog, furry, it, nerd, peak, raider, stinky and icon-hidden states edited by ScarKy0(Github). Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
     "size": {
         "x": 32,
         "y": 32
     },
     "states": [
         {
-            "name": "bald",
-            "delays": [
-                [
-                    0.15,
-                    0.15
-                ]
-            ]
+            "name": "bald"
         },
         {
-            "name": "cat",
-            "delays": [
-                [
-                    0.15,
-                    0.15
-                ]
-            ]
+            "name": "cat"
         },
         {
-            "name": "dog",
-            "delays": [
-                [
-                    0.15,
-                    0.15
-                ]
-            ]
+            "name": "dog"
         },
         {
-            "name": "furry",
-            "delays": [
-                [
-                    0.15,
-                    0.15
-                ]
-            ]
+            "name": "furry"
         },
         {
             "name": "it",
@@ -53,49 +29,19 @@
             ]
         },
         {
-            "name": "kill",
-            "delays": [
-                [
-                    0.15,
-                    0.15
-                ]
-            ]
+            "name": "kill"
         },
         {
-            "name": "nerd",
-            "delays": [
-                [
-                    0.15,
-                    0.15
-                ]
-            ]
+            "name": "nerd"
         },
         {
-            "name": "peak",
-            "delays": [
-                [
-                    0.15,
-                    0.15
-                ]
-            ]
+            "name": "peak"
         },
         {
-            "name": "raider",
-            "delays": [
-                [
-                    0.15,
-                    0.15
-                ]
-            ]
+            "name": "raider"
         },
         {
-            "name": "stinky",
-            "delays": [
-                [
-                    0.15,
-                    0.15
-                ]
-            ]
+            "name": "stinky"
         },
         {
             "name": "icon"

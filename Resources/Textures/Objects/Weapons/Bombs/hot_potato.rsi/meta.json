@@ -1,23 +1,17 @@
 {
     "version": 1,
     "license": "CC-BY-SA-3.0",
-    "copyright": "icon from potato.rsi & modified activated by Prole0 (GitHub)",
+    "copyright": "icon from potato.rsi & modified activated by Prole0 (GitHub). Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
     "size": {
         "x": 32,
         "y": 32
     },
     "states": [
         {
-      "name": "icon"
+            "name": "icon"
         },
         {
-            "name": "activated",
-            "delays": [
-                [
-                    0.1,
-                    0.1
-                ]
-            ]
+            "name": "activated"
         }
     ]
 }

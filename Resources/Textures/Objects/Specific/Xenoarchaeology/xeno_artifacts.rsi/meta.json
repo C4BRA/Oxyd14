@@ -1,7 +1,7 @@
 {
     "version": 1,
     "license": "CC-BY-NC-SA-3.0",
-    "copyright": "Taken from goonstation at commit https://github.com/goonstation/goonstation/commit/8c9738746d1222a80dddff25af1bceda58bbccac and created by Flaborized.",
+    "copyright": "Taken from goonstation at commit https://github.com/goonstation/goonstation/commit/8c9738746d1222a80dddff25af1bceda58bbccac and created by Flaborized.. Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
     "size": {
         "x": 32,
         "y": 32
@@ -56,7 +56,7 @@
             ]
         },
         {
-        "name": "ano04"
+            "name": "ano04"
         },
         {
             "name": "ano04_on",
@@ -216,7 +216,7 @@
             ]
         },
         {
-        "name": "ano14"
+            "name": "ano14"
         },
         {
             "name": "ano14_on",
@@ -232,7 +232,7 @@
             ]
         },
         {
-        "name": "ano15"
+            "name": "ano15"
         },
         {
             "name": "ano15_on",
@@ -572,7 +572,7 @@
             ]
         },
         {
-        "name": "ano36"
+            "name": "ano36"
         },
         {
             "name": "ano36_on",
@@ -591,14 +591,14 @@
             "name": "artifact-activation",
             "delays": [
                 [
-                    0.100,
-                    0.100,
-                    0.100,
-                    0.100,
-                    0.100,
-                    0.100,
-                    0.100,
-                    0.100
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1
                 ]
             ]
         }

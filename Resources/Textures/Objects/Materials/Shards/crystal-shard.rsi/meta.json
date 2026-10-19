@@ -1,23 +1,23 @@
 {
-  "version": 1,
-  "license": "CC-BY-SA-4.0",
-  "copyright": "by vladimir.s",
-  "size": {
-    "x": 32,
-    "y": 32
-  },
-  "states": [
-    {
-      "name": "shard0"
+    "version": 1,
+    "license": "CC-BY-SA-4.0",
+    "copyright": "by vladimir.s. Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
+    "size": {
+        "x": 32,
+        "y": 32
     },
-    {
-      "name": "shard1"
-    },
-    {
-      "name": "shard2"
-    },
-    {
-      "name": "shard3"
-    }
-  ]
+    "states": [
+        {
+            "name": "shard0"
+        },
+        {
+            "name": "shard1"
+        },
+        {
+            "name": "shard2"
+        },
+        {
+            "name": "shard3"
+        }
+    ]
 }

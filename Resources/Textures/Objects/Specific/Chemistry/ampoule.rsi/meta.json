@@ -1,7 +1,7 @@
 {
     "version": 1,
     "license": "CC-BY-SA-3.0",
-    "copyright": "Made by Samuka-C (GitHub), Modified from vial.rsi",
+    "copyright": "Made by Samuka-C (GitHub), Modified from vial.rsi. Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
     "size": {
         "x": 32,
         "y": 32

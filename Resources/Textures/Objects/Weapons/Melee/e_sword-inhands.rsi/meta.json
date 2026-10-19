@@ -1,7 +1,7 @@
 {
     "version": 1,
     "license": "CC-BY-SA-3.0",
-    "copyright": "Inhands by RiceMar1244.",
+    "copyright": "Inhands by RiceMar1244.. Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
     "size": {
         "x": 64,
         "y": 64
@@ -13,25 +13,7 @@
         },
         {
             "name": "inhand-left-blade",
-            "directions": 4,
-            "delays": [
-                [
-                    0.1,
-                    0.1
-                ],
-                [
-                    0.1,
-                    0.1
-                ],
-                [
-                    0.1,
-                    0.1
-                ],
-                [
-                    0.1,
-                    0.1
-                ]
-            ]
+            "directions": 4
         },
         {
             "name": "inhand-right",
@@ -39,25 +21,7 @@
         },
         {
             "name": "inhand-right-blade",
-            "directions": 4,
-            "delays": [
-                [
-                    0.1,
-                    0.1
-                ],
-                [
-                    0.1,
-                    0.1
-                ],
-                [
-                    0.1,
-                    0.1
-                ],
-                [
-                    0.1,
-                    0.1
-                ]
-            ]
+            "directions": 4
         }
     ]
 }

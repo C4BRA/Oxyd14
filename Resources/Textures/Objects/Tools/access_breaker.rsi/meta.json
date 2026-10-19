@@ -1,10 +1,10 @@
 {
     "version": 1,
     "license": "CC-BY-SA-3.0",
-    "copyright": "Made by 20kdc (GitHub), edited by DieselMohawk (GitHub), xorg edit by ThatGuyUSA (GitHub)",
+    "copyright": "Made by 20kdc (GitHub), edited by DieselMohawk (GitHub), xorg edit by ThatGuyUSA (GitHub). Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
     "size": {
-    "x": 32,
-    "y": 32
+        "x": 32,
+        "y": 32
     },
     "states": [
         {
@@ -16,52 +16,13 @@
             "directions": 4
         },
         {
-            "name": "syndi-icon",
-            "delays": [
-                [
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.5,
-                    0.5,
-                    0.5,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1
-                ]
-            ]
+            "name": "syndi-icon"
         },
         {
             "name": "equipped-BELT"
         },
         {
-            "name": "xorg-icon",
-            "delays": [
-                [
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.5,
-                    0.5,
-                    0.5,
-                    0.5,
-                    0.5,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1
-                ]
-            ]
+            "name": "xorg-icon"
         }
     ]
 }

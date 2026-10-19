@@ -1,7 +1,7 @@
 {
     "version": 1,
     "license": "CC-BY-NC-SA-3.0",
-    "copyright": "Created by BoskiYourk (GitHub), edited by spanky-spanky (GitHub)",
+    "copyright": "Created by BoskiYourk (GitHub), edited by spanky-spanky (GitHub). Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
     "size": {
         "x": 32,
         "y": 32
@@ -23,15 +23,7 @@
             "name": "mag-unshaded-1"
         },
         {
-            "name": "mag-unshaded-0",
-            "delays": [
-                [
-                    0.35,
-                    0.35,
-                    0.35,
-                    0.35
-                ]
-            ]
+            "name": "mag-unshaded-0"
         },
         {
             "name": "inhand-left",

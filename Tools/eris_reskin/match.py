@@ -179,18 +179,22 @@ def entity_names_by_rsi() -> dict[str, list[str]]:
         for e in docs or []:
             if not isinstance(e, dict) or e.get("type") != "entity" or not isinstance(e.get("id"), str):
                 continue
-            sprites = set()
+            sprites, states = set(), []
             for c in e.get("components") or []:
                 if not isinstance(c, dict):
                     continue
                 if isinstance(c.get("sprite"), str):
                     sprites.add(c["sprite"])
+                if c.get("type") == "Sprite" and isinstance(c.get("state"), str):
+                    states.append(c["state"])
                 for layer in c.get("layers") or []:
                     if isinstance(layer, dict) and isinstance(layer.get("sprite"), str):
                         sprites.add(layer["sprite"])
+                    if c.get("type") == "Sprite" and isinstance(layer, dict) and isinstance(layer.get("state"), str):
+                        states.append(layer["state"])
             parents = e.get("parent") or []
             ents[e["id"]] = {"name": e.get("name"), "parents": parents if isinstance(parents, list) else [parents],
-                             "sprites": sprites, "desc": e.get("description") or ""}
+                             "sprites": sprites, "states": states, "desc": e.get("description") or ""}
 
     def sprites_of(i, seen=()):
         e = ents.get(i)
@@ -206,8 +210,36 @@ def entity_names_by_rsi() -> dict[str, list[str]]:
     by_rsi: dict[str, list[str]] = defaultdict(list)
     for i, e in ents.items():
         for s in sprites_of(i):
-            by_rsi[s.lstrip("/").removeprefix("Textures/")].append(f"{i} {e['name'] or ''}")
+            key = s.lstrip("/").removeprefix("Textures/")
+            by_rsi[key].append(f"{i} {e['name'] or ''}")
+            for st in e["states"][:1]:
+                USED_STATES[key][st] += 1
+                USED_NAMES[key][st].append(f"{i} {e['name'] or ''}")
     return by_rsi
+
+
+# RSI path -> {state: number of entities whose Sprite shows it first}; filled by entity_names_by_rsi.
+USED_STATES: dict[str, dict[str, int]] = defaultdict(lambda: defaultdict(int))
+USED_NAMES: dict[str, dict[str, list[str]]] = defaultdict(lambda: defaultdict(list))
+
+
+def primary_state(rsi: str, snames: list[str]) -> str:
+    entity_names_by_rsi()
+    used = USED_STATES.get(rsi)
+    if used:
+        best = max(used, key=used.get)
+        if best in snames:
+            return best
+    for s in ("icon", "base", "closed", "off", "idle"):
+        if s in snames:
+            return s
+    return snames[0]
+
+
+def coverage(im) -> int:
+    if im is None:
+        return 0
+    return sum(1 for a in im.getchannel("A").getdata() if a > 64)
 
 
 def rsi_states(rsi: str) -> tuple[dict, list[dict]]:

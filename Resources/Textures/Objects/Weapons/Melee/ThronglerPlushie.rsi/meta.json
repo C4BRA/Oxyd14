@@ -1,14 +1,14 @@
 {
-  "version": 1,
-  "license": "CC0-1.0",
-  "copyright": "Created by GandaIfHardcore",
-  "size": {
-    "x": 47,
-    "y": 47
-  },
-  "states": [
-    {
-      "name": "icon"
-    }
-  ]
+    "version": 1,
+    "license": "CC0-1.0",
+    "copyright": "Created by GandaIfHardcore. Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
+    "size": {
+        "x": 47,
+        "y": 47
+    },
+    "states": [
+        {
+            "name": "icon"
+        }
+    ]
 }

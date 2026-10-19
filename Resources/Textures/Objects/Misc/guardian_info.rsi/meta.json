@@ -1,22 +1,14 @@
 {
     "version": 1,
     "license": "CC-BY-NC-SA-4.0",
-    "copyright": "original asset provided by https://github.com/CrudeWax",
+    "copyright": "original asset provided by https://github.com/CrudeWax. Reskinned with CEV-Eris sprites (https://github.com/discordia-space/CEV-Eris), see Tools/eris_reskin",
     "size": {
         "x": 32,
         "y": 32
     },
     "states": [
         {
-            "name": "guardian_info",
-            "delays": [
-                [
-                    0.2,
-                    0.1,
-                    0.2,
-                    0.1
-                ]
-            ]
+            "name": "guardian_info"
         },
         {
             "name": "icon"
