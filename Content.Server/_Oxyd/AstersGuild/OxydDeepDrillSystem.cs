@@ -13,12 +13,12 @@ namespace Content.Server._Oxyd.AstersGuild;
 /// Ore processing itself is stock SS14: the ore processor entity is a Lathe +
 /// MaterialStorage machine (OreProcessorIndustrial), not a custom system.
 /// </summary>
-public sealed class OxydDeepDrillSystem : EntitySystem
+public sealed partial class OxydDeepDrillSystem : EntitySystem
 {
     [Dependency] private AppearanceSystem _appearance = default!;
     [Dependency] private EntityLookupSystem _lookup = default!;
 
-    private static readonly ProtoId<EntityPrototype>[] Ores =
+    private static readonly EntProtoId[] Ores =
     [
         "SteelOre",
         "UraniumOre",
