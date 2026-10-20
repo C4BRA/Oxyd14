@@ -88,6 +88,7 @@ public sealed partial class OxydEconomySystem
                 return false;
 
             recipient.Balance += amount;
+            SyncPersonalAccount(recipient.AccountNumber);
             LogTransaction(recipient, purpose + " (external)", amount, "OxydPayday");
             return true;
         }
@@ -99,6 +100,8 @@ public sealed partial class OxydEconomySystem
         recipient.Balance += amount;
         SyncDepartmentToCargo(funder);
         SyncDepartmentToCargo(recipient);
+        SyncPersonalAccount(funder.AccountNumber);
+        SyncPersonalAccount(recipient.AccountNumber);
         LogTransaction(funder, purpose, -amount, "OxydPayday");
         LogTransaction(recipient, purpose, amount, "OxydPayday");
         return true;

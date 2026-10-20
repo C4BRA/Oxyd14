@@ -48,6 +48,11 @@ public sealed partial class OxydPersonalAccountComponent : Component
     [DataField, AutoNetworkedField]
     public int AccountNumber;
 
+    /// <summary>Balance of <see cref="AccountNumber"/> mirrored for the character-info window.
+    /// Synced by OxydEconomySystem after every balance mutation.</summary>
+    [AutoNetworkedField]
+    public int Balance;
+
     /// <summary>Department account number remembered for Manager/Worker style access.</summary>
     [DataField, AutoNetworkedField]
     public int? DepartmentAccountNumber;

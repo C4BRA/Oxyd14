@@ -266,6 +266,8 @@ public sealed partial class OxydEconomySystem : EntitySystem
         dst.Balance += amount;
         SyncDepartmentToCargo(src);
         SyncDepartmentToCargo(dst);
+        SyncPersonalAccount(src.AccountNumber);
+        SyncPersonalAccount(dst.AccountNumber);
         LogTransaction(src, purpose, -amount, terminal);
         LogTransaction(dst, purpose, amount, terminal);
         return true;
@@ -291,6 +293,7 @@ public sealed partial class OxydEconomySystem : EntitySystem
 
         acc.Balance += delta;
         SyncDepartmentToCargo(acc);
+        SyncPersonalAccount(acc.AccountNumber);
         LogTransaction(acc, purpose, delta, terminal);
         return true;
     }
@@ -303,6 +306,7 @@ public sealed partial class OxydEconomySystem : EntitySystem
         RefreshDepartment(acc);
         acc.Balance = balance;
         SyncDepartmentToCargo(acc);
+        SyncPersonalAccount(acc.AccountNumber);
         return true;
     }
 
@@ -320,6 +324,7 @@ public sealed partial class OxydEconomySystem : EntitySystem
 
         acc.Balance = next;
         SyncDepartmentToCargo(acc);
+        SyncPersonalAccount(acc.AccountNumber);
         LogTransaction(acc, purpose, applied, terminal);
         return true;
     }
@@ -391,6 +396,7 @@ public sealed partial class OxydEconomySystem : EntitySystem
 
         acc.Balance = 0;
         SyncDepartmentToCargo(acc);
+        SyncPersonalAccount(acc.AccountNumber);
         LogTransaction(acc, "Revoke payroll", -funds, terminal);
         TrySilentAdjust(destinationAccount, funds, $"Revoke payroll ({acc.OwnerName})", terminal);
         return true;
@@ -443,6 +449,22 @@ public sealed partial class OxydEconomySystem : EntitySystem
         {
             acc.Balance = bal;
             _cargoSyncedBalance[acc.AccountNumber] = bal;
+        }
+    }
+
+    /// <summary>Mirror an account's balance onto every OxydPersonalAccountComponent linked to it
+    /// so clients can show their balance in the character-info menu.</summary>
+    private void SyncPersonalAccount(int accountNumber)
+    {
+        if (!_accounts.TryGetValue(accountNumber, out var acc))
+            return;
+        var q = EntityQueryEnumerator<OxydPersonalAccountComponent>();
+        while (q.MoveNext(out var uid, out var personal))
+        {
+            if (personal.AccountNumber != accountNumber || personal.Balance == acc.Balance)
+                continue;
+            personal.Balance = acc.Balance;
+            Dirty(uid, personal);
         }
     }
 

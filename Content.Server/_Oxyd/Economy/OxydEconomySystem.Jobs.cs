@@ -60,6 +60,7 @@ public sealed partial class OxydEconomySystem
 
         var personal = EnsureComp<OxydPersonalAccountComponent>(mob);
         personal.AccountNumber = account.AccountNumber;
+        personal.Balance = account.Balance;
 
         if (deptAccess && employer != null)
         {
