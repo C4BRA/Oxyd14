@@ -1,0 +1,128 @@
+# Eris artwork string tables (CEV-Eris strings/artist_strings) as datasets.
+# Consumed by OxydArtistBenchSystem for random artwork names + statue stories.
+
+- type: localizedDataset
+  id: OxydArtWeaponFirstNames
+  values:
+    prefix: oxyd-art-weapon-first-
+    count: 83
+
+- type: localizedDataset
+  id: OxydArtWeaponSecondNames
+  values:
+    prefix: oxyd-art-weapon-second-
+    count: 92
+
+- type: localizedDataset
+  id: OxydArtCreaturesPlural
+  values:
+    prefix: oxyd-art-creatures-plural-
+    count: 102
+
+- type: localizedDataset
+  id: OxydArtLocations
+  values:
+    prefix: oxyd-art-locations-
+    count: 41
+
+- type: localizedDataset
+  id: OxydArtLocationsDescriptors
+  values:
+    prefix: oxyd-art-locations-descriptors-
+    count: 11
+
+- type: localizedDataset
+  id: OxydArtLocationsSpecifics
+  values:
+    prefix: oxyd-art-locations-specifics-
+    count: 5
+
+- type: localizedDataset
+  id: OxydArtSculptingMethod
+  values:
+    prefix: oxyd-art-sculpting-method-
+    count: 4
+
+- type: localizedDataset
+  id: OxydArtSculptingMethodDescriptors
+  values:
+    prefix: oxyd-art-sculpting-method-desc-
+    count: 6
+
+- type: localizedDataset
+  id: OxydArtStyles
+  values:
+    prefix: oxyd-art-styles-
+    count: 13
+
+- type: localizedDataset
+  id: OxydArtStyleDescriptors
+  values:
+    prefix: oxyd-art-style-descriptors-
+    count: 13
+
+- type: localizedDataset
+  id: OxydArtTypes
+  values:
+    prefix: oxyd-art-types-
+    count: 4
+
+- type: localizedDataset
+  id: OxydArtTypesStatue
+  values:
+    prefix: oxyd-art-types-statue-
+    count: 7
+
+- type: localizedDataset
+  id: OxydArtTypeActionsStatue
+  values:
+    prefix: oxyd-art-type-actions-statue-
+    count: 5
+
+- type: localizedDataset
+  id: OxydArtTypeOfsStatue
+  values:
+    prefix: oxyd-art-type-ofs-statue-
+    count: 6
+
+- type: localizedDataset
+  id: OxydArtObjectSubjects
+  values:
+    prefix: oxyd-art-objectsubject-
+    count: 120
+
+- type: localizedDataset
+  id: OxydArtSubjectActions
+  values:
+    prefix: oxyd-art-subject-actions-
+    count: 130
+
+- type: localizedDataset
+  id: OxydArtObjectActions
+  values:
+    prefix: oxyd-art-object-actions-
+    count: 134
+
+- type: localizedDataset
+  id: OxydArtObjectSubjectActions
+  values:
+    prefix: oxyd-art-objectsubject-actions-
+    count: 11
+
+- type: localizedDataset
+  id: OxydArtObjectSubjectActionsPresent
+  values:
+    prefix: oxyd-art-objectsubject-actions-present-
+    count: 16
+
+- type: localizedDataset
+  id: OxydArtObjectSubjectStates
+  values:
+    prefix: oxyd-art-objectsubject-states-
+    count: 18
+
+- type: localizedDataset
+  id: OxydArtThemes
+  values:
+    prefix: oxyd-art-themes-
+    count: 16

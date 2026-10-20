@@ -90,8 +90,13 @@ public sealed partial class OxydArtistBenchSystem : EntitySystem
             return false;
         }
 
-        if (!HasEnoughMaterials(bench, out error))
+        // Stock SharedMaterialStorageSystem batch API checks every material atomically.
+        var required = RequiredMaterials(bench.Comp);
+        if (!_materials.CanChangeMaterialAmount(bench.Owner, required))
+        {
+            error = $"Need {bench.Comp.MinMaterial} of each material";
             return false;
+        }
 
         var isArtist = HasComp<OxydArtistPerkComponent>(artist);
 
@@ -114,8 +119,11 @@ public sealed partial class OxydArtistBenchSystem : EntitySystem
             return false;
         }
 
-        if (!TryConsumeMaterials(bench, out error))
+        if (!_materials.TryChangeMaterialAmount(bench.Owner, required))
+        {
+            error = "Failed to consume materials";
             return false;
+        }
 
         _sanity.GiveInsight((artist, sanity), -used);
 
@@ -139,8 +147,14 @@ public sealed partial class OxydArtistBenchSystem : EntitySystem
         if (kind == "oddity")
             PopulateArtworkOddity(art, used);
 
-        _meta.SetEntityName(art, $"{artwork.ArtistName}'s {kind}");
-        _meta.SetEntityDescription(art, $"Insight {used:0} · {price}cr · Guild consignment");
+        // Eris artwork naming: statues use get_artwork_name, everything else get_weapon_name.
+        _meta.SetEntityName(art, kind == "statue" ? GetStatueArtworkName() : GetWeaponArtworkName());
+        // Eris make_art_review: statues get a randomly generated story; other kinds a
+        // generic style/method review line. Both append to the proto description.
+        var review = kind == "statue"
+            ? MakeStatueReview()
+            : MakeGenericReview(_random.Pick(bench.Comp.SuitableMaterials));
+        _meta.SetEntityDescription(art, $"{MetaData(art).EntityDescription} {review}");
 
         if (!isArtist)
             SacrificeSkills(artist);
@@ -160,36 +174,16 @@ public sealed partial class OxydArtistBenchSystem : EntitySystem
         return TryCreateArtwork(bench, artist, requestedInsight, out error, out price, out used, out _);
     }
 
-    private bool HasEnoughMaterials(Entity<OxydArtistBenchComponent> bench, out string? error)
+    /// <summary>Eris randomize_materialas + consume: MinMaterial of each suitable material,
+    /// checked and consumed atomically via the stock storage batch API
+    /// (CanChangeMaterialAmount/TryChangeMaterialAmount dictionary overloads).
+    /// </summary>
+    private static Dictionary<string, int> RequiredMaterials(OxydArtistBenchComponent comp)
     {
-        error = null;
-        foreach (var mat in bench.Comp.SuitableMaterials)
-        {
-            var amount = _materials.GetMaterialAmount(bench.Owner, mat);
-            if (amount < bench.Comp.MinMaterial)
-            {
-                error = $"Need {bench.Comp.MinMaterial} {mat} (have {amount})";
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    private bool TryConsumeMaterials(Entity<OxydArtistBenchComponent> bench, out string? error)
-    {
-        error = null;
-        // Eris randomize_materialas + consume: burn min_mat of each suitable material.
-        foreach (var mat in bench.Comp.SuitableMaterials)
-        {
-            if (!_materials.TryChangeMaterialAmount(bench.Owner, mat, -bench.Comp.MinMaterial))
-            {
-                error = $"Failed to consume {mat}";
-                return false;
-            }
-        }
-
-        return true;
+        var required = new Dictionary<string, int>();
+        foreach (var mat in comp.SuitableMaterials)
+            required[mat.Id] = -comp.MinMaterial;
+        return required;
     }
 
     private string ChooseArtKind(Entity<OxydArtistBenchComponent> bench, EntityUid artist, float insUsed, bool isArtist)
