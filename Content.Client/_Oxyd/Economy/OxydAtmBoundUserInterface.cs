@@ -45,14 +45,17 @@ public sealed class OxydAtmWindow : FancyWindow
     private readonly Label _error = new() { Visible = false };
     private readonly LineEdit _account = new() { PlaceHolder = "Account #", HorizontalExpand = true };
     private readonly LineEdit _pin = new() { PlaceHolder = "PIN", MinWidth = 70 };
-    private readonly LineEdit _target = new() { PlaceHolder = "Transfer target", HorizontalExpand = true };
-    private readonly LineEdit _amount = new() { PlaceHolder = "Amount", MinWidth = 70 };
+    private readonly LineEdit _withdraw = new() { PlaceHolder = "Withdraw amount", HorizontalExpand = true };
+    private readonly LineEdit _transferAmount = new() { PlaceHolder = "Amount", MinWidth = 90 };
+    private readonly OptionButton _target = new() { HorizontalExpand = true };
+    private readonly List<int> _targetAccounts = new();
+    private readonly BoxContainer _bankRows;
     private readonly BoxContainer _root;
 
     public OxydAtmWindow()
     {
         Title = "ATM";
-        SetSize = new Vector2(380, 300);
+        SetSize = new Vector2(420, 320);
 
         _root = new BoxContainer
         {
@@ -82,30 +85,45 @@ public sealed class OxydAtmWindow : FancyWindow
         loginRow.AddChild(logoutBtn);
         _root.AddChild(loginRow);
 
-        var withdrawRow = new BoxContainer { Orientation = LayoutOrientation.Horizontal, SeparationOverride = 4 };
-        foreach (var n in new[] { 100, 500, 1000 })
+        _bankRows = new BoxContainer
         {
-            var btn = new Button { Text = $"Withdraw {n}" };
-            var amount = n;
-            btn.OnPressed += _ => OnWithdraw?.Invoke(amount);
-            withdrawRow.AddChild(btn);
-        }
-        _root.AddChild(withdrawRow);
+            Orientation = LayoutOrientation.Vertical,
+            SeparationOverride = 4,
+            Visible = false,
+        };
+
+        var withdrawRow = new BoxContainer { Orientation = LayoutOrientation.Horizontal, SeparationOverride = 4 };
+        withdrawRow.AddChild(_withdraw);
+        var withdrawBtn = new Button { Text = "Withdraw" };
+        withdrawBtn.OnPressed += _ =>
+        {
+            if (!int.TryParse(_withdraw.Text, out var amount) || amount <= 0)
+                return;
+            OnWithdraw?.Invoke(amount);
+        };
+        withdrawRow.AddChild(withdrawBtn);
+        _bankRows.AddChild(withdrawRow);
 
         var transferRow = new BoxContainer { Orientation = LayoutOrientation.Horizontal, SeparationOverride = 4 };
+        _target.AddItem("Transfer target", 0);
+        _target.TrySelectId(0);
         transferRow.AddChild(_target);
-        transferRow.AddChild(_amount);
+        transferRow.AddChild(_transferAmount);
         var transferBtn = new Button { Text = "Transfer" };
         transferBtn.OnPressed += _ =>
         {
-            int.TryParse(_target.Text, out var t);
-            int.TryParse(_amount.Text, out var a);
-            OnTransfer?.Invoke(t, a);
+            var sel = _target.SelectedId;
+            if (sel <= 0 || sel > _targetAccounts.Count)
+                return;
+            if (!int.TryParse(_transferAmount.Text, out var amount) || amount <= 0)
+                return;
+            OnTransfer?.Invoke(_targetAccounts[sel - 1], amount);
         };
         transferRow.AddChild(transferBtn);
-        _root.AddChild(transferRow);
+        _bankRows.AddChild(transferRow);
 
-        _root.AddChild(new Label { Text = "Insert a Credit stack on the machine to deposit." });
+        _bankRows.AddChild(new Label { Text = "Insert a Credit stack on the machine to deposit." });
+        _root.AddChild(_bankRows);
         ContentsContainer.AddChild(_root);
     }
 
@@ -116,5 +134,25 @@ public sealed class OxydAtmWindow : FancyWindow
         _status.Text = state.LoggedIn
             ? $"#{state.AccountNumber} {state.OwnerName} — {state.Balance}cr"
             : "Not logged in";
+        _bankRows.Visible = state.LoggedIn;
+
+        var selected = _target.SelectedId is { } id && id >= 1 && id <= _targetAccounts.Count
+            ? _targetAccounts[id - 1]
+            : (int?)null;
+        _target.Clear();
+        _targetAccounts.Clear();
+        _target.AddItem("Transfer target", 0);
+        var restore = 0;
+        for (var i = 0; i < state.Accounts.Count; i++)
+        {
+            var acct = state.Accounts[i];
+            if (acct.Number == state.AccountNumber)
+                continue; // can't transfer to yourself anyway
+            _targetAccounts.Add(acct.Number);
+            _target.AddItem($"#{acct.Number} {acct.OwnerName}", _targetAccounts.Count);
+            if (acct.Number == selected)
+                restore = _targetAccounts.Count;
+        }
+        _target.TrySelectId(restore);
     }
 }

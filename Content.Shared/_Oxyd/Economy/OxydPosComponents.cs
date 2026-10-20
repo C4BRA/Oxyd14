@@ -111,6 +111,14 @@ public enum OxydAtmUiKey : byte
     Key,
 }
 
+/// <summary>One registered account entry for the ATM transfer dropdown.</summary>
+[Serializable, NetSerializable]
+public sealed class OxydAtmAccountEntry
+{
+    public int Number;
+    public string OwnerName = string.Empty;
+}
+
 [Serializable, NetSerializable]
 public sealed class OxydAtmUiState : BoundUserInterfaceState
 {
@@ -118,6 +126,8 @@ public sealed class OxydAtmUiState : BoundUserInterfaceState
     public int AccountNumber;
     public string OwnerName = string.Empty;
     public int Balance;
+    /// <summary>All registered accounts (number + owner; never PINs) for the transfer dropdown.</summary>
+    public List<OxydAtmAccountEntry> Accounts = new();
     public string? Error;
 }
 

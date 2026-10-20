@@ -239,6 +239,18 @@ public sealed partial class OxydAtmSystem : EntitySystem
     private void PushState(Entity<OxydAtmComponent> ent, string? error = null)
     {
         var state = new OxydAtmUiState { Error = error };
+        // Registered accounts (numbers + owners only — never PINs) drive the
+        // transfer-target dropdown in the ATM window.
+        foreach (var (number, acctData) in _economy.Accounts)
+        {
+            state.Accounts.Add(new OxydAtmAccountEntry
+            {
+                Number = number,
+                OwnerName = acctData.OwnerName,
+            });
+        }
+        state.Accounts.Sort((a, b) => a.Number.CompareTo(b.Number));
+
         if (ent.Comp.SessionAccount is { } acct && _economy.TryGetAccount(acct, out var data))
         {
             state.LoggedIn = true;
