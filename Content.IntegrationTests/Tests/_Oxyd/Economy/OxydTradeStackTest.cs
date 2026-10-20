@@ -44,7 +44,7 @@ public sealed class OxydTradeStackTest : GameTest
 
             var entMan = server.ResolveDependency<IEntityManager>();
             var drop = entMan.SpawnEntity("OxydTradeBeaconReceiving", map.MapCoords);
-            Assert.That(trade.TryFulfillOrder(order.OrderId, entMan.GetComponent<TransformComponent>(drop).Coordinates, out err), Is.True, err);
+            Assert.That(trade.TryFulfillOrder(order.OrderId, entMan.GetComponent<TransformComponent>(drop).Coordinates, new[] { order.RequestingAccount }, out err), Is.True, err);
             Assert.That(order.Fulfilled, Is.True);
             Assert.That(guild.Balance, Is.EqualTo(before - order.Cost));
             Assert.That(vermouth.Goods["DrinkGlass"].Stock, Is.EqualTo(stockBefore - 2));
@@ -101,6 +101,7 @@ public sealed class OxydTradeStackTest : GameTest
     public async Task NonGuildOrderAppliesHandlingFee()
     {
         var server = Pair.Server;
+        var map = await Pair.CreateTestMap();
         await server.WaitAssertion(() =>
         {
             var eco = server.System<OxydEconomySystem>();
@@ -112,11 +113,9 @@ public sealed class OxydTradeStackTest : GameTest
                             null, 0, true, OxydEconomyConstants.EmployerGuild, canMakeAccounts: true);
             var buyer = eco.CreateAccount("ClubBuyer", "ClubBuyer", 5000, OxydEconomyConstants.EmployerService, 0);
 
-            // Use a dummy cart owner entity number via buyer uidless — spawn a marker
-            // Cart is keyed by EntityUid; use guild entity number fake via Ensure — create with station system
-            // Simplest: use EntityUid with value from Create — we need a real uid. Use buyer's personal as cart key after spawning nothing.
-            // EntityUid is a struct - we can use default invalid? Dictionary allows any key.
-            var loader = new EntityUid(999001);
+            // Cart lives as a component on the loader entity — needs a real spawned entity.
+            var entMan = server.ResolveDependency<IEntityManager>();
+            var loader = entMan.SpawnEntity(null, map.MapCoords);
             trade.ClearCart(loader);
             Assert.That(trade.TryAddToCart(loader, "AstersCapital", "Crowbar", 1, out var err), Is.True, err);
             Assert.That(trade.TryPlaceOrder(loader, buyer.AccountNumber, "fee test", out var order, out err), Is.True, err);
