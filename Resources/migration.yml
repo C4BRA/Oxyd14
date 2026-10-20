@@ -1130,3 +1130,6 @@ DrinkNeurotoxinGlass: null
 #2026-08-19
 JanitorServiceLight: null
 
+
+# OXYD: Eris ore processor rework — console entity obsolete (stock lathe is its own UI)
+OxydOreProcessorConsole: null

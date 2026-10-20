@@ -5,7 +5,6 @@ namespace Content.Shared._Oxyd.AstersGuild;
 /// <summary>
 /// Shared BUI state/messages for the Eris Asters Guild windows.
 /// Trade console recreates nano/templates/trade.tmpl (+ goods/offers/cart/orders/saved/log).
-/// Ore processor console recreates the "Processor" TGUI layout in ErisNanoStyle.
 /// </summary>
 
 // ---------------- Trade console ----------------
@@ -162,46 +161,4 @@ public sealed class OxydTradeCompleteRequestMessage : BoundUserInterfaceMessage
 }
 
 // ATM UI types live in Content.Shared._Oxyd.Economy (Eris economy+PDA port).
-
-// ---------------- Ore processor console ----------------
-
-[Serializable, NetSerializable]
-public enum OxydOreProcessorUiKey : byte
-{
-    Key,
-}
-
-[Serializable, NetSerializable]
-public sealed class OxydOreProcessorState : BoundUserInterfaceState
-{
-    public bool HasMachine;
-    public bool Running;
-    /// <summary>Material rows: name, loaded count, storing toggle.</summary>
-    public List<OxydOreProcessorMaterial> Materials = new();
-    public List<string> Alloys = new();
-}
-
-[Serializable, NetSerializable]
-public sealed class OxydOreProcessorMaterial
-{
-    public string Name = string.Empty;
-    public int Loaded;
-    public bool Storing;
-}
-
-[Serializable, NetSerializable]
-public sealed class OxydOreProcessorToggleMessage : BoundUserInterfaceMessage
-{
-}
-
-[Serializable, NetSerializable]
-public sealed class OxydOreProcessorStoreMessage : BoundUserInterfaceMessage
-{
-    public string Material = string.Empty;
-}
-
-[Serializable, NetSerializable]
-public sealed class OxydOreProcessorAlloyMessage : BoundUserInterfaceMessage
-{
-    public string Alloy = string.Empty;
-}
+// Ore processing uses the stock Lathe UI — no custom BUI state here.

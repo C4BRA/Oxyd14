@@ -67,55 +67,14 @@
 # Resources/Prototypes/_Oxyd/Economy/machines.yml (Eris economy+PDA port).
 
 # ---------------------------------------------------------------------------
-# Ore processor pair — production machine console + processing unit.
+# Ore processor — the stock SS14 Lathe + MaterialStorage smelter
+# (OreProcessorIndustrial covers the whole Eris alloy menu incl. plasteel via
+# AdvancedSmelting; the separate Eris console entity is obsolete — the lathe
+# itself is the UI). Keeps the old proto id so existing maps still spawn it.
 # ---------------------------------------------------------------------------
 - type: entity
-  parent: [ BaseMachinePowered ]
-  id: OxydOreProcessorConsole
-  components:
-  - type: Sprite
-    sprite: Structures/Machines/computers.rsi
-    layers:
-    - state: generic
-      map: ["enum.OxydGuildVisualLayers.Base"]
-  - type: OxydOreProcessorConsole
-  - type: ActivatableUI
-    key: enum.OxydOreProcessorUiKey.Key
-  - type: ActivatableUIRequiresPower
-  - type: UserInterface
-    interfaces:
-      enum.OxydOreProcessorUiKey.Key:
-        type: OxydOreProcessorBoundUserInterface
-  - type: ApcPowerReceiver
-    powerLoad: 300
-  - type: Appearance
-  - type: InteractionOutline
-  - type: Clickable
-
-- type: entity
-  parent: [ BaseMachinePowered ]
+  parent: OreProcessorIndustrial
   id: OxydOreProcessor
-  components:
-  - type: Sprite
-    sprite: Structures/Machines/ore_processor.rsi
-    layers:
-    - state: icon
-      map: ["enum.OxydGuildVisualLayers.Base"]
-    - state: building
-      map: ["enum.OxydGuildVisualLayers.Working"]
-      visible: false
-  - type: OxydOreProcessor
-  - type: ApcPowerReceiver
-    powerLoad: 800
-  - type: Appearance
-  - type: GenericVisualizer
-    visuals:
-      enum.OxydGuildVisuals.Working:
-        enum.OxydGuildVisualLayers.Working:
-          True: { visible: true }
-          False: { visible: false }
-  - type: InteractionOutline
-  - type: Clickable
 
 # ---------------------------------------------------------------------------
 # Deep drill — slowly produces ore stacks on its tile while running.

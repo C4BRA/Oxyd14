@@ -57,32 +57,6 @@ public sealed partial class OxydBankAccountComponent : Component
 // ATM / trade beacons / cash register / EFTPOS components live in
 // Content.Shared._Oxyd.Economy (Eris economy+PDA port) — do not re-register here.
 
-/// <summary>Eris production machine console: drives the paired OxydOreProcessor.</summary>
-[RegisterComponent]
-public sealed partial class OxydOreProcessorConsoleComponent : Component
-{
-    /// <summary>The processor this console is paired to (nearest within 3 tiles, Eris
-    /// processing_unit_console.LateInitialize).</summary>
-    public EntityUid? Machine;
-}
-
-/// <summary>Eris processing_unit: melts ore stacks into material sheets, with alloy
-/// recipes (plasteel etc.).</summary>
-[RegisterComponent]
-public sealed partial class OxydOreProcessorComponent : Component
-{
-    public bool Running;
-    public string? LinkedOreType;
-    /// <summary>Seconds per ore -> sheet cycle.</summary>
-    [DataField]
-    public float CycleSeconds = 5f;
-    public float Accum;
-    /// <summary>Storing toggles per material (Eris ORE_STORING).</summary>
-    public Dictionary<string, bool> Storing = new();
-    /// <summary>Ore items waiting to smelt.</summary>
-    public List<string> Queue = new();
-}
-
 /// <summary>Eris deep_drill: slowly extracts ore stacks from the tile beneath.</summary>
 [RegisterComponent]
 public sealed partial class OxydDeepDrillComponent : Component
